@@ -11,7 +11,7 @@
 
 #include "mex.h"
 #include "rta_yin.h"
-#include <math.h>
+#include "rta_math.h" /* rta_sqrt */
 
 static const unsigned int yin_max_mins = 128;
 
@@ -67,25 +67,25 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   if(max_lag <= input_size/2)
   {
     /* output results */
-    plhs[0] = mxCreateNumericMatrix(1, 1, mxSINGLE_CLASS, mxREAL);
+    plhs[0] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     f0 = mxGetData(plhs[0]);
   
-    plhs[1] = mxCreateNumericMatrix(1, 1, mxSINGLE_CLASS, mxREAL);
+    plhs[1] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     energy = mxGetData(plhs[1]);
 
-    plhs[2] = mxCreateNumericMatrix(1, 1, mxSINGLE_CLASS, mxREAL);
+    plhs[2] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     periodicity = mxGetData(plhs[2]);
 
-    plhs[3] = mxCreateNumericMatrix(1, 1, mxSINGLE_CLASS, mxREAL);
+    plhs[3] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     ac1_over_ac0 = mxGetData(plhs[3]);
 
     plhs[4] = mxCreateNumericMatrix(1, input_size - max_lag, 
-                                    mxSINGLE_CLASS, mxREAL);
+                                    RTA_MEX_REAL_TYPE, mxREAL);
     autocorrelation = mxGetData(plhs[4]);
 
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
-    /* float precision conversion */
+    /* input float precision conversion */
     real_input = mxMalloc( input_size * sizeof(rta_real_t)); 
     for (i=0; i<input_size ;i++)
     {
@@ -104,7 +104,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
       /* conform results */
       *f0 = sample_rate / lag;
-      *energy = sqrt(autocorrelation[0] / max_lag);
+      *energy = rta_sqrt(autocorrelation[0] / max_lag);
 
       if(lag > 0. && lag < 1.)
       {

@@ -25,9 +25,16 @@
 #define rta_free mxFree
 
 /* simple floating point precision */
+/* RTA and Matlab precisions must be the same */
+/** RTA */
 #undef RTA_REAL_TYPE
 #define RTA_REAL_TYPE RTA_FLOAT_TYPE
+/* #define RTA_REAL_TYPE RTA_DOUBLE_TYPE */
 
+/** Matlab */
+#undef RTA_MEX_REAL_TYPE
+#define RTA_MEX_REAL_TYPE mxSINGLE_CLASS
+/* #define RTA_MEX_REAL_TYPE mxDOUBLE_CLASS */
 
 
 #endif /* _RTA_CONFIGURATION_H_ */
