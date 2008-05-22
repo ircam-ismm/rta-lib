@@ -162,6 +162,12 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
     }
   }
 
+  /* clip in the [0., 1.] range (rounding errors) */
+  if(*abs_min < 0.) 
+  {
+    *abs_min = 0.;
+  }
+
   return abs_lag;
 }
 

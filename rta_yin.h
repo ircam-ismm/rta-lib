@@ -63,8 +63,8 @@ rta_yin_setup_delete(rta_yin_setup_t * yin_setup);
  * \see rta_downsample_int_mean
  * \see rta_downsample_int_remove
  * 
- * @param abs_min is the absolute minimum found. if 'abs_min' >=0,
- * then periodicity == 1.0 - sqrt('abs_min')
+ * @param abs_min is the absolute minimum found. Its range is [0., 1.].
+ * periodicity == 1. - sqrt('abs_min').
  * @param autocorrelation must be allocated before calling this
  * function. 'autocorrelation' size must be 'input_size' - 'max_lag'.
  * The energy of 'input' is sqrt('autocorrelation'[0]/'max_lag'). 
