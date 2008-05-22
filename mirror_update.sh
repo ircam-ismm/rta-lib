@@ -7,10 +7,12 @@
 
 mirror_dir=rta_mirror # a symbolic link is ok
 
+echo "mirror directory is ${mirror_dir}"
 
-for source in $( ls Doxyfile *.{c,h} matlab/*.{c,h,m} doc/README.txt documentation/*.{tex,pdf,graffle} ); do
-#    diff ${source}  ${mirror_dir}/${source}
-    cat ${source} > ${mirror_dir}/${source}
+for source in Doxyfile *.{c,h} matlab/*.{c,h,m} doc/README.txt documentation/*.{tex,pdf,graffle} ; do
+#    echo "${source}"
+#    diff "${source}"  "${mirror_dir}/${source}"
+    cat "${source}" > "${mirror_dir}/${source}"
 done
 
 # cd ${mirror_dir} && svn commit
