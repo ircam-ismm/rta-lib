@@ -227,7 +227,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{376.434, 575.5}, {65.2313, 12}}</string>
+			<string>{{376.434, 575.5}, {71, 12}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -505,7 +505,7 @@
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
 			<key>OrthogonalBarPosition</key>
-			<real>120.79812622070312</real>
+			<real>120.798095703125</real>
 			<key>Points</key>
 			<array>
 				<string>{121.153, 416.25}</string>
@@ -640,7 +640,7 @@
 			<integer>110</integer>
 			<key>Points</key>
 			<array>
-				<string>{121.153, 640.75}</string>
+				<string>{121.153, 641.25}</string>
 				<string>{121.153, 664.75}</string>
 			</array>
 			<key>Style</key>
@@ -792,7 +792,7 @@
 			<integer>107</integer>
 			<key>Points</key>
 			<array>
-				<string>{121.153, 604.75}</string>
+				<string>{121.153, 605.25}</string>
 				<string>{121.153, 625.75}</string>
 			</array>
 			<key>Style</key>
@@ -1352,7 +1352,7 @@
 			<key>Points</key>
 			<array>
 				<string>{121.153, 466.25}</string>
-				<string>{121.153, 487.75}</string>
+				<string>{121.152, 487.75}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1578,7 +1578,7 @@
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
 			<key>OrthogonalBarPosition</key>
-			<real>91.220703125</real>
+			<real>91.220596313476562</real>
 			<key>Points</key>
 			<array>
 				<string>{121.153, 339.25}</string>
@@ -1764,7 +1764,7 @@
 			<integer>85</integer>
 			<key>Points</key>
 			<array>
-				<string>{121.153, 339.75}</string>
+				<string>{121.153, 339.25}</string>
 				<string>{121.153, 369.25}</string>
 			</array>
 			<key>Style</key>
@@ -2151,7 +2151,7 @@
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf470
 {\fonttbl\f0\fnil\fcharset77 CMUSerif-Italic;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\i\fs18 \cf0 energy of  samples vector}</string>
 			</dict>
@@ -2170,7 +2170,7 @@
 			<integer>71</integer>
 			<key>Points</key>
 			<array>
-				<string>{330.413, 301.25}</string>
+				<string>{330.412, 301.25}</string>
 				<string>{330.594, 327.625}</string>
 			</array>
 			<key>Style</key>
@@ -2285,7 +2285,7 @@
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf470
 {\fonttbl\f0\fnil\fcharset77 CMUSerif-Italic;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\i\fs18 \cf0 normalised samples vector}</string>
 			</dict>
@@ -2311,7 +2311,7 @@
 			<integer>67</integer>
 			<key>Points</key>
 			<array>
-				<string>{121.153, 230.25}</string>
+				<string>{121.153, 230.75}</string>
 				<string>{121.153, 286.25}</string>
 			</array>
 			<key>Style</key>
@@ -2446,7 +2446,7 @@
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
 			<key>OrthogonalBarPosition</key>
-			<real>10</real>
+			<real>10.499992370605469</real>
 			<key>Points</key>
 			<array>
 				<string>{264.73, 186.25}</string>
@@ -2518,7 +2518,7 @@
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf470
 {\fonttbl\f0\fnil\fcharset77 CMUSerif-Italic;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\i\fs18 \cf0 pitch, energy, periodicity, autocorrelation}</string>
 			</dict>
@@ -2543,7 +2543,7 @@
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
 			<key>OrthogonalBarPosition</key>
-			<real>10</real>
+			<real>10.499992370605469</real>
 			<key>Points</key>
 			<array>
 				<string>{264.73, 186.25}</string>
@@ -2614,7 +2614,7 @@
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf470
 {\fonttbl\f0\fnil\fcharset77 CMUSerif-Italic;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\i\fs18 \cf0 samples vector}</string>
 			</dict>
@@ -2718,7 +2718,7 @@
 			<integer>51</integer>
 			<key>Points</key>
 			<array>
-				<string>{264.73, 120.75}</string>
+				<string>{264.73, 120.25}</string>
 				<string>{264.73, 137.25}</string>
 			</array>
 			<key>Style</key>
@@ -2955,7 +2955,7 @@
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf470
 {\fonttbl\f0\fnil\fcharset77 CMUSerif-Italic;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\i\fs18 \cf0 samples vector}</string>
 			</dict>
@@ -3006,7 +3006,7 @@
 				<string>{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf470
 {\fonttbl\f0\fnil\fcharset77 CMUSerif-Italic;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\i\fs18 \cf0 samples vector}</string>
 			</dict>
@@ -3139,7 +3139,7 @@
 		</dict>
 	</array>
 	<key>ModificationDate</key>
-	<string>2008-05-14 12:13:52 +0200</string>
+	<string>2008-05-27 15:40:56 +0200</string>
 	<key>Modifier</key>
 	<string>Jean-Philippe Lambert</string>
 	<key>NotesVisible</key>
@@ -3205,9 +3205,9 @@
 		<key>DrawerWidth</key>
 		<real>209</real>
 		<key>Frame</key>
-		<string>{{-110, 0}, {1082, 1002}}</string>
+		<string>{{367, 97}, {538, 885}}</string>
 		<key>VisibleRegion</key>
-		<string>{{-272, -59}, {1067, 888}}</string>
+		<string>{{0, 0}, {523, 771}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 	</dict>
