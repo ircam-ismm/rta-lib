@@ -127,8 +127,7 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
     sum += diff;
     
     /* local minimum */
-    if(diff < diff_left && diff < diff_right && 
-       diff_left != diff_right && sum != 0.)
+    if(diff < diff_left && diff < diff_right && sum != 0.)
     {
       const rta_real_t a = diff_left + diff_right - 2.0 * diff;
       const rta_real_t b = 0.5 * (diff_right - diff_left);
