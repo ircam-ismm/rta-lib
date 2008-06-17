@@ -21,7 +21,7 @@ int rta_lifter_weights(rta_real_t * weights_vector, const unsigned int cepstrum_
                      const rta_lifter_t lifter_t, const rta_lifter_mode_t lifter_m)
 {
   int i;
-  int ret; /* return value */
+  int ret = 1; /* return value */
 
   if(lifter_t == rta_lifter_exponential)
   {
