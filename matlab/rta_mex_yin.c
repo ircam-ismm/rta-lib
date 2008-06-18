@@ -79,8 +79,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     plhs[3] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     ac1_over_ac0 = mxGetData(plhs[3]);
 
-    plhs[4] = mxCreateNumericMatrix(1, input_size - max_lag, 
-                                    RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[4] = mxCreateNumericMatrix(1, max_lag, RTA_MEX_REAL_TYPE, mxREAL);
     autocorrelation = mxGetData(plhs[4]);
 
 
