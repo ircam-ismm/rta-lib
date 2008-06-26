@@ -5,7 +5,7 @@
 # Jean-Philippe.Lambert@ircam.fr 2008
 
 
-mirror_dir=rta_mirror # a symbolic link is ok
+mirror_dir=../rta_mirror # a symbolic link is ok
 
 echo "mirror directory is ${mirror_dir}"
 
