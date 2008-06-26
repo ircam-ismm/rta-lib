@@ -90,12 +90,12 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
   unsigned int i;             /* input sample index */
-  const unsigned int max_i = input_size - max_lag;
 
   *abs_min = 1.;
     
   /* auto-correlation */
-  rta_correlation_fast(autocorrelation, max_i, input, input, max_lag);
+  rta_correlation_fast(autocorrelation, max_lag, input, input, 
+                       input_size - max_lag);
     
   /* diff[0] */
   x = input[0];
@@ -116,7 +116,7 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
   sum = diff;
 
   /* minimum difference search */
-  for(i=2; i<max_i && n_mins < max_mins; i++)
+  for(i=2; i<max_lag-1 && n_mins < max_mins; i++)
   {
     x = input[i];
     xm = input[i + max_lag];
@@ -190,17 +190,16 @@ rta_real_t rta_yin_stride(
   rta_real_t xm;              /* (current + max_lag) sample */
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
-  unsigned int i;             /* input sample index */
+  unsigned int i,is;          /* input sample index, and with stride */
   unsigned int ac;            /* autocorrelation index */
-  const unsigned int max_i = input_size - max_lag;
-  const unsigned int max_i_stride = max_i * i_stride;
   const unsigned int max_lag_stride = max_lag * i_stride;
 
   *abs_min = 1.;
     
   /* auto-correlation */
-  rta_correlation_fast_stride(autocorrelation, ac_stride, max_i, 
-                              input, i_stride, input, i_stride, max_lag);
+  rta_correlation_fast_stride(autocorrelation, ac_stride, max_lag, 
+                              input, i_stride, input, i_stride,
+                              input_size - max_lag);
     
   /* diff[0] */
   x = input[0];
@@ -221,12 +220,12 @@ rta_real_t rta_yin_stride(
   sum = diff;
 
   /* minimum difference search */
-  for(i = 2*i_stride, ac = 3*ac_stride;
-      i < max_i_stride && n_mins < max_mins;
-      i += i_stride, ac += ac_stride)
+  for(i = 2, is = 2*i_stride, ac = 3*ac_stride;
+      i < max_lag - 1 && n_mins < max_mins;
+      i++, is += i_stride, ac += ac_stride)
   {
-    x = input[i];
-    xm = input[i + max_lag_stride];
+    x = input[is];
+    xm = input[is + max_lag_stride];
     energy += xm * xm - x * x;
     diff_left = diff;
     diff = diff_right;
@@ -234,8 +233,7 @@ rta_real_t rta_yin_stride(
     sum += diff;
     
     /* local minimum */
-    if(diff < diff_left && diff < diff_right && 
-       diff_left != diff_right && sum != 0.)
+    if(diff < diff_left && diff < diff_right && sum != 0.)
     {
       const rta_real_t a = diff_left + diff_right - 2.0 * diff;
       const rta_real_t b = 0.5 * (diff_right - diff_left);
@@ -267,6 +265,12 @@ rta_real_t rta_yin_stride(
       abs_lag = mins[i].lag;
       break;
     }
+  }
+
+  /* clip in the [0., 1.] range (rounding errors) */
+  if(*abs_min < 0.) 
+  {
+    *abs_min = 0.;
   }
 
   return abs_lag;

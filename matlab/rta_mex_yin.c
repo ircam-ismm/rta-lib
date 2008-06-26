@@ -27,6 +27,7 @@ static const unsigned int yin_max_mins = 128;
 void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 {
   /* matlab inputs */
+  rta_ptr_t setup_address;
   double * input;
   int input_size;
   rta_real_t threshold;
@@ -53,14 +54,17 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   int i;
 
   /* input arguments */
-  input = mxGetPr(prhs[0]); 
-  input_size = mxGetN(prhs[0]);    
+  setup_address = mxGetScalar(prhs[0]);
+  yin_setup = (rta_yin_setup_t *) setup_address;
+  
+  input = mxGetData(prhs[1]); 
+  input_size = mxGetNumberOfElements(prhs[1]);    
 
-  threshold = (rta_real_t) mxGetScalar(prhs[1]);
+  threshold = (rta_real_t) mxGetScalar(prhs[2]);
 
-  min_freq = mxGetScalar(prhs[2]);
+  min_freq = mxGetScalar(prhs[3]);
 
-  sample_rate =  mxGetScalar(prhs[3]);
+  sample_rate =  mxGetScalar(prhs[4]);
  
   max_lag = (unsigned int)ceil(sample_rate / min_freq);
 
@@ -82,7 +86,6 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     plhs[4] = mxCreateNumericMatrix(1, max_lag, RTA_MEX_REAL_TYPE, mxREAL);
     autocorrelation = mxGetData(plhs[4]);
 
-
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
     /* input float precision conversion */
     real_input = mxMalloc( input_size * sizeof(rta_real_t)); 
@@ -95,30 +98,22 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 #endif
 
     /* yin computation */
-    if(rta_yin_setup_new(&(yin_setup), yin_max_mins))
+    lag = rta_yin(&abs_min, autocorrelation, real_input, input_size,
+                  yin_setup, max_lag, threshold);
+
+    /* conform results */
+    *f0 = sample_rate / lag;
+    *energy = rta_sqrt(autocorrelation[0] / (input_size - max_lag));
+
+    *periodicity = 1.0 - sqrt(abs_min);
+
+    if(autocorrelation[0] != 0.0)
     {
-      lag = rta_yin(&abs_min, autocorrelation, real_input, input_size,
-                    yin_setup, max_lag, threshold);
-      rta_yin_setup_delete(yin_setup);
-
-      /* conform results */
-      *f0 = sample_rate / lag;
-      *energy = rta_sqrt(autocorrelation[0] / max_lag);
-
-      *periodicity = 1.0 - sqrt(abs_min);
-
-      if(autocorrelation[0] != 0.0)
-      {
-        *ac1_over_ac0 = autocorrelation[1]/autocorrelation[0];
-      }
-      else
-      {
-        *ac1_over_ac0 = 0.0;
-      }
+      *ac1_over_ac0 = autocorrelation[1]/autocorrelation[0];
     }
     else
     {
-      printf("rta_yin setup failed.\n");
+      *ac1_over_ac0 = 0.0;
     }
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)

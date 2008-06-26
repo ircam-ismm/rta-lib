@@ -14,15 +14,15 @@
 /* Matlab Mex */
 #include "mex.h"
 
-/* Matlab memory management */
-#undef rta_malloc
-#define rta_malloc mxMalloc
+/* Do not use Matlab memory management */
+/* #undef rta_malloc */
+/* #define rta_malloc mxMalloc */
 
-#undef rta_realloc
-#define rta_realloc mxRealloc
+/* #undef rta_realloc */
+/* #define rta_realloc mxRealloc */
 
-#undef rta_free
-#define rta_free mxFree
+/* #undef rta_free */
+/* #define rta_free mxFree */
 
 /* simple floating point precision */
 /* RTA and Matlab precisions must be the same */
@@ -36,5 +36,11 @@
 #define RTA_MEX_REAL_TYPE mxSINGLE_CLASS
 /* #define RTA_MEX_REAL_TYPE mxDOUBLE_CLASS */
 
+/* shared pointers */
+#undef RTA_MEX_PTR_TYPE
+#define RTA_MEX_PTR_TYPE mxUINT32_CLASS
+
+#undef rta_ptr_t
+#define rta_ptr_t unsigned long
 
 #endif /* _RTA_CONFIGURATION_H_ */

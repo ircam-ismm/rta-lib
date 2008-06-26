@@ -67,7 +67,8 @@ rta_yin_setup_delete(rta_yin_setup_t * yin_setup);
  * periodicity == 1. - sqrt('abs_min').
  * @param autocorrelation must be allocated before calling this
  * function. 'autocorrelation' size must be >= 'max_lag'.
- * The energy of 'input' is sqrt('autocorrelation'[0]/'max_lag'). 
+ * The energy of 'input' is
+ * sqrt('autocorrelation'[0]/('input_size'-'max_lag')). 
  * \see rta_correlation_fast
  * @param input size is 'input_size'
  * @param input_size is the 'input' size. It must be >= 2*'max_lag'
@@ -98,7 +99,8 @@ rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
  * periodicity == 1.0 - sqrt('abs_min')
  * @param autocorrelation must be allocated before calling this
  * function. 'autocorrelation' size must be >= 'max_lag'.
- * The energy of 'input' is sqrt('autocorrelation'[0]/'max_lag').
+ * The energy of 'input' is
+ * sqrt('autocorrelation'[0]/('input_size'-'max_lag')).
  * \see rta_correlation_fast_stride 
  * @param ac_stride is 'autocorrelation' stride
  * @param input size is 'input_size'
