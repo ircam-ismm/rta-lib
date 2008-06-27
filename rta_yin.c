@@ -90,16 +90,17 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
   unsigned int i;             /* input sample index */
+  unsigned int window_size = input_size - max_lag;
 
   *abs_min = 1.;
     
   /* auto-correlation */
   rta_correlation_fast(autocorrelation, max_lag, input, input, 
-                       input_size - max_lag);
+                       window_size);
     
   /* diff[0] */
   x = input[0];
-  xm = input[max_lag];
+  xm = input[window_size];
   energy = autocorrelation[0] + xm * xm - x * x;
   diff_left = 0.0;
   diff = 0.0;
@@ -108,7 +109,7 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
 
   /* diff[1] */
   x = input[1];
-  xm = input[1 + max_lag];
+  xm = input[1 + window_size];
   energy += xm * xm - x * x;
   diff_left = diff;
   diff = diff_right;
@@ -119,7 +120,7 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
   for(i=2; i<max_lag-1 && n_mins < max_mins; i++)
   {
     x = input[i];
-    xm = input[i + max_lag];
+    xm = input[i + window_size];
     energy += xm * xm - x * x;
     diff_left = diff;
     diff = diff_right;
