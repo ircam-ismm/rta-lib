@@ -1,7 +1,7 @@
 function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
     rta_yin (setup, input, threshold, min_freq, sample_rate)
 % function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
-%    rta_yin (setup, input, threshold, min_freq, sample_rate)
+%    rta_yin (input, threshold, min_freq, sample_rate, setup)
 %
 % Process the <input> signal through the yin algorithm from the RTA
 % library.

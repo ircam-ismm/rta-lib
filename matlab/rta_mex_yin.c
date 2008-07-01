@@ -54,19 +54,20 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   int i;
 
   /* input arguments */
-  setup_address = mxGetScalar(prhs[0]);
-  yin_setup = (rta_yin_setup_t *) setup_address;
   
-  input = mxGetData(prhs[1]); 
-  input_size = mxGetNumberOfElements(prhs[1]);    
+  input = mxGetData(prhs[0]); 
+  input_size = mxGetNumberOfElements(prhs[0]);    
 
-  threshold = (rta_real_t) mxGetScalar(prhs[2]);
+  threshold = (rta_real_t) mxGetScalar(prhs[1]);
 
-  min_freq = mxGetScalar(prhs[3]);
+  min_freq = mxGetScalar(prhs[2]);
 
-  sample_rate =  mxGetScalar(prhs[4]);
+  sample_rate =  mxGetScalar(prhs[3]);
  
-  ac_size = (unsigned int)ceil(sample_rate / min_freq) + 2;
+  setup_address = mxGetScalar(prhs[4]);
+  yin_setup = (rta_yin_setup_t *) setup_address;
+
+ ac_size = (unsigned int)ceil(sample_rate / min_freq) + 2;
 
   if(ac_size < input_size)
   {
