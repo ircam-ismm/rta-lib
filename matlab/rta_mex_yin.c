@@ -27,17 +27,17 @@ static const unsigned int yin_max_mins = 128;
 void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 {
   /* matlab inputs */
-  rta_ptr_t setup_address;
   double * input;
   int input_size;
   rta_real_t threshold;
   double sample_rate;
   double min_freq;
+  rta_ptr_t setup_address;
 
   /* rta inputs */
   rta_real_t * real_input; 
   rta_yin_setup_t * yin_setup;
-  unsigned int max_lag;
+  unsigned int ac_size;
 
   /* rta outputs */
   rta_real_t lag; 
@@ -66,9 +66,9 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
   sample_rate =  mxGetScalar(prhs[4]);
  
-  max_lag = (unsigned int)ceil(sample_rate / min_freq);
+  ac_size = (unsigned int)ceil(sample_rate / min_freq) + 2;
 
-  if(max_lag <= input_size/2)
+  if(ac_size < input_size)
   {
     /* output results */
     plhs[0] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
@@ -83,7 +83,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     plhs[3] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     ac1_over_ac0 = mxGetData(plhs[3]);
 
-    plhs[4] = mxCreateNumericMatrix(1, max_lag, RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[4] = mxCreateNumericMatrix(1, ac_size, RTA_MEX_REAL_TYPE, mxREAL);
     autocorrelation = mxGetData(plhs[4]);
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
@@ -98,12 +98,12 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 #endif
 
     /* yin computation */
-    lag = rta_yin(&abs_min, autocorrelation, real_input, input_size,
-                  yin_setup, max_lag, threshold);
+    lag = rta_yin(&abs_min, autocorrelation, ac_size, real_input, input_size,
+                  yin_setup, threshold);
 
     /* conform results */
     *f0 = sample_rate / lag;
-    *energy = rta_sqrt(autocorrelation[0] / (input_size - max_lag));
+    *energy = rta_sqrt(autocorrelation[0] / (input_size - ac_size));
 
     *periodicity = 1.0 - sqrt(abs_min);
 
@@ -124,8 +124,8 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   }
   else
   {
-    printf("rta_yin input too short: at least %d points expected for a minimum frequency of %g Hz at a sample rate of %g.\n", 
-           max_lag * 2, min_freq, sample_rate);
+    printf("rta_yin input too short: at least %d points expected (%d recommended) for a minimum frequency of %g Hz at a sample rate of %g Hz.\n", 
+           ac_size + 1, 2 * ac_size, min_freq, sample_rate);
   }
   return;
 }

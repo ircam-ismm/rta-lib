@@ -66,15 +66,17 @@ rta_yin_setup_delete(rta_yin_setup_t * yin_setup);
  * @param abs_min is the absolute minimum found. Its range is [0., 1.].
  * periodicity == 1. - sqrt('abs_min').
  * @param autocorrelation must be allocated before calling this
- * function. 'autocorrelation' size must be >= 'max_lag'.
+ * function. 'autocorrelation' size is 'ac_size'.
  * The energy of 'input' is
- * sqrt('autocorrelation'[0]/('input_size'-'max_lag')). 
+ * sqrt('autocorrelation'[0]/('input_size' - 'ac_size')). 
  * \see rta_correlation_fast
+ * @param ac_size is 'autocorrelation' size. The maximum
+ * searched lag is 'ac_size' - 2. 'ac_size' must be < 'input_size' 
+ * and for good results it should be <= ('input_size'/2)
  * @param input size is 'input_size'
- * @param input_size is the 'input' size. It must be >= 2*'max_lag'
+ * @param input_size is the 'input' size. It must be > 'ac_size'
+ * and for good results it should be >= 2 * 'ac_size'
  * @param yin_setup must be previously allocated. \see rta_yin_setup_new
- * @param max_lag is the maximum lag search by the
- * algorithm. It must be < 'input_size'/2
  * @param threshold under which to search the minima. It must be in
  * [0., 1.]. 0.1 is a common value. 'threshold' == (1. - confidence)^2
  * 
@@ -83,9 +85,10 @@ rta_yin_setup_delete(rta_yin_setup_t * yin_setup);
  */
 rta_real_t
 rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation, 
+        const unsigned int ac_size, 
         const rta_real_t * input, const unsigned int input_size,
         const rta_yin_setup_t * yin_setup,
-        const unsigned int max_lag, const rta_real_t threshold);
+        const rta_real_t threshold);
 
 /** 
  * Yin algorithm for periodicity analysis.
@@ -98,18 +101,19 @@ rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
  * @param abs_min is the absolute minimum found. Its range is [0., 1.].
  * periodicity == 1.0 - sqrt('abs_min')
  * @param autocorrelation must be allocated before calling this
- * function. 'autocorrelation' size must be >= 'max_lag'.
+ * function. 'autocorrelation' size is 'ac_size'.
  * The energy of 'input' is
- * sqrt('autocorrelation'[0]/('input_size'-'max_lag')).
+ * sqrt('autocorrelation'[0]/('input_size' - 'ac_size')).
  * \see rta_correlation_fast_stride 
  * @param ac_stride is 'autocorrelation' stride
+ * @param ac_size is 'autocorrelation' size. The maximum
+ * searched lag is 'ac_size' - 2. 'ac_size' must be < 'input_size' 
+ * and for good results it should be <= ('input_size'/2)
  * @param input size is 'input_size'
  * @param i_stride is 'input' stride
- * @param input_size is the 'input' size. It must be >= 2*'max_lag'
- * @param yin_setup must be previously allocated and is independent
- * from 'ac_stride' and 'i_stride'. \see rta_yin_setup_new
- * @param max_lag is the maximum lag search by the
- * algorithm. It must be < 'input_size'/2
+ * @param input_size is the 'input' size. It must be > 'ac_size'
+ * and for good results it should be >= 2 * 'ac_size'
+ * @param yin_setup must be previously allocated. \see rta_yin_setup_new
  * @param threshold under which to search the minima. It must be in
  * [0., 1.]. 0.1 is a common value. 'threshold' == (1. - confidence)^2
  * 
@@ -119,10 +123,11 @@ rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
 rta_real_t
 rta_yin_stride(rta_real_t * abs_min, 
                rta_real_t * autocorrelation, const unsigned int ac_stride, 
+               const unsigned int ac_size, 
                const rta_real_t * input, const unsigned int i_stride, 
                const unsigned int input_size,
                const rta_yin_setup_t * yin_setup,
-               const unsigned int max_lag, const rta_real_t threshold);
+               const rta_real_t threshold);
 
 #ifdef __cplusplus
 }

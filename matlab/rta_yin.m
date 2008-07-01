@@ -8,22 +8,25 @@ function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
 %
 % <setup> is created by rta_yin_setup_new(yin_max_mins)
 % <input> is a signal vector which size (input_size) must satisfy
-%    input_size >= 2*sample_rate/min_freq
+%    input_size > sample_rate/min_freq
+%    for good results it should satisfy
+%    input_size >= 2 * sample_rate/min_freq
 % <threshold> under which to search the minima. It must be in
 %    [0., 1.] and  0.1 is a common value. This is the original threshold
 %    (and will raise if no minimum is found).
 %    threshold == (1. - confidence)^2
-% <min_freq> is the minimum f0 searched
+% <min_freq> is the minimum f0 searched in Hz
 % <sample_rate> is input sample-rate in Hz
 %
 % <f0> is the fundamental frequency in Hz found by the yin algorithm
 % <energy> of input equals to
-%    sqrt(autocorrelation[1]/max_lag)
+%    sqrt(autocorrelation[1]/(sample_rate/min_freq))
 %    max_lag = sample_rate/min_freq
 % <ac1_ac0> is the ratio between the two first autocorrelation
 %    coefficients:
 %    ac1_ac0 = autocorrelation[2]/autocorrelation[1]
-% <autocorrelation> coefficients up to order (input_size - max_lag)
+% <autocorrelation> coefficients up to order 
+%    (input_size - (sample_rate/min_freq) - 2)
 
 
 printf(['This file is an help file which relies on a mex file of the same' ...

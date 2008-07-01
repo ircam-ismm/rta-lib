@@ -72,31 +72,38 @@ void rta_yin_setup_delete(rta_yin_setup_t * yin_setup)
   return;
 }
 
-/* Contract: input_size >= 2 * max_lag */
+/* Contract: input_size > ac_size */
+/*           input_size / 2 >= ac_size for good results */
 /*           threshold in [0., 1.] == (1. - confidence)^2 */
-rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation, 
-                   const rta_real_t * input, const unsigned int input_size,
-                   const rta_yin_setup_t * yin_setup,
-                   const unsigned int max_lag, const rta_real_t threshold)
+rta_real_t rta_yin(
+  rta_real_t * abs_min, 
+  rta_real_t * autocorrelation, const unsigned int ac_size, 
+  const rta_real_t * input, const unsigned int input_size,
+  const rta_yin_setup_t * yin_setup,
+  const rta_real_t threshold)
 {
   rta_real_t biased_threshold = threshold;
-  rta_real_t abs_lag = (rta_real_t) max_lag;
+
+  /* default return lag is the minimum reachable lag */
+  /* two points are used at the end */
+  /* returned maximum lag is ac_size - 2 */
+  rta_real_t abs_lag = (rta_real_t) ac_size - 1.5;
+
   const unsigned int max_mins = yin_setup->max_mins;
   rta_yin_mins_t * mins = yin_setup->mins;
 
   unsigned int n_mins = 0;    /* number of minimums */
   rta_real_t x;               /* current input sample */
-  rta_real_t xm;              /* (current + max_lag) sample */
+  rta_real_t xm;              /* (current + ac_size) sample */
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
   unsigned int i;             /* input sample index */
-  unsigned int window_size = input_size - max_lag;
+  const unsigned int window_size = input_size - ac_size;
 
   *abs_min = 1.;
     
   /* auto-correlation */
-  rta_correlation_fast(autocorrelation, max_lag, input, input, 
-                       window_size);
+  rta_correlation_fast(autocorrelation, ac_size, input, input, window_size);
     
   /* diff[0] */
   x = input[0];
@@ -117,7 +124,7 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
   sum = diff;
 
   /* minimum difference search */
-  for(i=2; i<max_lag-1 && n_mins < max_mins; i++)
+  for(i=2; i<ac_size-1 && n_mins < max_mins; i++)
   {
     x = input[i];
     xm = input[i + window_size];
@@ -171,40 +178,48 @@ rta_real_t rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
   return abs_lag;
 }
 
-/* Contract: input_size >= 2 * max_lag */
+/* Contract: input_size > ac_size */
+/*           input_size / 2 >= ac_size for good results */
 /*           threshold in [0., 1.] == (1. - confidence)^2 */
 rta_real_t rta_yin_stride(
   rta_real_t * abs_min,
   rta_real_t * autocorrelation, const unsigned int ac_stride,
+  const unsigned int ac_size, 
   const rta_real_t * input, const unsigned int i_stride,
   const unsigned int input_size,
   const rta_yin_setup_t * yin_setup,
-  const unsigned int max_lag, const rta_real_t threshold)
+  const rta_real_t threshold)
 {
   rta_real_t biased_threshold = threshold;
-  rta_real_t abs_lag = (rta_real_t) max_lag;
+
+  /* default return lag is the minimum reachable lag */
+  /* two points are used at the end */
+  /* returned maximum lag is ac_size - 2 */
+  rta_real_t abs_lag = (rta_real_t) ac_size - 1.5;
+
   const unsigned int max_mins = yin_setup->max_mins;
   rta_yin_mins_t * mins = yin_setup->mins;
 
   unsigned int n_mins = 0;    /* number of minimums */
   rta_real_t x;               /* current input sample */
-  rta_real_t xm;              /* (current + max_lag) sample */
+  rta_real_t xm;              /* (current + ac_size) sample */
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
   unsigned int i,is;          /* input sample index, and with stride */
   unsigned int ac;            /* autocorrelation index */
-  const unsigned int max_lag_stride = max_lag * i_stride;
+  const unsigned int window_size = input_size - ac_size;
+  const unsigned int window_size_stride = window_size * i_stride;
 
   *abs_min = 1.;
     
   /* auto-correlation */
-  rta_correlation_fast_stride(autocorrelation, ac_stride, max_lag, 
+  rta_correlation_fast_stride(autocorrelation, ac_stride, ac_size, 
                               input, i_stride, input, i_stride,
-                              input_size - max_lag);
+                              window_size);
     
   /* diff[0] */
   x = input[0];
-  xm = input[max_lag_stride];
+  xm = input[window_size_stride];
   energy = autocorrelation[0] + xm * xm - x * x;
   diff_left = 0.0;
   diff = 0.0;
@@ -213,7 +228,7 @@ rta_real_t rta_yin_stride(
 
   /* diff[1] */
   x = input[i_stride];
-  xm = input[i_stride + max_lag_stride];
+  xm = input[i_stride + window_size_stride];
   energy += xm * xm - x * x;
   diff_left = diff;
   diff = diff_right;
@@ -222,11 +237,11 @@ rta_real_t rta_yin_stride(
 
   /* minimum difference search */
   for(i = 2, is = 2*i_stride, ac = 3*ac_stride;
-      i < max_lag - 1 && n_mins < max_mins;
+      i < ac_size - 1 && n_mins < max_mins;
       i++, is += i_stride, ac += ac_stride)
   {
     x = input[is];
-    xm = input[is + max_lag_stride];
+    xm = input[is + window_size_stride];
     energy += xm * xm - x * x;
     diff_left = diff;
     diff = diff_right;
