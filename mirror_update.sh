@@ -9,7 +9,7 @@ mirror_dir=../rta_mirror # a symbolic link is ok
 
 echo "mirror directory is ${mirror_dir}"
 
-for source in Doxyfile *.{c,h} matlab/*.{c,h,m} doc/README.txt documentation/*.{tex,pdf,graffle} ; do
+for source in Doxyfile *.{c,h} matlab/*.{c,h,m} matlab/Makefile doc/README.txt documentation/*.{tex,pdf,graffle} ; do
 #    echo "${source}"
 #    diff "${source}"  "${mirror_dir}/${source}"
     cat "${source}" > "${mirror_dir}/${source}"
