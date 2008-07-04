@@ -1,5 +1,5 @@
 /**
- * @file   rta_mex_yin.c
+ * @file   rta_mex_downsample_int_mean.c
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Thu May 15 21:12:57 2008
  * 
