@@ -11,7 +11,7 @@ function [setup] = rta_yin_setup_new (yin_max_mins)
 % when every rta_yin calculation is done.
 
 
-printf(['This file is an help file which relies on a mex file of the same' ...
+sprintf(['This file is an help file which relies on a mex file of the same' ...
         ' name (but with a different extension).\n']);
 %
 % 2008 (C) Ircam - Centre Pompidou

@@ -104,7 +104,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   plhs[1] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
   previous_sample = mxGetData(plhs[1]);
 
-  if(nrhs >= 3)
+  if(nrhs > 2)
   {
     *previous_sample = mxGetScalar(prhs[2]);
   }

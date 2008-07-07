@@ -15,11 +15,11 @@ all: rta_downsample_int_mean rta_preemphasis \
 rta_%_mex.o: rta_%_mex.c
 	$(CC) $(CFLAGS) -c -I. -I$(RTA_ROOT) $<
 
-rta_%.o: $(RTA_ROOT)/rta_%.h $(RTA_ROOT)/rta_%.c
-	$(CC) $(CFLAGS) -c -I. -I$(RTA_ROOT) $^
+rta_%.o: $(RTA_ROOT)/rta_%.c $(RTA_ROOT)/rta_%.h 
+	$(CC) $(CFLAGS) -c -I. -I$(RTA_ROOT) $<
 
 rta_%: rta_%.o rta_%_mex.o
-	$(CC) $(CFLAGS) -cxx $^ -o $<
+	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 
 rta_downsample_int_mean: rta_resample.o rta_downsample_int_mean_mex.o
