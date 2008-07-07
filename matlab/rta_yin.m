@@ -1,12 +1,11 @@
 function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
-    rta_yin (setup, input, threshold, min_freq, sample_rate)
+    rta_yin (input, threshold, min_freq, sample_rate, setup)
 % function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
 %    rta_yin (input, threshold, min_freq, sample_rate, setup)
 %
 % Process the <input> signal through the yin algorithm from the RTA
 % library.
 %
-% <setup> is created by rta_yin_setup_new(yin_max_mins)
 % <input> is a signal vector which size (input_size) must satisfy
 %    input_size > sample_rate/min_freq
 %    for good results it should satisfy
@@ -17,6 +16,7 @@ function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
 %    threshold == (1. - confidence)^2
 % <min_freq> is the minimum f0 searched in Hz
 % <sample_rate> is input sample-rate in Hz
+% <setup> is created by rta_yin_setup_new(yin_max_mins)
 %
 % <f0> is the fundamental frequency in Hz found by the yin algorithm
 % <energy> of input equals to

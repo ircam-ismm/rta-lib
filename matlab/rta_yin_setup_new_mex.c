@@ -1,5 +1,5 @@
 /**
- * @file   rta_mex_yin_setup_new.c
+ * @file   rta_yin_setup_new_mex.c
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Thu May 15 21:12:57 2008
  * 

@@ -1,16 +1,16 @@
 /**
- * @file   rta_downsample_int_mean_mex.c
+ * @file   rta_preemphasis_mex.c
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Thu May 15 21:12:57 2008
  * 
- * @brief  rta_yin mex function for simple floating-point precision
+ * @brief  rta_preemphasis mex function 
  * 
  * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  *
  */
 
 #include "mex.h"
-#include "rta_resample.h"
+#include "rta_preemphasis.h"
 
 
 /** 
@@ -25,12 +25,14 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 {
   /* matlab inputs */
   double * input;
-  unsigned int factor;
+  rta_real_t factor;
+  rta_real_t * previous_sample;
 
   /* rta inputs */
   rta_real_t * real_input; 
   unsigned int input_size;
   unsigned int input_m;
+
 
   /* rta outputs */
   rta_real_t * output;
@@ -45,9 +47,9 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* input arguments */
 
   /* check proper input and output */
-  if(nrhs!=2)
+  if(nrhs<2)
   {
-    mexErrMsgTxt("Two inputs required.");
+    mexErrMsgTxt("Two inputs required (third is optional).");
   }
   else if(nlhs > 1)
   {
@@ -81,17 +83,17 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     }
 #endif
 
-  factor = (unsigned int) mxGetScalar(prhs[1]);
+  factor = (rta_real_t) mxGetScalar(prhs[1]);
 
   /* output results */
   if(input_m == 1)
   {
     output_m = 1;
-    output_n = input_size / factor;
+    output_n = input_size;
   }
   else
   {
-    output_m = input_size / factor;
+    output_m = input_size;
     output_n = 1;
   }
 
@@ -99,9 +101,20 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
                                   RTA_MEX_REAL_TYPE, mxREAL);
   output = mxGetData(plhs[0]);
   
+  plhs[1] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
+  previous_sample = mxGetData(plhs[1]);
+
+  if(nrhs >= 3)
+  {
+    *previous_sample = mxGetScalar(prhs[2]);
+  }
+  else
+  {
+    *previous_sample = 0.;
+  }
 
   /* computation */
-  rta_downsample_int_mean(output, real_input, input_size, factor);
+  rta_preemphasis_signal(output, real_input, input_size, previous_sample, factor);
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
   /* free mem of tmp vec for float precision conversion */
