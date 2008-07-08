@@ -11,9 +11,8 @@ function [output, last_sample] = ...
 % The <previous_sample> argument is optional (and is 0 by default).
 % The <last_sample> is simply taken from <input>.
 
-
-sprintf(['This file is an help file which relies on a mex file of the same' ...
-        ' name (but with a different extension).\n']);
+['This file is an help file which relies on a mex file of the same' ...
+ ' name (but with a different extension).\n']
 %
 % 2008 (C) Ircam - Centre Pompidou
 % Jean-Philippe.Lambert@ircam.fr

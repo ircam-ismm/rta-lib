@@ -10,9 +10,8 @@ function [setup] = rta_yin_setup_new (yin_max_mins)
 % Use rta_yin_setup_delete(setup) to release the memory of this setup
 % when every rta_yin calculation is done.
 
-
-sprintf(['This file is an help file which relies on a mex file of the same' ...
-        ' name (but with a different extension).\n']);
+['This file is an help file which relies on a mex file of the same' ...
+ ' name (but with a different extension).\n']
 %
 % 2008 (C) Ircam - Centre Pompidou
 % Jean-Philippe.Lambert@ircam.fr
