@@ -9,7 +9,7 @@ endif
 .PHONY: clean 
 
 all: rta_downsample_int_mean rta_preemphasis \
-	rta_window_weights \
+	rta_window_weights rta_window_apply \
 	rta_yin rta_yin_setup_new rta_yin_setup_delete
 
 rta_%_mex.o: rta_%_mex.c
@@ -23,6 +23,9 @@ rta_downsample_int_mean: rta_resample.o rta_downsample_int_mean_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_preemphasis: rta_preemphasis.o rta_preemphasis_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_window_apply: rta_window.o rta_window_apply_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_window_weights: rta_window.o rta_window_weights_mex.o
