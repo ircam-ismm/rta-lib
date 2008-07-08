@@ -16,7 +16,7 @@
 
 
 /* y = 0.5 - 0.5 * cos(2 * pi * x) */
-int rta_window_hann_weights(rta_real_t * restrict weights_vector,
+int rta_window_hann_weights(rta_real_t * weights_vector,
                             const unsigned int weights_size)
 {
   int i;
@@ -32,7 +32,7 @@ int rta_window_hann_weights(rta_real_t * restrict weights_vector,
 }
 
 int rta_window_hann_weights_stride(
-  rta_real_t * restrict weights_vector, const int w_stride,
+  rta_real_t * weights_vector, const int w_stride,
   const unsigned int weights_size)
 {
   int i;
@@ -47,7 +47,7 @@ int rta_window_hann_weights_stride(
   return ret;
 }
 
-void rta_window_hann_apply_in_place(rta_real_t * restrict input_vector,
+void rta_window_hann_apply_in_place(rta_real_t * input_vector,
                                     const unsigned int input_size)
 {
   int i;
@@ -61,7 +61,7 @@ void rta_window_hann_apply_in_place(rta_real_t * restrict input_vector,
 }
 
 void rta_window_hann_apply_in_place_stride(
-  rta_real_t * restrict input_vector, const int i_stride,
+  rta_real_t * input_vector, const int i_stride,
   const unsigned int input_size)
 {
   int i;
@@ -76,7 +76,7 @@ void rta_window_hann_apply_in_place_stride(
 
 /* y = coef + (1-coef)(0.5 - 0.5 * cos(2 * pi * x)) */
 /* raised-cosine, real hamming window if coef == 0.08 */
-int rta_window_hamming_weights(rta_real_t * restrict weights_vector,
+int rta_window_hamming_weights(rta_real_t * weights_vector,
                                const unsigned int weights_size,
                                const rta_real_t coef)
 {
@@ -94,7 +94,7 @@ int rta_window_hamming_weights(rta_real_t * restrict weights_vector,
 }
 
 int rta_window_hamming_weights_stride(
-  rta_real_t * restrict weights_vector, const int w_stride,
+  rta_real_t * weights_vector, const int w_stride,
   const unsigned int weights_size,
   const rta_real_t coef)
 {
@@ -111,7 +111,7 @@ int rta_window_hamming_weights_stride(
   return ret;
 }
 
-void rta_window_hamming_apply_in_place(rta_real_t * restrict input_vector,
+void rta_window_hamming_apply_in_place(rta_real_t * input_vector,
                                        const unsigned int input_size,
                                        const rta_real_t coef)
 {
@@ -128,7 +128,7 @@ void rta_window_hamming_apply_in_place(rta_real_t * restrict input_vector,
 }
 
 void rta_window_hamming_apply_in_place_stride(
-  rta_real_t * restrict input_vector, const int i_stride,
+  rta_real_t * input_vector, const int i_stride,
   const unsigned int input_size,
   const rta_real_t coef)
 {
@@ -177,7 +177,7 @@ void rta_window_apply_stride(
 }
 
 
-void rta_window_apply_in_place(rta_real_t * restrict input_vector,
+void rta_window_apply_in_place(rta_real_t * input_vector,
                                const unsigned int input_size,
                                const rta_real_t * weights_vector)
 {
@@ -192,7 +192,7 @@ void rta_window_apply_in_place(rta_real_t * restrict input_vector,
 }
 
 void rta_window_apply_in_place_stride(
-  rta_real_t * restrict input_vector, const int i_stride,
+  rta_real_t * input_vector, const int i_stride,
   const unsigned int input_size,
   const rta_real_t * weights_vector, const int w_stride)
 {
@@ -207,7 +207,7 @@ void rta_window_apply_in_place_stride(
 }
 
 void rta_window_rounded_apply(
-  rta_real_t * restrict output_vector, const unsigned int output_size,
+  rta_real_t * output_vector, const unsigned int output_size,
   const rta_real_t * input_vector, 
   const rta_real_t * weights_vector, const unsigned int weights_size)
 {
@@ -223,7 +223,7 @@ void rta_window_rounded_apply(
 }
 
 void rta_window_rounded_apply_stride(
-  rta_real_t * restrict output_vector, const int o_stride, 
+  rta_real_t * output_vector, const int o_stride, 
   const unsigned int output_size,
   const rta_real_t * input_vector, const int i_stride,
   const rta_real_t * weights_vector, const int w_stride, 
@@ -241,7 +241,7 @@ void rta_window_rounded_apply_stride(
 }
 
 void rta_window_rounded_apply_in_place(
-  rta_real_t * restrict input_vector, const unsigned int input_size,
+  rta_real_t * input_vector, const unsigned int input_size,
   const rta_real_t * weights_vector, const unsigned int weights_size)
 {
   int i;
@@ -256,7 +256,7 @@ void rta_window_rounded_apply_in_place(
 }
 
 void rta_window_rounded_apply_in_place_stride(
-  rta_real_t * restrict input_vector, const int i_stride,
+  rta_real_t * input_vector, const int i_stride,
   const unsigned int input_size,
   const rta_real_t * weights_vector, const int w_stride,
   const unsigned int weights_size)
