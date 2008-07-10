@@ -26,16 +26,13 @@
 void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 {
   /* matlab inputs */
-  char * fft_type_name;
-
   double * input;  
   unsigned int input_size;
 
   unsigned int fft_size;
   
   /* rta inputs */
-  rta_fft_setup_mex_t * fft_setup_mex = (rta_fft_setup_mex_t *)
-    rta_malloc(sizeof(rta_fft_setup_mex_t));
+  rta_fft_setup_mex_t * fft_setup_mex;
   rta_real_t * real_input; 
 
   /* matlab outputs */
@@ -56,6 +53,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   }
 
   /* input arguments */
+  input = mxGetData(prhs[0]); 
   input_size = mxGetNumberOfElements(prhs[0]);
   fft_size = mxGetScalar(prhs[1]);
 
@@ -64,6 +62,9 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     mexErrMsgTxt("FFT size must be at least input size.");
   }
   
+  fft_setup_mex = (rta_fft_setup_mex_t *) rta_malloc(
+    sizeof(rta_fft_setup_mex_t));
+
   if(nrhs < 3)
   {
     fft_setup_mex->scale = 1.;
@@ -95,7 +96,8 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 #endif
 
   fft_setup_mex->fft_size = fft_size;
-  fft_setup_mex->fft = (rta_complex_t *) rta_malloc(sizeof(rta_complex_t));
+  fft_setup_mex->fft = (rta_complex_t *) rta_malloc(
+    fft_size/2 * sizeof(rta_complex_t));
   
   if(rta_fft_real_setup_new(&(fft_setup_mex->fft_setup), 
                             rta_fft_real_to_complex_1d,

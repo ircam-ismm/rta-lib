@@ -32,7 +32,8 @@ rta_fft.$(MEXEXT): rta_fft.o rta_fft_mex.o
 rta_fft_setup_delete.$(MEXEXT): rta_fft.o rta_fft_setup_delete_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_complex.o rta_int.o rta_fft_setup_new_mex.o
+rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_complex.o rta_int.o \
+	rta_fft_setup_new_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_preemphasis.$(MEXEXT): rta_preemphasis.o rta_preemphasis_mex.o
