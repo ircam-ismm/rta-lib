@@ -1,7 +1,7 @@
 CC		= mex
 CFLAGS		=
 RTA_ROOT	= ..
-MEXEXT		= mexmac
+MEXEXT		= $(shell mexext)
 ifdef DEBUG
 CFLAGS += -g
 endif
