@@ -110,7 +110,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     plhs[3] = mxCreateNumericMatrix(1, 1, RTA_MEX_REAL_TYPE, mxREAL);
     ac1_over_ac0 = mxGetData(plhs[3]);
 
-    plhs[4] = mxCreateNumericMatrix(1, ac_size, RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[4] = mxCreateNumericMatrix(ac_m, ac_n, RTA_MEX_REAL_TYPE, mxREAL);
     autocorrelation = mxGetData(plhs[4]);
 
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
@@ -157,7 +157,10 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
     /* free mem of tmp vec for float precision conversion */
-    mxFree(real_input);
+    if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
+    {
+      mxFree(real_input);
+    }
 #endif
 
   }

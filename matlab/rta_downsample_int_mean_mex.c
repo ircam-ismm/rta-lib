@@ -104,8 +104,11 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   rta_downsample_int_mean(output, real_input, input_size, factor);
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
-  /* free mem of tmp vec for float precision conversion */
-  mxFree(real_input);
+  if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
+  {
+    /* free mem of tmp vec for float precision conversion */
+    mxFree(real_input);
+  }
 #endif
 
   return;

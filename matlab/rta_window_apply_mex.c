@@ -132,5 +132,20 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
                              window_size);
   }
 
+
+#if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
+  if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
+  {
+    /* free mem of tmp vec for float precision conversion */
+    mxFree(real_input);
+  }
+
+  if(mxGetClassID(prhs[1]) != mxSINGLE_CLASS)
+  {
+    /* free mem of tmp vec for float precision conversion */
+    mxFree(real_window);
+  }
+#endif
+
   return;
 }

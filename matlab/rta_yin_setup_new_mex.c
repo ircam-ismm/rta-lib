@@ -32,6 +32,12 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* matlab outputs */
   rta_ptr_t * setup_address;
 
+  /* check proper input and output */
+  if(nlhs > 1)
+  {
+    mexErrMsgTxt("Too many output arguments.");
+  }
+
   /* input arguments */
   if(nrhs > 0)
   {

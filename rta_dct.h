@@ -25,8 +25,8 @@ extern "C" {
 typedef enum
 {
   rta_dct_plp = 1,    /**< dpwe type 1 - same as old spec2cep that expanded & used fft */
-  rta_dct_slaney = 2, /**< orthogonal and unitary */
-  rta_dct_htk = 3,	   /**< orthogonal but not unitary (HTK like) */
+  rta_dct_slaney = 2, /**< orthogonal and unitary (Auditory Toolbox like) */
+  rta_dct_htk = 3,    /**< orthogonal but not unitary (HTK like) */
   rta_dct_feacalc = 4 /**< type 1 with implicit repeating of first, last bins */
 } rta_dct_t;
 

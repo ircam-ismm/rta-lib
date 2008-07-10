@@ -117,8 +117,11 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   rta_preemphasis_signal(output, real_input, input_size, previous_sample, factor);
 
 #if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
-  /* free mem of tmp vec for float precision conversion */
-  mxFree(real_input);
+  if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
+  {
+    /* free mem of tmp vec for float precision conversion */
+    mxFree(real_input);
+  }
 #endif
 
   return;
