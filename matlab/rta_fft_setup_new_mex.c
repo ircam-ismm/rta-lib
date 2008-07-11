@@ -65,7 +65,11 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   fft_setup_mex = (rta_fft_setup_mex_t *) rta_malloc(
     sizeof(rta_fft_setup_mex_t));
 
-  if(nrhs < 3)
+  if(nrhs > 2)
+  {
+    fft_setup_mex->scale = mxGetScalar(prhs[2]);
+  }
+  else
   {
     fft_setup_mex->scale = 1.;
   }
@@ -74,8 +78,6 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
   {
     /* input float precision conversion */
-    /* this memory block will be referenced in the setup and later
-       reused */
     real_input = (rta_real_t *) mxMalloc(input_size * sizeof(rta_real_t)); 
     for (i=0; i<input_size ;i++)
     {

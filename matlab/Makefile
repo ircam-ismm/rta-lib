@@ -12,6 +12,7 @@ all: rta_downsample_int_mean.$(MEXEXT) \
 	rta_preemphasis.$(MEXEXT) \
 	rta_fft.$(MEXEXT) \
 	rta_fft_setup_new.$(MEXEXT) rta_fft_setup_delete.$(MEXEXT) \
+	rta_ifft_setup_new.$(MEXEXT) rta_ifft_setup_delete.$(MEXEXT) \
 	rta_window_weights.$(MEXEXT) rta_window_apply.$(MEXEXT) \
 	rta_yin.$(MEXEXT) \
 	rta_yin_setup_new.$(MEXEXT) rta_yin_setup_delete.$(MEXEXT)
@@ -26,13 +27,20 @@ rta_%.o: $(RTA_ROOT)/rta_%.c $(RTA_ROOT)/rta_%.h
 rta_downsample_int_mean.$(MEXEXT): rta_resample.o rta_downsample_int_mean_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
+rta_ifft_setup_delete.$(MEXEXT): rta_fft.o rta_ifft_setup_delete_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_ifft_setup_new.$(MEXEXT): rta_fft.o rta_int.o \
+	rta_ifft_setup_new_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
 rta_fft.$(MEXEXT): rta_fft.o rta_fft_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_fft_setup_delete.$(MEXEXT): rta_fft.o rta_fft_setup_delete_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_complex.o rta_int.o \
+rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_int.o \
 	rta_fft_setup_new_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
