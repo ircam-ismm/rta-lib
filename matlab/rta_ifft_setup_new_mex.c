@@ -129,11 +129,11 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   }
 #endif
   
-  for(r=0; r<fft_size; r+=2)
-  {
-    printf("fft[%d] = %lf + %lf i\n",
-           r/2, real_fft_complex[r], real_fft_complex[r+1]);
-  }
+/*   for(r=0; r<fft_size; r+=2) */
+/*   { */
+/*     printf("fft[%d] = %lf + %lf i\n", */
+/*            r/2, real_fft_complex[r], real_fft_complex[r+1]); */
+/*   } */
 
   /* add the nyquist middle value */
   fft_setup_mex->nyquist = real_fft_re[fft_size/2];

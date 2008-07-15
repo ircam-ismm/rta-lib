@@ -25,21 +25,23 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 {
   /* matlab inputs */
   rta_ptr_t setup_address;
-  double * input;  
-  unsigned int input_size;
-  unsigned int input_m;
-  rta_real_t scale;
+  unsigned int fft_size;
+  unsigned int fft_m;
+  double * fft_re; 
+  double * fft_im; /* for conversion */
+  mxArray * mx_input_im = NULL;
 
   /* rta inputs */
   rta_fft_setup_mex_t * fft_setup_mex;
   rta_real_t * real_fft_complex; /* for conversion */
-  rta_real_t * real_input; 
+  rta_real_t * real_fft_re;
+  rta_real_t * real_fft_im;
 
   /* matlab outputs */
-  rta_real_t * fft_re; /* for conversion */
-  rta_real_t * fft_im; /* for conversion */
-  unsigned int fft_m;
-  unsigned int fft_n;
+
+  rta_real_t * output;
+  unsigned int output_m;
+  unsigned int output_n;
 
   /* other */
   int i,r;
@@ -54,86 +56,94 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     mexErrMsgTxt("Too many output arguments.");
   }
 
-  input = mxGetData(prhs[0]); 
-  input_size = mxGetNumberOfElements(prhs[0]);    
-  input_m=mxGetM(prhs[0]);
+  fft_re = mxGetPr(prhs[0]);
+  fft_size = mxGetNumberOfElements(prhs[0]);
+  fft_m=mxGetM(prhs[0]);
+
+  /* input arguments */
+  if(mxIsComplex(prhs[0]))
+  {
+    fft_im = mxGetPi(prhs[0]);
+  }
+  else
+  {
+    /* create vector of zeroes for the missing complex part */
+    mx_input_im = mxCreateNumericMatrix(
+      1, fft_size, mxGetClassID(prhs[0]), mxREAL);
+    fft_im = mxGetData(mx_input_im);
+  }
 
   setup_address = mxGetScalar(prhs[1]);
   fft_setup_mex = (rta_fft_setup_mex_t *) setup_address;
 
-  if(input_size > fft_setup_mex->fft_size)
+  if(fft_size > fft_setup_mex->fft_size)
   {
-    mexErrMsgTxt("FFT size must be at least input size.");
+    mexErrMsgTxt("Input FFT size must no be greater than that of the setup.");
   }
 
+  real_fft_complex = (rta_real_t *) fft_setup_mex->fft;
+
+/* process only the half lower part of the spectrum */
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
   if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
   {
-    /* input float precision conversion */
-    real_input = (rta_real_t *) mxMalloc(input_size * sizeof(rta_real_t)); 
-    for (i=0; i<input_size ;i++)
+    for (i=0, r=0; i<fft_size/2 ;i++, r+=2)
     {
-      real_input[i] = (rta_real_t) input[i]; 
+      real_fft_complex[r] = (rta_real_t) fft_re[i];
+      real_fft_complex[r+1] = (rta_real_t) fft_im[i];
     }
+    fft_setup_mex->nyquist = (rta_real_t) fft_re[fft_size/2];
   }
   else
   {
     /* no conversion for matlab single */
-    real_input = (rta_real_t *) input;
+    real_fft_re = (rta_real_t *) fft_re;
+    real_fft_im = (rta_real_t *) fft_im;
+    for (i=0, r=0; i<fft_size/2 ;i++, r+=2)
+    {
+      real_fft_complex[r] = real_fft_re[i];
+      real_fft_complex[r+1] = real_fft_im[i];
+    }
+    fft_setup_mex->nyquist = real_fft_re[fft_size/2];
 #else
     /* no conversion for rta double */
-    real_input = (rta_real_t *) input;
+    real_fft_re = (rta_real_t *) fft_re;
+    real_fft_im = (rta_real_t *) fft_im;
+    for (i=0, r=0; i<fft_size/2 ;i++, r+=2)
+    {
+      real_fft_complex[r] = real_fft_re[i];
+      real_fft_complex[r+1] = real_fft_im[i];
+    }
+    fft_setup_mex->nyquist = real_fft_re[fft_size/2];
 #endif
 
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
   }
 #endif
 
-  rta_fft_execute(fft_setup_mex->fft, real_input, 
-                  input_size, fft_setup_mex->fft_setup);
-
   /* output results */
-  if(input_m == 1)
+  if(fft_m == 1)
   {
-    fft_m = 1;
-    fft_n = fft_setup_mex->fft_size;
+    output_m = 1;
+    output_n = fft_setup_mex->fft_size;
   }
   else
   {
-    fft_m = fft_setup_mex->fft_size;
-    fft_n = 1;
+    output_m = fft_setup_mex->fft_size;
+    output_n = 1;
   }
 
-  plhs[0] = mxCreateNumericMatrix(fft_m, fft_n, RTA_MEX_REAL_TYPE, mxCOMPLEX);
-  fft_re = (rta_real_t *) mxGetPr(plhs[0]);
-  fft_im = (rta_real_t *) mxGetPi(plhs[0]);
-  real_fft_complex = (rta_real_t *) fft_setup_mex->fft;
+  plhs[0] = mxCreateNumericMatrix(output_m, output_n,
+                                  RTA_MEX_REAL_TYPE, mxREAL);
+  output = mxGetData(plhs[0]);
 
-  /* only first half spectrum is computed for a real FFT */
-  for(i=0, r=0; i<fft_setup_mex->fft_size/2; i++, r+=2)
-  {
-    fft_re[i] = real_fft_complex[r];
-    fft_im[i] = real_fft_complex[r+1];
-  }
-  
-  /* nyquist */
-  fft_re[i] = fft_setup_mex->nyquist;
-  fft_im[i] = 0.;
+  rta_fft_execute(output, fft_setup_mex->fft, 
+                  fft_size/2, fft_setup_mex->fft_setup);
 
-  /* build the half upper spectrum */
-  for(i++, r-=2; i<fft_setup_mex->fft_size; i++, r-=2)
+  if(mx_input_im != NULL)
   {
-    fft_re[i] = real_fft_complex[r];
-    fft_im[i] = -real_fft_complex[r+1];
+    mxDestroyArray(mx_input_im);
   }
-  
-#if (RTA_REAL_TYPE != RTA_DOUBLE_TYPE)
-  if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
-  {
-    /* free mem of tmp vec for float precision conversion */
-    mxFree(real_input);
-  }
-#endif
 
   return;
 }

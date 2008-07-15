@@ -3,7 +3,7 @@ function [setup] = rta_fft_setup_new (real_input, fft_size, scale)
 %
 % Create a new setup for the fft algorithm from the RTA library.
 %
-% <fft> size must be at least <real_input> size
+% <fft_size> must be at least <real_input> size
 % <scale> is optional and default value is 1. (no scale)
 %
 % <setup> is a pointer the the newly created setup
