@@ -15,6 +15,7 @@ all: rta_bands_weights.$(MEXEXT) \
 	rta_fft_setup_delete.$(MEXEXT) rta_fft_setup_new.$(MEXEXT) \
 	rta_ifft.$(MEXEXT) \
 	rta_ifft_setup_delete.$(MEXEXT) rta_ifft_setup_new.$(MEXEXT) \
+	rta_lpc.$(MEXEXT) \
 	rta_moments.$(MEXEXT) \
 	rta_preemphasis.$(MEXEXT) \
 	rta_spectrum_to_bands.$(MEXEXT) \
@@ -42,6 +43,15 @@ rta_dct_weights.$(MEXEXT): rta_dct.o rta_dct_weights_mex.o
 rta_downsample_int_mean.$(MEXEXT): rta_resample.o rta_downsample_int_mean_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
+rta_fft.$(MEXEXT): rta_fft.o rta_fft_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_fft_setup_delete.$(MEXEXT): rta_fft.o rta_fft_setup_delete_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_int.o rta_fft_setup_new_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
 rta_ifft.$(MEXEXT): rta_fft.o rta_ifft_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
@@ -51,13 +61,7 @@ rta_ifft_setup_delete.$(MEXEXT): rta_fft.o rta_ifft_setup_delete_mex.o
 rta_ifft_setup_new.$(MEXEXT): rta_fft.o rta_int.o rta_ifft_setup_new_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_fft.$(MEXEXT): rta_fft.o rta_fft_mex.o
-	$(CC) $(CFLAGS) -cxx $^ -o $@
-
-rta_fft_setup_delete.$(MEXEXT): rta_fft.o rta_fft_setup_delete_mex.o
-	$(CC) $(CFLAGS) -cxx $^ -o $@
-
-rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_int.o rta_fft_setup_new_mex.o
+rta_lpc.$(MEXEXT): rta_lpc.o rta_correlation.o rta_lpc_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_moments.$(MEXEXT): rta_moments.o rta_moments_mex.o
