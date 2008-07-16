@@ -37,7 +37,7 @@ extern "C" {
  * @param lpc coefficients vector
  * @param lpc_size is lpc order + 1 and must be > 0
  * @param error is the prediction error (variance)
- * @param autocorrelation size must be >= 'input_size' - 'lpc_size'. It
+ * @param autocorrelation size must be >= 'lpc_size'. It
  *                        is computed within this function
  * @param input_vector size is 'input_size' 
  * @param input_size must be >= lpc_size
@@ -64,7 +64,7 @@ rta_lpc(rta_real_t * lpc, const unsigned int lpc_size,
  * @param l_stride is 'lpc' vector stride
  * @param lpc_size is lpc order + 1 and must be > 0
  * @param error is the prediction error (variance)
- * @param autocorrelation size must be >= 'input_size' - 'lpc_size'. It
+ * @param autocorrelation size must be >= 'lpc_size'. It
  *                        is computed within this function
  * @param a_stride is 'autocorrelation' vector stride
  * @param input_vector size is 'input_size' 
