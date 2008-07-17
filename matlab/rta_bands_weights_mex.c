@@ -55,8 +55,13 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     mexErrMsgTxt("Too many output arguments.");
   }
   
-  /* take only the real spectrum + nyquist */ 
-  spectrum_size = mxGetScalar(prhs[0]) / 2 + 1 ;
+  spectrum_size = mxGetScalar(prhs[0]);
+  if(!(spectrum_size & 1))
+  {
+    /* if the spectrum size is even */
+    /* we take only the real spectrum + nyquist */ 
+    spectrum_size = spectrum_size/2 + 1;
+  }
 
   bands_number = mxGetScalar(prhs[1]); 
 

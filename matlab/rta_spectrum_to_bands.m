@@ -10,8 +10,9 @@ function [bands] = rta_spectrum_to_bands (spectrum, weights, bounds, type)
 %   'abs' to integrate bands is abs domain, as:
 %       <bands> = <weights>' * <spectrum>
 %    
-% Note that only the lower part of the spectrum (plus the middle
-% point) is used by this function, that is <spectrum>(1:end/2+1).
+% If the <spectrum> size is even, only the lower part of the spectrum (plus
+% the middle point) is used by this function, that is
+% <spectrum>(1:end/2+1); if the <spectrum> size is odd, every point is used.
         
 ['This file is an help file which relies on a mex file of the same' ...
  ' name (but with a different extension).\n']

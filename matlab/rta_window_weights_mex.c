@@ -64,7 +64,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
       mexErrMsgTxt("First input must be a string.");
     }
     
-    window_name = mxArrayToString(prhs[0]);
+    window_name = mxArrayToString(prhs[1]);
   
     if(0 == strcmp(window_name,"hann"))
     {
@@ -72,7 +72,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     }
     else if(0 == strcmp(window_name,"hamming"))
     {
-      if(nrhs >= 3)
+      if(nrhs > 2)
       {
         window_coef = mxGetScalar(prhs[2]);
       }

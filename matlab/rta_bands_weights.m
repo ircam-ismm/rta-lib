@@ -3,6 +3,10 @@ function [weights, bounds] = rta_bands_weights (...
 % function [weights, bounds] = rta_bands_weights (...
 %    spectrum_size, bands_nb, type, sample_rate, min_freq, max_freq)
 %
+% If <spectrum_size> is even, the value <spectrum_size> / 2 + 1 is used
+% instead (to process only the real spectrum); if <spectrum_size> is odd,
+% it is inchanged.
+%
 % Create a matrix (<spectrum_size> x <bands_nb>) of weights to get the
 % mel bands from a signal spectrum. See rta_spectrum_to_bands.
 %

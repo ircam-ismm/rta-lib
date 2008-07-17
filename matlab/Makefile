@@ -1,9 +1,12 @@
 CC		= mex
-CFLAGS		= -O
+CFLAGS		= 
 RTA_ROOT	= ..
 MEXEXT		= $(shell mexext)
+
 ifdef DEBUG
 CFLAGS += -g
+else
+CFLAGS += -O
 endif
 
 .PHONY: clean 
