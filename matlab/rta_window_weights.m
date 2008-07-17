@@ -1,9 +1,9 @@
-function [weights] = rta_window_weights (type, size, coefficient)
-% function [weights] = rta_window_weights (type, size, coefficient)
+function [weights] = rta_window_weights (size, type, coefficient)
+% function [weights] = rta_window_weights (size, type, coefficient)
 %
 % Create a vector (a <size> x 1 matrix) of <weights>:
 %
-% <type> can be 'hann' or 'hamming'
+% <type> can be 'hann' (default) or 'hamming'
 % <coefficient> is optional (0.08 by default for a true hamming window)
 %    and applies to the 'hamming' <type> only. 
 %

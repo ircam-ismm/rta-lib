@@ -26,6 +26,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* matlab inputs */
   unsigned int window_size;
   char * window_name;
+  enum {hann, hamming} window_type = hann;
   rta_real_t window_coef = 0.08 ; /* for hamming */
   
   /* rta inputs */
@@ -40,44 +41,55 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* input arguments */
 
   /* check proper input and output */
-  if(nrhs < 2)
+  if(nrhs < 1)
   {
-    mexErrMsgTxt("Two inputs required.");
+    mexErrMsgTxt("One input required.");
   }
   else if(nlhs > 1)
   {
     mexErrMsgTxt("Too many output arguments.");
   }
   
-  /* second arguments is window size */
-  window_size = mxGetScalar(prhs[1]); 
+  /* first arguments is window size */
+  window_size = mxGetScalar(prhs[0]); 
 
   plhs[0] = mxCreateNumericMatrix(window_size, 1, RTA_MEX_REAL_TYPE, mxREAL);
   window_weights = mxGetData(plhs[0]);
 
-  /* first argument is window type*/
-  if(mxIsChar(prhs[0]) != 1)
+  /* second argument is window type*/
+  if(nrhs > 1)
   {
-    mexErrMsgTxt("First input must be a string.");
+    if(mxIsChar(prhs[1]) != 1)
+    {
+      mexErrMsgTxt("First input must be a string.");
+    }
+    
+    window_name = mxArrayToString(prhs[0]);
+  
+    if(0 == strcmp(window_name,"hann"))
+    {
+      window_type = hann;
+    }
+    else if(0 == strcmp(window_name,"hamming"))
+    {
+      if(nrhs >= 3)
+      {
+        window_coef = mxGetScalar(prhs[2]);
+      }
+    }
+    else
+    {
+      mexErrMsgTxt("Bad window type.");
+    }
   }
 
-  window_name = mxArrayToString(prhs[0]);
-  
-  if(0 == strcmp(window_name,"hann"))
+  if(window_type == hann)
   {
     ret = rta_window_hann_weights(window_weights, window_size);
   }
-  else if(0 == strcmp(window_name,"hamming"))
+  else if(window_type == hamming)
   {
-    if(nrhs >= 3)
-    {
-      window_coef = mxGetScalar(prhs[2]);
-    }
     ret = rta_window_hamming_weights(window_weights, window_size, window_coef);
-  }
-  else
-  {
-    mexErrMsgTxt("Bad window type.");
   }
 
   if(ret == 0)
