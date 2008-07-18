@@ -151,7 +151,8 @@ rta_fft_real_setup_new_stride(
  * @param fft_setup is an address of a pointer to a private structure, 
  * which may depend on the actual FFT implementation. This function
  * allocates 'fft_setup' and fills it.
- * @param fft_type may be real_to_complex_1d or complex_to_real_1d
+ * @param fft_type may be rta_fft_complex_1d or
+ * rta_fft_complex_inverse_1d 
  * @param scale is usually used for inverse FFT as 1/'fft_size' in
  * order to obtain the identity transform when calculating FFT and
  * then inverse FFT. It does not need to be constant and may change
@@ -193,7 +194,8 @@ rta_fft_setup_new(rta_fft_setup_t ** fft_setup,
  * @param fft_setup is an address of a pointer to a private structure, 
  * which may depend on the actual FFT implementation. This function
  * allocates 'fft_setup' and fills it.
- * @param fft_type may be real_to_complex_1d or complex_to_real_1d
+ * @param fft_type may be rta_fft_complex_1d or
+ * crta_fft_complex_inverse_1d 
  * @param scale is usually used for inverse FFT as 1/'fft_size' in
  * order to obtain the identity transform when calculating FFT and
  * then inverse FFT. It does not need to be constant and may change
