@@ -2,7 +2,7 @@ function [bands] = rta_spectrum_to_bands (spectrum, weights, bounds, type)
 % function [bands] = rta_spectrum_to_bands (spectrum, weights, bounds, type)
 %
 % Apply <weights> to a real power <spectrum> vector. <weights> and <bounds>
-% must be created by the rta_window_weights function.
+% must be created by the rta_bands_weights function.
 %
 % <type> can be:
 %   'sqrabs' to integrate the power spectrum in abs^2 domain as:
