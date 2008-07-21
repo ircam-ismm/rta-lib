@@ -5,7 +5,7 @@ function [bands] = rta_spectrum_to_bands (spectrum, weights, bounds, type)
 % must be created by the rta_bands_weights function.
 %
 % <type> can be:
-%   'sqrabs' to integrate the power spectrum in abs^2 domain as:
+%   'sqrabs' to integrate the power spectrum in abs^2 domain (default) as:
 %       <bands> = (<weights>' * sqrt(<spectrum>)) .^2
 %   'abs' to integrate bands is abs domain, as:
 %       <bands> = <weights>' * <spectrum>
