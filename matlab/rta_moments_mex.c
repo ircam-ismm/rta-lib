@@ -141,7 +141,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   
   if(max_order >= 2)
   {
-    if(output[0] != 0.)
+    if(*sum != 0.)
     {
       output[1] = rta_weighted_moment_2_indexes(
         real_input, input_size, output[0], *sum);
@@ -159,7 +159,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     if(max_order >= 3)
     {
       deviation = rta_sqrt(output[1]);
-      if(output[0] != 0. && deviation != 0.)
+      if(*sum != 0. && deviation != 0.)
       {
         output[2] = rta_std_weighted_moment_3_indexes(
           real_input, input_size, output[0], *sum, deviation);
@@ -172,7 +172,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
     if(max_order >= 4)
     {
-      if(output[0] != 0. && deviation != 0.)
+      if(*sum != 0. && deviation != 0.)
       {
         output[3] = rta_std_weighted_moment_4_indexes(
           real_input, input_size, output[0], *sum, deviation);
@@ -185,7 +185,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
     for(i = 5; i <= max_order; i++)
     {
-      if(output[0] != 0. && deviation != 0.)
+      if(*sum != 0. && deviation != 0.)
       {
         output[i-1] = rta_std_weighted_moment_indexes(
           real_input, input_size, output[0], *sum, deviation, i);
@@ -208,7 +208,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   {
     if(max_order >= 3)
     {
-      if(output[0] != 0.)
+      if(*sum != 0.)
       {
         output[2] = rta_weighted_moment_3_indexes(
           real_input, input_size, output[0], *sum);
@@ -221,7 +221,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
     if(max_order >= 4)
     {
-      if(output[0] != 0.)
+      if(*sum != 0.)
       {
         output[3] = rta_weighted_moment_4_indexes(
           real_input, input_size, output[0], *sum);
@@ -234,7 +234,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
     for(i = 5; i <= max_order; i++)
     {
-      if(output[0] != 0.)
+      if(*sum != 0.)
       {
         output[i-1] = rta_weighted_moment_indexes(
           real_input, input_size, output[0], *sum, i);
