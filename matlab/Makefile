@@ -18,6 +18,7 @@ all: rta_bands_weights.$(MEXEXT) \
 	rta_fft_setup_delete.$(MEXEXT) rta_fft_setup_new.$(MEXEXT) \
 	rta_ifft.$(MEXEXT) \
 	rta_ifft_setup_delete.$(MEXEXT) rta_ifft_setup_new.$(MEXEXT) \
+	rta_lifter_apply.$(MEXEXT) rta_lifter_weights.$(MEXEXT) \
 	rta_lpc.$(MEXEXT) \
 	rta_moments.$(MEXEXT) \
 	rta_preemphasis.$(MEXEXT) \
@@ -62,6 +63,12 @@ rta_ifft_setup_delete.$(MEXEXT): rta_fft.o rta_ifft_setup_delete_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_ifft_setup_new.$(MEXEXT): rta_fft.o rta_int.o rta_ifft_setup_new_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_lifter_apply.$(MEXEXT): rta_lifter.o rta_lifter_apply_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_lifter_weights.$(MEXEXT): rta_lifter.o rta_lifter_weights_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_lpc.$(MEXEXT): rta_lpc.o rta_correlation.o rta_lpc_mex.o
