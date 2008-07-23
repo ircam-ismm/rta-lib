@@ -193,13 +193,13 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
       else
       {
         /* pseudo-similar to noise until order <= 10 */
-        if(i & 1) /* even */
+        if(i & 1) /* odd */
         {
-          output[i-1] = 0.;
+          output[i-1] = i;
         }
         else
         {
-          output[i-1] = i;
+          output[i-1] = 0.;
         }
       }
     }

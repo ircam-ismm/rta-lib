@@ -13,6 +13,7 @@ endif
 
 all: rta_bands_weights.$(MEXEXT) \
 	rta_dct_apply.$(MEXEXT) rta_dct_weights.$(MEXEXT) \
+	rta_delta_apply.$(MEXEXT) rta_delta_weights.$(MEXEXT) \
 	rta_downsample_int_mean.$(MEXEXT) \
 	rta_fft.$(MEXEXT) \
 	rta_fft_setup_delete.$(MEXEXT) rta_fft_setup_new.$(MEXEXT) \
@@ -42,6 +43,12 @@ rta_dct_apply.$(MEXEXT): rta_dct.o rta_dct_apply_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_dct_weights.$(MEXEXT): rta_dct.o rta_dct_weights_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_delta_apply.$(MEXEXT): rta_delta.o rta_delta_apply_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_delta_weights.$(MEXEXT): rta_delta.o rta_delta_weights_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_downsample_int_mean.$(MEXEXT): rta_resample.o rta_downsample_int_mean_mex.o
