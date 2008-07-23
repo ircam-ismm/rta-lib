@@ -67,8 +67,6 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   weights = mxGetData(prhs[1]); 
   weights_size = mxGetNumberOfElements(prhs[1]);
 
-  printf("m = %d, n = %d, w = %d\n", input_m, input_n, weights_size);
-
   if(input_size == weights_size)
   {
     vector_mode = 0;
