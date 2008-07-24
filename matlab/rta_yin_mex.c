@@ -144,7 +144,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     *f0 = sample_rate / lag;
     *energy = rta_sqrt(autocorrelation[0] / (input_size - ac_size));
 
-    *periodicity = 1.0 - sqrt(abs_min);
+    *periodicity = 1.0 - rta_sqrt(abs_min);
 
     if(autocorrelation[0] != 0.0)
     {
