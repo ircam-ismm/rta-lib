@@ -12,7 +12,7 @@
 
 #include "mex.h"
 #include "rta_yin.h"
-#include "rta_math.h" /* rta_sqrt */
+#include "rta_math.h" /* rta_sqrt rta_ceil */
 
 static const unsigned int yin_max_mins = 128;
 
@@ -82,7 +82,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   setup_address = mxGetScalar(prhs[4]);
   yin_setup = (rta_yin_setup_t *) setup_address;
 
-  ac_size = (unsigned int)ceil(sample_rate / min_freq) + 2;
+  ac_size = (unsigned int)rta_ceil(sample_rate / min_freq) + 2;
 
   if(ac_size < input_size)
   {
