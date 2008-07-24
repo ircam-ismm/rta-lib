@@ -61,7 +61,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   {
     if(mxIsChar(prhs[1]) != 1)
     {
-      mexErrMsgTxt("First input must be a string.");
+      mexErrMsgTxt("Second argument must be a string.");
     }
     
     window_name = mxArrayToString(prhs[1]);

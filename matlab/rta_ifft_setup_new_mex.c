@@ -77,14 +77,18 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   fft_setup_mex = (rta_fft_setup_mex_t *)
     rta_malloc(sizeof(rta_fft_setup_mex_t));
 
-  if(nrhs > 1)
+  if(nrhs > 2)
   {
-    scale = mxGetScalar(prhs[1]);
+    scale = mxGetScalar(prhs[2]);
   }
 
   if(scale == 0.) /* default value */
   {
     fft_setup_mex->scale = 1. / fft_size;
+  }
+  else
+  {
+    fft_setup_mex->scale = scale;
   }
 
   fft_setup_mex->fft_size = fft_size;
