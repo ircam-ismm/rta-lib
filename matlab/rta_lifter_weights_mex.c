@@ -68,7 +68,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   {
     if(mxIsChar(prhs[2]) != 1)
     {
-      mexErrMsgTxt("First input must be a string.");
+      mexErrMsgTxt("Third argument must be a string.");
     }
     
     lifter_name = mxArrayToString(prhs[2]);
@@ -96,7 +96,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   {
     if(mxIsChar(prhs[3]) != 1)
     {
-      mexErrMsgTxt("First input must be a string.");
+      mexErrMsgTxt("Fourth argument must be a string.");
     }
     
     lifter_name = mxArrayToString(prhs[3]);

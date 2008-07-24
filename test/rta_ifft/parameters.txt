@@ -1,0 +1,2 @@
+fftsize = 2048;
+scale = 1. / fftsize;

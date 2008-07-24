@@ -1,0 +1,2 @@
+dctorder = 13;
+dcttype = 'slaney' | 'htk';

@@ -1,0 +1,2 @@
+sample_rate = 11025.;
+lpcorder = 14;

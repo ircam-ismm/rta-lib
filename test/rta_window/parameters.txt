@@ -1,0 +1,2 @@
+type = 'hann' | 'hamming';
+coef = 0.08; for hamming

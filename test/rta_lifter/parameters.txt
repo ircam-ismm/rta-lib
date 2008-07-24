@@ -1,0 +1,3 @@
+mode = 'normal';
+type = 'slaney' | 'htk';
+coef = 0.6 | 22.; respectively for 'slaney' | 'htk' type

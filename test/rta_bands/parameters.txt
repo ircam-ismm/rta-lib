@@ -1,0 +1,9 @@
+sr = 44100.;
+fftsize = 2048;
+spectrumsize = fftsize / 2 + 1;
+bandsnb = 20;
+bandstype = 'slaney' | 'htk';
+bandsintegrationtype = 'sqrabs' | 'abs';
+bandsminfreq = 0.; 
+bandsmaxfreq = sr / 2;
+
