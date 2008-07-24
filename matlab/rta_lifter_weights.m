@@ -1,5 +1,5 @@
 function [weights] = rta_lifter_weights (size, coefficient, type, mode)
-% function [weights] = rta_lifter_weights (size, type, coefficient)
+% function [weights] = rta_lifter_weights (size, coefficient, type, mode)
 %
 % Create a vector (a <size> x 1 matrix) of <weights>. Only the <size>
 % parameter is mandatory.
