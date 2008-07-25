@@ -1,0 +1,2 @@
+factor = 0.97;
+previous_sample = 0.;

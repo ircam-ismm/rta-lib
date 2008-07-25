@@ -51,7 +51,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   {
     mexErrMsgTxt("Two inputs required (third is optional).");
   }
-  else if(nlhs > 1)
+  else if(nlhs > 2)
   {
     mexErrMsgTxt("Too many output arguments.");
   }
