@@ -46,6 +46,8 @@
 #define rta_cos cos
 #define rta_sin sin
 
+#define rta_hypot hypot
+
 #else
 
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
@@ -74,6 +76,8 @@
 
 #define rta_cos cosf
 #define rta_sin sinf
+
+#define rta_hypot hypotf
 
 #endif
 
@@ -104,6 +108,8 @@
 #define rta_cos cos
 #define rta_sin sin
 
+#define rta_hypot hypot
+
 #endif
 
 #if (RTA_REAL_TYPE == RTA_LONG_DOUBLE_TYPE)
@@ -132,6 +138,8 @@
 
 #define rta_cos cosl
 #define rta_sin sinl
+
+#define rta_hypot hypotl
 
 #endif
 
