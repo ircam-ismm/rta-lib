@@ -1,6 +1,6 @@
 /**
  * @file   rta_int.c
- * @author Jean-Philippe Lambert
+ * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Thu Sep 12 18:10:41 2007
  * 
  * @brief  Integer mathematical functions
@@ -26,6 +26,18 @@ rta_ilog2(unsigned int n)
   return log2;
 }
 
+int
+rta_imax(int m, int n)
+{
+  return (m > n) ? m : n;
+}
+
+int
+rta_imin(int m, int n)
+{
+  return (m < n) ? m : n;
+}
+
 unsigned int
 rta_inextpow2(unsigned int n)
 {
@@ -37,7 +49,7 @@ rta_inextpow2(unsigned int n)
     pow2 <<= 1;
   }
 
-  return pow2;;
+  return pow2;
 }
 
 

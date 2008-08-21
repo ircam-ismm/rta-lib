@@ -27,6 +27,26 @@ extern "C" {
  */
 int rta_ilog2(unsigned int n);
 
+/** 
+ * Integer version of the maximum
+ * 
+ * @param m 
+ * @param n
+ * 
+ * @return the smallest integer between 'm' and 'n'
+ */
+int rta_imax(int m, int n);
+
+/** 
+ * Integer version of the minimum
+ * 
+ * @param m 
+ * @param n 
+ * 
+ * @return the smallest integer between 'm' and 'n'
+ */
+int rta_imin(int m, int n);
+
 
 /** 
  * Next (or equal) 'n' power of 2
