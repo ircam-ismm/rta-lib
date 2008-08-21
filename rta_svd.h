@@ -54,7 +54,7 @@ typedef struct rta_svd_setup rta_svd_setup_t;
  * with 'svd_setup' (even a delete).
  */
 int
-rta_svd_setup_new(rta_svd_setup_t ** svd_setup, rta_svd_t svd_type,
+rta_svd_setup_new(rta_svd_setup_t ** svd_setup, const rta_svd_t svd_type,
                   rta_real_t * U, rta_real_t * S, rta_real_t *  V, 
                   rta_real_t * A, const unsigned int m, const unsigned int n);
 
@@ -99,7 +99,7 @@ rta_svd_setup_delete(rta_svd_setup_t * svd_setup);
  */
 void
 rta_svd(rta_real_t * U, rta_real_t * S, rta_real_t *  V, rta_real_t * A,
-        rta_svd_setup_t * svd_setup);
+        const rta_svd_setup_t * svd_setup);
 
 #ifdef __cplusplus
 }

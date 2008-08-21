@@ -34,7 +34,7 @@ struct rta_svd_setup
 };
 
 int
-rta_svd_setup_new(rta_svd_setup_t ** svd_setup, rta_svd_t svd_type,
+rta_svd_setup_new(rta_svd_setup_t ** svd_setup, const rta_svd_t svd_type,
                   rta_real_t * U, rta_real_t * S, rta_real_t *  V, 
                   rta_real_t * A, const unsigned int m, const unsigned int n)
 {
@@ -139,7 +139,7 @@ rta_svd_setup_delete(rta_svd_setup_t * svd_setup)
 
 void
 rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V, 
-        rta_real_t * input_A, rta_svd_setup_t * svd_setup)
+        rta_real_t * input_A, const rta_svd_setup_t * svd_setup)
 {
   rta_real_t * A; /* input_A, copied or transposed into svd_setup->A */
   rta_real_t * U; /* swap with V if A is transposed */

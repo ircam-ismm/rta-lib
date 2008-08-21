@@ -62,25 +62,21 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* Output only S */
   if(nlhs == 1)
   {
-    plhs[0] = mxCreateNumericMatrix(rta_imin(m,n), 1,
-                                    RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[0] = mxCreateNumericMatrix(min_mn, 1, RTA_MEX_REAL_TYPE, mxREAL);
     S = mxGetData(plhs[0]);
 
   }
   else /* [U, S, V] */
   {
-    plhs[0] = mxCreateNumericMatrix(m, rta_imin(m,n), 
-                                    RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[0] = mxCreateNumericMatrix(m, min_mn, RTA_MEX_REAL_TYPE, mxREAL);
     U = mxGetData(plhs[0]);
 
-    plhs[1] = mxCreateNumericMatrix(rta_imin(m,n), 1,
-                                    RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[1] = mxCreateNumericMatrix(min_mn, 1, RTA_MEX_REAL_TYPE, mxREAL);
     S = mxGetData(plhs[1]);
 
     if(nlhs > 2) /* V requested as output result */
     {
-      plhs[2] =  mxCreateNumericMatrix(n, rta_imin(m,n),
-                                       RTA_MEX_REAL_TYPE, mxREAL);
+      plhs[2] =  mxCreateNumericMatrix(n, min_mn, RTA_MEX_REAL_TYPE, mxREAL);
       V = mxGetData(plhs[2]);
     }
   }
