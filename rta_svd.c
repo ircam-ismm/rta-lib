@@ -532,7 +532,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
             for (i = 0; i < m; i++) 
             {
               t = cs*U[i + j*m] + sn*U[i + (k-1)*m];
-              U[i*n + (k-1)*m] = -sn*U[i + j*m] + cs*U[i + (k-1)*m];
+              U[i + (k-1)*m] = -sn*U[i + j*m] + cs*U[i + (k-1)*m];
               U[i + j*m] = t;
             }
           }
