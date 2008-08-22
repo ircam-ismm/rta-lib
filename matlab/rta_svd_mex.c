@@ -81,8 +81,9 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     }
   }
 
-  /* input copy, as it may change  
-     (and float precision conversion as a result) */
+  
+  /* copy input for float precision conversion (and use in-place
+     calculations form now to avoid further copies */
   real_input = mxMalloc( m * n * sizeof(rta_real_t)); 
   j = m*n;
   for (i=0; i<j ;i++)
@@ -90,12 +91,13 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     real_input[i] = (rta_real_t) input[i]; 
   }
 
-  /* use an in place calculation as the input may be anyway copied for 
-     precision adaptation: it must be always copied, then. */
+  /* rta 2D matrices are in row-major order while matlab 2D matrices
+   * are in column-major order:
+   * pseudo-transpose S (by swapping m and n) and swap U and V */
   ret = rta_svd_setup_new(&svd_setup, rta_svd_in_place, 
-                          U, S, V, real_input, m, n);
+                          V, S, U, real_input, n, m);
 
-  rta_svd(U, S, V, real_input, svd_setup);
+  rta_svd(V, S, U, real_input, svd_setup);
 
   rta_svd_setup_delete(svd_setup);
 

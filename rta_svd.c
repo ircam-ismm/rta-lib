@@ -130,13 +130,11 @@ rta_svd_setup_delete(rta_svd_setup_t * svd_setup)
 /* V is a 2D array of size n x min(n,m) */
 
 /* 2D arrays are in row-major order */
-/* A ican be modified by the computation */
+/* A can be modified by the computation (or copied first, depends on setup) */
 /* U and V can be NULL and are not computed, then */
 
 /* e is a 1D array of size n */
 /* work is a 1D array of size m */
-
-
 void
 rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V, 
         rta_real_t * input_A, const rta_svd_setup_t * svd_setup)
@@ -187,7 +185,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
     {
       for(j=0; j<n; j++)
       {
-        A[i*n + j] = input_A[j*m + i];
+        A[j*m + i] = input_A[i*n + j];
       }
     }
     m = svd_setup->n;
@@ -214,19 +212,19 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
       S[k] = 0.0;
       for (i = k; i < m; i++) 
       {
-        S[k] = rta_hypot(S[k],A[i + k*m]);
+        S[k] = rta_hypot(S[k],A[i*n + k]);
       }
       if (S[k] != 0.0) 
       {
-        if (A[k + k*m] < 0.0) 
+        if (A[k*n + k] < 0.0) 
         {
           S[k] = -S[k];
         }
         for (i = k; i < m; i++) 
         {
-          A[i + k*m] /= S[k];
+          A[i*n + k] /= S[k];
         }
-        A[k + k*m] += 1.0;
+        A[k*n + k] += 1.0;
       }
       S[k] = -S[k];
     }
@@ -238,18 +236,18 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
         rta_real_t t = 0.0;
         for (i = k; i < m; i++) 
         {
-          t += A[i + k*m]*A[i + j*m];
+          t += A[i*n + k]*A[i*n + j];
         }
-        t = -t/A[k + k*m];
+        t = -t/A[k*n + k];
         for (i = k; i < m; i++) 
         {
-          A[i + j*m] += t*A[i + k*m];
+          A[i*n + j] += t*A[i*n + k];
         }
       }
 
       /* Place the k-th row of A into e for the */
       /* subsequent calculation of the row transformation. */
-      e[j] = A[k + j*m];
+      e[j] = A[k*n + j];
     }
     if (U != NULL && (k < nct)) 
     {
@@ -257,7 +255,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
       /* multiplication. */
       for (i = k; i < m; i++) 
       {
-        U[i + k*m] = A[i + k*m];
+        U[i + k*m] = A[i*n + k];
       }
     }
     if (k < nrt) 
@@ -294,7 +292,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
         {
           for (i = k+1; i < m; i++) 
           {
-            work[i] += e[j]*A[i + j*m];
+            work[i] += e[j]*A[i*n + j];
           }
         }
         for (j = k+1; j < n; j++) 
@@ -302,7 +300,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           rta_real_t t = -e[j]/e[k+1];
           for (i = k+1; i < m; i++) 
           {
-            A[i + j*m] += t*work[i];
+            A[i*n + j] += t*work[i];
           }
         }
       }
@@ -322,7 +320,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
   p = rta_imin(n,m+1);
   if (nct < n) 
   {
-    S[nct] = A[nct + nct*m];
+    S[nct] = A[nct*n + nct];
   }
   if (m < p) 
   {
@@ -330,7 +328,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
   }
   if (nrt+1 < p) 
   {
-    e[nrt] = A[nrt + (p-1)*m];
+    e[nrt] = A[nrt*n + (p-1)];
   }
   e[p-1] = 0.0;
 

@@ -30,6 +30,14 @@ typedef struct rta_svd_setup rta_svd_setup_t;
 /** 
  * Allocate an svd setup for further svd decomposition
  *
+ * Any 2D array is in row-major order. To use this function in a
+ * column-major order, swap U and V, and swap m an n (also for
+ * rta_svd function).
+ * <pre>
+ * rta_svd_setup_new(&svd_setup, svd_type, V, S, U, A, n, m);
+ * rta_svd(V, S, U, A, svd_setup);
+ * </pre>
+ *
  * \see rta_svd_setup_delete
  * \see rta_svd
  * 
@@ -84,7 +92,15 @@ rta_svd_setup_delete(rta_svd_setup_t * svd_setup);
  * rank can be computed from the singlar values.
  *
  * Any array must be allocated before calling this function.
- * Any 2D array is in row-major order.
+ *
+ * Any 2D array is in row-major order. To use this function in a
+ * column-major order, swap U and V (and swap m an n during the setup,
+ * too). 
+ * <pre>
+ * rta_svd_setup_new(&svd_setup, svd_type, V, S, U, A, n, m);
+ * rta_svd(V, S, U, A, svd_setup);
+ * </pre>
+ * \see rta_svd_setup_new
  * 
  * @param U is a 2D array of size m x n, or a NULL pointer (it
  * is not calculated, then).
@@ -94,8 +110,8 @@ rta_svd_setup_delete(rta_svd_setup_t * svd_setup);
  * calculated, then).  
  * @param A is a 2D array of size m x n. A is modified by the
  * computation
- * @param svd_setup .
- * @see rta_svd_setup_new
+ * @param svd_setup is a previously allocated setup (by rta_setup_new).
+ * 
  */
 void
 rta_svd(rta_real_t * U, rta_real_t * S, rta_real_t *  V, rta_real_t * A,
