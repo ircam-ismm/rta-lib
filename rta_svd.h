@@ -28,15 +28,10 @@ typedef struct rta_svd_setup rta_svd_setup_t;
 
 
 /** 
- * Allocate an svd setup for further svd decomposition
+ * Allocate an svd setup for further svd decomposition. (The values
+ * referenced by the arrays may change, but not their sizes.)
  *
- * Any 2D array is in row-major order. To use this function in a
- * column-major order, swap U and V, and swap m an n (also for
- * rta_svd function).
- * <pre>
- * rta_svd_setup_new(&svd_setup, svd_type, V, S, U, A, n, m);
- * rta_svd(V, S, U, A, svd_setup);
- * </pre>
+ * Any 2D array is in row-major order. 
  *
  * \see rta_svd_setup_delete
  * \see rta_svd
@@ -46,7 +41,8 @@ typedef struct rta_svd_setup rta_svd_setup_t;
  * @param svd_type can be
  *  'rta_svd_out_of_place': the matrix 'A' is first copied;
  *  'rta_svd_in_place': 'A' may be modified. This is the most
- *     efficient if m >= n. (If n > m, A is copied and transposed.)
+ *     efficient if 'm' >= 'n'. (If 'n' > ''m, 'A' is internally
+ *     copied and transposed.) 
  * @param U is a 2D array of size 'm' x 'n', or a 'NULL' pointer (it
  * is not calculated, then).
  * @param S is a 1D array of size 'n', representing the diagonal matrix
@@ -58,7 +54,7 @@ typedef struct rta_svd_setup rta_svd_setup_t;
  * @param m is the first dimension of 'A'.
  * @param n is the second dimension of 'A'.
  * 
- * @return 1 on success 0 on fail. If it fails, nothing should be done
+ * @return 1 on success, 0 on fail. If it fails, nothing should be done
  * with 'svd_setup' (even a delete).
  */
 int
@@ -92,24 +88,18 @@ rta_svd_setup_delete(rta_svd_setup_t * svd_setup);
  * rank can be computed from the singlar values.
  *
  * Any array must be allocated before calling this function.
+ * Any 2D array is in row-major order.
  *
- * Any 2D array is in row-major order. To use this function in a
- * column-major order, swap U and V (and swap m an n during the setup,
- * too). 
- * <pre>
- * rta_svd_setup_new(&svd_setup, svd_type, V, S, U, A, n, m);
- * rta_svd(V, S, U, A, svd_setup);
- * </pre>
  * \see rta_svd_setup_new
  * 
- * @param U is a 2D array of size m x n, or a NULL pointer (it
+ * @param U is a 2D array of size 'm' x 'n', or a 'NULL' pointer (it
  * is not calculated, then).
- * @param S is a 1D array of size n, representing the diagonal matrix
+ * @param S is a 1D array of size 'n', representing the diagonal matrix
  * of the singular values of 'A'.
- * @param V is a 2D array f size n x n, or a NULL pointer (it is not
+ * @param V is a 2D array f size 'n' x 'n', or a 'NULL' pointer (it is not
  * calculated, then).  
- * @param A is a 2D array of size m x n. A is modified by the
- * computation
+ * @param A is a 2D array of size 'm' x 'n'. 'A' may be modified by the
+ * computation depending on the mode used to create 'svd_setup'
  * @param svd_setup is a previously allocated setup (by rta_setup_new).
  * 
  */

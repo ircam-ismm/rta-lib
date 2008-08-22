@@ -251,11 +251,17 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
     }
     if (U != NULL && (k < nct)) 
     {
+      /* U initialisation */
+      for(i=0; i<k; i++)
+      {
+        U[i*n + k] = 0.0;
+      }
+
       /* Place the transformation in U for subsequent back */
       /* multiplication. */
       for (i = k; i < m; i++) 
       {
-        U[i + k*m] = A[i*n + k];
+        U[i*n + k] = A[i*n + k];
       }
     }
     if (k < nrt) 
@@ -306,11 +312,17 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
       }
       if (V != NULL) 
       {
+        /* V initialisation */
+        for(i=0; i<k+1; i++)
+        {
+          V[i*n + k] = 0.0;
+        }
+
         /* Place the transformation in V for subsequent */
         /* back multiplication. */
         for (i = k+1; i < n; i++) 
         {
-          V[i + k*n] = e[i];
+          V[i*n + k] = e[i];
         }
       }
     }
@@ -339,9 +351,9 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
     {
       for (i = 0; i < m; i++) 
       {
-        U[i + j*m] = 0.0;
+        U[i*n + j] = 0.0;
       }
-      U[j + j*m] = 1.0;
+      U[j*n + j] = 1.0;
     }
     for (k = nct-1; k >= 0; k--) 
     {
@@ -352,31 +364,31 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           rta_real_t t = 0.0;
           for (i = k; i < m; i++) 
           {
-            t += U[i + k*m]*U[i + j*m];
+            t += U[i*n + k]*U[i*n + j];
           }
-          t = -t/U[k + k*m];
+          t = -t/U[k*n + k];
           for (i = k; i < m; i++) 
           {
-            U[i + j*m] += t*U[i + k*m];
+            U[i*n + j] += t*U[i*n + k];
           }
         }
         for (i = k; i < m; i++ ) 
         {
-          U[i + k*m] = -U[i + k*m];
+          U[i*n + k] = -U[i*n + k];
         }
-        U[k + k*m] = 1.0 + U[k + k*m];
+        U[k*n + k] = 1.0 + U[k*n + k];
         for (i = 0; i < k-1; i++) 
         {
-          U[i + k*m] = 0.0;
+          U[i*n + k] = 0.0;
         }
       } 
       else 
       {
         for (i = 0; i < m; i++) 
         {
-          U[i + k*m] = 0.0;
+          U[i*n + k] = 0.0;
         }
-        U[k + k*m] = 1.0;
+        U[k*n + k] = 1.0;
       }
     }
   }
@@ -393,20 +405,20 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           rta_real_t t = 0.0;
           for (i = k+1; i < n; i++) 
           {
-            t += V[i + k*n]*V[i + j*n];
+            t += V[i*n + k]*V[i*n + j];
           }
-          t = -t/V[(k+1) + k*n];
+          t = -t/V[(k+1)*n + k];
           for (i = k+1; i < n; i++) 
           {
-            V[i + j*n] += t*V[i + k*n];
+            V[i*n + j] += t*V[i*n + k];
           }
         }
       }
       for (i = 0; i < n; i++) 
       {
-        V[i + k*n] = 0.0;
+        V[i*n + k] = 0.0;
       }
-      V[k + k*n] = 1.0;
+      V[k*n + k] = 1.0;
     }
   }
 
@@ -503,9 +515,9 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           {
             for (i = 0; i < n; i++) 
             {
-              t = cs*V[i + j*n] + sn*V[i + (p-1)*n];
-              V[i + (p-1)*n] = -sn*V[i + j] + cs*V[i + (p-1)*n];
-              V[i + j*n] = t;
+              t = cs*V[i*n + j] + sn*V[i*n + (p-1)];
+              V[i*n + (p-1)] = -sn*V[i*n + j] + cs*V[i*n + (p-1)];
+              V[i*n + j] = t;
             }
           }
         }
@@ -529,9 +541,9 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           {
             for (i = 0; i < m; i++) 
             {
-              t = cs*U[i + j*m] + sn*U[i + (k-1)*m];
-              U[i + (k-1)*m] = -sn*U[i + j*m] + cs*U[i + (k-1)*m];
-              U[i + j*m] = t;
+              t = cs*U[i*n + j] + sn*U[i*n + (k-1)];
+              U[i*n + (k-1)] = -sn*U[i*n + j] + cs*U[i*n + (k-1)];
+              U[i*n + j] = t;
             }
           }
         }
@@ -586,9 +598,9 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           {
             for (i = 0; i < n; i++) 
             {
-              t = cs*V[i + j*n] + sn*V[i + (j+1)*n];
-              V[i + (j+1)*n] = -sn*V[i + j*n] + cs*V[i + (j+1)*n];
-              V[i + j*n] = t;
+              t = cs*V[i*n + j] + sn*V[i*n + (j+1)];
+              V[i*n + (j+1)] = -sn*V[i*n + j] + cs*V[i*n + (j+1)];
+              V[i*n + j] = t;
             }
           }
           t = rta_hypot(f,g);
@@ -603,9 +615,9 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           {
             for (i = 0; i < m; i++) 
             {
-              t = cs*U[i + j*m] + sn*U[i + (j+1)*m];
-              U[i + (j+1)*m] = -sn*U[i + j*m] + cs*U[i + (j+1)*m];
-              U[i + j*m] = t;
+              t = cs*U[i*n + j] + sn*U[i*n + (j+1)];
+              U[i*n + (j+1)] = -sn*U[i*n + j] + cs*U[i*n + (j+1)];
+              U[i*n + j] = t;
             }
           }
         }
@@ -625,7 +637,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           {
             for (i = 0; i <= pp; i++) 
             {
-              V[i + k*n] = -V[i + k*n];
+              V[i*n + k] = -V[i*n + k];
             }
           }
         }
@@ -645,18 +657,18 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           {
             for (i = 0; i < n; i++) 
             {
-              t = V[i + (k+1)*n];
-              V[i + (k+1)*n] = V[i + k*n];
-              V[i + k*n] = t;
+              t = V[i*n + (k+1)];
+              V[i*n + (k+1)] = V[i*n + k];
+              V[i*n + k] = t;
             }
           }
           if (U != NULL && (k < m-1)) 
           {
             for (i = 0; i < m; i++) 
             {
-              t = U[i + (k+1)*m];
-              U[i + (k+1)*m] = U[i + k*m];
-              U[i + k*m] = t;
+              t = U[i*n + (k+1)];
+              U[i*n + (k+1)] = U[i*n + k];
+              U[i*n + k] = t;
             }
           }
           k++;

@@ -35,7 +35,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   rta_real_t * S;
   rta_real_t * V = NULL;
   rta_real_t * real_input;
-  
+
   /* rta outputs */
   int ret;
 
@@ -64,7 +64,6 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   {
     plhs[0] = mxCreateNumericMatrix(min_mn, 1, RTA_MEX_REAL_TYPE, mxREAL);
     S = mxGetData(plhs[0]);
-
   }
   else /* [U, S, V] */
   {
@@ -93,13 +92,49 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
   /* rta 2D matrices are in row-major order while matlab 2D matrices
    * are in column-major order:
-   * pseudo-transpose S (by swapping m and n) and swap U and V */
+   * pseudo-transpose input (by swapping m and n) and swap U and V (and
+   * later reorder U and V) */
   ret = rta_svd_setup_new(&svd_setup, rta_svd_in_place, 
                           V, S, U, real_input, n, m);
 
   rta_svd(V, S, U, real_input, svd_setup);
 
   rta_svd_setup_delete(svd_setup);
+
+  if(nlhs > 1) /* U reqested, reorder (transpose-like) */
+  {
+    j = m * min_mn;
+    for(i=0; i<j; i++)
+    {
+      real_input[i] = U[i]; /* tmp */
+    }
+
+    for (i=0; i<m ;i++)
+    {
+      for(j=0; j<min_mn; j++)
+      {
+        U[j*m + i] = real_input[i*min_mn + j];
+      }
+    }
+
+    if(nlhs > 2) /* V requested, reorder (transpose-like) */
+    {
+      j = min_mn * n;
+      for(i=0; i<j; i++)
+      {
+        real_input[i] = V[i]; /* tmp */
+      }
+
+      for (i=0; i<min_mn ;i++)
+      {
+        for(j=0; j<n; j++)
+        {
+          V[i*n + j] = real_input[j*min_mn + i];
+        }
+      }
+    }
+  }
+
 
   /* free mem of tmp vectors */
   mxFree(real_input);
