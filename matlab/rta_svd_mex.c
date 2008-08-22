@@ -25,6 +25,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 {
   /* matlab inputs */
   double * input;
+  float * float_input; /* matlab single-precision input */
   unsigned int m;
   unsigned int n;
   int min_mn;
@@ -85,9 +86,21 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
      calculations form now to avoid further copies */
   real_input = mxMalloc( m * n * sizeof(rta_real_t)); 
   j = m*n;
-  for (i=0; i<j ;i++)
+
+  if(mxGetClassID(prhs[0]) != mxSINGLE_CLASS)
   {
-    real_input[i] = (rta_real_t) input[i]; 
+    for (i=0; i<j ;i++)
+    {
+      real_input[i] = (rta_real_t) input[i]; 
+    }
+  }
+  else
+  {
+    float_input = (float *) input;
+    for (i=0; i<j ;i++)
+    {
+      real_input[i] = (rta_real_t) float_input[i]; 
+    }
   }
 
   /* rta 2D matrices are in row-major order while matlab 2D matrices
