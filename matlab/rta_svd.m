@@ -2,7 +2,7 @@ function [U, S, V] = rta_svd (A)
 % function [U, S, V] = rta_svd(A)
 %
 % Singular Value Decomposition of A such as
-% A = U * diag(S) * V'
+% A = U * S * V'
 %
 % V calculation may be skipped using [U,S] = rta_svd(A)
 % U and V calculations may be skipped using S = rta_svd(A)

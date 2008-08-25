@@ -33,7 +33,8 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* rta inputs */
   rta_svd_setup_t * svd_setup;
   rta_real_t * U = NULL;
-  rta_real_t * S;
+  rta_real_t * S; /* use only the first row in rta and form the
+                     diagonal matrix later */
   rta_real_t * V = NULL;
   rta_real_t * real_input;
 
@@ -63,7 +64,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   /* Output only S */
   if(nlhs == 1)
   {
-    plhs[0] = mxCreateNumericMatrix(min_mn, 1, RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[0] = mxCreateNumericMatrix(min_mn, min_mn, RTA_MEX_REAL_TYPE, mxREAL);
     S = mxGetData(plhs[0]);
   }
   else /* [U, S, V] */
@@ -71,7 +72,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     plhs[0] = mxCreateNumericMatrix(m, min_mn, RTA_MEX_REAL_TYPE, mxREAL);
     U = mxGetData(plhs[0]);
 
-    plhs[1] = mxCreateNumericMatrix(min_mn, 1, RTA_MEX_REAL_TYPE, mxREAL);
+    plhs[1] = mxCreateNumericMatrix(min_mn, min_mn, RTA_MEX_REAL_TYPE, mxREAL);
     S = mxGetData(plhs[1]);
 
     if(nlhs > 2) /* V requested as output result */
@@ -79,9 +80,8 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
       plhs[2] =  mxCreateNumericMatrix(n, min_mn, RTA_MEX_REAL_TYPE, mxREAL);
       V = mxGetData(plhs[2]);
     }
-  }
+  } 
 
-  
   /* copy input for float precision conversion (and use in-place
      calculations form now to avoid further copies */
   real_input = mxMalloc( m * n * sizeof(rta_real_t)); 
@@ -114,7 +114,15 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
   rta_svd_setup_delete(svd_setup);
 
-  if(nlhs > 1) /* U reqested, reorder (transpose-like) */
+  /* S in diagonal form */
+  for(i = 1; i< min_mn; i++)
+  {
+    S[i * (min_mn + 1)] = S[i];
+    S[i] = 0.;
+  }
+
+
+  if(nlhs > 1) /* U requested, reorder (transpose-like) */
   {
     j = m * min_mn;
     for(i=0; i<j; i++)
@@ -149,7 +157,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   }
 
 
-  /* free mem of tmp vectors */
+  /* free mem of tmp vector */
   mxFree(real_input);
 
   return;

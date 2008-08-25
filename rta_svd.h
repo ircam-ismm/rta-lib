@@ -107,6 +107,49 @@ void
 rta_svd(rta_real_t * U, rta_real_t * S, rta_real_t *  V, rta_real_t * A,
         const rta_svd_setup_t * svd_setup);
 
+
+/** 
+ *
+ * For an m-by-n matrix A with m >= n, the singular value
+ * decomposition is an m-by-n orthogonal matrix U, an n-by-n diagonal
+ * matrix S, and an n-by-n orthogonal matrix V so that A = U*S*V'. 
+ * (V' is the conjugate transpose of V and only the diagonal vector of
+ * S is represented here.) 
+ *
+ * The singular values, S[k*s_tride] are ordered so that
+ * S[0] >= S[s_tride] >= ... >= S[(n-1)*s_tride].
+ *
+ * The singular value decompostion always exists, so the constructor will
+ * never fail. The matrix condition number and the effective numerical
+ * rank can be computed from the singlar values.
+ *
+ * Any array must be allocated before calling this function.
+ * Any 2D array is in row-major order.
+ *
+ * \see rta_svd_setup_new
+ * 
+ * @param U is a 2D array of size 'm' x 'n', or a 'NULL' pointer (it
+ * is not calculated, then).
+ * @param u_stride is 'U' stride
+ * @param S is a 1D array of size 'n', representing the diagonal matrix
+ * of the singular values of 'A'.
+ * @param s_stride is 'S' stride
+ * @param V is a 2D array f size 'n' x 'n', or a 'NULL' pointer (it is not
+ * calculated, then).  
+ * @param v_stride is 'V' stride
+ * @param A is a 2D array of size 'm' x 'n'. 'A' may be modified by the
+ * computation depending on the mode used to create 'svd_setup'
+ * @param a_stride is 'A' stride
+ * @param svd_setup is a previously allocated setup (by rta_setup_new).
+ * 
+ */
+void
+rta_svd_stride(rta_real_t * U, const unsigned int u_stride,
+               rta_real_t * S, const unsigned int s_stride,
+               rta_real_t * V, const unsigned int v_stride,
+               rta_real_t * A, const unsigned int a_stride,
+               const rta_svd_setup_t * svd_setup);
+
 #ifdef __cplusplus
 }
 #endif
