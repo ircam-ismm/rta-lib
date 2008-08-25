@@ -25,6 +25,7 @@ all: rta_bands_weights.$(MEXEXT) \
 	rta_preemphasis.$(MEXEXT) \
 	rta_spectrum_to_bands.$(MEXEXT) \
 	rta_svd.$(MEXEXT) \
+	rta_var.$(MEXEXT) \
 	rta_window_apply.$(MEXEXT) rta_window_weights.$(MEXEXT) \
 	rta_yin.$(MEXEXT) \
 	rta_yin_setup_delete.$(MEXEXT) rta_yin_setup_new.$(MEXEXT)
@@ -93,6 +94,9 @@ rta_spectrum_to_bands.$(MEXEXT): rta_bands.o rta_mel.o \
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_svd.$(MEXEXT): rta_svd.o rta_svd_mex.o rta_int.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_var.$(MEXEXT): rta_mean_variance.o rta_var_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_window_apply.$(MEXEXT): rta_window.o rta_window_apply_mex.o
