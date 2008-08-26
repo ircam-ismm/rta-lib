@@ -28,7 +28,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   int variance_bias = 0; /* same as matlab var argument */
   enum {fast, accurate} variance_precision = accurate;
   char * variance_name;
-  int variance_dim = 0; /* 0 for columns, 1 for rows */
+  int variance_dim = 1; /* 1 for columns, 2 for rows */
 
   /* rta inputs */
   rta_real_t * real_input; 
@@ -64,14 +64,19 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     variance_bias = mxGetScalar(prhs[1]);
   }
 
-  if(nrhs > 2)
+  if(nrhs>2)
   {
-    if(mxIsChar(prhs[2]) != 1)
+    variance_dim = mxGetScalar(prhs[2]);
+  }
+
+  if(nrhs > 3)
+  {
+    if(mxIsChar(prhs[3]) != 1)
     {
-      mexErrMsgTxt("Second input must be a string.");
+      mexErrMsgTxt("Fourth input must be a string.");
     }
 
-    variance_name = mxArrayToString(prhs[2]);
+    variance_name = mxArrayToString(prhs[3]);
     if(0 == strcmp(variance_name, "fast"))
     {
       variance_precision = fast;
@@ -117,8 +122,16 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
     }
 #endif
 
-  output_m = 1;
-  output_n = input_n;
+  if(variance_dim == 1)
+  {
+    output_m = 1;
+    output_n = input_n;
+  }
+  else
+  {
+    output_m = input_m;
+    output_n = 1;
+  }
 
 
   plhs[0] = mxCreateNumericMatrix(output_m, output_n,
@@ -130,45 +143,93 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
                                     RTA_MEX_REAL_TYPE, mxREAL);
   mean =  mxGetData(plhs[1]);
 
-  switch(variance_precision)
+  if(variance_dim == 1)
   {
-    case accurate:
-      if(variance_bias == 0)
-      {
-        for(i=0; i<input_n; i++)
+    switch(variance_precision)
+    {
+      case accurate:
+        if(variance_bias == 0)
         {
-          mean[i] = rta_mean(real_input+i*input_m, input_m);
-          variance[i] = rta_variance_unbiased(real_input+i*input_m, 
-                                              input_m, mean[i]);
+          for(i=0; i<input_n; i++)
+          {
+            mean[i] = rta_mean(real_input+i*input_m, input_m);
+            variance[i] = rta_variance_unbiased(real_input+i*input_m, 
+                                                input_m, mean[i]);
+          }
         }
-      }
-      else
-      {
-        for(i=0; i<input_n; i++)
+        else
         {
-          mean[i] = rta_mean(real_input+i*input_m, input_m);
-          variance[i] = rta_variance(real_input+i*input_m, input_m, mean[i]);
+          for(i=0; i<input_n; i++)
+          {
+            mean[i] = rta_mean(real_input+i*input_m, input_m);
+            variance[i] = rta_variance(real_input+i*input_m, input_m, mean[i]);
+          }
         }
-      }
-      break;
+        break;
 
-    case fast:
-      if(variance_bias == 0)
-      {
-        for(i=0; i<input_n; i++)
+      case fast:
+        if(variance_bias == 0)
         {
-          rta_mean_variance_unbiased(mean+i, variance+i,
-                                     real_input+i*input_m, input_m);
+          for(i=0; i<input_n; i++)
+          {
+            rta_mean_variance_unbiased(mean+i, variance+i,
+                                       real_input+i*input_m, input_m);
+          }
         }
-      }
-      else
-      {
-        for(i=0; i<input_n; i++)
+        else
         {
-          rta_mean_variance(mean+i, variance+i, real_input+i*input_m, input_m);
+          for(i=0; i<input_n; i++)
+          {
+            rta_mean_variance(mean+i, variance+i, real_input+i*input_m, input_m);
+          }
         }
-      }
-      break;
+        break;
+    }
+  }
+  else /* strides */
+  {
+    switch(variance_precision)
+    {
+      case accurate:
+        if(variance_bias == 0)
+        {
+          for(i=0; i<input_m; i++)
+          {
+            mean[i] = rta_mean_stride(real_input+i, input_m, input_n);
+            variance[i] = rta_variance_unbiased_stride(
+              real_input+i, input_m, input_n, mean[i]);
+          }
+        }
+        else
+        {
+          for(i=0; i<input_m; i++)
+          {
+            mean[i] = rta_mean_stride(real_input+i, input_m, input_n);
+            variance[i] = rta_variance_stride(
+              real_input+i, input_m, input_n, mean[i]);
+          }
+        }
+        break;
+
+      case fast:
+        if(variance_bias == 0)
+        {
+          for(i=0; i<input_m; i++)
+          {
+            rta_mean_variance_unbiased_stride(
+              mean+i, variance+i,real_input+i, input_m, input_n);
+          }
+        }
+        else
+        {
+          for(i=0; i<input_m; i++)
+          {
+            rta_mean_variance_stride(
+              mean+i, variance+i, real_input+i, input_m, input_n);
+          }
+        }
+        break;
+    }
   }
 
 
