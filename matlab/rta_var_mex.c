@@ -28,7 +28,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   int variance_bias = 0; /* same as matlab var argument */
   enum {fast, accurate} variance_precision = accurate;
   char * variance_name;
-  int variance_dim = 1; /* 1 for columns, 2 for rows */
+  int variance_dim = 0; /* automatic by default, 1 for columns, 2 for rows */
 
   /* rta inputs */
   rta_real_t * real_input; 
@@ -121,6 +121,19 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
     }
 #endif
+
+  if(variance_dim == 0)
+  {
+    if(input_m > 1)
+    {
+      variance_dim = 1;
+    }
+    else
+    {
+      variance_dim = 2;
+    }
+  }
+ 
 
   if(variance_dim == 1)
   {

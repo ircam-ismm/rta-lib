@@ -9,8 +9,9 @@ function [V, M] = rta_var(input, bias, dimension, accuracy)
 % is drawn. V is normalised by N if bias == 1 and produces the second
 % moment of the sample about its mean.
 %
-% Use dimension == 1 (default) for computation along the comumns and
-% dimension == 2 for computation along rows.
+% Use dimension == 1 for computation along the columns and
+% dimension == 2 for computation along rows. (The default is to choose
+% dimension 1 if the number of rows is > 1.)
 %
 % accuracy can be
 %   'accurate' (default): mean is first calculated, then the variance,

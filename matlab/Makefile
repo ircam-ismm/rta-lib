@@ -23,6 +23,7 @@ all: rta_bands_weights.$(MEXEXT) \
 	rta_lpc.$(MEXEXT) \
 	rta_moments.$(MEXEXT) \
 	rta_preemphasis.$(MEXEXT) \
+	rta_selection.$(MEXEXT) \
 	rta_spectrum_to_bands.$(MEXEXT) \
 	rta_svd.$(MEXEXT) \
 	rta_var.$(MEXEXT) \
@@ -87,6 +88,9 @@ rta_moments.$(MEXEXT): rta_moments.o rta_moments_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_preemphasis.$(MEXEXT): rta_preemphasis.o rta_preemphasis_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_selection.$(MEXEXT): rta_selection.o rta_selection_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_spectrum_to_bands.$(MEXEXT): rta_bands.o rta_mel.o \
