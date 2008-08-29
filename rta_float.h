@@ -16,7 +16,8 @@
 
 #include "rta.h"
 
-/** default real type constants */
+/** @name Real type constants */
+/** @{ */
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
 
 #define RTA_REAL_DIG FLT_DIG
@@ -58,6 +59,8 @@
 #define RTA_REAL_MIN_EXP LDBL_MIN_EXP
 
 #endif /* long double */
+/** @} */
+/* Real type constants */
 
 #include <float.h>
 
