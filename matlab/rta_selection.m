@@ -6,12 +6,15 @@ function [value] = rta_selection (input, index, dim)
 % adjacent indexes is returned. The medians of the columns can be
 % computed as:
 %
-% median = rta_selection(input, rows_nb * 0.5, 1)
+% median = rta_selection(input, 1 + rows_nb * 0.5, 1);
 % where rows_nb is the number of rows
 % 
 % Use dimension == 1 for computation along the columns and
 % dimension == 2 for computation along rows. (The default is to choose
 % dimension 1 if the number of rows is > 1.)
+%
+% The median is then:
+% median = rta_selection(input, (1 + size(input, dim)) * 0.5, dim);
 %
     
 ['This file is an help file which relies on a mex file of the same' ...
