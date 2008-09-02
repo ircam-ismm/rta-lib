@@ -12,7 +12,7 @@ endif
 .PHONY: clean 
 
 all: rta_bands_weights.$(MEXEXT) \
-	rta_biquad_coefs.$(MEXEXT) \
+	rta_biquad.$(MEXEXT) rta_biquad_coefs.$(MEXEXT) \
 	rta_dct_apply.$(MEXEXT) rta_dct_weights.$(MEXEXT) \
 	rta_delta_apply.$(MEXEXT) rta_delta_weights.$(MEXEXT) \
 	rta_downsample_int_mean.$(MEXEXT) \
@@ -41,6 +41,9 @@ rta_%.o: $(RTA_ROOT)/rta_%.c $(RTA_ROOT)/rta_%.h
 
 
 rta_bands_weights.$(MEXEXT): rta_bands.o rta_mel.o rta_bands_weights_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_biquad.$(MEXEXT): rta_biquad.o rta_biquad_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_biquad_coefs.$(MEXEXT): rta_biquad.o rta_biquad_coefs_mex.o
