@@ -20,11 +20,10 @@ function [f0, energy, periodicity, ac1_ac0, autocorrelation] = ...
 %
 % <f0> is the fundamental frequency in Hz found by the yin algorithm
 % <energy> of input equals to
-%    sqrt(autocorrelation[1]/(sample_rate/min_freq))
-%    max_lag = sample_rate/min_freq
+%    sqrt(autocorrelation(1)/(input_size - autocorrelation_size))
 % <ac1_ac0> is the ratio between the two first autocorrelation
 %    coefficients:
-%    ac1_ac0 = autocorrelation[2]/autocorrelation[1]
+%    ac1_ac0 = autocorrelation(2)/autocorrelation(1)
 % <autocorrelation> coefficients up to order 
 %    (input_size - (sample_rate/min_freq) - 2)
 
