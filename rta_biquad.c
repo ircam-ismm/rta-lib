@@ -8,13 +8,13 @@
  * Based on the "Cookbook formulae for audio EQ biquad filter
  * coefficients" by Robert Bristow-Johnson 
  *
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
 
 #include "rta_biquad.h"
 #include "rta_filter.h" /* filter types */
-#include "rta_math.h" /* rta_sin, rta_cos */
+#include "rta_math.h" /* rta_sin, rta_cos, M_PI */
 
 /* y(n) = b0 x(n) + b1 x(n-1) + b2 x(n-2)  */
 /*                - a1 x(n-1) - a2 x(n-2)  */
@@ -54,8 +54,8 @@ void rta_biquad_lowpass_coefs(rta_real_t * b, rta_real_t * a,
 }
 
 /* LPF: H(s) = 1 / (s^2 + s/Q + 1) */
-void rta_biquad_lowpass_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                                     rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_lowpass_coefs_stride(rta_real_t * b, const int b_stride,
+                                     rta_real_t * a, const int a_stride,
                                      const rta_real_t f0, const rta_real_t q)
 {
   const rta_real_t w0 = M_PI * f0;
@@ -95,8 +95,8 @@ void rta_biquad_highpass_coefs(rta_real_t * b, rta_real_t * a,
 }
 
 /* HPF: H(s) = s^2 / (s^2 + s/Q + 1) */
-void rta_biquad_highpass_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                                      rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_highpass_coefs_stride(rta_real_t * b, const int b_stride,
+                                      rta_real_t * a, const int a_stride,
                                       const rta_real_t f0, const rta_real_t q)
 {
   const rta_real_t w0 = M_PI * f0;
@@ -139,8 +139,8 @@ void rta_biquad_bandpass_constant_skirt_coefs(rta_real_t * b, rta_real_t * a,
 
 /* BPF: H(s) = s / (s^2 + s/Q + 1)  (constant skirt gain, peak gain = Q) */
 void rta_biquad_bandpass_constant_skirt_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, 
   const rta_real_t q)
 {
@@ -184,8 +184,8 @@ void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
 
 /* BPF: H(s) = (s/Q) / (s^2 + s/Q + 1)      (constant 0 dB peak gain) */
 void rta_biquad_bandpass_constant_peak_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, 
   const rta_real_t q)
 {
@@ -226,8 +226,8 @@ void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
 }
 
 /* notch: H(s) = (s^2 + 1) / (s^2 + s/Q + 1) */
-void rta_biquad_notch_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                                   rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_notch_coefs_stride(rta_real_t * b, const int b_stride,
+                                   rta_real_t * a, const int a_stride,
                                    const rta_real_t f0, const rta_real_t q)
 {
   const rta_real_t w0 = M_PI * f0;
@@ -267,8 +267,8 @@ void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
 }
 
 /* APF: H(s) = (s^2 - s/Q + 1) / (s^2 + s/Q + 1) */
-void rta_biquad_allpass_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                                     rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_allpass_coefs_stride(rta_real_t * b, const int b_stride,
+                                     rta_real_t * a, const int a_stride,
                                      const rta_real_t f0, const rta_real_t q)
 {
   const rta_real_t w0 = M_PI * f0;
@@ -316,8 +316,8 @@ void rta_biquad_peaking_coefs(rta_real_t * b, rta_real_t * a,
 /* peakingEQ: H(s) = (s^2 + s*(A/Q) + 1) / (s^2 + s/(A*Q) + 1) */
 /* A = sqrt( 10^(dBgain/20) ) = 10^(dBgain/40) */
 /* gain is linear here */
-void rta_biquad_peaking_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                                     rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_peaking_coefs_stride(rta_real_t * b, const int b_stride,
+                                     rta_real_t * a, const int a_stride,
                                      const rta_real_t f0, const rta_real_t q,
                                      const rta_real_t gain)
 {
@@ -369,8 +369,8 @@ void rta_biquad_lowshelf_coefs(rta_real_t * b, rta_real_t * a,
 /* lowShelf: H(s) = A * (s^2 + (sqrt(A)/Q)*s + A)/(A*s^2 + (sqrt(A)/Q)*s + 1) */
 /* A = sqrt( 10^(dBgain/20) ) = 10^(dBgain/40) */
 /* gain is linear here */
-void rta_biquad_lowshelf_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                                      rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_lowshelf_coefs_stride(rta_real_t * b, const int b_stride,
+                                      rta_real_t * a, const int a_stride,
                                       const rta_real_t f0, const rta_real_t q, 
                                       const rta_real_t gain)
 {
@@ -423,8 +423,8 @@ void rta_biquad_highshelf_coefs(rta_real_t * b, rta_real_t * a,
 /* A = sqrt( 10^(dBgain/20) ) = 10^(dBgain/40) */
 /* gain is linear here */
 void rta_biquad_highshelf_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q, 
   const rta_real_t gain)
 {
@@ -515,8 +515,8 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
 }
 
 /* helper */
-void rta_biquad_coefs_stride(rta_real_t * b, const unsigned int b_stride,
-                             rta_real_t * a, const unsigned int a_stride,
+void rta_biquad_coefs_stride(rta_real_t * b, const int b_stride,
+                             rta_real_t * a, const int a_stride,
                              const rta_filter_t type, 
                              const rta_real_t f0, const rta_real_t q, 
                              const rta_real_t gain)
@@ -538,6 +538,7 @@ void rta_biquad_coefs_stride(rta_real_t * b, const unsigned int b_stride,
       break;
 
     case rta_bandpass_constant_peak:
+
       rta_biquad_bandpass_constant_peak_coefs_stride(b, b_stride, a, a_stride, 
                                                      f0, q);
       break;
@@ -602,8 +603,8 @@ inline rta_real_t rta_biquad(const rta_real_t x,
 /* a0 = 1, a1 = a[0], a2 = a[1] */
 inline rta_real_t rta_biquad_stride(
   const rta_real_t x,
-  const rta_real_t * b, const unsigned int b_stride,
-  const rta_real_t * a, const unsigned int a_stride,
+  const rta_real_t * b, const int b_stride,
+  const rta_real_t * a, const int a_stride,
   rta_real_t * state_1, rta_real_t * state_2)
 {
   rta_real_t y = b[0] * x + *state_1;

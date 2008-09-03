@@ -148,20 +148,20 @@ rta_real_t rta_selection_stride(
   const rta_real_t real_selection)
 {
   /* low and high inner bounds */
-  unsigned int l, h; 
+  int l, h; 
 
   /* partition indexes */
-  unsigned int low = 0;
-  unsigned int mid;
-  unsigned int high = (i_size - 1) * i_stride; 
+  int low = 0;
+  int mid;
+  int high = (i_size - 1) * i_stride; 
   
-  unsigned int selection = 
-    ( (unsigned int) rta_floor(real_selection) ) * i_stride;
+  int selection = 
+    ( (int) rta_floor(real_selection) ) * i_stride;
 
   /* s_extension can be 1 in order to sort next index too,
      to get real indexes selection */
-  unsigned int s_extension = 
-    ( (unsigned int) rta_ceil(real_selection) ) * i_stride - selection;
+  int s_extension = 
+    ( (int) rta_ceil(real_selection) ) * i_stride - selection;
 
   while(high > low + i_stride)
   {

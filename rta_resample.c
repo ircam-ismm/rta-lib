@@ -102,15 +102,15 @@ void rta_downsample_int_mean(rta_real_t * output,
 /* contract: factor > 0; */
 /*           o_size >= i_size / factor */
 void rta_downsample_int_mean_stride(
-  rta_real_t * output, const unsigned int o_stride,
-  const rta_real_t * input, const unsigned int i_stride,
+  rta_real_t * output, const int o_stride,
+  const rta_real_t * input, const int i_stride,
   const unsigned int i_size,
   const unsigned int factor)
 {
   const rta_real_t factor_inv = 1. / factor;
-  unsigned int o,i;
-  const unsigned int o_max = (i_size / factor) * o_stride;
-  const unsigned int i_incr = factor * i_stride;
+  int o,i;
+  const int o_max = (i_size / factor) * o_stride;
+  const int i_incr = factor * i_stride;
 
   
   switch(factor)
@@ -188,7 +188,7 @@ void rta_downsample_int_mean_stride(
     default:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
-        unsigned int ii;
+        int ii;
         output[o] = input[i];
         for(ii=i_stride; ii<i_incr; ii+=i_stride)
         {
@@ -222,14 +222,14 @@ void rta_downsample_int_remove(rta_real_t * output,
 /* contract: factor > 0; */
 /*           o_size >= i_size / factor */
 void rta_downsample_int_remove_stride(
-  rta_real_t * output, const unsigned int o_stride,
-  const rta_real_t * input, const unsigned int i_stride,
+  rta_real_t * output, const int o_stride,
+  const rta_real_t * input, const int i_stride,
   const unsigned int i_size,
   const unsigned int factor)
 {
-  unsigned int o,i;
-  const unsigned int o_max = (i_size / factor) * o_stride;
-  const unsigned int i_incr = factor * i_stride;
+  int o,i;
+  const int o_max = (i_size / factor) * o_stride;
+  const int i_incr = factor * i_stride;
   
   for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
   {

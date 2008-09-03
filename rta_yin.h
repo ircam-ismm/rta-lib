@@ -122,9 +122,9 @@ rta_yin(rta_real_t * abs_min, rta_real_t * autocorrelation,
  */
 rta_real_t
 rta_yin_stride(rta_real_t * abs_min, 
-               rta_real_t * autocorrelation, const unsigned int ac_stride, 
+               rta_real_t * autocorrelation, const int ac_stride, 
                const unsigned int ac_size, 
-               const rta_real_t * input, const unsigned int i_stride, 
+               const rta_real_t * input, const int i_stride, 
                const unsigned int input_size,
                const rta_yin_setup_t * yin_setup,
                const rta_real_t threshold);

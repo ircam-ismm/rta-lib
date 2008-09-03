@@ -144,10 +144,10 @@ rta_svd(rta_real_t * U, rta_real_t * S, rta_real_t *  V, rta_real_t * A,
  * 
  */
 void
-rta_svd_stride(rta_real_t * U, const unsigned int u_stride,
-               rta_real_t * S, const unsigned int s_stride,
-               rta_real_t * V, const unsigned int v_stride,
-               rta_real_t * A, const unsigned int a_stride,
+rta_svd_stride(rta_real_t * U, const int u_stride,
+               rta_real_t * S, const int s_stride,
+               rta_real_t * V, const int v_stride,
+               rta_real_t * A, const int a_stride,
                const rta_svd_setup_t * svd_setup);
 
 #ifdef __cplusplus

@@ -683,18 +683,18 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
 }
 
 void
-rta_svd_stride(rta_real_t * output_U, const unsigned int ou_stride,
-               rta_real_t * S, const unsigned int s_stride,
-               rta_real_t *  output_V, const unsigned int ov_stride,
-               rta_real_t * input_A, const unsigned int ia_stride,
+rta_svd_stride(rta_real_t * output_U, const int ou_stride,
+               rta_real_t * S, const int s_stride,
+               rta_real_t *  output_V, const int ov_stride,
+               rta_real_t * input_A, const int ia_stride,
                const rta_svd_setup_t * svd_setup)
 {
   rta_real_t * A; /* input_A, copied or transposed into svd_setup->A */
-  unsigned int a_stride; /* actual A stride */
+  int a_stride; /* actual A stride */
   rta_real_t * U; /* swap with V if A is transposed */
-  unsigned int u_stride; /* actual U stride */
+  int u_stride; /* actual U stride */
   rta_real_t * V;
-  unsigned int v_stride; /* actual V stride */
+  int v_stride; /* actual V stride */
 
   
   rta_real_t * e = svd_setup->e; /* just to ease the reading */

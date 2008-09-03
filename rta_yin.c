@@ -183,9 +183,9 @@ rta_real_t rta_yin(
 /*           threshold in [0., 1.] == (1. - confidence)^2 */
 rta_real_t rta_yin_stride(
   rta_real_t * abs_min,
-  rta_real_t * autocorrelation, const unsigned int ac_stride,
+  rta_real_t * autocorrelation, const int ac_stride,
   const unsigned int ac_size, 
-  const rta_real_t * input, const unsigned int i_stride,
+  const rta_real_t * input, const int i_stride,
   const unsigned int input_size,
   const rta_yin_setup_t * yin_setup,
   const rta_real_t threshold)
@@ -205,8 +205,8 @@ rta_real_t rta_yin_stride(
   rta_real_t xm;              /* (current + ac_size) sample */
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
-  unsigned int i,is;          /* input sample index, and with stride */
-  unsigned int ac;            /* autocorrelation index */
+  int i,is;          /* input sample index, and with stride */
+  int ac;            /* autocorrelation index */
   const unsigned int window_size = input_size - ac_size;
   const unsigned int window_size_stride = window_size * i_stride;
 

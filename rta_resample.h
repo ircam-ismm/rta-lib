@@ -51,8 +51,8 @@ rta_downsample_int_mean(rta_real_t * output,
  */
 void 
 rta_downsample_int_mean_stride(
-  rta_real_t * output, const unsigned int o_stride,
-  const rta_real_t * input, const unsigned int i_stride,
+  rta_real_t * output, const int o_stride,
+  const rta_real_t * input, const int i_stride,
   const unsigned int i_size,
   const unsigned int factor);
 
@@ -88,8 +88,8 @@ rta_downsample_int_remove(rta_real_t * output,
  */
 void
 rta_downsample_int_remove_stride(
-  rta_real_t * output, const unsigned int o_stride,
-  const rta_real_t * input, const unsigned int i_stride,
+  rta_real_t * output, const int o_stride,
+  const rta_real_t * input, const int i_stride,
   const unsigned int i_size,
   const unsigned int factor);
 

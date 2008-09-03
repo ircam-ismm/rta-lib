@@ -139,10 +139,10 @@ void rta_delta_vector(rta_real_t * delta,
   return;
 }
 
-void rta_delta_vector_stride(rta_real_t * delta, const unsigned int d_stride,
-                       const rta_real_t * input_matrix, const unsigned int i_stride, 
+void rta_delta_vector_stride(rta_real_t * delta, const int d_stride,
+                       const rta_real_t * input_matrix, const int i_stride, 
                        const unsigned int input_size,
-                       const rta_real_t * weights_vector, const unsigned int w_stride,
+                       const rta_real_t * weights_vector, const int w_stride,
                        const unsigned int filter_size)
 {
   unsigned int i,j;

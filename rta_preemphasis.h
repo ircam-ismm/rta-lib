@@ -60,8 +60,8 @@ rta_preemphasis_signal(rta_real_t * out_samples,
  * @param factor is generally 0.97 for voice analysis
  */
 void
-rta_preemphasis_signal_stride(rta_real_t * out_samples, const unsigned int o_stride,
-                           const rta_real_t * in_samples, const unsigned int i_stride,
+rta_preemphasis_signal_stride(rta_real_t * out_samples, const int o_stride,
+                           const rta_real_t * in_samples, const int i_stride,
                            const unsigned int input_size,
                            rta_real_t * previous_sample, const rta_real_t factor);
 

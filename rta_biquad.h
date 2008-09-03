@@ -22,7 +22,7 @@
  * For every function, a1 is a[0] and a2 is a[1]. b0 is b[0], b1 is
  * b[1] and b2 is b[2].
  *
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  *
  */
 
@@ -66,8 +66,8 @@ void rta_biquad_lowpass_coefs(rta_real_t * b, rta_real_t * a,
  * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
  */
 void rta_biquad_lowpass_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
 /** 
@@ -100,8 +100,8 @@ void rta_biquad_highpass_coefs(rta_real_t * b, rta_real_t * a,
  * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
  */
 void rta_biquad_highpass_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
 /** 
@@ -137,8 +137,8 @@ void rta_biquad_bandpass_constant_skirt_coefs(rta_real_t * b, rta_real_t * a,
  * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
  */
 void rta_biquad_bandpass_constant_skirt_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0,
   const rta_real_t q);
 
@@ -173,8 +173,8 @@ void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
  * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
  */
 void rta_biquad_bandpass_constant_peak_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0,
   const rta_real_t q);
 
@@ -208,8 +208,8 @@ void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
  * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
  */
 void rta_biquad_notch_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
 /** 
@@ -242,8 +242,8 @@ void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
  * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
  */
 void rta_biquad_allpass_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
 /** 
@@ -281,8 +281,8 @@ void rta_biquad_peaking_coefs(rta_real_t * b, rta_real_t * a,
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_peaking_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
 
@@ -321,8 +321,8 @@ void rta_biquad_lowshelf_coefs(rta_real_t * b, rta_real_t * a,
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_lowshelf_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
 
@@ -359,8 +359,8 @@ void rta_biquad_highshelf_coefs(rta_real_t * b, rta_real_t * a,
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_highshelf_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
 
@@ -397,8 +397,8 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_coefs_stride(
-  rta_real_t * b, const unsigned int b_stride,
-  rta_real_t * a, const unsigned int a_stride,
+  rta_real_t * b, const int b_stride,
+  rta_real_t * a, const int a_stride,
   const rta_filter_t type,
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
@@ -475,8 +475,8 @@ inline rta_real_t rta_biquad(const rta_real_t x,
  */
 inline rta_real_t rta_biquad_stride(
   const rta_real_t x,
-  const rta_real_t * b, const unsigned int b_stride,
-  const rta_real_t * a, const unsigned int a_stride,
+  const rta_real_t * b, const int b_stride,
+  const rta_real_t * a, const int a_stride,
   rta_real_t * state_1, rta_real_t * state_2);
 
 
