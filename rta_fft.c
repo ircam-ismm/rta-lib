@@ -77,10 +77,10 @@ bitreversal_oversampled_inplace_stride(rta_complex_t * buf,
 
     if(xdi > idx)
     {
+      int idx_tmp = idx * b_stride;
       xdi *= b_stride;
-      idx *= b_stride;
-      z = buf[idx];    
-      buf[idx] = buf[xdi];
+      z = buf[idx_tmp];    
+      buf[idx_tmp] = buf[xdi];
       buf[xdi] = z;    
     }
   }
@@ -123,10 +123,10 @@ bitreversal_inplace_stride(rta_complex_t * buf,
     int xdi = bitrev[idx];
     if(xdi > idx)
     {
+      int idx_tmp = idx * b_stride;
       xdi *= b_stride;
-      idx *= b_stride;
-      z = buf[idx];    
-      buf[idx] = buf[xdi];
+      z = buf[idx_tmp];    
+      buf[idx_tmp] = buf[xdi];
       buf[xdi] = z;    
     }
   }
