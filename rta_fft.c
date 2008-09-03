@@ -23,10 +23,10 @@
 struct rta_fft_setup
 {
   void * output;
-  unsigned int o_stride;
+  int o_stride;
   unsigned int fft_size;
   void * input;
-  unsigned int i_stride;
+  int i_stride;
   unsigned int input_size;
   int log2_size;
   rta_fft_t fft_type;
@@ -68,12 +68,12 @@ bitreversal_oversampled_inplace_stride(rta_complex_t * buf,
                                        const unsigned int * bitrev,
                                        const unsigned int size)
 {
-  unsigned int idx;
+  int idx;
   rta_complex_t z;
 
   for(idx=0; idx<size; idx++)
   {
-    unsigned int xdi = bitrev[2 * idx];
+    int xdi = bitrev[2 * idx];
 
     if(xdi > idx)
     {
@@ -115,12 +115,12 @@ bitreversal_inplace_stride(rta_complex_t * buf,
                            const unsigned int * bitrev,
                            const unsigned int size)
 {
-  unsigned int idx;
+  int idx;
   rta_complex_t z;
 
   for(idx=0; idx<size; idx++)
   {
-    unsigned int xdi = bitrev[idx];
+    int xdi = bitrev[idx];
     if(xdi > idx)
     {
       xdi *= b_stride;
@@ -193,8 +193,8 @@ fft_inplace_stride(rta_complex_t * buf,
                    const rta_real_t * coef_imag,
                    const unsigned int size)
 {
-  unsigned int m, n;
-  unsigned int j, k, up, down;
+  int m, n;
+  int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -202,7 +202,7 @@ fft_inplace_stride(rta_complex_t * buf,
     {
       rta_complex_t W = coef_real[k] + coef_imag[k] *I;
 
-      unsigned int incr = 2 * up * b_stride;
+      int incr = 2 * up * b_stride;
 	  
       for(m=j*b_stride, n=(j+up)*b_stride; m<size; m+=incr, n+=incr)
       {
@@ -267,8 +267,8 @@ fft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
                                             const rta_real_t * coef_imag,
                                             const unsigned int size)
 {
-  unsigned int m, n;
-  unsigned int j, k, up, down;
+  int m, n;
+  int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -276,7 +276,7 @@ fft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
     {
       rta_complex_t W = coef_real[k] + coef_imag[k] *I;
 
-      unsigned int incr = 2 * up * b_stride;
+      int incr = 2 * up * b_stride;
 	  
       for(m=j*b_stride, n=(j+up)*b_stride; m<size; m+=incr, n+=incr)
       {
@@ -338,8 +338,8 @@ ifft_inplace_stride(rta_complex_t * buf,
                     const rta_real_t * coef_imag,
                     const unsigned int size)
 {
-  unsigned int m, n;
-  unsigned int j, k, up, down;
+  int m, n;
+  int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -347,7 +347,7 @@ ifft_inplace_stride(rta_complex_t * buf,
     {
       rta_complex_t W = coef_real[k] + coef_imag[k] *I;
 
-      unsigned int incr = 2 * up * b_stride;
+      int incr = 2 * up * b_stride;
 	  
       for(m=j*b_stride, n=(j+up)*b_stride; m<size; m+=incr, n+=incr)
       {
@@ -410,8 +410,8 @@ ifft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
                                              const rta_real_t * coef_imag,
                                              const unsigned int size)
 {
-  unsigned int m, n;
-  unsigned int j, k, up, down;
+  int m, n;
+  int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -419,7 +419,7 @@ ifft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
     {
       rta_complex_t W = coef_real[k] + coef_imag[k] *I;
 
-      unsigned int incr = 2 * up * b_stride;
+      int incr = 2 * up * b_stride;
 	  
       for(m=j*b_stride, n=(j+up)*b_stride; m<size; m+=incr, n+=incr)
       {
@@ -670,7 +670,7 @@ fill_real_scale_zero_pad_stride(
   rta_real_t * input, const int i_stride, const unsigned int input_size,
   const rta_real_t scale)
 {
-  unsigned int o, i;
+  int o, i;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -752,7 +752,7 @@ fill_complex_scale_zero_pad_stride(
   rta_complex_t * input, const int i_stride, const unsigned int input_size,
   const rta_real_t scale)
 {
-  unsigned int i, o;
+  int i, o;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -835,7 +835,7 @@ fill_complex_from_real_scale_zero_pad_stride(
   rta_real_t * input, const int i_stride, const unsigned int input_size,
   const rta_real_t scale)
 {
-  unsigned int i, o;
+  int i, o;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -914,7 +914,7 @@ scale_real_zero_pad_in_place_stride(
   const unsigned int input_size,
   const rta_real_t scale)
 {
-  unsigned int i;
+  int i;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -990,7 +990,7 @@ scale_complex_zero_pad_in_place_stride(
   const unsigned int input_size,
   const rta_real_t scale)
 {
-  unsigned int i;
+  int i;
   unsigned int used_input_size;
   
   if(input_size > output_size)

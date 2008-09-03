@@ -145,7 +145,7 @@ void rta_delta_vector_stride(rta_real_t * delta, const int d_stride,
                        const rta_real_t * weights_vector, const int w_stride,
                        const unsigned int filter_size)
 {
-  unsigned int i,j;
+  int i,j;
   
   for(j=0; j<input_size*d_stride; j+=d_stride)
   {
