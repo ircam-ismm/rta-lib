@@ -479,7 +479,59 @@ inline rta_real_t rta_biquad_stride(
   const rta_real_t * a, const int a_stride,
   rta_real_t * state_1, rta_real_t * state_2);
 
+/** 
+ * Biquad computation on a vector of samples.
+ *
+ * \see rta_biquad
+ * 
+ * @param y is a vector of output samples. Its size is 'x_size'
+ * @param x is a vector of input samples. Its size is 'x_size'
+ * @param x_size is the size of 'y' and 'x'
+ * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
+ * is b[1] and b2 is b[2].
+ * @param a is a vector of feed-backward coefficients. Note that a1 is
+ * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
+ * @param state_1 is the one sample delay state. It can be initialised
+ * with 0. or the last computed value, which is updated by this
+ * function.
+ * @param state_2 is the two samples delay state. It can be initialised
+ * with 0. or the last computed value, which is updated by this
+ * function.
+ */
+void rta_biquad_vector(rta_real_t * y, 
+                       const rta_real_t * x, const unsigned int x_size,
+                       const rta_real_t * b, const rta_real_t * a, 
+                       rta_real_t * state_1, rta_real_t * state_2);
 
+/** 
+ * Biquad computation on a vector of samples.
+ *
+ * \see rta_biquad
+ * 
+ * @param y is a vector of output samples. Its size is 'x_size'
+ * @param y_stride is 'y' stride
+ * @param x is a vector of input samples. Its size is 'x_size'
+ * @param x_stride is 'x' stride
+ * @param x_size is the size of 'y' and 'x'
+ * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
+ * is b[1] and b2 is b[2].
+ * @param b_stride is 'b' stride
+ * @param a is a vector of feed-backward coefficients. Note that a1 is
+ * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
+ * @param a_stride is 'a' stride
+ * @param state_1 is the one sample delay state. It can be initialised
+ * with 0. or the last computed value, which is updated by this
+ * function.
+ * @param state_2 is the two samples delay state. It can be initialised
+ * with 0. or the last computed value, which is updated by this
+ * function.
+ */
+void rta_biquad_vector_stride(
+  rta_real_t * y, const int y_stride,
+  const rta_real_t * x, const int x_stride, const unsigned int x_size,
+  const rta_real_t * b, const int b_stride,
+  const rta_real_t * a, const int a_stride,
+  rta_real_t * state_1, rta_real_t * state_2);
 
 #ifdef __cplusplus
 }

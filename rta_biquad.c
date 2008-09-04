@@ -614,3 +614,38 @@ inline rta_real_t rta_biquad_stride(
   return y;
 }
 
+void rta_biquad_vector(rta_real_t * y, 
+                       const rta_real_t * x, const unsigned int x_size,
+                       const rta_real_t * b, const rta_real_t * a, 
+                       rta_real_t * state_1, rta_real_t * state_2)
+{
+  unsigned int i;
+  
+  for(i = 0; i < x_size; i++)
+  {
+    y[i] = rta_biquad(x[i], b, a, state_1, state_2);
+  }
+  
+
+  return;
+}
+
+void rta_biquad_vector_stride(
+  rta_real_t * y, const int y_stride,
+  const rta_real_t * x, const int x_stride, const unsigned int x_size,
+  const rta_real_t * b, const int b_stride,
+  const rta_real_t * a, const int a_stride,
+  rta_real_t * state_1, rta_real_t * state_2)
+{
+  int ix, iy;
+  
+  for(ix = 0, iy = 0;
+      ix < x_size*x_stride;
+      ix += x_stride, iy += y_stride)
+  {
+    y[iy] = rta_biquad_stride(x[ix], b, b_stride, a, a_stride, state_1, state_2);
+  }
+  
+
+  return;
+}

@@ -23,6 +23,7 @@ all: rta_bands_weights.$(MEXEXT) \
 	rta_lifter_apply.$(MEXEXT) rta_lifter_weights.$(MEXEXT) \
 	rta_lpc.$(MEXEXT) \
 	rta_moments.$(MEXEXT) \
+	rta_onepole.$(MEXEXT) \
 	rta_preemphasis.$(MEXEXT) \
 	rta_selection.$(MEXEXT) \
 	rta_spectrum_to_bands.$(MEXEXT) \
@@ -92,6 +93,9 @@ rta_lpc.$(MEXEXT): rta_lpc.o rta_correlation.o rta_lpc_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_moments.$(MEXEXT): rta_moments.o rta_moments_mex.o
+	$(CC) $(CFLAGS) -cxx $^ -o $@
+
+rta_onepole.$(MEXEXT): rta_onepole.o rta_onepole_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_preemphasis.$(MEXEXT): rta_preemphasis.o rta_preemphasis_mex.o
