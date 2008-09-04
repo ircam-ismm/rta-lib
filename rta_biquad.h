@@ -37,7 +37,7 @@ extern "C" {
 #endif
 
 /** 
- * Biquad coefficient for a low-pass filter.
+ * Biquad coefficients for a low-pass filter.
  * H(s) = 1 / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -52,7 +52,7 @@ void rta_biquad_lowpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
 
 /**  
- * Biquad coefficient for a low-pass filter.
+ * Biquad coefficients for a low-pass filter.
  * H(s) = 1 / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -71,7 +71,7 @@ void rta_biquad_lowpass_coefs_stride(
   const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for a high-pass filter.
+ * Biquad coefficients for a high-pass filter.
  * H(s) = s^2 / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -86,7 +86,7 @@ void rta_biquad_highpass_coefs(rta_real_t * b, rta_real_t * a,
                                const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for a high-pass filter.
+ * Biquad coefficients for a high-pass filter.
  * H(s) = s^2 / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -105,7 +105,7 @@ void rta_biquad_highpass_coefs_stride(
   const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for a band-pass filter with constant skirt. The
+ * Biquad coefficients for a band-pass filter with constant skirt. The
  * peak gain is 'q'.
  * H(s) = s / (s^2 + s/q + 1)
  *
@@ -122,7 +122,7 @@ void rta_biquad_bandpass_constant_skirt_coefs(rta_real_t * b, rta_real_t * a,
                                               const rta_real_t q);
 
 /** 
- * Biquad coefficient for a band-pass filter with constant skirt. The
+ * Biquad coefficients for a band-pass filter with constant skirt. The
  * peak gain is 'q'.
  * H(s) = s / (s^2 + s/q + 1)
  *
@@ -143,7 +143,7 @@ void rta_biquad_bandpass_constant_skirt_coefs_stride(
   const rta_real_t q);
 
 /** 
- * Biquad coefficient for a band-pass filter with constant 0 dB peak.
+ * Biquad coefficients for a band-pass filter with constant 0 dB peak.
  * H(s) = (s/Q) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -159,7 +159,7 @@ void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
                                              const rta_real_t q);
 
 /** 
- * Biquad coefficient for a band-pass filter with constant 0 dB peak.
+ * Biquad coefficients for a band-pass filter with constant 0 dB peak.
  * H(s) = (s/Q) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -179,7 +179,7 @@ void rta_biquad_bandpass_constant_peak_coefs_stride(
   const rta_real_t q);
 
 /** 
- * Biquad coefficient for a notch filter.
+ * Biquad coefficients for a notch filter.
  * H(s) = (s^2 + 1) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -194,7 +194,7 @@ void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
                             const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for a notch filter.
+ * Biquad coefficients for a notch filter.
  * H(s) = (s^2 + 1) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -213,7 +213,7 @@ void rta_biquad_notch_coefs_stride(
   const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for an all-pass filter. 
+ * Biquad coefficients for an all-pass filter. 
  * H(s) = (s^2 - s/Q + 1) / (s^2 + s/Q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -228,7 +228,7 @@ void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for an all-pass filter. 
+ * Biquad coefficients for an all-pass filter. 
  * H(s) = (s^2 - s/Q + 1) / (s^2 + s/Q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -247,7 +247,7 @@ void rta_biquad_allpass_coefs_stride(
   const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficient for an peaking filter.
+ * Biquad coefficients for an peaking filter.
  * H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
  * g = sqrt('gain'),
  * 'gain' is linear.
@@ -265,7 +265,7 @@ void rta_biquad_peaking_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t gain);
 
 /** 
- * Biquad coefficient for an peaking filter.
+ * Biquad coefficients for an peaking filter.
  * H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
  * g = sqrt('gain'),
  * 'gain' is linear.
@@ -287,7 +287,7 @@ void rta_biquad_peaking_coefs_stride(
   const rta_real_t gain);
 
 /** 
- * Biquad coefficient for an low-shelf filter.
+ * Biquad coefficients for an low-shelf filter.
  * H(s) = g * (s^2 + (sqrt(g)/q)*s + g)/(g*s^2 + (sqrt(g)/q)*s + 1)
  * g = sqrt('gain'),
  * 'gain' is linear.
@@ -305,7 +305,7 @@ void rta_biquad_lowshelf_coefs(rta_real_t * b, rta_real_t * a,
                                const rta_real_t gain);
 
 /** 
- * Biquad coefficient for an low-shelf filter.
+ * Biquad coefficients for an low-shelf filter.
  * H(s) = g * (s^2 + (sqrt(g)/q)*s + g)/(g*s^2 + (sqrt(g)/q)*s + 1)
  * g = sqrt('gain'),
  * 'gain' is linear.
@@ -327,7 +327,7 @@ void rta_biquad_lowshelf_coefs_stride(
   const rta_real_t gain);
 
 /** 
- * Biquad coefficient for an high-shelf filter.
+ * Biquad coefficients for an high-shelf filter.
  * H(s) = g * (g*s^2 + (sqrt(g)/q)*s + 1)/(s^2 + (sqrt(g)/q)*s + g)
  * g = sqrt('gain'),
  * 'gain' is linear.
@@ -345,7 +345,7 @@ void rta_biquad_highshelf_coefs(rta_real_t * b, rta_real_t * a,
                                 const rta_real_t gain);
 
 /** 
- * Biquad coefficient for an high-shelf filter.
+ * Biquad coefficients for an high-shelf filter.
  * H(s) = g * (g*s^2 + (sqrt(g)/q)*s + 1)/(s^2 + (sqrt(g)/q)*s + g)
  * g = sqrt('gain'),
  * 'gain' is linear.
