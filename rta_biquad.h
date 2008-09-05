@@ -144,7 +144,7 @@ void rta_biquad_bandpass_constant_skirt_coefs_stride(
 
 /** 
  * Biquad coefficients for a band-pass filter with constant 0 dB peak.
- * H(s) = (s/Q) / (s^2 + s/q + 1)
+ * H(s) = (s/q) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
  * (linear) gain, simply multiply the b coefficients by the gain.
@@ -160,7 +160,7 @@ void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
 
 /** 
  * Biquad coefficients for a band-pass filter with constant 0 dB peak.
- * H(s) = (s/Q) / (s^2 + s/q + 1)
+ * H(s) = (s/q) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
  * (linear) gain, simply multiply the b coefficients by the gain.
@@ -214,7 +214,7 @@ void rta_biquad_notch_coefs_stride(
 
 /** 
  * Biquad coefficients for an all-pass filter. 
- * H(s) = (s^2 - s/Q + 1) / (s^2 + s/Q + 1)
+ * H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
  * (linear) gain, simply multiply the b coefficients by the gain.
@@ -229,7 +229,7 @@ void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
 
 /** 
  * Biquad coefficients for an all-pass filter. 
- * H(s) = (s^2 - s/Q + 1) / (s^2 + s/Q + 1)
+ * H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
  * (linear) gain, simply multiply the b coefficients by the gain.
@@ -351,7 +351,9 @@ void rta_biquad_highshelf_coefs(rta_real_t * b, rta_real_t * a,
  * 'gain' is linear.
  *
  * @param b is a vector of feed-forward coefficients
+ * @param b_stride is 'b' stride
  * @param a is a vector of feed-backward coefficients
+ * @param a_stride is 'a' stride
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
@@ -370,6 +372,25 @@ void rta_biquad_highshelf_coefs_stride(
  *
  * @param b is a vector of feed-forward coefficients
  * @param a is a vector of feed-backward coefficients
+ * @param type can be: 
+ * <pre>
+ *   lowpass: H(s) = 1 / (s^2 + s/q + 1)
+ *   highpass: H(s) = s^2 / (s^2 + s/q + 1)
+ *   bandpass_cst_skirt: H(s) = s / (s^2 + s/q + 1)
+ *        (The peak gain is q*gain) 
+ *   bandpass_cst_peak: H(s) = (s/q) / (s^2 + s/q + 1)
+ *        (The peak gain is gain) 
+ *   notch: H(s) = (s^2 + 1) / (s^2 + s/q + 1)
+ *   allpass: H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
+ *   peaking: H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
+ *        with g = sqrt(gain)
+ *   lowshelf: H(s) = g * (s^2 + (sqrt(g)/q)*s + g)/
+ *                         (g*s^2 + (sqrt(g)/q)*s + 1)
+ *        with g = sqrt(gain)
+ *   highshelf: H(s) = g * (g*s^2 + (sqrt(g)/q)*s + 1)/
+ *                            (s^2 + (sqrt(g)/q)*s + g)
+ *        with g = sqrt(gain)
+ * </pre>
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
@@ -390,6 +411,25 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
  * @param b_stride is 'b' stride
  * @param a is a vector of feed-backward coefficients
  * @param a_stride is 'a' stride
+ * @param type can be: 
+ * <pre>
+ *   lowpass: H(s) = 1 / (s^2 + s/q + 1)
+ *   highpass: H(s) = s^2 / (s^2 + s/q + 1)
+ *   bandpass_cst_skirt: H(s) = s / (s^2 + s/q + 1)
+ *        (The peak gain is q*gain) 
+ *   bandpass_cst_peak: H(s) = (s/q) / (s^2 + s/q + 1)
+ *        (The peak gain is gain) 
+ *   notch: H(s) = (s^2 + 1) / (s^2 + s/q + 1)
+ *   allpass: H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
+ *   peaking: H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
+ *        with g = sqrt(gain)
+ *   lowshelf: H(s) = g * (s^2 + (sqrt(g)/q)*s + g)/
+ *                         (g*s^2 + (sqrt(g)/q)*s + 1)
+ *        with g = sqrt(gain)
+ *   highshelf: H(s) = g * (g*s^2 + (sqrt(g)/q)*s + 1)/
+ *                            (s^2 + (sqrt(g)/q)*s + g)
+ *        with g = sqrt(gain)
+ * </pre>
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio

@@ -1,5 +1,5 @@
 /**
- * @file   rta_configuration.h
+ * @file   rta_configuration_ftm.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
  * 
