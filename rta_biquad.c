@@ -509,6 +509,12 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
         b[2] *= gain;
       }
       break;
+
+    /* gain is already integrated for the following */
+    case rta_peaking:
+    case rta_lowshelf:
+    case rta_highshelf:
+      break;
   }
 
   return;
@@ -579,6 +585,12 @@ void rta_biquad_coefs_stride(rta_real_t * b, const int b_stride,
         b[b_stride] *= gain;
         b[2*b_stride] *= gain;
       }
+      break;
+
+    /* gain is already integrated for the following */
+    case rta_peaking:
+    case rta_lowshelf:
+    case rta_highshelf:
       break;
   }
 

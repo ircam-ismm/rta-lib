@@ -1,0 +1,1 @@
+initial states = [0 0];

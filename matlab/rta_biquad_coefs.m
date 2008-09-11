@@ -27,8 +27,9 @@ function [b, a] = rta_biquad_coefs (filter_type, f0, q, gain)
 %    
 % f0 is the cutoff frequency, normalised by the nyquist frequency.
 %
-% q must be > 0. and is generally >= 0.5 for audio filtering.
-% q <= 1./sqrt(2.) is the limit for monotonic response. 
+% q must be > 0. and is generally >= 0.5 for audio filtering.    
+% q <= 1./sqrt(2.) is the limit for monotonic response for lowpass,
+% highpass, lowshelf and highshelf types.
 %
 % gain is linear.
 %

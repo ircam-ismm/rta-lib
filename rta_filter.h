@@ -22,11 +22,11 @@ typedef enum
 {
   rta_lowpass = 0,
   rta_highpass = 1,
-  rta_bandpass_constant_skirt = 2,
-  rta_bandpass_constant_peak = 3,
-  rta_notch = 4,
+  rta_bandpass_constant_skirt = 2, /* msp name: resonant */
+  rta_bandpass_constant_peak = 3, /* msp name: bandpass */
+  rta_notch = 4, /* msp name: bandstop */
   rta_allpass = 5,
-  rta_peaking = 6,
+  rta_peaking = 6, /* msp name: peaknotch */
   rta_lowshelf = 7,
   rta_highshelf = 8
 } rta_filter_t;

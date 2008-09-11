@@ -115,7 +115,7 @@ void rta_biquad_highpass_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_bandpass_constant_skirt_coefs(rta_real_t * b, rta_real_t * a,
                                               const rta_real_t f0,
@@ -134,7 +134,7 @@ void rta_biquad_bandpass_constant_skirt_coefs(rta_real_t * b, rta_real_t * a,
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_bandpass_constant_skirt_coefs_stride(
   rta_real_t * b, const int b_stride,
@@ -152,7 +152,7 @@ void rta_biquad_bandpass_constant_skirt_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
                                              const rta_real_t f0,
@@ -170,7 +170,7 @@ void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_bandpass_constant_peak_coefs_stride(
   rta_real_t * b, const int b_stride,
@@ -188,7 +188,7 @@ void rta_biquad_bandpass_constant_peak_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering. 
  */
 void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
                             const rta_real_t f0, const rta_real_t q);
@@ -205,7 +205,7 @@ void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_notch_coefs_stride(
   rta_real_t * b, const int b_stride,
@@ -222,7 +222,7 @@ void rta_biquad_notch_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
@@ -239,7 +239,7 @@ void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  */
 void rta_biquad_allpass_coefs_stride(
   rta_real_t * b, const int b_stride,
@@ -257,7 +257,7 @@ void rta_biquad_allpass_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_peaking_coefs(rta_real_t * b, rta_real_t * a,
@@ -277,7 +277,7 @@ void rta_biquad_peaking_coefs(rta_real_t * b, rta_real_t * a,
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering.
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_peaking_coefs_stride(
@@ -394,7 +394,8 @@ void rta_biquad_highshelf_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering. q <= 1./sqrt(2.) is the limit for monotonic response
+ * for lowpass, highpass, lowshelf and highshelf types.
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
@@ -433,7 +434,8 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. q <= 1./sqrt(2.) is the limit for monotonic response.
+ * filtering. q <= 1./sqrt(2.) is the limit for monotonic response
+ * for lowpass, highpass, lowshelf and highshelf types.
  * @param gain is linear and must be > 0.
  */
 void rta_biquad_coefs_stride(
