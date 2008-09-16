@@ -26,14 +26,12 @@ rta_ilog2(unsigned int n)
   return log2;
 }
 
-int
-rta_imax(int m, int n)
+inline int rta_imax(int m, int n)
 {
   return (m > n) ? m : n;
 }
 
-int
-rta_imin(int m, int n)
+inline int rta_imin(int m, int n)
 {
   return (m < n) ? m : n;
 }
