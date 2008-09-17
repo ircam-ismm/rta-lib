@@ -76,19 +76,22 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
     rta_swap(input + mid, input + high);
 
     /* we already know that input[low] <= input[high] */
-    l = low + 1;
+    /* but l will be incremented first before any test */
+    l = low;
     /* the pivot is at index high */
-    h = high - 1;
+    /* but h will be decremented before any test */
+    h = high;
+
     for(;;)
     { 
-      while(input[l] < input[high])
+      while(input[++l] < input[high])
       {
-        l++;
+        /* void */
       }
       
-      while(input[high] < input[h])
+      while(input[high] < input[--h])
       {
-        h--;
+        /* void */
       }
 
       if(h <= l) 
@@ -193,20 +196,25 @@ rta_real_t rta_selection_stride(
     rta_swap(input + mid, input + high);
 
     /* we already know that input[low] <= input[high] */
-    l = low + i_stride;
+    /* but l will be incremented first before any test */
+    l = low;
     /* the pivot is at index high */
-    h = high - i_stride;
+    /* but h will be decremented before any test */
+    h = high;
+
     for(;;)
     { 
-      while(input[l] < input[high])
+      do
       {
         l += i_stride;
       }
-      
-      while(input[high] < input[h])
+      while(input[l] < input[high]);
+        
+      do
       {
         h -= i_stride;
       }
+      while(input[high] < input[h]);
 
       if(h <= l) 
       {
