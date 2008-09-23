@@ -17,14 +17,8 @@
 inline rta_real_t rta_onepole_lowpass(const rta_real_t x, const rta_real_t f0,
                                       rta_real_t * state)
 {
-  /* b0 = f0 */
-  /* b1 = 0 */
-  /* a0 = 1 */
-  /* a1 = f0 -1 */
-
-  rta_real_t y = f0 * x + *state;
-  *state = (1. - f0) * y;
-  return y;
+  *state = x * f0 + *state * (1. - f0);
+  return *state;
 }
 
 inline rta_real_t rta_onepole_highpass(const rta_real_t x, const rta_real_t f0,
