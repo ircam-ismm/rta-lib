@@ -2,12 +2,18 @@
  * @file	rta_kdtree.h
  * @author	Diemo Schwarz
  * @date	29.9.2008
- * 
+ * @version	1.0 
+ *
  * @brief	k-dimensional search tree
  *
  * Efficient multidimensional binary search tree with logarithmic time
  * complexity: From about 80-100 points, the number of comparisions
  * doesn't rise any more perceptibly.
+ *
+ *
+ * Dimensions can be weighted while building the tree, and while
+ * searching. The weight is 1 / sigma, just as in
+ * mnm.mahalanobis. Sigma = 0 means: ignore this dimension.
  *
  * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
@@ -52,7 +58,7 @@ typedef struct _node_struct
     float *mean;	/**< mean vector (todo: median), always present */
     float *split;	/**< hyperplane A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0, 
 			   or NULL in dmode_orthogonal */
-    float   splitnorm;	/**< length of split vector */
+    float  splitnorm;	/**< spatial length of split vector */
 } kdtree_node_t;
 
 
@@ -91,11 +97,11 @@ typedef struct _kdtree_struct
 
     int     ndim;	  /**< Dimension of vectors */
     int     ndata;	  /**< Number of vectors */
-    fmat_t *data;	  /**< data matrix (ndata, ndim) */
+    float  *data;	  /**< data matrix (ndata, ndim) */
     int	    dataalloc;	  /**< allocated size of dataindex */
     int    *dataindex;	  /**< data vector indirection array (ndata) */
 
-    fmat_t *sigma;	  /**< weight, 0 == inf */
+    float  *sigma;	  /**< 1/weight, 0 == inf */
     int     sigma_nnz;    /**< number of non-zero sigma */
     int    *sigma_indnz;  /**< non-zero sigma lines */
 
@@ -141,7 +147,7 @@ const char *kdtree_mmodestr[];
 #if DOXYGEN_FUNCTIONS
 float   kdtree_get_element(kdtree_t *t, int i, int j);
 #else
-#define kdtree_get_element(t, i, j)  fmat_get_element(t->data, t->dataindex[i], j)
+#define kdtree_get_element(t, i, j)  ((t)->data[(t)->dataindex[i] * (t)->ndim + (j)])
 #endif
 
 /** get data vector via indirection order array
@@ -158,10 +164,10 @@ float   kdtree_get_element(kdtree_t *t, int i, int j);
 #if DOXYGEN_FUNCTIONS
 float  *kdtree_get_vector(kdtree_t *t, int i);
 #else
-#define kdtree_get_vector(t, i)     (fmat_get_ptr(t->data) + t->dataindex[i] * t->ndim)
+#define kdtree_get_vector(t, i)     ((t)->data + (t)->dataindex[i] * (t)->ndim)
 #endif
 
-#define fmat_get_row_ptr(f, i)    (fmat_get_ptr(f) + (i) * fmat_get_n(f))
+#define kdtree_get_row_ptr(t, i)    ((t)->data + (i) * (t)->ndim)
 
 #define pow2(x)  (1 << (x))
 
@@ -176,7 +182,7 @@ void kdtree_raw_display  (kdtree_t* t);
     \p print_data = 1 or 2 controls verbosity */
 void kdtree_data_display (kdtree_t* t, int print_data);
 
-/** set all counters in kdtree_t::profile to zero */
+/** set all counters in kdtree_t#profile to zero */
 void profile_clear (kdtree_t *t);
 
 void kdtree_stack_init (kdtree_stack_t *s, int size);
@@ -198,10 +204,15 @@ void kdtree_clear_nodes (kdtree_t *self);
 /** set new data and build tree */
 void kdtree_set   (kdtree_t *self, float *data, int m, int n, float *sigma, int use_sigma);
 
-/** set new weight vector sigma */
-void kdtree_set_sigma (kdtree_t *self, fmat_t *sigma);
+/** set new pointer to weight vector sigma of length kdtree_t#ndim */
+void kdtree_set_sigma (kdtree_t *self, float *sigma);
 
-/** check for changes in weights */
+/** check for changes in weights 
+
+Dimensions can be weighted while building the tree, and while
+searching. The weight is 1 / sigma, just as in mnm.mahalanobis. Sigma
+= 0 means: ignore this dimension.
+*/
 int  kdtree_update_sigmanz (kdtree_t *self);
 
 /** init tree according to data */
