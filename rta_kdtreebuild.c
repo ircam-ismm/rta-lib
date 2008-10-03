@@ -1,5 +1,5 @@
 
-#include "kdtree.h"
+#include "rta_kdtree.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -13,9 +13,8 @@
 
 static void compute_mean (kdtree_t *t, int node, int dim) 
 {
-    node_t *n        = &t->nodes[node];
-    float  *mean_ptr = fmat_get_ptr(n->mean);
-//  float  *data_ptr = fmat_get_ptr(t->data); 
+    kdtree_node_t *n        = &t->nodes[node];
+    float  *mean_ptr = t->mean + node * t->ndim;
     int     nstart   = n->startind;
     int     nend     = n->endind;
     int     nvector  = nend - nstart + 1; // number of vectors of processed node
@@ -56,8 +55,8 @@ static void compute_mean (kdtree_t *t, int node, int dim)
 
 static void compute_middle (kdtree_t *t, int node, int dim) 
 {
-    node_t *n        = &t->nodes[node];
-    float  *mean_ptr = fmat_get_ptr(n->mean);
+    kdtree_node_t *n        = &t->nodes[node];
+    float  *mean_ptr = t->mean + node * t->ndim;
     int     nstart   = n->startind;
     int     nend     = n->endind;
     int     dstart, dend;
@@ -124,16 +123,10 @@ static int check_node (kdtree_t *t, int node, int dim)
 }
 
 
-static int compare(float* currentVect, float* mean, int component) 
-{
-// fts_post("compare %f and %f\n", mean[component], currentVect[component]);
-    return (currentVect[component] - mean[component]); 
-}
-
 /* compute and create node-splitting hyperplane */
 static void compute_splitplane (kdtree_t* t, int node, int level) 
 {
-    node_t *n = &t->nodes[node];
+    kdtree_node_t *n = &t->nodes[node];
 
  #if PROFILE_BUILD
     t->profile.hyper++;
@@ -141,17 +134,17 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
     switch (t->dmode)
     {
     case dmode_hyperplane:
-	/* compute hyperplane orthogonal to the base vector number b */
-	n->split = fmat_create(t->ndim, 1);
-	fts_object_refer((fts_object_t *) n->split);
-	
-	fmat_set_const  (n->split, 0);
-	fmat_set_element(n->split, n->splitdim, 0, 1);
+    {	/* compute hyperplane orthogonal to the base vector number b */
+	float  *split_ptr = t->split + node * t->ndim;
+
+	bzero(split_ptr, t->ndim * sizeof(float));
+	split_ptr[n->splitdim] = 1;
 
 #if DEBUG_KDTREEBUILD
-    fts_post("Splitplane of node %i: ", node);
-    vec_post(fmat_get_ptr(n->split), 1, t->ndim, "\n");
+	fts_post("Splitplane of node %i: ", node);
+	vec_post(split_ptr, 1, t->ndim, "\n");
 #endif
+    }
     /* FALLTHROUGH */
     case dmode_orthogonal:
 	n->splitnorm = 1;	/* splitplane implicit orthogonal to splitdim */
@@ -167,7 +160,6 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
 static int decompose_node (kdtree_t *t, int node, int level, int use_sigma) 
 {
     int i, nice_node = 0, splitdim;
-    float *sigmaptr  = use_sigma  ?  fmat_get_ptr(t->sigma)  :  NULL;
 
 #if PROFILE_BUILD
     t->profile.mean++;
@@ -203,10 +195,6 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
     }
     t->nodes[node].splitdim = splitdim;
     if (!nice_node) fts_post("warning: can't find non-degenerate dimension to split node %d at level %d, using dimension %d\n", node, level, splitdim);
-
-    /* always create node mean vector */
-    t->nodes[node].mean = fmat_create(t->ndim, 1);
-    fts_object_refer((fts_object_t *) t->nodes[node].mean);
 
     switch (t->mmode)
     { /* N.B.: middle and mean are only linearly  affected by sigma */
@@ -303,8 +291,6 @@ static float distV2H_weighted (const float* vect, int stride, float* plane,
 /* vector to node distance */
 float distV2N (kdtree_t* t, const float *x, const int node)
 {
-    node_t *n = &t->nodes[node];
-
 #if PROFILE_BUILD
     t->profile.v2n++;
 #endif
@@ -312,10 +298,10 @@ float distV2N (kdtree_t* t, const float *x, const int node)
     switch (t->dmode)
     {
     case dmode_orthogonal:
-	return distV2orthoH(x, fmat_get_ptr(n->mean), n->splitdim);
+	return distV2orthoH(x, t->mean + node * t->ndim, t->nodes[node].splitdim);
     case dmode_hyperplane:
-	return distV2H(x, fmat_get_ptr(n->split), 
-		          fmat_get_ptr(n->mean), t->ndim, n->splitnorm);
+	return distV2H(x, t->split + node * t->ndim, 
+		          t->mean  + node * t->ndim, t->ndim, t->nodes[node].splitnorm);
     default:
 	fts_post("error: unknown mode %d", t->dmode);
 	return 0;
@@ -325,8 +311,8 @@ float distV2N (kdtree_t* t, const float *x, const int node)
 float distV2N_weighted (kdtree_t* t, const float *x, int stride, 
 			const float *sigma, const int node)
 {
-    node_t *n    = &t->nodes[node];
-    float  *mean = fmat_get_ptr(n->mean);
+    kdtree_node_t *n    = &t->nodes[node];
+    float  *mean = t->mean + node * t->ndim;
 
 #if PROFILE_BUILD
     t->profile.v2n++;
@@ -336,7 +322,7 @@ float distV2N_weighted (kdtree_t* t, const float *x, int stride,
     case dmode_orthogonal:
 	return distV2orthoH_weighted(x, stride, mean, sigma, n->splitdim);
     case dmode_hyperplane:
-	return distV2H_weighted(x, stride, fmat_get_ptr(n->split), mean, sigma, t->ndim, n->splitnorm);
+	return distV2H_weighted(x, stride, t->split + node * t->ndim, mean, sigma, t->ndim, n->splitnorm);
     default:
 	fts_post("error: unknown mode %d", t->dmode);
 	return 0;
@@ -436,7 +422,7 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 #if DEBUG_KDTREEBUILD
 		fts_post("Node #%i (%i..%i): mean = ", 
 			 n, t->nodes[n].startind, t->nodes[n].endind); 
-		vec_post(fmat_get_ptr(t->nodes[n].mean), 1, t->ndim, "\n");
+		row_post(t->mean, n, t->ndim, "\n");
 #endif
 		i = t->nodes[n].startind; 
 		j = t->nodes[n].endind;
@@ -445,11 +431,11 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 		{ /* sort node vectors by distance to splitplane */
 		    while (distV2N(t, kdtree_get_vector(t, i), n) <= 0) 
 		    {
-			i++;	if (i >= t->ndata) fts_post("n %d: i=%d\n", n, i);
+			i++;	// if (i >= t->ndata) fts_post("n %d: i=%d\n", n, i);
 		    }
 		    while (distV2N(t, kdtree_get_vector(t, j), n) > 0) 
 		    {
-			j--;	if (j < 0) fts_post("n %d: j=%d\n", n, j);
+			j--;	// if (j < 0) fts_post("n %d: j=%d\n", n, j);
 		    }
 		    if (i < j) 
 		    { 
@@ -465,7 +451,7 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 #if DEBUG_KDTREEBUILD
 		fts_post("degenerate Node #%i (%i..%i): splitting at %d, %d  mean = ", 
 			 n, t->nodes[n].startind, t->nodes[n].endind, j, i); 
-		vec_post(fmat_get_ptr(t->nodes[n].mean), 1, t->ndim, "\n");
+		row_post(t->mean, n, t->ndim, "\n");
 #endif		
 	    }
 
@@ -481,36 +467,3 @@ void kdtree_build (kdtree_t* t, int use_sigma)
     }
 }
 
-
-void kdtree_init_data (kdtree_t* t, int h, int vect_num, int dim) 
-{
-    int i;
-
-    t->ndim   = dim;
-    t->ndata  = vect_num;
-    t->height = h;
-
-    /* init nodes */
-    t->nnodes = pow2(h)     - 1;
-    t->ninner = pow2(h - 1) - 1;
-    t->nodes  = fts_realloc(t->nodes, t->nnodes * sizeof(node_t));
-    bzero(t->nodes, t->nnodes * sizeof(node_t));
-
-    if (t->nnodes > 0)
-    {   /* init root node */
-	t->nodes[0].startind = 0;		   
-	t->nodes[0].endind   = t->ndata - 1;
-	t->nodes[0].size     = t->ndata;
-    }
-
-    /* init index list */
-    t->dataalloc = t->data->alloc / dim; /* index alloc size = data alloc rows */
-    t->dataindex = fts_realloc(t->dataindex, t->dataalloc * sizeof(int));
-
-    for (i = 0; i < t->ndata; i++)
-	t->dataindex[i] = i;
-
-    /* init search stack size according to tree height 
-       (with heuristic margin of 4 times) */
-    kdtree_stack_grow(&t->stack, t->height * 4);
-}

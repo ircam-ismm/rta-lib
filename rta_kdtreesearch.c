@@ -1,5 +1,5 @@
 
-#include "kdtree.h"
+#include "rta_kdtree.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -95,14 +95,14 @@ static int maxArr (float* array, int size)
     return index;
 }
 
-static float euclidean_distance (float* v1, float* v2, int dim) 
+static float euclidean_distance (float* v1, int stride1, float* v2, int dim) 
 {
-    int i;
+    int i, i1;
     float sum = 0;
 
-    for (i = 0; i < dim; i++) 
+    for (i = 0, i1 = 0; i < dim; i++, i1 += stride1) 
     {
-	float diff = v2[i] - v1[i];
+	float diff = v2[i] - v1[i1];
 	sum += diff * diff;
     }
 
@@ -129,12 +129,12 @@ static float weighted_euclidean_distance (float* v1, int stride1, float* v2, flo
 	   d[K] = distance of the Kth nearest neighbour
    return: actual number of found neighbours */
 int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const float r, 
-		       /* out */ float *indx, float *dist) 
+		       int use_sigma, /* out */ float *indx, float *dist) 
 {
     int    kmax         = 0; 		/* index of current kth neighbour */
     int    leaves_start = t->ninner;	/* first leaf node */
     float  sentinel     = (r == 0 ? MAX_FLOAT : r);
-    float *sigmaptr     = fmat_get_ptr(t->sigma);
+    float *sigmaptr     = t->sigma;
     float  dxx;	  	     		/* distance between 2 vectors */
     int    i;	  	     		/* current processed vector */
 
@@ -179,8 +179,12 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 #endif
 		for (i = istart; i <= iend; i++)
 		{
-		    dxx = weighted_euclidean_distance(vector, stride, 
+		    if (use_sigma)
+			dxx = weighted_euclidean_distance(vector, stride, 
 				kdtree_get_vector(t, i), sigmaptr, t->ndim);
+		    else
+			dxx = euclidean_distance(vector, stride, 
+				kdtree_get_vector(t, i), t->ndim);
 #if PROFILE_SEARCH
 		    t->profile.v2v++;
 #endif
