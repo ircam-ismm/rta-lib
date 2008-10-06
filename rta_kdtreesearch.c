@@ -233,7 +233,13 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 	    }
 	    else 
 	    {	// branched node
-		float d = distV2N_weighted(t, vector, stride, sigmaptr, cur.node);
+		float d;
+
+		if (use_sigma)
+		    d = distV2N_weighted(t, vector, stride, sigmaptr, cur.node);
+		else
+		    d = distV2N_stride(t, vector, stride, cur.node);
+
 #if DEBUG_KDTREESEARCH
 		fts_post("Inner node %d  d %f  cur.dist %f --> push max %f\n", 
 			 cur.node, d, cur.dist, MAX(cur.dist, d*d));

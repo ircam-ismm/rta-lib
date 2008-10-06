@@ -273,8 +273,8 @@ static float distV2H_stride (const float* vect, int stride, float* plane,
     }
     return (dotprod / norm);
 }
-static float distV2H_weighted (const float* vect, int stride, float* plane, 
-			       float* mean, const float *sigma, int ndim, float norm) 
+static float distV2H_weighted (const float* vect, int stride, const float* plane, 
+			      const float* mean, const float *sigma, int ndim, float norm) 
 {
     // standard algebra computing
     int i, iv;
@@ -289,7 +289,7 @@ static float distV2H_weighted (const float* vect, int stride, float* plane,
 
 
 /* vector to node distance */
-float distV2N (kdtree_t* t, const float *x, const int node)
+float distV2N (kdtree_t* t, const float *x, int node)
 {
 #if PROFILE_BUILD
     t->profile.v2n++;
@@ -298,16 +298,37 @@ float distV2N (kdtree_t* t, const float *x, const int node)
     switch (t->dmode)
     {
     case dmode_orthogonal:
-	return distV2orthoH(x, t->mean + node * t->ndim, t->nodes[node].splitdim);
+	return distV2orthoH(x, t->mean + node * t->ndim, 
+			       t->nodes[node].splitdim);
     case dmode_hyperplane:
 	return distV2H(x, t->split + node * t->ndim, 
-		          t->mean  + node * t->ndim, t->ndim, t->nodes[node].splitnorm);
+			  t->mean  + node * t->ndim, t->ndim, 
+			  t->nodes[node].splitnorm);
     default:
 	fts_post("error: unknown mode %d", t->dmode);
 	return 0;
     }
 }
+float distV2N_stride (kdtree_t* t, const float *x, int stride, int node)
+{
+#if PROFILE_BUILD
+    t->profile.v2n++;
+#endif
 
+    switch (t->dmode)
+    {
+    case dmode_orthogonal:
+	return distV2orthoH_stride(x, stride, t->mean + node * t->ndim, 
+				              t->nodes[node].splitdim);
+    case dmode_hyperplane:
+	return distV2H_stride(x, stride, t->split + node * t->ndim, 
+			                 t->mean  + node * t->ndim, t->ndim, 
+			                 t->nodes[node].splitnorm);
+    default:
+	fts_post("error: unknown mode %d", t->dmode);
+	return 0;
+    }
+}
 float distV2N_weighted (kdtree_t* t, const float *x, int stride, 
 			const float *sigma, const int node)
 {
