@@ -1,21 +1,40 @@
 /**
- * @file	rta_kdtree.h
- * @author	Diemo Schwarz
- * @date	29.9.2008
- * @version	1.0 
- *
- * @brief	k-dimensional search tree
- *
- * Efficient multidimensional binary search tree with logarithmic time
- * complexity: From about 80-100 points, the number of comparisions
- * doesn't rise any more perceptibly.
- *
- *
- * Dimensions can be weighted while building the tree, and while
- * searching. The weight is 1 / sigma, just as in
- * mnm.mahalanobis. Sigma = 0 means: ignore this dimension.
- *
- * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
+@file	rta_kdtree.h
+@author	Diemo Schwarz
+@date	29.9.2008
+@version	1.0 
+
+@brief	k-dimensional search tree
+
+Efficient multidimensional binary search tree with logarithmic time
+complexity: From about 80-100 points, the number of comparisions
+doesn't rise any more perceptibly.
+
+
+Dimensions can be weighted while building the tree, and while
+searching. The weight is 1 / sigma, just as in
+mnm.mahalanobis. Sigma = 0 means: ignore this dimension.
+
+Call sequence for builing and using the tree:
+
+- 1. initialise tree structure with kdtree_init()
+
+- 2. set parameters like decomposition mode kdtree_t#dmode and mean
+  mode kdtree_t#mmode, tree height adaptation kdtree_t#givenheight
+
+- 3. set data vector with kdtree_set_data(), this returns the number
+  of nodes the tree will build
+
+- 4. initialise nodes, possibly providing memory allocated according
+  the number of nodes returned above, with kdtree_init_nodes()
+
+- 5. optionally set weights for building with kdtree_set_sigma()
+
+- 6. build the tree with kdtree_build()
+
+- 7. then you can query the tree with kdtree_search_knn().
+
+Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
 
 #ifndef _RTA_KDTREE_H_
@@ -28,9 +47,6 @@
 #define PROFILE_SEARCH 1
 #define PROFILE	       (PROFILE_BUILD || PROFILE_SEARCH)
 
-#define MAX_FLOAT 0x7FFFFFFF  
-
-#define MAX_NODES 100
 
 /** stack element for search algorithm */
 typedef struct _elem_struct
@@ -271,17 +287,13 @@ void kdtree_init_nodes (kdtree_t *self, kdtree_node_t *nodes, float *means, floa
 void kdtree_build (kdtree_t *self, int use_sigma);
 
 
-/** init tree according to data */
-void kdtree_init_data (kdtree_t* t, int h, int vect_num, int dim);
-
-
-/** rebuild search tree from changed data or weights 
+/** TBI: rebuild search tree from changed data or weights 
  *
  * @param t		kd-tree structure
  * @param use_sigma	use weights for distance calculations while rebuilding tree*/
 void kdtree_rebuild (kdtree_t* t, int use_sigma);
 
-/** (re-)insert data vectors into tree.  
+/** TBI: (re-)insert data vectors into tree.  
  *
  * New or changed vectors are already within or appended to
  * kdtree_t::data.  If index < ndata, move to correct node, otherwise
@@ -293,7 +305,7 @@ void kdtree_rebuild (kdtree_t* t, int use_sigma);
  */
 void kdtree_insert (kdtree_t* t, int index, int num);
 
-/** remove data vectors from tree.  
+/** TBI: remove data vectors from tree.  
  *
  * Signal removal of rows in kdtree_t::data from search tree.  
  *
