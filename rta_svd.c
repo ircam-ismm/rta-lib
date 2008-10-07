@@ -449,7 +449,8 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
       {
         break;
       }
-      if (rta_abs(e[k]) <= RTA_REAL_EPSILON * (rta_abs(S[k]) + rta_abs(S[k+1]))) 
+      if (rta_abs(e[k]) <= RTA_REAL_MIN ||
+          rta_abs(e[k]) <= RTA_REAL_EPSILON * (rta_abs(S[k]) + rta_abs(S[k+1]))) 
       {
         e[k] = 0.0;
         break;
@@ -470,7 +471,8 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
           break;
         }
         t = (ks != p ? rta_abs(e[ks]) : 0.) + (ks != k+1 ? rta_abs(e[ks-1]) : 0.);
-        if (rta_abs(S[ks]) <= RTA_REAL_EPSILON * t)  
+        if (rta_abs(S[ks]) <= RTA_REAL_MIN ||
+            rta_abs(S[ks]) <= RTA_REAL_EPSILON * t)  
         {
           S[ks] = 0.0;
           break;
@@ -1010,7 +1012,8 @@ rta_svd_stride(rta_real_t * output_U, const int ou_stride,
       {
         break;
       }
-      if (rta_abs(e[k]) <= RTA_REAL_EPSILON * 
+      if (rta_abs(e[k]) <= RTA_REAL_MIN ||
+          rta_abs(e[k]) <= RTA_REAL_EPSILON * 
           (rta_abs(S[k*s_stride]) + rta_abs(S[(k+1)*s_stride]))) 
       {
         e[k] = 0.0;
@@ -1032,7 +1035,8 @@ rta_svd_stride(rta_real_t * output_U, const int ou_stride,
           break;
         }
         t = (ks != p ? rta_abs(e[ks]) : 0.) + (ks != k+1 ? rta_abs(e[ks-1]) : 0.);
-        if (rta_abs(S[ks*s_stride]) <= RTA_REAL_EPSILON * t)  
+        if (rta_abs(S[ks*s_stride]) <= RTA_REAL_MIN ||
+            rta_abs(S[ks*s_stride]) <= RTA_REAL_EPSILON * t)  
         {
           S[ks*s_stride] = 0.0;
           break;
