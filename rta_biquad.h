@@ -8,11 +8,11 @@
  * Based on the "Cookbook formulae for audio EQ biquad filter
  * coefficients" by Robert Bristow-Johnson.
  *
- * \htmlonly <pre> 
- * y(n) = b0 x(n) + b1 x(n-1) + b2 x(n-2) 
- *                - a1 x(n-1) - a2 x(n-2) 
+ * \htmlonly <pre>
+ * y(n) = b0 x(n) + b1 x(n-1) + b2 x(n-2)
+ *                - a1 x(n-1) - a2 x(n-2)
  * </pre> \endhtmlonly
- * 
+ *
  * (This is Matlab convention, MaxMSP biquad~ swaps the names for a
  * and b.)
  *
@@ -51,7 +51,7 @@ extern "C" {
 void rta_biquad_lowpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
 
-/**  
+/** 
  * Biquad coefficients for a low-pass filter.
  * H(s) = 1 / (s^2 + s/q + 1)
  *
@@ -188,7 +188,7 @@ void rta_biquad_bandpass_constant_peak_coefs_stride(
  * @param f0 is the cutoff frequency, normalised by the nyquist
  * frequency.
  * @param q must be > 0. and is generally >= 0.5 for audio
- * filtering. 
+ * filtering.
  */
 void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
                             const rta_real_t f0, const rta_real_t q);
@@ -213,7 +213,7 @@ void rta_biquad_notch_coefs_stride(
   const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficients for an all-pass filter. 
+ * Biquad coefficients for an all-pass filter.
  * H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -228,7 +228,7 @@ void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
 
 /** 
- * Biquad coefficients for an all-pass filter. 
+ * Biquad coefficients for an all-pass filter.
  * H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *
  * @param b is a vector of feed-forward coefficients. To apply a
@@ -372,14 +372,14 @@ void rta_biquad_highshelf_coefs_stride(
  *
  * @param b is a vector of feed-forward coefficients
  * @param a is a vector of feed-backward coefficients
- * @param type can be: 
+ * @param type can be:
  * <pre>
  *   lowpass: H(s) = 1 / (s^2 + s/q + 1)
  *   highpass: H(s) = s^2 / (s^2 + s/q + 1)
  *   bandpass_cst_skirt: H(s) = s / (s^2 + s/q + 1)
- *        (The peak gain is q*gain) 
+ *        (The peak gain is q*gain)
  *   bandpass_cst_peak: H(s) = (s/q) / (s^2 + s/q + 1)
- *        (The peak gain is gain) 
+ *        (The peak gain is gain)
  *   notch: H(s) = (s^2 + 1) / (s^2 + s/q + 1)
  *   allpass: H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *   peaking: H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
@@ -412,14 +412,14 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
  * @param b_stride is 'b' stride
  * @param a is a vector of feed-backward coefficients
  * @param a_stride is 'a' stride
- * @param type can be: 
+ * @param type can be:
  * <pre>
  *   lowpass: H(s) = 1 / (s^2 + s/q + 1)
  *   highpass: H(s) = s^2 / (s^2 + s/q + 1)
  *   bandpass_cst_skirt: H(s) = s / (s^2 + s/q + 1)
- *        (The peak gain is q*gain) 
+ *        (The peak gain is q*gain)
  *   bandpass_cst_peak: H(s) = (s/q) / (s^2 + s/q + 1)
- *        (The peak gain is gain) 
+ *        (The peak gain is gain)
  *   notch: H(s) = (s^2 + 1) / (s^2 + s/q + 1)
  *   allpass: H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *   peaking: H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
@@ -447,19 +447,17 @@ void rta_biquad_coefs_stride(
 
 
 /** 
- * Biquad computation, using a transposed direct form II.
+ * Biquad computation, using a direct form I.
  *
  * <pre>
- * x
- * --------+---------------+---------------+
- *         |               |               |
- *         |b2             |b1             |b0
- *         V               V               V            y
- *        (+)--->[z-1]--->(+)--->[z-1]--->(+)----+------->
- *         ^               ^                     |
- *         |-a2            |-a1                  |
- *         |               |                     |
- *         +---------------+---------------------+
+ * x           b0                                   y
+ * --------+----->----->(  +  )-------->-----+------->
+ *         |            ^ ^ ^ ^              |
+ *         V   b1      / /   \ \        -a1  V
+ *       [x-1]--->----/ /     \ \------<---[y-1]
+ *         |           /       \             |
+ *         V   b2     /         \       -a2  V
+ *       [x-2]--->---/           \-----<---[y-2]
  * 
  * </pre>
  *
@@ -468,24 +466,21 @@ void rta_biquad_coefs_stride(
  * is b[1] and b2 is b[2].
  * @param a is a vector of feed-backward coefficients. Note that a1 is
  * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
- * @param state_1 is the one sample delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
- * @param state_2 is the two samples delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
+ * @param states is a vector of 4 elements: for an input 'x' and an
+ * output 'y', the states are, in that order, x(n-1), x(n-2), y(n-1),
+ * and y(n-2). Both can be initialised with 0. or the last computed
+ * values, which are updated by this function.
  *
  * @return the output sample y
  */
-inline rta_real_t rta_biquad(const rta_real_t x,
-                             const rta_real_t * b, const rta_real_t * a,
-                             rta_real_t * state_1, rta_real_t * state_2);
+inline rta_real_t rta_biquad_df1(const rta_real_t x,
+                                 const rta_real_t * b, const rta_real_t * a,
+                                 rta_real_t * states);
 
 /** 
  * Biquad computation, using a transposed direct form II.
  *
  * <pre>
- * 
  * x
  * --------+---------------+---------------+
  *         |               |               |
@@ -496,8 +491,39 @@ inline rta_real_t rta_biquad(const rta_real_t x,
  *         |-a2            |-a1                  |
  *         |               |                     |
  *         +---------------+---------------------+
+ *
+ * </pre>
+ *
+ * @param x is an input sample
+ * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
+ * is b[1] and b2 is b[2].
+ * @param a is a vector of feed-backward coefficients. Note that a1 is
+ * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
+ * @param states is a vector of 2 elements: states[0] is the one
+ * sample delay state and states[1] is the two samples delay
+ * state. Both can be initialised with 0. or the last computed values,
+ * which are updated by this function.
+ *
+ * @return the output sample y
+ */
+inline rta_real_t rta_biquad_df2t(const rta_real_t x,
+                                  const rta_real_t * b, const rta_real_t * a,
+                                  rta_real_t * states);
+
+/** 
+ * Biquad computation, using a direct form I.
+ *
+ * <pre>
+ * x           b0                                   y
+ * --------+----->----->(  +  )-------->-----+------->
+ *         |            ^ ^ ^ ^              |
+ *         V   b1      / /   \ \        -a1  V
+ *       [x-1]--->----/ /     \ \------<---[y-1]
+ *         |           /       \             |
+ *         V   b2     /         \       -a2  V
+ *       [x-2]--->---/           \-----<---[y-2]
  * 
- * </pre> 
+ * </pre>
  *
  * @param x is an input sample
  * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
@@ -506,26 +532,64 @@ inline rta_real_t rta_biquad(const rta_real_t x,
  * @param a is a vector of feed-backward coefficients. Note that a1 is
  * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
  * @param a_stride is 'a' stride
- * @param state_1 is the one sample delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
- * @param state_2 is the two samples delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
+ * @param states is a vector of 4 elements: for an input 'x' and an
+ * output 'y', the states are, in that order, x(n-1), x(n-2), y(n-1),
+ * and y(n-2). Both can be initialised with 0. or the last computed
+ * values, which are updated by this function.
+ * @param s_stride is 'states' strides.
  *
  * @return the output sample y
  */
-inline rta_real_t rta_biquad_stride(
+inline rta_real_t rta_biquad_df1_stride(
+  const rta_real_t x,
+  const rta_real_t * b, const int a_stride,
+  const rta_real_t * a, const int b_stride,
+  rta_real_t * states, const int s_stride);
+
+/** 
+ * Biquad computation, using a transposed direct form II.
+ *
+ * <pre>
+ *
+ * x
+ * --------+---------------+---------------+
+ *         |               |               |
+ *         |b2             |b1             |b0
+ *         V               V               V            y
+ *        (+)--->[z-1]--->(+)--->[z-1]--->(+)----+------->
+ *         ^               ^                     |
+ *         |-a2            |-a1                  |
+ *         |               |                     |
+ *         +---------------+---------------------+
+ *
+ * </pre>
+ *
+ * @param x is an input sample
+ * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
+ * is b[1] and b2 is b[2].
+ * @param b_stride is 'b' stride
+ * @param a is a vector of feed-backward coefficients. Note that a1 is
+ * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
+ * @param a_stride is 'a' stride
+ * @param states is a vector of 2 elements: states[0] is the one
+ * sample delay state and states[1] is the two samples delay
+ * state. Both can be initialised with 0. or the last computed values,
+ * which are updated by this function.
+ * @param s_stride is 'states' strides.
+ *
+ * @return the output sample y
+ */
+inline rta_real_t rta_biquad_df2t_stride(
   const rta_real_t x,
   const rta_real_t * b, const int b_stride,
   const rta_real_t * a, const int a_stride,
-  rta_real_t * state_1, rta_real_t * state_2);
+  rta_real_t * states, const int s_stride);
 
 /** 
- * Biquad computation on a vector of samples.
+ * Biquad computation on a vector of samples, using a direct form I.
  *
- * \see rta_biquad
- * 
+ * \see rta_biquad_df1
+ *
  * @param y is a vector of output samples. Its size is 'x_size'
  * @param x is a vector of input samples. Its size is 'x_size'
  * @param x_size is the size of 'y' and 'x'
@@ -533,23 +597,44 @@ inline rta_real_t rta_biquad_stride(
  * is b[1] and b2 is b[2].
  * @param a is a vector of feed-backward coefficients. Note that a1 is
  * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
- * @param state_1 is the one sample delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
- * @param state_2 is the two samples delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
+ * @param states is a vector of 4 elements: for an input 'x' and an
+ * output 'y', the states are, in that order, x(n-1), x(n-2), y(n-1),
+ * and y(n-2). Both can be initialised with 0. or the last computed
+ * values, which are updated by this function.
  */
-void rta_biquad_vector(rta_real_t * y, 
-                       const rta_real_t * x, const unsigned int x_size,
-                       const rta_real_t * b, const rta_real_t * a, 
-                       rta_real_t * state_1, rta_real_t * state_2);
+void rta_biquad_df1_vector(rta_real_t * y,
+                           const rta_real_t * x, const unsigned int x_size,
+                           const rta_real_t * b, const rta_real_t * a,
+                           rta_real_t * states);
 
 /** 
- * Biquad computation on a vector of samples.
+ * Biquad computation on a vector of samples, using a transposed
+ * direct form II.
  *
- * \see rta_biquad
- * 
+ * \see rta_biquad_df2t
+ *
+ * @param y is a vector of output samples. Its size is 'x_size'
+ * @param x is a vector of input samples. Its size is 'x_size'
+ * @param x_size is the size of 'y' and 'x'
+ * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
+ * is b[1] and b2 is b[2].
+ * @param a is a vector of feed-backward coefficients. Note that a1 is
+ * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
+ * @param states is a vector of 2 elements: states[0] is the one
+ * sample delay state and states[1] is the two samples delay
+ * state. Both can be initialised with 0. or the last computed values,
+ * which are updated by this function.
+ */
+void rta_biquad_df2t_vector(rta_real_t * y,
+                            const rta_real_t * x, const unsigned int x_size,
+                            const rta_real_t * b, const rta_real_t * a,
+                            rta_real_t * states);
+
+/** 
+ * Biquad computation on a vector of samples, using a direct form I.
+ *
+ * \see rta_biquad_df1
+ *
  * @param y is a vector of output samples. Its size is 'x_size'
  * @param y_stride is 'y' stride
  * @param x is a vector of input samples. Its size is 'x_size'
@@ -561,19 +646,48 @@ void rta_biquad_vector(rta_real_t * y,
  * @param a is a vector of feed-backward coefficients. Note that a1 is
  * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
  * @param a_stride is 'a' stride
- * @param state_1 is the one sample delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
- * @param state_2 is the two samples delay state. It can be initialised
- * with 0. or the last computed value, which is updated by this
- * function.
+ * @param states is a vector of 4 elements: for an input 'x' and an
+ * output 'y', the states are, in that order, x(n-1), x(n-2), y(n-1),
+ * and y(n-2). Both can be initialised with 0. or the last computed
+ * values, which are updated by this function.
+ * @param s_stride is 'states' strides.
  */
-void rta_biquad_vector_stride(
+void rta_biquad_d1_vector_stride(
   rta_real_t * y, const int y_stride,
   const rta_real_t * x, const int x_stride, const unsigned int x_size,
   const rta_real_t * b, const int b_stride,
   const rta_real_t * a, const int a_stride,
-  rta_real_t * state_1, rta_real_t * state_2);
+  rta_real_t * states, const int s_stride);
+
+/** 
+ * Biquad computation on a vector of samples, using a transposed
+ * direct form II.
+ *
+ * \see rta_biquad_df2t
+ *
+ * @param y is a vector of output samples. Its size is 'x_size'
+ * @param y_stride is 'y' stride
+ * @param x is a vector of input samples. Its size is 'x_size'
+ * @param x_stride is 'x' stride
+ * @param x_size is the size of 'y' and 'x'
+ * @param b is a vector of feed-forward coefficients. b0 is b[0], b1
+ * is b[1] and b2 is b[2].
+ * @param b_stride is 'b' stride
+ * @param a is a vector of feed-backward coefficients. Note that a1 is
+ * a[0] and a2 is a[1] (and a0 is supposed to be 1.).
+ * @param a_stride is 'a' stride
+ * @param states is a vector of 2 elements: states[0] is the one
+ * sample delay state and states[1] is the two samples delay
+ * state. Both can be initialised with 0. or the last computed values,
+ * which are updated by this function.
+ * @param s_stride is 'states' strides.
+ */
+void rta_biquad_df2t_vector_stride(
+  rta_real_t * y, const int y_stride,
+  const rta_real_t * x, const int x_stride, const unsigned int x_size,
+  const rta_real_t * b, const int b_stride,
+  const rta_real_t * a, const int a_stride,
+  rta_real_t * states, const int s_stride);
 
 #ifdef __cplusplus
 }

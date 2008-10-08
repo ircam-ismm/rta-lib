@@ -32,18 +32,21 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   double * state;
   float * float_state; /* matlab float */
   int biquad_dim = 0;
+  enum {df1, df2t} biquad_type = df1;
+  char * biquad_name;
 
   /* rta inputs */
   rta_real_t * real_b;
   rta_real_t * real_a; /* [a1, a2] */
   rta_real_t * real_input;
   rta_real_t * real_state;
-  
+  unsigned int states_nb;
+
   /* rta outputs */
   rta_real_t * output;
   
   /* other */
-  int i;
+  int i,j;
 
   /* input arguments */
 
@@ -133,23 +136,64 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
   }
 #endif
 
-  plhs[1] = mxCreateNumericMatrix(2, 1, RTA_MEX_REAL_TYPE, mxREAL);
+  if(nrhs > 5)
+  {
+    if(mxIsChar(prhs[5]) != 1)
+    {
+      mexErrMsgTxt("Biquad type must be a string.");
+    }
+
+    biquad_name = mxArrayToString(prhs[5]);
+    if(0 == strcmp(biquad_name, "df1"))
+    {
+      biquad_type = df1;
+    }
+    else if(0 == strcmp(biquad_name, "df2t"))
+    {
+      biquad_type = df2t;
+    }
+    else
+    {
+      mexErrMsgTxt("Bad biquad type.");
+    }
+  }
+    
+  switch(biquad_type)
+  {
+    case df1:
+      states_nb = 4;
+      break;
+
+    case df2t:
+      states_nb = 2;
+      break;
+
+    default:
+      break;
+  }
+
+  plhs[1] = mxCreateNumericMatrix(states_nb, 1, RTA_MEX_REAL_TYPE, mxREAL);
   real_state = mxGetData(plhs[1]);
 
   /* copy state as it will change (and may be output) */
-  if(nrhs > 3 && mxGetNumberOfElements(prhs[3]) >= 2)
+  if(nrhs > 3 && mxGetNumberOfElements(prhs[3]) >= states_nb)
   {
     if(mxGetClassID(prhs[3]) == mxSINGLE_CLASS)
     {
       float_state = (float *) mxGetData(prhs[3]);
-      real_state[0] = (rta_real_t) float_state[0];
-      real_state[1] = (rta_real_t) float_state[1];
+      
+      for(i = 0; i < states_nb; i++)
+      {
+        real_state[i] = (rta_real_t) float_state[i];
+      }
     }
     else
     {
       state = mxGetData(prhs[3]);
-      real_state[0] = (rta_real_t) state[0];
-      real_state[1] = (rta_real_t) state[1];
+      for(i = 0; i < states_nb; i++)
+      {
+        real_state[i] = (rta_real_t) state[i];
+      }
     }
   }
 
@@ -175,28 +219,70 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
 
   if(biquad_dim == 1)
   {
-    const rta_real_t initial_state_0 = real_state[0];
-    const rta_real_t initial_state_1 = real_state[1];    
+    rta_real_t initial_state[states_nb];
+    for(j = 0 ; j < states_nb ; j ++)
+    {
+      initial_state[j] = real_state[j];
+    }
+
     for(i=0; i<input_n*input_m; i+=input_m)
     {
-      real_state[0] = initial_state_0;
-      real_state[1] = initial_state_1;
-      rta_biquad_vector(output + i, real_input + i, input_m, 
-                        real_b, real_a + 1, real_state, real_state + 1);
+      for(j = 0 ; j < states_nb ; j ++)
+      {
+        real_state[j] = initial_state[j];
+      }
+
+      switch(biquad_type)
+      {
+        case df1:
+          rta_biquad_df1_vector(output + i, real_input + i, input_m, 
+                                real_b, real_a + 1, real_state);
+          break;
+
+        case df2t:
+          rta_biquad_df2t_vector(output + i, real_input + i, input_m, 
+                                 real_b, real_a + 1, real_state);
+          break;
+
+        default:
+          break;
+      }
     }
   }
   else
   {
-    const rta_real_t initial_state_0 = real_state[0];
-    const rta_real_t initial_state_1 = real_state[1];    
+    rta_real_t initial_state[states_nb];
+    for(j = 0 ; j < states_nb ; j ++)
+    {
+      initial_state[j] = real_state[j];
+    }
+
     for(i=0; i<input_m; i++)
     {
-      real_state[0] = initial_state_0;
-      real_state[1] = initial_state_1;
-      rta_biquad_vector_stride(output + i, input_m, 
-                               real_input + i, input_m, input_n,
-                               real_b, 1, real_a + 1, 1,
-                               real_state, real_state + 1);
+      for(j = 0 ; j < states_nb ; j ++)
+      {
+        real_state[j] = initial_state[j];
+      }
+      
+      switch(biquad_type)
+      {
+        case df1:
+          rta_biquad_df1_vector_stride(output + i, input_m, 
+                                       real_input + i, input_m, input_n,
+                                       real_b, 1, real_a + 1, 1,
+                                       real_state, 1);
+          break;
+
+        case df2t:
+          rta_biquad_df2t_vector_stride(output + i, input_m, 
+                                        real_input + i, input_m, input_n,
+                                        real_b, 1, real_a + 1, 1,
+                                        real_state, 1);
+          break;
+
+        default:
+          break;
+      }
     }
   }
 
