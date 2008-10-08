@@ -652,7 +652,7 @@ void rta_biquad_df2t_vector(rta_real_t * y,
  * values, which are updated by this function.
  * @param s_stride is 'states' strides.
  */
-void rta_biquad_d1_vector_stride(
+void rta_biquad_df1_vector_stride(
   rta_real_t * y, const int y_stride,
   const rta_real_t * x, const int x_stride, const unsigned int x_size,
   const rta_real_t * b, const int b_stride,
