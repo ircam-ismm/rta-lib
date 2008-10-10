@@ -35,7 +35,7 @@ int rta_ilog2(unsigned int n);
  * 
  * @return the smallest integer between 'm' and 'n'
  */
-inline int rta_imax(int m, int n);
+extern inline int rta_imax(int m, int n);
 
 /** 
  * Integer version of the minimum
@@ -45,7 +45,7 @@ inline int rta_imax(int m, int n);
  * 
  * @return the smallest integer between 'm' and 'n'
  */
-inline int rta_imin(int m, int n);
+extern inline int rta_imin(int m, int n);
 
 
 /** 
