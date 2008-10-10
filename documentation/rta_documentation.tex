@@ -19,17 +19,19 @@
 
 %%%%% definitions
 
-\newcommand{\theday}{9th}
-\newcommand{\themonth}{May}
+\newcommand{\theday}{10th}
+\newcommand{\themonth}{October}
 \newcommand{\theyear}{2008}
+
+\newcommand{\theversion}{revision 1.7}
+
 \newcommand{\thedate}{\theday\ \themonth\ \theyear\ (\theversion)}
-
-\newcommand{\theversion}{revision 1.6}
-
 
 \newcommand{\separation}{\vspace{1ex}}
 
 \newcommand{\rta}{\textit{RTA}}
+\newcommand{\Cpp}{\textit{C++}}
+\newcommand{\C}{\textit{C}}
 \newcommand{\htk}{\textit{HTK}}
 \newcommand{\atb}{\textit{Auditory Toolbox}}
 \newcommand{\lpc}{\textit{LPC}}
@@ -43,7 +45,7 @@
 \newcommand{\thebigtitle}{\rta\ Documentation\\
   Using the \rta\ library to compute on-line sound descriptors}
 
-\newcommand{\thetitle}{\rta\ documentation for sound descriptors}
+\newcommand{\thetitle}{\rta\ documentation}
 
 % \renewcommand{\contentsname}{}
 
@@ -128,21 +130,22 @@ squares of the samples, from \lpc, or as the first
 \label{sec:configuration}
 
 A file named \texttt{rta\_configuration.h} must be present within your
-sources in order to use the \rta\ library. An empty file means that
-the defaults settings are used for the compilation. 
+sources in order to use the \rta\ library. It is not included within
+the \rta\ source files. An empty file means that the defaults settings
+are used for the compilation.
 
 Instead of using the \texttt{malloc}, \texttt{realloc} and
 \texttt{free} functions from the \texttt{stdlib.h}, one can
 respectively define \texttt{rta\_malloc}, \texttt{rta\_realloc}
-and \texttt{rta\_free}.
+and \texttt{rta\_free}. (see \ref{sec:memory_allocation})
 
-The floating-point precision can be simple, double or long
-double, according to the definition of \texttt{RTA\_REAL\_TYPE} to
+The floating-point precision can be simple, double or long double,
+according to the definition of \texttt{RTA\_REAL\_TYPE} to
 respectively \texttt{RTA\_FLOAT\_TYPE}, \texttt{RTA\_DOUBLE\_TYPE} or
 \texttt{RTA\_LONG\_DOUBLE\_TYPE}. The constants in
 \texttt{rta\_float.h} are then redefined according to the proper type
 from \texttt{float.h}. The same applies to the functions in
-\texttt{rta\_math.h} from \texttt{math.h}.
+\texttt{rta\_math.h} from \texttt{math.h}. (see \ref{sec:real_types})
 
 Note that the long double precision is not supported when using the
 Apple's VecLib by setting \texttt{RTA\_USE\_VECLIB} to 1.
@@ -180,7 +183,7 @@ sample-rate is 44 kHz, we can use the function
 \texttt{rta\_downsample\_int\_mean} with a factor of 4. This function
 implies a low-pass filtering. The function
 \texttt{rta\_downsample\_int\_remove} can produce aliasing if the
-original signal contains information above the resulting
+original signal contains information above half of the resulting
 sample-rate. Note that the resulting samples vector-size is smaller,
 according to the given factor.
 
@@ -454,6 +457,135 @@ unacceptable when using the simple floating-point precision.
 
 Applying the \del\ computation again gives the \ddel\ values,
 \emph{adding a new delay of half of the \ddel\ filter-size}.
+
+\section{Style guide}
+\label{sec:style_guide}
+
+\subsection{Prefix}
+\label{sec:prefix}
+
+Any file, function, type definition, enumeration (enumerator and
+elements) and pre-compiler definition is \texttt{rta\_},
+\texttt{RTA\_}, \texttt{\_rta\_} or \texttt{\_RTA\_} prefixed. There are
+two exceptions to this, to respect the common usage:
+\begin{itemize}
+\item \texttt{NULL} is defined in \texttt{rta\_stdlib.h};
+\item mathematical constants in \texttt{rta\_math.h} are \texttt{M\_}
+  prefixed.
+\end{itemize}
+
+\subsection{Declarations and definitions}
+\label{sec:defines}
+
+A minimum number of \texttt{\#define} statements is used, to minimise
+the global effects:
+\begin{itemize}
+\item the \texttt{const} keyword is used for values fixed at
+  compilation time;
+\item the \texttt{inline} keyword is used for in-lined functions.
+\end{itemize}
+Moreover, the \texttt{static} keyword can be used to limit the
+definitions to a particular file.
+
+The pre-compiler definitions are used to provide transparent
+wrappers for types (see \ref{sec:real_types}), functions (see
+\ref{sec:memory_allocation}) or to prevent multiple inclusion of files
+(see \ref{sec:headers}).
+
+\subsection{Headers}
+\label{sec:headers}
+
+Any header prevents multiple inclusions, includes the \texttt{rta.h}
+header and allows a \Cpp\ inclusion. For a file named
+\texttt{rta\_filename.h}, the content begins as:
+\begin{verbatim}
+#ifndef _RTA_FILENAME_H_
+#define _RTA_FILENAME_H_ 1
+
+#include "rta.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+\end{verbatim}
+
+and it ends as:
+\begin{verbatim}
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _RTA_FILENAME_H_ */
+\end{verbatim}
+
+\subsection{Real types}
+\label{sec:real_types}
+
+Any function within \rta\ uses the \texttt{rta\_real\_t} type.
+
+\texttt{rta\_real\_t} is determined at compilation time by a
+\texttt{\#define} (not a \texttt{typedef}) in \texttt{rta\_types.h} to
+ensure a strict \texttt{float} or \texttt{double} replacement. (As a
+such, \texttt{rta\_real\_t} can be used with \texttt{typedef} and
+\texttt{sizeof} expression.) The functions from the standard header
+\texttt{math.h} are redefined in \texttt{rta\_math.h} to provide
+corresponding functions for the \texttt{rta\_real\_t} type. 
+
+You can define the pre-compiler variable \texttt{RTA\_REAL\_TYPE} to
+\texttt{RTA\_FLOAT\_TYPE}, \texttt{RTA\_DOUBLE\_TYPE} or
+\texttt{RTA\_LONG\_DOUBLE\_TYPE} for using respectively
+\texttt{float}, \texttt{double} or \texttt{long double} type as the
+effective representation of \texttt{rta\_real\_t}. Note that the
+latter is untested. The default is to use \texttt{RTA\_FLOAT\_TYPE} if
+\texttt{RTA\_REAL\_TYPE} is not defined into the user's
+\texttt{rta\_configuration.h}.
+
+The same applies to the \texttt{rta\_complex\_t} type. You can define
+the pre-compiler variable \texttt{RTA\_COMPLEX\_TYPE} to
+\texttt{RTA\_FLOAT\_TYPE}, \texttt{RTA\_DOUBLE\_TYPE} or
+\texttt{RTA\_LONG\_DOUBLE\_TYPE} for using respectively \texttt{float
+  complex}, \texttt{double complex} or \texttt{long double complex}
+type as the effective representation of \texttt{rta\_complex\_t}. Note
+that the latter is untested. The default is to use the same type as
+\texttt{RTA\_REAL\_TYPE} if \texttt{RTA\_COMPLEX\_TYPE} is not defined
+into the user's \texttt{rta\_configuration.h}.
+
+
+\subsection{Memory allocation}
+\label{sec:memory_allocation}
+
+The arrays of real values are not allocated within the \rta\ library,
+as they are manipulable outside of the library. They must be allocated
+beforehand, as no memory allocation is done during a function's call
+(except for the followings).
+
+Specific structures are private: they are defined into the \texttt{*.c}
+files, without the \texttt{\_t} suffix. As an example, there is a
+public declaration of \texttt{rta\_fft\_setup\_t} in
+\texttt{rta\_fft.h}:
+\begin{verbatim}
+typedef struct rta_fft_setup rta_fft_setup_t;
+\end{verbatim}
+And in \texttt{rta\_fft.c}, there is a private definition of
+\texttt{rta\_fft\_setup}, which may depend on the actual
+implementation.
+
+Two functions are provided for any private structure:
+\begin{itemize}
+\item a \texttt{\_setup\_new} post-fixed function to allocate the
+  structure by using the \texttt{rta\_malloc} function;
+\item a \texttt{\_setup\_delete} post-fixed function to release the
+  structure by using the \texttt{rta\_free} function;
+\end{itemize}
+
+Any function dealing with memory within \rta\ uses the functions from
+\texttt{rta\_stdlib\_t}. \texttt{rta\_malloc}, \texttt{rta\_realloc}
+and \texttt{rta\_free} are pre-compiler definitions that can be
+provided by the user's \texttt{rta\_configuration.h}. They must
+follow the declarations of respectively \texttt{malloc},
+\texttt{realloc} and \texttt{free} from the standard
+\texttt{stdlib.h}, which they are bind to if no user definition is
+given.
 
 \end{document}
 
