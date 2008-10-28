@@ -4,7 +4,7 @@ function [b, a] = rta_biquad_coefs (filter_type, f0, q, gain)
 % Compute the biquad coefficients b and a (to be used by rta_biquad and
 % matlab's filter functions), such as:
 % y(n) = b(1) x(n) + b(2) x(n-1) + b(3) x(n-2) 
-%                  - a(2) x(n-1) - a(3) x(n-2) 
+%                  - a(2) y(n-1) - a(3) y(n-2) 
 % Note that a(1) is always 1.
 %
 % filtertype can be:

@@ -1,4 +1,4 @@
-/**
+/** 
  * @file   rta_int.h
  * @author Jean-Philippe Lambert
  * @date   Thu Sep 12 18:10:41 2007

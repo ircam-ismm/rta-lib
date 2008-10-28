@@ -10,7 +10,7 @@
  *
  * \htmlonly <pre>
  * y(n) = b0 x(n) + b1 x(n-1) + b2 x(n-2)
- *                - a1 x(n-1) - a2 x(n-2)
+ *                - a1 y(n-1) - a2 y(n-2)
  * </pre> \endhtmlonly
  *
  * (This is Matlab convention, MaxMSP biquad~ swaps the names for a
