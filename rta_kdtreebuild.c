@@ -11,6 +11,9 @@
 #endif
 
 
+#define MAX_FLOAT 0x7FFFFFFF  
+
+
 static void compute_mean (kdtree_t *t, int node, int dim) 
 {
     kdtree_node_t *n        = &t->nodes[node];

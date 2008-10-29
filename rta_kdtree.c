@@ -31,9 +31,6 @@
 #include "rta_kdtree.h"
 
 
-#define MAX_FLOAT 0x7FFFFFFF
-
-
 const char *kdtree_dmodestr[] = { "orthogonal", "hyperplane", "pca" };
 const char *kdtree_mmodestr[] = { "mean", "middle", "median" };
 

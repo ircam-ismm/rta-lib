@@ -11,6 +11,9 @@
 #endif
 
 
+#define MAX_FLOAT 0x7FFFFFFF  
+
+
 /*
  *  optimised search stack
  */

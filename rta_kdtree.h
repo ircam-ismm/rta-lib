@@ -37,6 +37,10 @@ Call sequence for builing and using the tree:
 Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
 
+/* build doc with:
+   doxygen doc/distlib.doxyfile; make -C doc/latex/ 
+*/
+
 #ifndef _RTA_KDTREE_H_
 #define _RTA_KDTREE_H_
 
