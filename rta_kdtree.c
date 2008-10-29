@@ -289,11 +289,11 @@ void kdtree_init (kdtree_t *self)
 
 void kdtree_free (kdtree_t *self)
 {
-  if (self->dataindex)	free(self->dataindex);
-  if (self->nodes)	free(self->nodes);
-  if (self->mean)	free(self->mean);
-  if (self->split)	free(self->split);
-  if (self->sigma_indnz) free(self->sigma_indnz);
+  if (self->dataindex)	 rta_free(self->dataindex);
+  if (self->nodes)	 rta_free(self->nodes);
+  if (self->mean)	 rta_free(self->mean);
+  if (self->split)	 rta_free(self->split);
+  if (self->sigma_indnz) rta_free(self->sigma_indnz);
 
   kdtree_stack_free(&self->stack);
 

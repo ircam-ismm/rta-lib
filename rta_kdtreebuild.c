@@ -17,12 +17,12 @@
 static void compute_mean (kdtree_t *t, int node, int dim) 
 {
     kdtree_node_t *n        = &t->nodes[node];
-    rta_real_t  *mean_ptr = t->mean + node * t->ndim;
-    int     nstart   = n->startind;
-    int     nend     = n->endind;
-    int     nvector  = nend - nstart + 1; // number of vectors of processed node
-    int     dstart, dend;
-    int     i, j;
+    rta_real_t    *mean_ptr = t->mean + node * t->ndim;
+    int     	   nstart   = n->startind;
+    int     	   nend     = n->endind;
+    int     	   nvector  = nend - nstart + 1; // number of vectors of processed node
+    int     	   dstart, dend;
+    int     	   i, j;
 
     if (dim < 0)
     {   /* all dimensions */
@@ -59,11 +59,11 @@ static void compute_mean (kdtree_t *t, int node, int dim)
 static void compute_middle (kdtree_t *t, int node, int dim) 
 {
     kdtree_node_t *n        = &t->nodes[node];
-    rta_real_t  *mean_ptr = t->mean + node * t->ndim;
-    int     nstart   = n->startind;
-    int     nend     = n->endind;
-    int     dstart, dend;
-    int     i, j;
+    rta_real_t    *mean_ptr = t->mean + node * t->ndim;
+    int     	   nstart   = n->startind;
+    int     	   nend     = n->endind;
+    int     	   dstart, dend;
+    int     	   i, j;
 
     if (dim < 0)
     {
@@ -105,10 +105,10 @@ static void compute_middle (kdtree_t *t, int node, int dim)
 /* return 1 if node is well-behaved, 0 if node is degenerate */
 static int check_node (kdtree_t *t, int node, int dim) 
 {
-    int     nstart   = t->nodes[node].startind;
-    int     nend     = t->nodes[node].endind;
-    rta_real_t   min, max;
-    int     i;
+    int        nstart   = t->nodes[node].startind;
+    int        nend     = t->nodes[node].endind;
+    rta_real_t min, max;
+    int        i;
 
     min = max = kdtree_get_element(t, nstart, dim);
 
@@ -138,7 +138,7 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
     {
     case dmode_hyperplane:
     {	/* compute hyperplane orthogonal to the base vector number b */
-	rta_real_t  *split_ptr = t->split + node * t->ndim;
+	rta_real_t *split_ptr = t->split + node * t->ndim;
 
 	bzero(split_ptr, t->ndim * sizeof(rta_real_t));
 	split_ptr[n->splitdim] = 1;
@@ -228,16 +228,18 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
 
 
 /* vector to orthogonal plane node distance along split dimension dim */
-static rta_real_t distV2orthoH (const rta_real_t* vect, rta_real_t* mean, int dim) 
+static rta_real_t distV2orthoH (const rta_real_t* vect, 
+				rta_real_t* mean, int dim) 
 {
     return vect[dim] - mean[dim];
 }
-static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride, rta_real_t* mean, int dim) 
+static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride, 
+				       rta_real_t* mean, int dim) 
 {
     return vect[dim * stride] - mean[dim];
 }
 static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, 
-				    rta_real_t* mean, const rta_real_t *sigma, int dim) 
+					 rta_real_t* mean, const rta_real_t *sigma, int dim) 
 {
 #if DEBUG_KDTREEBUILD > 1
     rta_post("distV2orthoH_weighted on dim %d: (%f - %f) / %f = %f\n",
@@ -250,8 +252,10 @@ static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride,
 
 
 /* vector to general plane node distance */
-static rta_real_t distV2H (const rta_real_t* vect, rta_real_t* plane, rta_real_t* mean, 
-		      int ndim, rta_real_t norm) 
+static rta_real_t distV2H (const rta_real_t* vect, 
+			   const rta_real_t* plane, 
+			   const rta_real_t* mean, 
+			   int ndim, rta_real_t norm) 
 {
     // standard algebra computing
     int i;
@@ -263,8 +267,10 @@ static rta_real_t distV2H (const rta_real_t* vect, rta_real_t* plane, rta_real_t
     }
     return (dotprod / norm);
 }
-static rta_real_t distV2H_stride (const rta_real_t* vect, int stride, rta_real_t* plane, 
-			     rta_real_t* mean, int ndim, rta_real_t norm) 
+static rta_real_t distV2H_stride (const rta_real_t* vect, int stride, 
+				  const rta_real_t* plane, 
+				  const rta_real_t* mean, 
+				  int ndim, rta_real_t norm) 
 {
     // standard algebra computing
     int i, iv;
@@ -276,8 +282,11 @@ static rta_real_t distV2H_stride (const rta_real_t* vect, int stride, rta_real_t
     }
     return (dotprod / norm);
 }
-static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride, const rta_real_t* plane, 
-			      const rta_real_t* mean, const rta_real_t *sigma, int ndim, rta_real_t norm) 
+static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride, 
+				    const rta_real_t* plane, 
+				    const rta_real_t* mean, 
+				    const rta_real_t *sigma, 
+				    int ndim, rta_real_t norm) 
 {
     // standard algebra computing
     int i, iv;
@@ -333,10 +342,10 @@ rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, int nod
     }
 }
 rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride, 
-			const rta_real_t *sigma, const int node)
+			     const rta_real_t *sigma, const int node)
 {
     kdtree_node_t *n    = &t->nodes[node];
-    rta_real_t  *mean = t->mean + node * t->ndim;
+    rta_real_t    *mean = t->mean + node * t->ndim;
 
 #if PROFILE_BUILD
     t->profile.v2n++;

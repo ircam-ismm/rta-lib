@@ -82,7 +82,7 @@ static void kdtree_stack_display (kdtree_stack_t *s)
 
 static int maxArr (rta_real_t* array, int size) 
 {
-    int   index = 0;
+    int        index = 0;
     rta_real_t max   = array[0];
     int i;
 	
@@ -131,18 +131,19 @@ static rta_real_t weighted_euclidean_distance (rta_real_t* v1, int stride1, rta_
 /* out:    y[K] = index of the Kth nearest neighbour (in float for interfacing reasons)
 	   d[K] = distance of the Kth nearest neighbour
    return: actual number of found neighbours */
-int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride, int k, const rta_real_t r, 
-		       int use_sigma, /* out */ rta_real_t *indx, rta_real_t *dist) 
+int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride, 
+		       int k, const rta_real_t r, int use_sigma, 
+		       /* out */ rta_real_t *indx, rta_real_t *dist) 
 {
-    int    kmax         = 0; 		/* index of current kth neighbour */
-    int    leaves_start = t->ninner;	/* first leaf node */
+    int		kmax         = 0; 	  /* index of current kth neighbour */
+    int		leaves_start = t->ninner; /* first leaf node */
     rta_real_t  sentinel     = (r == 0 ? MAX_FLOAT : r);
     rta_real_t *sigmaptr     = t->sigma;
-    rta_real_t  dxx;	  	     		/* distance between 2 vectors */
-    int    i;	  	     		/* current processed vector */
+    rta_real_t  dxx;	  	     	  /* distance between 2 vectors */
+    int		i;  	     		  /* current processed vector */
 
-    kdtree_stack_t     *s = &t->stack;
-    kdtree_stack_elem_t cur;		/* current (node, dist) couple */
+    kdtree_stack_t     *s    = &t->stack;
+    kdtree_stack_elem_t cur;		  /* current (node, dist) couple */
 
     if (t->ndata == 0) 
 	return 0;

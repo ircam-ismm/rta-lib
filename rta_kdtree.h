@@ -121,10 +121,10 @@ typedef struct _kdtree_struct
 
     int     ndim;	  /**< Dimension of vectors */
     int     ndata;	  /**< Number of vectors */
-    rta_real_t  *data;	  /**< data matrix (ndata, ndim) */
+    rta_real_t *data;	  /**< data matrix (ndata, ndim) */
     int    *dataindex;	  /**< data vector indirection array (ndata) */
 
-    rta_real_t  *sigma;	  /**< 1/weight, 0 == inf */
+    rta_real_t *sigma;	  /**< 1/weight, 0 == inf */
     int     sigma_nnz;    /**< number of non-zero sigma */
     int    *sigma_indnz;  /**< non-zero sigma lines */
 
@@ -135,8 +135,8 @@ typedef struct _kdtree_struct
     int     nnodes; 	  /**< Number of nodes (must be a power of 2) */
     int     ninner; 	  /**< Number of inner nodes (=index of first leaf node)*/
     kdtree_node_t *nodes; /**< nodes (nnodes) */
-    rta_real_t  *mean;	  /**< mean vectors in nnodes rows (todo: median), always present */
-    rta_real_t  *split;	  /**< hyperplanes A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0, 
+    rta_real_t *mean;	  /**< mean vectors in nnodes rows (todo: median), always present */
+    rta_real_t *split;	  /**< hyperplanes A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0, 
 			     in nnodes rows or NULL in dmode_orthogonal */
 
     int	    sort;	  /**< sort search result by distance */
@@ -171,9 +171,9 @@ extern const char *kdtree_mmodestr[];
  * @return	data element at row \p i, column \p j
  */
 #if DOXYGEN_FUNCTIONS
-rta_real_t   kdtree_get_element(kdtree_t *t, int i, int j);
+rta_real_t kdtree_get_element(kdtree_t *t, int i, int j);
 #else
-#define kdtree_get_element(t, i, j)  ((t)->data[(t)->dataindex[i] * (t)->ndim + (j)])
+#define    kdtree_get_element(t, i, j)  ((t)->data[(t)->dataindex[i] * (t)->ndim + (j)])
 #endif
 
 /** get data vector via indirection order array
@@ -188,9 +188,9 @@ rta_real_t   kdtree_get_element(kdtree_t *t, int i, int j);
  * @return	pointer to data row \p i
  */
 #if DOXYGEN_FUNCTIONS
-rta_real_t  *kdtree_get_vector(kdtree_t *t, int i);
+rta_real_t *kdtree_get_vector(kdtree_t *t, int i);
 #else
-#define kdtree_get_vector(t, i)     ((t)->data + (t)->dataindex[i] * (t)->ndim)
+#define     kdtree_get_vector(t, i)     ((t)->data + (t)->dataindex[i] * (t)->ndim)
 #endif
 
 #define kdtree_get_row_ptr(t, i)    ((t)->data + (i) * (t)->ndim)
@@ -346,7 +346,7 @@ void kdtree_delete (kdtree_t* t, int index, int num);
  * @param d	output vector (size == \p r <= \p k) of squared distances to data vectors 
  * @return \p r = the number of actual neighbours found, 0 <= \p r <= \p k
  */
-int  kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, rta_real_t r, int use_sigma, /*out*/ rta_real_t *y, rta_real_t *d);
+int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, rta_real_t r, int use_sigma, /*out*/ rta_real_t *y, rta_real_t *d);
 
 
 #ifdef __cplusplus
