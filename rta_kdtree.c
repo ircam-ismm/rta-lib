@@ -49,7 +49,7 @@ void profile_clear (kdtree_t *t)
 #endif
 
 
-void vec_post (float *v, int stride, int n, const char *suffix)
+void vec_post (rta_real_t *v, int stride, int n, const char *suffix)
 {
     int i, ii;
 
@@ -60,7 +60,7 @@ void vec_post (float *v, int stride, int n, const char *suffix)
     rta_post("]%s", suffix);
 }
 
-void row_post (float *v, int row, int n, const char *suffix)
+void row_post (rta_real_t *v, int row, int n, const char *suffix)
 {
     vec_post(v + row * n, 1, n, suffix);
 }
@@ -68,7 +68,7 @@ void row_post (float *v, int row, int n, const char *suffix)
 void kdtree_info_display (kdtree_t* t) 
 {
 #   define MB(b)  ((float) (b) / (float) (1024 * 1024))
-#   define FLT(b) ((b) * sizeof(float))
+#   define FLT(b) ((b) * sizeof(rta_real_t))
 
     float mbdata  = MB(FLT(t->ndata));
     float mbindex = MB(t->ndata       * sizeof(int));
@@ -111,7 +111,7 @@ void kdtree_raw_display (kdtree_t* t)
 
 void kdtree_data_display(kdtree_t* t, int print_data) 
 {
-    float plane[t->ndim];
+    rta_real_t plane[t->ndim];
     int l, n, i;
 
     rta_post("\nTree Data:\n");
@@ -132,7 +132,7 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 		
 	    if (t->dmode == dmode_orthogonal)
 	    {	/* splitplane implicit orthogonal to splitdim */
-		bzero(plane, t->ndim * sizeof(float));
+		bzero(plane, t->ndim * sizeof(rta_real_t));
 		plane[node->splitdim] = 1;
 		vec_post(plane, 1, t->ndim, "");
 	    }
@@ -174,7 +174,7 @@ void kdtree_data_display(kdtree_t* t, int print_data)
     else field = in; /* external alloc */ } while (0)
 
 
-int kdtree_set_data (kdtree_t *self, float *data, int *index, int m, int n)
+int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n)
 {
   int maxheight   = floor(log2(m));
   int givenheight = self->givenheight;
@@ -211,7 +211,7 @@ int kdtree_set_data (kdtree_t *self, float *data, int *index, int m, int n)
 }
 
 
-void kdtree_init_nodes (kdtree_t* self, kdtree_node_t *nodes, float *planes, float *means) 
+void kdtree_init_nodes (kdtree_t* self, kdtree_node_t *nodes, rta_real_t *planes, rta_real_t *means) 
 {
   auto_alloc(self->nodes, nodes, self->nnodes);
   bzero(self->nodes, self->nnodes * sizeof(kdtree_node_t));
@@ -233,7 +233,7 @@ void kdtree_init_nodes (kdtree_t* self, kdtree_node_t *nodes, float *planes, flo
 /* update non-zero sigma index list */
 int kdtree_update_sigmanz (kdtree_t *self)
 {
-    float *sigmaptr = self->sigma;
+    rta_real_t *sigmaptr = self->sigma;
     int j, nnz = 0;
 
     for (j = 0; j < self->ndim; j++)
@@ -243,7 +243,7 @@ int kdtree_update_sigmanz (kdtree_t *self)
     return nnz;
 }
 
-void kdtree_set_sigma (kdtree_t *self, float *sigma) /* todo: sigma_indnz from outside */
+void kdtree_set_sigma (kdtree_t *self, rta_real_t *sigma) /* todo: sigma_indnz from outside */
 {
     self->sigma = sigma;
     self->sigma_indnz = rta_realloc(self->sigma_indnz, 

@@ -80,10 +80,10 @@ static void kdtree_stack_display (kdtree_stack_t *s)
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
-static int maxArr (float* array, int size) 
+static int maxArr (rta_real_t* array, int size) 
 {
     int   index = 0;
-    float max   = array[0];
+    rta_real_t max   = array[0];
     int i;
 	
     for (i = 1; i < size; i++) 
@@ -98,29 +98,29 @@ static int maxArr (float* array, int size)
     return index;
 }
 
-static float euclidean_distance (float* v1, int stride1, float* v2, int dim) 
+static rta_real_t euclidean_distance (rta_real_t* v1, int stride1, rta_real_t* v2, int dim) 
 {
     int i, i1;
-    float sum = 0;
+    rta_real_t sum = 0;
 
     for (i = 0, i1 = 0; i < dim; i++, i1 += stride1) 
     {
-	float diff = v2[i] - v1[i1];
+	rta_real_t diff = v2[i] - v1[i1];
 	sum += diff * diff;
     }
 
     return sum;
 }
 
-static float weighted_euclidean_distance (float* v1, int stride1, float* v2, float *sigma, int ndim) 
+static rta_real_t weighted_euclidean_distance (rta_real_t* v1, int stride1, rta_real_t* v2, rta_real_t *sigma, int ndim) 
 {
     int i, i1;
-    float sum = 0;
+    rta_real_t sum = 0;
 
     for (i = 0, i1 = 0; i < ndim; i++, i1 += stride1) 
 	if (sigma[i] > 0)
 	{
-	    float diff = (v2[i] - v1[i1]) / sigma[i];
+	    rta_real_t diff = (v2[i] - v1[i1]) / sigma[i];
 	    sum += diff * diff;
 	}
 
@@ -131,14 +131,14 @@ static float weighted_euclidean_distance (float* v1, int stride1, float* v2, flo
 /* out:    y[K] = index of the Kth nearest neighbour (in float for interfacing reasons)
 	   d[K] = distance of the Kth nearest neighbour
    return: actual number of found neighbours */
-int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const float r, 
-		       int use_sigma, /* out */ float *indx, float *dist) 
+int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride, int k, const rta_real_t r, 
+		       int use_sigma, /* out */ rta_real_t *indx, rta_real_t *dist) 
 {
     int    kmax         = 0; 		/* index of current kth neighbour */
     int    leaves_start = t->ninner;	/* first leaf node */
-    float  sentinel     = (r == 0 ? MAX_FLOAT : r);
-    float *sigmaptr     = t->sigma;
-    float  dxx;	  	     		/* distance between 2 vectors */
+    rta_real_t  sentinel     = (r == 0 ? MAX_FLOAT : r);
+    rta_real_t *sigmaptr     = t->sigma;
+    rta_real_t  dxx;	  	     		/* distance between 2 vectors */
     int    i;	  	     		/* current processed vector */
 
     kdtree_stack_t     *s = &t->stack;
@@ -236,7 +236,7 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 	    }
 	    else 
 	    {	// branched node
-		float d;
+		rta_real_t d;
 
 		if (use_sigma)
 		    d = distV2N_weighted(t, vector, stride, sigmaptr, cur.node);

@@ -62,7 +62,7 @@ extern "C" {
 typedef struct _elem_struct
 {
     int   node;
-    float dist;
+    rta_real_t dist;
 } kdtree_stack_elem_t;
 
 /** optimised stack for search algorithm */
@@ -109,7 +109,7 @@ typedef struct _node_struct
     int size;		/**< number of vectors in node */
     int splitdim;	/**< for dmode othogonal, dimension along which node is split*/
 
-    float  splitnorm;	/**< spatial length of split vector */
+    rta_real_t  splitnorm;	/**< spatial length of split vector */
 } kdtree_node_t;
 
 
@@ -121,10 +121,10 @@ typedef struct _kdtree_struct
 
     int     ndim;	  /**< Dimension of vectors */
     int     ndata;	  /**< Number of vectors */
-    float  *data;	  /**< data matrix (ndata, ndim) */
+    rta_real_t  *data;	  /**< data matrix (ndata, ndim) */
     int    *dataindex;	  /**< data vector indirection array (ndata) */
 
-    float  *sigma;	  /**< 1/weight, 0 == inf */
+    rta_real_t  *sigma;	  /**< 1/weight, 0 == inf */
     int     sigma_nnz;    /**< number of non-zero sigma */
     int    *sigma_indnz;  /**< non-zero sigma lines */
 
@@ -135,8 +135,8 @@ typedef struct _kdtree_struct
     int     nnodes; 	  /**< Number of nodes (must be a power of 2) */
     int     ninner; 	  /**< Number of inner nodes (=index of first leaf node)*/
     kdtree_node_t *nodes; /**< nodes (nnodes) */
-    float  *mean;	  /**< mean vectors in nnodes rows (todo: median), always present */
-    float  *split;	  /**< hyperplanes A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0, 
+    rta_real_t  *mean;	  /**< mean vectors in nnodes rows (todo: median), always present */
+    rta_real_t  *split;	  /**< hyperplanes A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0, 
 			     in nnodes rows or NULL in dmode_orthogonal */
 
     int	    sort;	  /**< sort search result by distance */
@@ -171,7 +171,7 @@ extern const char *kdtree_mmodestr[];
  * @return	data element at row \p i, column \p j
  */
 #if DOXYGEN_FUNCTIONS
-float   kdtree_get_element(kdtree_t *t, int i, int j);
+rta_real_t   kdtree_get_element(kdtree_t *t, int i, int j);
 #else
 #define kdtree_get_element(t, i, j)  ((t)->data[(t)->dataindex[i] * (t)->ndim + (j)])
 #endif
@@ -188,7 +188,7 @@ float   kdtree_get_element(kdtree_t *t, int i, int j);
  * @return	pointer to data row \p i
  */
 #if DOXYGEN_FUNCTIONS
-float  *kdtree_get_vector(kdtree_t *t, int i);
+rta_real_t  *kdtree_get_vector(kdtree_t *t, int i);
 #else
 #define kdtree_get_vector(t, i)     ((t)->data + (t)->dataindex[i] * (t)->ndim)
 #endif
@@ -198,10 +198,10 @@ float  *kdtree_get_vector(kdtree_t *t, int i);
 #define pow2(x)  (1 << (x))
 
 /** helper function to print a vector \p v of length \p n with stride \p stride to the console */
-void vec_post (float *v, int stride, int n, const char *suffix);
+void vec_post (rta_real_t *v, int stride, int n, const char *suffix);
 
 /** helper function to print row \p i of matrix \p m of length \p n to the console */
-void row_post (float *m, int i, int n, const char *suffix);
+void row_post (rta_real_t *m, int i, int n, const char *suffix);
 
 /** print only tree info to console */
 void kdtree_info_display (kdtree_t* t);
@@ -219,11 +219,11 @@ void kdtree_stack_free (kdtree_stack_t *s);
 void kdtree_stack_grow (kdtree_stack_t *stack, int alloc);
 
 /** vector to node distance */
-float distV2N (kdtree_t* t, const float *x, const int node);
+rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, const int node);
 /** vector to node distance with stride */
-float distV2N_stride (kdtree_t* t, const float *x, int stride, const int node);
+rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, const int node);
 /** vector to node distance with stride and weights 1/sigma */
-float distV2N_weighted (kdtree_t* t, const float *x, int stride, const float *sigma, const int node);
+rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride, const rta_real_t *sigma, const int node);
 
 void kdtree_set_decomposition(kdtree_t *t, kdtree_dmode_t mode, void *param);
 
@@ -240,14 +240,14 @@ void kdtree_free (kdtree_t *self);
 /** set new data vector and size
     
     @param self		kd-tree structure
-    @param data		pointer to \p m * \p n float values of data to be searched
+    @param data		pointer to \p m * \p n real values of data to be searched
     @param index	if not NULL, must point to space for \p m int values, otherwise the library will auto-allocate
     @param m		number of data vectors (rows)
     @param n		dimension of data vectors (columns)
 
     @return the number of nodes the tree will build
 */
-int kdtree_set_data (kdtree_t *self, float *data, int *index, int m, int n);
+int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n);
 
 /** set new pointer to weight vector sigma of length kdtree_t#ndim 
 
@@ -255,7 +255,7 @@ Dimensions can be weighted while building the tree, and while
 searching. The weight is 1 / sigma, just as in mnm.mahalanobis. Sigma
 = 0 means: ignore this dimension.
 */
-void kdtree_set_sigma (kdtree_t *self, float *sigma);
+void kdtree_set_sigma (kdtree_t *self, rta_real_t *sigma);
 
 /** check for changes in weights 
 
@@ -282,7 +282,7 @@ int  kdtree_update_sigmanz (kdtree_t *self);
     - if \p means is not NULL, it must point to space for the mean vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library
     - if \p planes is not NULL and decomposition mode is not dmode_orthogonal, it must point to space for split hyperplane base vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library
 */
-void kdtree_init_nodes (kdtree_t *self, kdtree_node_t *nodes, float *means, float *planes);
+void kdtree_init_nodes (kdtree_t *self, kdtree_node_t *nodes, rta_real_t *means, rta_real_t *planes);
 
 
 /** build tree 
@@ -346,7 +346,7 @@ void kdtree_delete (kdtree_t* t, int index, int num);
  * @param d	output vector (size == \p r <= \p k) of squared distances to data vectors 
  * @return \p r = the number of actual neighbours found, 0 <= \p r <= \p k
  */
-int  kdtree_search_knn (kdtree_t *t, float* x, int stride, int k, float r, int use_sigma, /*out*/ float *y, float *d);
+int  kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, rta_real_t r, int use_sigma, /*out*/ rta_real_t *y, rta_real_t *d);
 
 
 #ifdef __cplusplus

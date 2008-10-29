@@ -17,7 +17,7 @@
 static void compute_mean (kdtree_t *t, int node, int dim) 
 {
     kdtree_node_t *n        = &t->nodes[node];
-    float  *mean_ptr = t->mean + node * t->ndim;
+    rta_real_t  *mean_ptr = t->mean + node * t->ndim;
     int     nstart   = n->startind;
     int     nend     = n->endind;
     int     nvector  = nend - nstart + 1; // number of vectors of processed node
@@ -34,13 +34,13 @@ static void compute_mean (kdtree_t *t, int node, int dim)
 	dstart = dim;
 	dend   = dim + 1;
 #if DEBUG_KDTREEBUILD
-	bzero(mean_ptr, t->ndim * sizeof(float));
+	bzero(mean_ptr, t->ndim * sizeof(rta_real_t));
 #endif
     }
 
     for (j = dstart; j < dend; j++) 
     {
-	float sum = 0;
+	rta_real_t sum = 0;
 	
 	for (i = nstart; i <= nend; i++) 
 	{
@@ -59,7 +59,7 @@ static void compute_mean (kdtree_t *t, int node, int dim)
 static void compute_middle (kdtree_t *t, int node, int dim) 
 {
     kdtree_node_t *n        = &t->nodes[node];
-    float  *mean_ptr = t->mean + node * t->ndim;
+    rta_real_t  *mean_ptr = t->mean + node * t->ndim;
     int     nstart   = n->startind;
     int     nend     = n->endind;
     int     dstart, dend;
@@ -75,18 +75,18 @@ static void compute_middle (kdtree_t *t, int node, int dim)
 	dstart = dim;
 	dend   = dim + 1;
 #if DEBUG_KDTREEBUILD
-	bzero(mean_ptr, t->ndim * sizeof(float));
+	bzero(mean_ptr, t->ndim * sizeof(rta_real_t));
 #endif
     }
 
     // number of vectors from the processed node
     for (j = dstart; j < dend; j++) 
     {
-	float min = MAX_FLOAT, max = -MAX_FLOAT;
+	rta_real_t min = MAX_FLOAT, max = -MAX_FLOAT;
 
 	for (i = nstart; i <= nend; i++) 
 	{
-	    float x = kdtree_get_element(t, i, j);
+	    rta_real_t x = kdtree_get_element(t, i, j);
 
 	    if (x < min)
 		min = x;
@@ -107,14 +107,14 @@ static int check_node (kdtree_t *t, int node, int dim)
 {
     int     nstart   = t->nodes[node].startind;
     int     nend     = t->nodes[node].endind;
-    float   min, max;
+    rta_real_t   min, max;
     int     i;
 
     min = max = kdtree_get_element(t, nstart, dim);
 
     for (i = nstart + 1; i <= nend; i++) 
     {
-	float x = kdtree_get_element(t, i, dim);
+	rta_real_t x = kdtree_get_element(t, i, dim);
 
 	if (x < min)
 	    min = x;
@@ -138,9 +138,9 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
     {
     case dmode_hyperplane:
     {	/* compute hyperplane orthogonal to the base vector number b */
-	float  *split_ptr = t->split + node * t->ndim;
+	rta_real_t  *split_ptr = t->split + node * t->ndim;
 
-	bzero(split_ptr, t->ndim * sizeof(float));
+	bzero(split_ptr, t->ndim * sizeof(rta_real_t));
 	split_ptr[n->splitdim] = 1;
 
 #if DEBUG_KDTREEBUILD
@@ -228,16 +228,16 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
 
 
 /* vector to orthogonal plane node distance along split dimension dim */
-static float distV2orthoH (const float* vect, float* mean, int dim) 
+static rta_real_t distV2orthoH (const rta_real_t* vect, rta_real_t* mean, int dim) 
 {
     return vect[dim] - mean[dim];
 }
-static float distV2orthoH_stride (const float* vect, int stride, float* mean, int dim) 
+static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride, rta_real_t* mean, int dim) 
 {
     return vect[dim * stride] - mean[dim];
 }
-static float distV2orthoH_weighted (const float* vect, int stride, 
-				    float* mean, const float *sigma, int dim) 
+static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, 
+				    rta_real_t* mean, const rta_real_t *sigma, int dim) 
 {
 #if DEBUG_KDTREEBUILD > 1
     rta_post("distV2orthoH_weighted on dim %d: (%f - %f) / %f = %f\n",
@@ -250,12 +250,12 @@ static float distV2orthoH_weighted (const float* vect, int stride,
 
 
 /* vector to general plane node distance */
-static float distV2H (const float* vect, float* plane, float* mean, 
-		      int ndim, float norm) 
+static rta_real_t distV2H (const rta_real_t* vect, rta_real_t* plane, rta_real_t* mean, 
+		      int ndim, rta_real_t norm) 
 {
     // standard algebra computing
     int i;
-    float dotprod = 0;
+    rta_real_t dotprod = 0;
 
     for(i = 0; i < ndim; i++) 
     {
@@ -263,12 +263,12 @@ static float distV2H (const float* vect, float* plane, float* mean,
     }
     return (dotprod / norm);
 }
-static float distV2H_stride (const float* vect, int stride, float* plane, 
-			     float* mean, int ndim, float norm) 
+static rta_real_t distV2H_stride (const rta_real_t* vect, int stride, rta_real_t* plane, 
+			     rta_real_t* mean, int ndim, rta_real_t norm) 
 {
     // standard algebra computing
     int i, iv;
-    float dotprod = 0;
+    rta_real_t dotprod = 0;
 
     for(i = 0, iv = 0; i < ndim; i++, iv += stride) 
     {
@@ -276,12 +276,12 @@ static float distV2H_stride (const float* vect, int stride, float* plane,
     }
     return (dotprod / norm);
 }
-static float distV2H_weighted (const float* vect, int stride, const float* plane, 
-			      const float* mean, const float *sigma, int ndim, float norm) 
+static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride, const rta_real_t* plane, 
+			      const rta_real_t* mean, const rta_real_t *sigma, int ndim, rta_real_t norm) 
 {
     // standard algebra computing
     int i, iv;
-    float dotprod = 0;
+    rta_real_t dotprod = 0;
 
     for (i = 0, iv = 0; i < ndim; i++, iv += stride) 
 	if (sigma[i] > 0)
@@ -292,7 +292,7 @@ static float distV2H_weighted (const float* vect, int stride, const float* plane
 
 
 /* vector to node distance */
-float distV2N (kdtree_t* t, const float *x, int node)
+rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, int node)
 {
 #if PROFILE_BUILD
     t->profile.v2n++;
@@ -312,7 +312,7 @@ float distV2N (kdtree_t* t, const float *x, int node)
 	return 0;
     }
 }
-float distV2N_stride (kdtree_t* t, const float *x, int stride, int node)
+rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, int node)
 {
 #if PROFILE_BUILD
     t->profile.v2n++;
@@ -332,11 +332,11 @@ float distV2N_stride (kdtree_t* t, const float *x, int stride, int node)
 	return 0;
     }
 }
-float distV2N_weighted (kdtree_t* t, const float *x, int stride, 
-			const float *sigma, const int node)
+rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride, 
+			const rta_real_t *sigma, const int node)
 {
     kdtree_node_t *n    = &t->nodes[node];
-    float  *mean = t->mean + node * t->ndim;
+    rta_real_t  *mean = t->mean + node * t->ndim;
 
 #if PROFILE_BUILD
     t->profile.v2n++;
