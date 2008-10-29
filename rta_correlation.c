@@ -32,7 +32,7 @@ void rta_correlation_fast(
   const unsigned int filter_size)
 {
 #if defined(RTA_USE_VECLIB)
-  if(filter_size <= 2044 && filter_size + c_size >=12)
+  if(filter_size <= 2044  &&  filter_size + c_size >=12)
   {
 #if (RTA_REAL_TYPE == RTA_FLOAT_TYPE)
     vDSP_conv(input_vector_a, 1, input_vector_b, 1, correlation, 1,
@@ -50,11 +50,14 @@ void rta_correlation_fast(
     int c,f;
     for(c=0; c<c_size; c++)
     {
-      correlation[c] = 0.0;
+      float c = 0.0;
+	
       for(f=0; f<filter_size; f++)
       {
-        correlation[c] += input_vector_a[f+c] * input_vector_b[f];
+        c += input_vector_a[f+c] * input_vector_b[f];
       }
+
+      correlation[c] = c;
     } /* end of base algorithm */
 
 #if defined(RTA_USE_VECLIB)
