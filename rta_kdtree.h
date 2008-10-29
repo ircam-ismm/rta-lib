@@ -37,14 +37,20 @@ Call sequence for builing and using the tree:
 Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
 
+
 /* build doc with:
-   doxygen doc/distlib.doxyfile; make -C doc/latex/ 
+   cd distlib; make doc
 */
+
 
 #ifndef _RTA_KDTREE_H_
 #define _RTA_KDTREE_H_
 
 #include "rta.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 #define PROFILE_BUILD  1
@@ -342,4 +348,9 @@ void kdtree_delete (kdtree_t* t, int index, int num);
  */
 int  kdtree_search_knn (kdtree_t *t, float* x, int stride, int k, float r, int use_sigma, /*out*/ float *y, float *d);
 
+
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _RTA_KDTREE_H_ */

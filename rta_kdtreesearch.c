@@ -21,7 +21,7 @@
 void kdtree_stack_init (kdtree_stack_t *s, int size)
 {
   s->alloc  = size;
-  s->buffer = (kdtree_stack_elem_t *) fts_malloc(s->alloc * sizeof(kdtree_stack_elem_t));
+  s->buffer = (kdtree_stack_elem_t *) rta_malloc(s->alloc * sizeof(kdtree_stack_elem_t));
   s->size = 0;
 }
 
@@ -30,15 +30,15 @@ void kdtree_stack_init (kdtree_stack_t *s, int size)
 void kdtree_stack_free (kdtree_stack_t *s)
 {
     if (s->buffer)
-	fts_free(s->buffer);
+	rta_free(s->buffer);
 }
 
 static void stack_realloc (kdtree_stack_t *stack, int alloc)
 {
 #if DEBUG_KDTREESEARCH      
-    fts_post("kdtree: grow stack from d to %d\n", stack->alloc, alloc);
+    rta_post("kdtree: grow stack from d to %d\n", stack->alloc, alloc);
 #endif
-    stack->buffer = (kdtree_stack_elem_t *) fts_realloc( stack->buffer, alloc * sizeof(kdtree_stack_elem_t));
+    stack->buffer = (kdtree_stack_elem_t *) rta_realloc( stack->buffer, alloc * sizeof(kdtree_stack_elem_t));
     stack->alloc = alloc;
 }
 
@@ -63,11 +63,11 @@ static void kdtree_stack_display (kdtree_stack_t *s)
     int i;
 
     if (s->size == 0)
-	fts_post("stack empty\n");
+	rta_post("stack empty\n");
     else
 	for (i = s->size - 1; i >= 0; i--)
 	{
-	    fts_post("    stack pos %d:  node %3d, square dist %f\n", 
+	    rta_post("    stack pos %d:  node %3d, square dist %f\n", 
 		     i, s->buffer[i].node, s->buffer[i].dist);
 	}
 }
@@ -178,7 +178,7 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 		int i;
 
 #if DEBUG_KDTREESEARCH
-		fts_post("Leaf node p = %d  cur.dist %f\n", cur.node, cur.dist);
+		rta_post("Leaf node p = %d  cur.dist %f\n", cur.node, cur.dist);
 #endif
 		for (i = istart; i <= iend; i++)
 		{
@@ -192,7 +192,7 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 		    t->profile.v2v++;
 #endif
 #if DEBUG_KDTREESEARCH
-		    fts_post("  distance = %f between vector %d ", dxx, i);
+		    rta_post("  distance = %f between vector %d ", dxx, i);
 		    vec_post(kdtree_get_vector(t, i), 1, t->ndim, " and x ");
 		    vec_post(vector, stride,             t->ndim, "\n");
 #endif
@@ -244,7 +244,7 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 		    d = distV2N_stride(t, vector, stride, cur.node);
 
 #if DEBUG_KDTREESEARCH
-		fts_post("Inner node %d  d %f  cur.dist %f --> push max %f\n", 
+		rta_post("Inner node %d  d %f  cur.dist %f --> push max %f\n", 
 			 cur.node, d, cur.dist, MAX(cur.dist, d*d));
 #endif
 		if (d < 0) 
@@ -262,7 +262,7 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
 #if DEBUG_KDTREESEARCH
 	else /* node can be eliminated from search */
 	{
-	    fts_post("eliminate node %d (size %d): cur.dist %f > dist[kmax=%d] = %f\n",
+	    rta_post("eliminate node %d (size %d): cur.dist %f > dist[kmax=%d] = %f\n",
 		     cur.node, t->nodes[cur.node].size, cur.dist, kmax, dist[kmax]);
 	}
 #endif
@@ -273,7 +273,7 @@ int kdtree_search_knn (kdtree_t *t, float* vector, int stride, int k, const floa
     t->profile.neighbours += kmax + 1;
 #endif
 #if DEBUG_KDTREESEARCH
-    fts_post("kdtree_search found %d vectors < radius %f\n", 
+    rta_post("kdtree_search found %d vectors < radius %f\n", 
 	     kmax + (dist[kmax] < sentinel), r);
 #endif
 

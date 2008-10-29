@@ -50,7 +50,7 @@ static void compute_mean (kdtree_t *t, int node, int dim)
     }
 
 #if DEBUG_KDTREEBUILD
-    fts_post("mean vect for node %d (size %d) = ", node, nvector);
+    rta_post("mean vect for node %d (size %d) = ", node, nvector);
     vec_post(mean_ptr, 1, t->ndim, "\n");
 #endif
 }
@@ -97,7 +97,7 @@ static void compute_middle (kdtree_t *t, int node, int dim)
     }
 
 #if DEBUG_KDTREEBUILD
-    fts_post("middle vect for node %d = ", node);
+    rta_post("middle vect for node %d = ", node);
     vec_post(mean_ptr, 1, t->ndim, "\n");
 #endif
 }
@@ -144,7 +144,7 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
 	split_ptr[n->splitdim] = 1;
 
 #if DEBUG_KDTREEBUILD
-	fts_post("Splitplane of node %i: ", node);
+	rta_post("Splitplane of node %i: ", node);
 	vec_post(split_ptr, 1, t->ndim, "\n");
 #endif
     }
@@ -197,7 +197,7 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
 	}
     }
     t->nodes[node].splitdim = splitdim;
-    if (!nice_node) fts_post("warning: can't find non-degenerate dimension to split node %d at level %d, using dimension %d\n", node, level, splitdim);
+    if (!nice_node) rta_post("warning: can't find non-degenerate dimension to split node %d at level %d, using dimension %d\n", node, level, splitdim);
 
     switch (t->mmode)
     { /* N.B.: middle and mean are only linearly  affected by sigma */
@@ -240,7 +240,7 @@ static float distV2orthoH_weighted (const float* vect, int stride,
 				    float* mean, const float *sigma, int dim) 
 {
 #if DEBUG_KDTREEBUILD > 1
-    fts_post("distV2orthoH_weighted on dim %d: (%f - %f) / %f = %f\n",
+    rta_post("distV2orthoH_weighted on dim %d: (%f - %f) / %f = %f\n",
 	dim, vect[dim * stride], mean[dim], sigma[dim],
 	sigma[dim] > 0  ?  (vect[dim * stride] - mean[dim]) / sigma[dim]  :  0);
 #endif
@@ -308,7 +308,7 @@ float distV2N (kdtree_t* t, const float *x, int node)
 			  t->mean  + node * t->ndim, t->ndim, 
 			  t->nodes[node].splitnorm);
     default:
-	fts_post("error: unknown mode %d", t->dmode);
+	rta_post("error: unknown mode %d", t->dmode);
 	return 0;
     }
 }
@@ -328,7 +328,7 @@ float distV2N_stride (kdtree_t* t, const float *x, int stride, int node)
 			                 t->mean  + node * t->ndim, t->ndim, 
 			                 t->nodes[node].splitnorm);
     default:
-	fts_post("error: unknown mode %d", t->dmode);
+	rta_post("error: unknown mode %d", t->dmode);
 	return 0;
     }
 }
@@ -348,7 +348,7 @@ float distV2N_weighted (kdtree_t* t, const float *x, int stride,
     case dmode_hyperplane:
 	return distV2H_weighted(x, stride, t->split + node * t->ndim, mean, sigma, t->ndim, n->splitnorm);
     default:
-	fts_post("error: unknown mode %d", t->dmode);
+	rta_post("error: unknown mode %d", t->dmode);
 	return 0;
     }
 }
@@ -423,11 +423,11 @@ void kdtree_build (kdtree_t* t, int use_sigma)
     if (pow2(t->height - 1) > t->ndata  ||  t->ndim == 0) 
     {
 	if (t->ndata == 0) 
-	    fts_post("tree is empty!\n");
+	    rta_post("tree is empty!\n");
 	else if (t->ndim == 0) 
-	    fts_post("tree has 0 dimensions!  Can't build!\n");
+	    rta_post("tree has 0 dimensions!  Can't build!\n");
 	else
-	    fts_post("error: can't build this tree, try with a smaller height: %d > %d\n", pow2(t->height-1), t->ndata);
+	    rta_post("error: can't build this tree, try with a smaller height: %d > %d\n", pow2(t->height-1), t->ndata);
 
 	return;
     }
@@ -437,14 +437,14 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 	int nstart = pow2(l)   - 1;
 	int nend   = pow2(l+1) - 1;
 #if DEBUG_KDTREEBUILD
-	fts_post("\nLevel #%i  nodes %d..%d\n", l, nstart, nend);
+	rta_post("\nLevel #%i  nodes %d..%d\n", l, nstart, nend);
 #endif
 	for (n = nstart; n < nend; n++) 
 	{   /* for all nodes at tree level l */
 	    if (decompose_node(t, n, l, use_sigma))
 	    {   /* well-behaved node */
 #if DEBUG_KDTREEBUILD
-		fts_post("Node #%i (%i..%i): mean = ", 
+		rta_post("Node #%i (%i..%i): mean = ", 
 			 n, t->nodes[n].startind, t->nodes[n].endind); 
 		row_post(t->mean, n, t->ndim, "\n");
 #endif
@@ -455,15 +455,15 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 		{ /* sort node vectors by distance to splitplane */
 		    while (distV2N(t, kdtree_get_vector(t, i), n) <= 0) 
 		    {
-			i++;	// if (i >= t->ndata) fts_post("n %d: i=%d\n", n, i);
+			i++;	// if (i >= t->ndata) rta_post("n %d: i=%d\n", n, i);
 		    }
 		    while (distV2N(t, kdtree_get_vector(t, j), n) > 0) 
 		    {
-			j--;	// if (j < 0) fts_post("n %d: j=%d\n", n, j);
+			j--;	// if (j < 0) rta_post("n %d: j=%d\n", n, j);
 		    }
 		    if (i < j) 
 		    { 
-			swap(t, i, j);    // fts_post("swap %i and %i\n", i ,j);
+			swap(t, i, j);    // rta_post("swap %i and %i\n", i ,j);
 		    }
 		}
 	    }
@@ -473,7 +473,7 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 		j = middle;
 		i = middle + 1;
 #if DEBUG_KDTREEBUILD
-		fts_post("degenerate Node #%i (%i..%i): splitting at %d, %d  mean = ", 
+		rta_post("degenerate Node #%i (%i..%i): splitting at %d, %d  mean = ", 
 			 n, t->nodes[n].startind, t->nodes[n].endind, j, i); 
 		row_post(t->mean, n, t->ndim, "\n");
 #endif		

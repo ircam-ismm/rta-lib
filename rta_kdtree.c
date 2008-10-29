@@ -55,9 +55,9 @@ void vec_post (float *v, int stride, int n, const char *suffix)
 
     for (i = 0, ii = 0; i < n; i++, ii += stride) 
     { 	
-	fts_post("%s%.1f", (ii == 0  ?  "["  :  ", "), v[ii]);
+	rta_post("%s%.1f", (ii == 0  ?  "["  :  ", "), v[ii]);
     }
-    fts_post("]%s", suffix);
+    rta_post("]%s", suffix);
 }
 
 void row_post (float *v, int row, int n, const char *suffix)
@@ -79,32 +79,32 @@ void kdtree_info_display (kdtree_t* t)
     float mbinner = MB(t->ninner * FLT(t->ndim) * 
 		       (t->dmode == dmode_orthogonal ? 1 : 2));
 
-    fts_post("\nTree Info:\n");
-    fts_post("ndim        = %d\n", t->ndim);
-    fts_post("ndata       = %d  (%.3f MB extern alloc size)\n", t->ndata, mbdata);
-    fts_post("nalloc      = %d  (%.3f MB index)\n",  t->ndata, mbindex);
-    fts_post("maxheight   = %d\n", t->maxheight);
-    fts_post("givenheight = %d\n", t->givenheight);
-    fts_post("height      = %d\n", t->height);
-    fts_post("nnodes      = %d  (%.3f MB node struct)\n", t->nnodes, mbnodes);
-    fts_post("inner nodes = %d  (%.3f MB node vectors)\n", t->ninner, mbinner);
-    fts_post("stack       = %d  (%.3f MB)\n", t->stack.alloc, mbstack);
-    fts_post("total size  = %.3f MB\n", 
+    rta_post("\nTree Info:\n");
+    rta_post("ndim        = %d\n", t->ndim);
+    rta_post("ndata       = %d  (%.3f MB extern alloc size)\n", t->ndata, mbdata);
+    rta_post("nalloc      = %d  (%.3f MB index)\n",  t->ndata, mbindex);
+    rta_post("maxheight   = %d\n", t->maxheight);
+    rta_post("givenheight = %d\n", t->givenheight);
+    rta_post("height      = %d\n", t->height);
+    rta_post("nnodes      = %d  (%.3f MB node struct)\n", t->nnodes, mbnodes);
+    rta_post("inner nodes = %d  (%.3f MB node vectors)\n", t->ninner, mbinner);
+    rta_post("stack       = %d  (%.3f MB)\n", t->stack.alloc, mbstack);
+    rta_post("total size  = %.3f MB\n", 
 	     MB(sizeof(kdtree_t)) + mbnodes + mbinner + mbindex + mbstack);
-    fts_post("sort mode     = %d\n", t->sort);
-    fts_post("decomposition = %s\n", kdtree_dmodestr[t->dmode]);
-    fts_post("mean vector   = %s\n", kdtree_mmodestr[t->mmode]);
+    rta_post("sort mode     = %d\n", t->sort);
+    rta_post("decomposition = %s\n", kdtree_dmodestr[t->dmode]);
+    rta_post("mean vector   = %s\n", kdtree_mmodestr[t->mmode]);
 }
 
 void kdtree_raw_display (kdtree_t* t) 
 {
     int i;
 
-    if (t->height == 0 || t->ndata == 0) fts_post("Empty Tree\n");
+    if (t->height == 0 || t->ndata == 0) rta_post("Empty Tree\n");
 
     for (i = 0; i < t->ndata; i++) 
     {
-	fts_post("raw data vec %-3i = ", i);
+	rta_post("raw data vec %-3i = ", i);
 	vec_post(kdtree_get_row_ptr(t, i), 1, t->ndim, "\n");
     }
 }
@@ -114,12 +114,12 @@ void kdtree_data_display(kdtree_t* t, int print_data)
     float plane[t->ndim];
     int l, n, i;
 
-    fts_post("\nTree Data:\n");
-    if (t->height == 0 || t->ndata == 0) fts_post("Empty Tree\n");
+    rta_post("\nTree Data:\n");
+    if (t->height == 0 || t->ndata == 0) rta_post("Empty Tree\n");
 	
     for (l = 0; l < t->height; l++) 
     {
-	fts_post("Level #%d  nodes %d..%d  splitdim %d\n", 
+	rta_post("Level #%d  nodes %d..%d  splitdim %d\n", 
 		 l, pow2(l) - 1, pow2(l+1) - 2, t->nodes[pow2(l) - 1].splitdim);
 	for (n = pow2(l) - 1; n < pow2(l+1) - 1; n++) 
 	{
@@ -127,7 +127,7 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 
 	  if (n < t->ninner)
 	  {
-	    fts_post("  inner node %d size %d <%d..%d> splitdim %d splitplane ",
+	    rta_post("  inner node %d size %d <%d..%d> splitdim %d splitplane ",
 		     n, node->size, node->startind, node->endind, node->splitdim);
 		
 	    if (t->dmode == dmode_orthogonal)
@@ -140,22 +140,22 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 		row_post(t->split, n, t->ndim, "");
 	  }
 	  else
-	    fts_post("  leaf node %d size %d <%d..%d> ",
+	    rta_post("  leaf node %d size %d <%d..%d> ",
 		     n, node->size, node->startind, node->endind);
 
 	  if (print_data)
 	  {
-	    fts_post(" = (");
+	    rta_post(" = (");
 	    for (i = node->startind; i <= node->endind; i++) 
 	    {
-		fts_post("%svec %d = ", (print_data >= 2  ?  "\n    " : ""),
+		rta_post("%svec %d = ", (print_data >= 2  ?  "\n    " : ""),
 			 t->dataindex[i]);
 		vec_post(kdtree_get_vector(t, i), 1, t->ndim,
 			 i < node->endind ? ", " : "");
 	    }
-	    fts_post(")");
+	    rta_post(")");
 	  }
-	  fts_post("\n");
+	  rta_post("\n");
 	} /* end for nodes n */
     } /* end for level l */
 }
@@ -169,8 +169,8 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 
 #define auto_alloc(field, in, size) do {				\
     if (in == NULL) /* auto alloc */					\
-      if (field) field = fts_realloc(field, size * sizeof(*field));	\
-      else       field = malloc(size * sizeof(*field));			\
+      if (field) field = rta_realloc(field, size * sizeof(*field));	\
+      else       field = rta_malloc(size * sizeof(*field));		\
     else field = in; /* external alloc */ } while (0)
 
 
@@ -246,7 +246,7 @@ int kdtree_update_sigmanz (kdtree_t *self)
 void kdtree_set_sigma (kdtree_t *self, float *sigma) /* todo: sigma_indnz from outside */
 {
     self->sigma = sigma;
-    self->sigma_indnz = realloc(self->sigma_indnz, 
+    self->sigma_indnz = rta_realloc(self->sigma_indnz, 
 				self->ndim * sizeof(*self->sigma));
     kdtree_update_sigmanz(self);
 }
