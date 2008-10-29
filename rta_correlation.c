@@ -50,14 +50,14 @@ void rta_correlation_fast(
     int c,f;
     for(c=0; c<c_size; c++)
     {
-      float c = 0.0;
+      float corr = 0.0;
 	
       for(f=0; f<filter_size; f++)
       {
-        c += input_vector_a[f+c] * input_vector_b[f];
+	corr += input_vector_a[f+c] * input_vector_b[f];
       }
 
-      correlation[c] = c;
+      correlation[c] = corr;
     } /* end of base algorithm */
 
 #if defined(RTA_USE_VECLIB)
