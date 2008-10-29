@@ -17,6 +17,10 @@
 /** FTM configuration */
 #include "ftmlib.h"
 
+/** console output */
+#undef rta_post
+#define rta_post fts_post
+
 /** fts memory allocation */
 #undef rta_malloc
 #define rta_malloc fts_malloc
