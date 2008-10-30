@@ -1,7 +1,8 @@
 
-#include "rta_kdtree.h"
 #include <stdlib.h>
 #include <math.h>
+#include "rta_kdtree.h"
+#include "rta_kdtreeintern.h"
 
 
 #ifdef DEBUG
@@ -9,9 +10,6 @@
 #else
 #define DEBUG_KDTREESEARCH 0
 #endif
-
-
-#define MAX_FLOAT 0x7FFFFFFF  
 
 
 /*
@@ -164,7 +162,7 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
 #if DEBUG_KDTREESEARCH >= 2
 	kdtree_stack_display(s);
 #endif
-#if PROFILE_SEARCH
+#if KDTREE_PROFILE_SEARCH
 	if (s->size > t->profile.maxstack)
 	    t->profile.maxstack = s->size;
 #endif
@@ -189,7 +187,7 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
 		    else
 			dxx = euclidean_distance(vector, stride, 
 				kdtree_get_vector(t, i), t->ndim);
-#if PROFILE_SEARCH
+#if KDTREE_PROFILE_SEARCH
 		    t->profile.v2v++;
 #endif
 #if DEBUG_KDTREESEARCH
@@ -269,7 +267,7 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
 #endif
 
     }
-#if PROFILE_SEARCH
+#if KDTREE_PROFILE_SEARCH
     t->profile.searches++;
     t->profile.neighbours += kmax + 1;
 #endif

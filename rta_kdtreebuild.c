@@ -1,5 +1,6 @@
 
 #include "rta_kdtree.h"
+#include "rta_kdtreeintern.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -9,9 +10,6 @@
 #else
 #define DEBUG_KDTREEBUILD 0
 #endif
-
-
-#define MAX_FLOAT 0x7FFFFFFF  
 
 
 static void compute_mean (kdtree_t *t, int node, int dim) 
@@ -131,7 +129,7 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
 {
     kdtree_node_t *n = &t->nodes[node];
 
- #if PROFILE_BUILD
+ #if KDTREE_PROFILE_BUILD
     t->profile.hyper++;
 #endif
     switch (t->dmode)
@@ -164,7 +162,7 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
 {
     int i, nice_node = 0, splitdim;
 
-#if PROFILE_BUILD
+#if KDTREE_PROFILE_BUILD
     t->profile.mean++;
 #endif
     /* determine dimension to split at 
@@ -303,7 +301,7 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
 /* vector to node distance */
 rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, int node)
 {
-#if PROFILE_BUILD
+#if KDTREE_PROFILE_BUILD
     t->profile.v2n++;
 #endif
 
@@ -323,7 +321,7 @@ rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, int node)
 }
 rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, int node)
 {
-#if PROFILE_BUILD
+#if KDTREE_PROFILE_BUILD
     t->profile.v2n++;
 #endif
 
@@ -347,7 +345,7 @@ rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride,
     kdtree_node_t *n    = &t->nodes[node];
     rta_real_t    *mean = t->mean + node * t->ndim;
 
-#if PROFILE_BUILD
+#if KDTREE_PROFILE_BUILD
     t->profile.v2n++;
 #endif
     switch (t->dmode)

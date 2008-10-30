@@ -53,20 +53,20 @@ extern "C" {
 #endif
 
 
-#define PROFILE_BUILD  1
-#define PROFILE_SEARCH 1
-#define PROFILE	       (PROFILE_BUILD || PROFILE_SEARCH)
+#define KDTREE_PROFILE_BUILD  1
+#define KDTREE_PROFILE_SEARCH 1
+#define KDTREE_PROFILE	       (KDTREE_PROFILE_BUILD || KDTREE_PROFILE_SEARCH)
 
 
 /** stack element for search algorithm */
-typedef struct _elem_struct
+typedef struct _kdtree_stack_elem_struct
 {
     int   node;
     rta_real_t dist;
 } kdtree_stack_elem_t;
 
 /** optimised stack for search algorithm */
-typedef struct _stack_struct
+typedef struct _kdtree_stack_struct
 {
     int size;
     int alloc;
@@ -102,7 +102,7 @@ typedef enum
 
 
 /** one node of the kd-tree */
-typedef struct _node_struct
+typedef struct _kdtree_node_struct
 {
     int startind;	/**< index of first vector in node in dataindex array */
     int endind;		/**< index of last vector in node in dataindex array */
@@ -195,14 +195,6 @@ rta_real_t *kdtree_get_vector(kdtree_t *t, int i);
 
 #define kdtree_get_row_ptr(t, i)    ((t)->data + (i) * (t)->ndim)
 
-#define pow2(x)  (1 << (x))
-
-/** helper function to print a vector \p v of length \p n with stride \p stride to the console */
-void vec_post (rta_real_t *v, int stride, int n, const char *suffix);
-
-/** helper function to print row \p i of matrix \p m of length \p n to the console */
-void row_post (rta_real_t *m, int i, int n, const char *suffix);
-
 /** print only tree info to console */
 void kdtree_info_display (kdtree_t* t);
 /** print tree raw unsorted data to console */
@@ -212,18 +204,7 @@ void kdtree_raw_display  (kdtree_t* t);
 void kdtree_data_display (kdtree_t* t, int print_data);
 
 /** set all counters in kdtree_t#profile to zero */
-void profile_clear (kdtree_t *t);
-
-void kdtree_stack_init (kdtree_stack_t *s, int size);
-void kdtree_stack_free (kdtree_stack_t *s);
-void kdtree_stack_grow (kdtree_stack_t *stack, int alloc);
-
-/** vector to node distance */
-rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, const int node);
-/** vector to node distance with stride */
-rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, const int node);
-/** vector to node distance with stride and weights 1/sigma */
-rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride, const rta_real_t *sigma, const int node);
+void kdtree_profile_clear (kdtree_t *t);
 
 void kdtree_set_decomposition(kdtree_t *t, kdtree_dmode_t mode, void *param);
 
