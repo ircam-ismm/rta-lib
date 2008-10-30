@@ -16,12 +16,6 @@
 #ifndef _RTA_STDLIB_H_
 #define _RTA_STDLIB_H_ 1
 
-/** default define for console printing */
-#ifndef rta_post
-#define rta_post printf
-#include <stdlib.h>
-#endif
-
 /** default define for memory allocation */
 #ifndef rta_malloc
 #define rta_malloc malloc
