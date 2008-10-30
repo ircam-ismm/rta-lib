@@ -1,5 +1,5 @@
 /**
- * @file   rta_selection.c
+ * @file   rta_selection.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Wed Aug 27 22:12:15 2008
  * 
