@@ -123,8 +123,8 @@ sorted_QR_decomposition( gsl_matrix * M, gsl_matrix * Q, gsl_matrix * R, gsl_per
 	int min_mn	= GSL_MIN_INT( m, n);
 	
 	gsl_vector * Tau	= gsl_vector_alloc( min_mn);
-	gsl_vector * Norms	= gsl_vector_alloc( min_mn);
-	int * Signs			= malloc( min_mn * sizeof(int));
+	gsl_vector * Norms	= gsl_vector_alloc( n);
+	int * Signs			= malloc( n * sizeof(int));
 	
 	
 	//QR decomposition with permutations in P
@@ -282,14 +282,14 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	gsl_matrix * QX			= gsl_matrix_alloc( left_m, left_m);
 	gsl_matrix * RX			= gsl_matrix_alloc( left_m, left_n);
-	gsl_permutation * PX	= gsl_permutation_alloc( GSL_MIN_INT(left_m,left_n));
+	gsl_permutation * PX	= gsl_permutation_alloc( left_n);
 	
 	sorted_QR_decomposition(X, QX, RX, PX);
 
 	
 	gsl_matrix * QY			= gsl_matrix_alloc( right_m, right_m);
 	gsl_matrix * RY			= gsl_matrix_alloc( right_m, right_n);
-	gsl_permutation * PY	= gsl_permutation_alloc( GSL_MIN_INT(right_m,right_n));
+	gsl_permutation * PY	= gsl_permutation_alloc( right_n);
 	
 	sorted_QR_decomposition(Y, QY, RY, PY);
 
