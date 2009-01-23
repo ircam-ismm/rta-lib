@@ -16,7 +16,21 @@
  * physics engine
  */
 
-static float distance(float *x1, float *x2)
+
+/* return value x clipped to bounds for dimension d */
+static float limit (rta_msdr_limits_t *lim, int d, float x)
+{
+    if (x < lim->min[d])
+	return lim->min[d];
+    else if (x > lim->max[d])
+	return lim->max[d];
+    else
+	return x;
+}
+
+
+/** euclidean distance between two vectors */
+static float distance (float *x1, float *x2)
 {
     double dist = 0;
     int   d;
@@ -30,6 +44,9 @@ static float distance(float *x1, float *x2)
     return (float) sqrt(dist);
 }
 
+
+// #define SIGN(x)	((x) >= 0 ? 1 : -1)
+#define SIGN(x)	((x) >= 0 ? 1 : -1)
 
 /* compute link forces */
 static float update_links (rta_msdr_t *sys)
@@ -52,9 +69,11 @@ static float update_links (rta_msdr_t *sys)
 
 	/* if using pow(stress): if (stress > 0) */
 	if (dist > 0)
-	    sys->forceabs[i] = (sys->K1[i] * sys->stress[i] +
-				sys->D1[i] * (dist - sys->lprev[i])) / dist;
-	else 
+	{
+	    float viscodamping = sys->D1[i] * (dist - sys->lprev[i]);
+	    sys->forceabs[i] = (sys->K1[i] * sys->stress[i] + viscodamping) / dist;
+	}
+	else
 	    sys->forceabs[i] = 0;
 
 	/* add repulsion term if close enough */
@@ -66,6 +85,7 @@ static float update_links (rta_msdr_t *sys)
 	{
 	    float forcenorm = sys->forceabs[i] * (m1ptr[d] - m2ptr[d]);
 	
+	    /* apply force normal vector to both masses, add friction */
 	    sys->force[m1 * NDIM + d] 
 		-= forcenorm + sys->D2[i] * sys->speed[m1 * NDIM + d];
 	    sys->force[m2 * NDIM + d] 
@@ -75,6 +95,87 @@ static float update_links (rta_msdr_t *sys)
 /*	fts_post("link %2d: dist %f len %f -> stress %f forceabs %f\n", 
 		 i, dist, sys->l0[i], sys->stress[i], sys->forceabs[i]);
 */
+	sys->lprev[i] = dist;
+	totalstress += fabs(sys->stress[i]);
+    }
+
+    return totalstress;
+}
+
+
+/* compute damping and friction forces */
+static float update_links_damping (rta_msdr_t *sys)
+{
+    int i;
+
+    for (i = 0; i < sys->nlinks; i++)
+    {
+	int    m1       = sys->links[i].m1;
+	int    m2       = sys->links[i].m2;
+	float *m1ptr    = sys->pos + m1 * NDIM;
+	float *m2ptr    = sys->pos + m2 * NDIM;
+
+	/* calculate absolute force */
+	float dist     = distance(m1ptr, m2ptr);
+	int d;
+
+	if (dist > 0)  /* viscosity damping */
+	    sys->forceabs[i] = sys->D1[i] * (dist - sys->lprev[i]) / dist;
+	else
+	    sys->forceabs[i] = 0;
+
+	/* apply link force to mass force vector */
+	for (d = 0; d < NDIM; d++)
+	{
+	    float forcenorm = sys->forceabs[i] * (m1ptr[d] - m2ptr[d]);
+	
+	    /* apply force normal vector to both masses, add friction */
+	    sys->force[m1 * NDIM + d] 
+		-= forcenorm + sys->D2[i] * sys->speed[m1 * NDIM + d];
+	    sys->force[m2 * NDIM + d] 
+		+= forcenorm - sys->D2[i] * sys->speed[m2 * NDIM + d];
+	}
+    }
+}
+
+/* compute link elasticity forces */
+static float update_links_elasticity (rta_msdr_t *sys)
+{
+    float totalstress = 0;
+    int i;
+
+    for (i = 0; i < sys->nlinks; i++)
+    {
+	int    m1       = sys->links[i].m1;
+	int    m2       = sys->links[i].m2;
+	float *m1ptr    = sys->pos + m1 * NDIM;
+	float *m2ptr    = sys->pos + m2 * NDIM;
+
+	/* calculate absolute force */
+	float dist     = distance(m1ptr, m2ptr);
+	int d;
+
+	sys->stress[i] = dist - sys->l0[i];
+
+	if (dist > 0)
+	    sys->forceabs[i] = sys->K1[i] * sys->stress[i] / dist;
+	else
+	    sys->forceabs[i] = 0;
+
+	/* add repulsion term if close enough */
+	if (dist < sys->Rt[i])
+	    sys->forceabs[i] -= (1 - dist / sys->Rt[i]) * sys->Rf[i];
+
+	/* apply link force to mass force vector */
+	for (d = 0; d < NDIM; d++)
+	{
+	    float forcenorm = sys->forceabs[i] * (m1ptr[d] - m2ptr[d]);
+	
+	    /* apply force normal vector to both masses */
+	    sys->force[m1 * NDIM + d] -= forcenorm;
+	    sys->force[m2 * NDIM + d] += forcenorm;
+	}
+
 	sys->lprev[i] = dist;
 	totalstress += fabs(sys->stress[i]);
     }
@@ -96,14 +197,12 @@ static float update_masses (rta_msdr_t *sys, float *totalmovement)
 	{
 	    int   dd   = massidx + d;
 	    float pold = sys->pos[dd];
-	    float pnew = sys->force[dd] * sys->invmass[i] + 2 * pold - sys->pos2[dd];
-	    /* set and clip position */
-	    if (pnew < sys->min[d])
-		pnew = sys->min[d];
-	    else if (pnew > sys->max[d])
-		pnew = sys->max[d];
 
-	    sys->speed[dd] = pnew - pold;
+	    /* apply force and current speed */
+	    float pnew = sys->force[dd] * sys->invmass[i] + 2 * pold - sys->pos2[dd];
+	    /* set and clip speed, recalc new position */
+	    sys->speed[dd] = limit(&sys->speedlim, d, pnew - pold);
+	    pnew           = limit(&sys->poslim,   d, pold + sys->speed[dd]);
 
 	    /* cycle state: clear applied force */
 	    sys->pos   [dd] = pnew;
@@ -140,10 +239,20 @@ static float update_masses (rta_msdr_t *sys, float *totalmovement)
    return total stress, on demand return total movement magnitude */
 float rta_msdr_update (rta_msdr_t *sys, float *move)
 {
-    float stress;
+    float stress, move1;
 
+/* single-step:
     stress = update_links(sys);
     update_masses(sys, move);
+*/
+    /* two-step: */
+    update_links_damping(sys);
+    update_masses(sys, &move1);
+    stress = update_links_elasticity(sys);
+    update_masses(sys, move);
+
+    fts_post("update: damp move %f  elastic move %f  stress %f\n",
+	     move1, move ? *move : 0, stress);
 
     return stress;
 }
@@ -196,14 +305,15 @@ int rta_msdr_get_links (rta_msdr_t *sys, float *out)
  */
 
 /* set masses position limits */
-void rta_msdr_set_limits (rta_msdr_t *sys, float *min, float *max)
+void rta_msdr_set_limits (rta_msdr_t *sys, int id, float *min, float *max)
 {
+    rta_msdr_limits_t *lim = (id == 1  ?  &sys->speedlim  :  &sys->poslim);
     int i;
 
     for (i = 0; i < NDIM; i++)
     {
-	sys->min[i] = min[i];
-	sys->max[i] = max[i];
+	lim->min[i] = min[i];
+	lim->max[i] = max[i];
     }
 }
 

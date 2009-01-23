@@ -22,6 +22,13 @@ extern "C" {
 #define RTA_MSDR_MAXCAT	2
 
 
+/** struct for bounding values */
+typedef struct _rta_msdr_limits {
+    float min [RTA_MSDR_NDIM];  /** lower limit for each dimension */
+    float max [RTA_MSDR_NDIM];  /** upper limit for each dimension */
+} rta_msdr_limits_t;
+
+
 /** struct representing one mass
     N.B.: position, force, velocity stored as vectors in msdr struct */
 typedef struct _rta_msdr_mass {
@@ -54,8 +61,8 @@ typedef struct _rta_msdr {
     float *pos2;		/** (nmass, D) old position */
     float *outforce;		/** (nmass, D) force output */
 
-    float min[RTA_MSDR_NDIM];	/** position limits for masses */
-    float max[RTA_MSDR_NDIM];
+    rta_msdr_limits_t poslim;	/** position limits for masses */
+    rta_msdr_limits_t speedlim;	/** speed limits for masses */
 
     /** links */
     int nlinks;			/** number of links in system */
@@ -125,8 +132,8 @@ int rta_msdr_get_num_links (rta_msdr_t *sys);
    masses id(2), masses pos (4), stress, force */
 int rta_msdr_get_links (rta_msdr_t *sys, float *out);
 
-/* set masses position limits */
-void rta_msdr_set_limits (rta_msdr_t *sys, float *min, float *max);
+/* set masses position limits if id == 0, speed limits if id == 1 */
+void rta_msdr_set_limits (rta_msdr_t *sys, int id, float *min, float *max);
 
 
 #ifdef __cplusplus
