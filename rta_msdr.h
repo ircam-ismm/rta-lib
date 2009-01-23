@@ -88,8 +88,21 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 
 
 /* update links and mass positions
-   return total stress, on demand return total movement magnitude */
-float rta_msdr_update (rta_msdr_t *sys, /*out*/ float *movement);
+   return total stress */
+float rta_msdr_update (rta_msdr_t *sys);
+
+/* update links and mass positions
+   return total stress */
+float rta_msdr_update_ind (rta_msdr_t *sys, int nind, int *ind);
+
+/** update nind masses in index list ind */
+    void  rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind);
+
+/** compute damping and friction forces */
+float rta_msdr_update_links_damping (rta_msdr_t *sys);
+
+/** compute link elasticity forces */
+float rta_msdr_update_links_elasticity (rta_msdr_t *sys);
 
 void rta_msdr_init (rta_msdr_t *sys, int maxmass, int maxlinkstotal, int maxlinkscat);
 
@@ -131,6 +144,13 @@ int rta_msdr_get_num_links (rta_msdr_t *sys);
 /* copy ncol columns if link data to out(nlinks, 8):
    masses id(2), masses pos (4), stress, force */
 int rta_msdr_get_links (rta_msdr_t *sys, float *out);
+
+/* get total movement after last masses update */
+float rta_msdr_get_movement (rta_msdr_t *sys);
+
+/* copy force vector (after links update) */
+float rta_msdr_get_force (rta_msdr_t *sys);
+
 
 /* set masses position limits if id == 0, speed limits if id == 1 */
 void rta_msdr_set_limits (rta_msdr_t *sys, int id, float *min, float *max);
