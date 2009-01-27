@@ -24,6 +24,7 @@ extern "C" {
 
 /** struct for bounding values */
 typedef struct _rta_msdr_limits {
+    int	  unlimited;		/** flag to test for limits at all */
     float min [RTA_MSDR_NDIM];  /** lower limit for each dimension */
     float max [RTA_MSDR_NDIM];  /** upper limit for each dimension */
 } rta_msdr_limits_t;
@@ -96,7 +97,7 @@ float rta_msdr_update (rta_msdr_t *sys);
 float rta_msdr_update_ind (rta_msdr_t *sys, int nind, int *ind);
 
 /** update nind masses in index list ind */
-    void  rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind);
+void  rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind);
 
 /** compute damping and friction forces */
 float rta_msdr_update_links_damping (rta_msdr_t *sys);
@@ -152,8 +153,11 @@ float rta_msdr_get_movement (rta_msdr_t *sys);
 float rta_msdr_get_force (rta_msdr_t *sys);
 
 
-/* set masses position limits if id == 0, speed limits if id == 1 */
+/** set masses position limits if id == 0, speed limits if id == 1 */
 void rta_msdr_set_limits (rta_msdr_t *sys, int id, float *min, float *max);
+
+/** set to no limits */
+void rta_msdr_set_unlimited (rta_msdr_t *sys, int id);
 
 
 #ifdef __cplusplus
