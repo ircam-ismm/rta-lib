@@ -222,13 +222,16 @@ void kdtree_free (kdtree_t *self);
     
     @param self		kd-tree structure
     @param data		pointer to \p m * \p n real values of data to be searched
-    @param index	if not NULL, must point to space for \p m int values, otherwise the library will auto-allocate
+    @param index	if not NULL, must point to space for \p m int values with row indices to use (1..mdata), otherwise the library will auto-allocate
     @param m		number of data vectors (rows)
     @param n		dimension of data vectors (columns)
 
     @return the number of nodes the tree will build
 */
 int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n);
+
+/** build tree only on m lines of data listed in ind */
+// int kdtree_set_data_ind (kdtree_t *self, rta_real_t *data, int *index, int m, int n, int *ind);
 
 /** set new pointer to weight vector sigma of length kdtree_t#ndim 
 

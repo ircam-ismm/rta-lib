@@ -39,7 +39,7 @@ void vec_post (rta_real_t *v, int stride, int n, const char *suffix)
 
     for (i = 0, ii = 0; i < n; i++, ii += stride) 
     { 	
-	rta_post("%s%.1f", (ii == 0  ?  "["  :  ", "), v[ii]);
+	rta_post("%s%.3f", (ii == 0  ?  "["  :  ", "), v[ii]);
     }
     rta_post("]%s", suffix);
 }
@@ -184,8 +184,9 @@ int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n)
 
   /* init index list */
   auto_alloc(self->dataindex, index, m);
-  for (i = 0; i < m; i++)
-      self->dataindex[i] = i;
+  if (index == NULL) /* use indices from outside, if given */
+      for (i = 0; i < m; i++)
+	  self->dataindex[i] = i;
 
   /* init search stack size according to tree height 
      (with heuristic margin of 4 times) */
