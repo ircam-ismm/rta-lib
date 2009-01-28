@@ -241,6 +241,35 @@ void rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind)
     }
 }
 
+/* update masses from link forces without inertia */
+void rta_msdr_update_masses_limp_ind (rta_msdr_t *sys, int nind, int *ind)
+{
+    int i, d;
+
+    for (i = 0; i < nind; i++)
+    {
+	int    dd   = ind[i] * NDIM;	/* element index of row ind[i] */
+	float  mass = sys->invmass[ind[i]];
+
+	for (d = 0; d < NDIM; d++, dd++)
+	{
+	    /* apply force, DON'T apply last speed, because no inertia! */
+	    float pold = sys->pos[dd];
+	    float pnew = sys->force[dd] * mass + pold;
+
+	    /* calc and clip speed, recalc new position */
+	    sys->speed[dd] = limit(&sys->speedlim, d, pnew - pold);
+	    pnew           = limit(&sys->poslim,   d, pold + sys->speed[dd]);
+
+	    fts_post("update_masses_ind i %d -> ind %d  mass %f  dim %d:  force %f -> speed %f  pold %f -> pnew %f\n", i, ind[i], 1. / mass, d, sys->force [dd], sys->speed[dd], pold, pnew);
+
+	    /* cycle state: clear applied force */
+	    sys->pos   [dd] = pnew;
+	    sys->force [dd] = 0;
+	}
+    }
+}
+
 
 /* update links and mass positions
    return total stress */
@@ -268,16 +297,14 @@ float rta_msdr_update (rta_msdr_t *sys)
 
 /* update links and mass positions
    return total stress, on demand return total movement magnitude */
-float rta_msdr_update_ind (rta_msdr_t *sys, int nind, int *ind)
+float rta_msdr_update_limp_ind (rta_msdr_t *sys, int nind, int *ind)
 {
-    float stress;
+    float stress = update_links(sys);
 
-    rta_msdr_update_links_damping(sys);
-    rta_msdr_update_masses_ind(sys, nind, ind);
-    stress = rta_msdr_update_links_elasticity(sys);
     if (sys->outforce)
 	rta_msdr_get_force(sys);
-    rta_msdr_update_masses_ind(sys, nind, ind);
+
+    rta_msdr_update_masses_limp_ind(sys, nind, ind);
 
     return stress;
 }
@@ -523,6 +550,25 @@ void rta_msdr_set_mass (rta_msdr_t *sys, int i, int n, float *invmass)
 }
 
 
+/* clear all links */
+void rta_msdr_clear_links (rta_msdr_t *sys)
+{
+    int i, c;
+
+    sys->nlinks = 0;
+
+    for (i = 0; i < sys->massalloc; i++)
+    {
+	rta_msdr_mass_t *m = sys->masses + i;
+
+	for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+	{
+	    m->nlinks[c]  = 0;
+	    m->maxdist[c] = 0;
+	}
+    }
+}
+
 
 static float *vectors_alloc (int n)
 {
@@ -550,23 +596,15 @@ void rta_msdr_init (rta_msdr_t *sys, int maxmass, int maxlinkstotal, int maxlink
     sys->pos2   = vectors_alloc(maxmass);
     sys->outforce = NULL;
 
-    /* init masses' links lists */
-    for (i = 0; i < maxmass; i++)
+    /* allocate masses' links lists */
+    for (i = 0; i < sys->massalloc; i++)
     {
-	rta_msdr_mass_t *m = sys->masses + i;
-
 	for (c = 0; c < RTA_MSDR_MAXCAT; c++)
-	{
-	    m->nlinks[c]  = 0;
-	    m->maxdist[c] = 0;
-	    m->links[c]   = rta_malloc(maxlinkscat * sizeof(int));
-	}
+	     sys->masses[i].links[c] = rta_malloc(maxlinkscat * sizeof(int));
     }
 
-    /* init links */
-    sys->nlinks     = 0;
+    /* allocate links */
     sys->linksalloc = maxlinkstotal;
-
     sys->links = rta_malloc(maxlinkstotal * sizeof(rta_msdr_link_t));
     sys->K1    = vect_alloc(maxlinkstotal);
     sys->D1    = vect_alloc(maxlinkstotal);
@@ -578,6 +616,9 @@ void rta_msdr_init (rta_msdr_t *sys, int maxmass, int maxlinkstotal, int maxlink
     sys->lprev = vect_alloc(maxlinkstotal);
     sys->stress = vect_alloc(maxlinkstotal);
     sys->forceabs = vect_alloc(maxlinkstotal);
+
+    /* init masses' links lists and links */
+    rta_msdr_clear_links (sys);
 
     rta_msdr_set_unlimited(sys, 0);
     rta_msdr_set_unlimited(sys, 1);
