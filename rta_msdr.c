@@ -354,6 +354,17 @@ int rta_msdr_get_links (rta_msdr_t *sys, float *out)
 }
 
 
+float rta_msdr_get_mass_maxdist(rta_msdr_t *sys, int massi, int cat)
+{
+    return sys->masses[massi].maxdist[cat];
+}
+
+float rta_msdr_get_mass_num_links(rta_msdr_t *sys, int massi, int cat)
+{
+    return sys->masses[massi].nlinks[cat];
+}
+
+
 /* if we want to know total masses movement, run expensive sqr/sqrt
    over all lines again */
 float rta_msdr_get_movement (rta_msdr_t *sys)
@@ -438,6 +449,53 @@ void rta_msdr_set_unlimited (rta_msdr_t *sys, int id)
 }
 
 
+/* set link data only */
+static float set_link  (rta_msdr_t *sys, int i, int m1, int m2, float len,
+		       float K1, float D1, float D2, float Rt, float Rf)
+{
+    float *m1pos = sys->pos + m1 * NDIM;
+    float *m2pos = sys->pos + m2 * NDIM;
+    float  dist = distance(m1pos, m2pos); /* previous len = current dist */
+    
+    sys->links[i].m1 = m1;
+    sys->links[i].m2 = m2;
+    sys->l0[i]       = len;		       /* nominal length */
+    sys->lprev[i]    = dist;
+    sys->K1[i] 	     = K1; 
+    sys->D1[i] 	     = D1;
+    sys->D2[i] 	     = D2;
+    sys->Rt[i] 	     = Rt;
+    sys->Rf[i] 	     = Rf;
+        
+    return dist;
+}
+
+
+/* set backpointers to linked masses in link */
+static void set_link_masses (rta_msdr_t *sys, int i, int m1, int m2, int cat, float dist)
+{
+	rta_msdr_mass_t *m1ptr, *m2ptr;
+
+	/* record linkage in both masses' links lists */
+	m1ptr = &sys->masses[m1];
+	m2ptr = &sys->masses[m2];
+
+	sys->links[i].ind1 = m1ptr->nlinks[cat];
+	sys->links[i].ind2 = m2ptr->nlinks[cat];
+	sys->links[i].cat  = cat;
+
+	/* if (nlinks[cat] < maxlinks[cat]) */
+	/* todo: insert into sorted list; if already present: overwrite link */
+	m1ptr->links[cat][m1ptr->nlinks[cat]++] = i;
+	m2ptr->links[cat][m2ptr->nlinks[cat]++] = i;
+ 
+	/* update max distance of link list */
+	if (dist > m1ptr->maxdist[cat])
+	    m1ptr->maxdist[cat] = dist;
+	if (dist > m2ptr->maxdist[cat])
+	    m2ptr->maxdist[cat] = dist;
+}
+
 
 /** add link between masses m1, m2
     m1, m2 must be valid mass ids, cat must be valid link category */
@@ -446,21 +504,32 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 {
     if (sys->nlinks < sys->linksalloc  &&  m1 != m2)
     {
-	rta_msdr_mass_t *m1ptr, *m2ptr;
-	float 		*m1pos = sys->pos + m1 * NDIM;
-	float 		*m2pos = sys->pos + m2 * NDIM;
 	int		 i     = sys->nlinks++;
 
-	sys->links[i].m1 = m1;
-	sys->links[i].m2 = m2;
-	sys->l0[i]       = len;	/* nominal length */
-	sys->lprev[i]    = distance(m1pos, m2pos); /* previous length = current distance */
+	float dist = set_link(sys, i, m1, m2, len, K1, D1, D2, Rt, Rf);
+	set_link_masses(sys, i, m1, m2, cat, dist);
 
-	sys->K1[i] = K1;
-	sys->D1[i] = D1;
-	sys->D2[i] = D2;
-	sys->Rt[i] = Rt;
-	sys->Rf[i] = Rf;
+//	fts_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d  pos %p m1o %d m2o %d m2pos %p -> %d %d %d\n", m1, m2, len, sys->lprev[i], cat, sys->pos, m1 * NDIM, m2 * NDIM, m2pos, i, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
+
+	return i;
+    }
+    else
+	return -1;
+}
+
+
+/** insert link between masses m1, m2 into list sorted by distance, 
+    throw out farthest link if not enough space, update maxdist
+    m1, m2 must be valid mass ids, cat must be valid link category */
+int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
+			  float K1, float D1, float D2, float Rt, float Rf)
+{
+    if (sys->nlinks < sys->linksalloc  &&  m1 != m2)
+    {
+	rta_msdr_mass_t *m1ptr, *m2ptr;
+	int		 i     = sys->nlinks++;
+
+	float dist = set_link(sys, i, m1, m2, len, K1, D1, D2, Rt, Rf);
 
 	/* record linkage in both masses' links lists */
 	m1ptr = &sys->masses[m1];
@@ -471,6 +540,11 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 	m1ptr->links[cat][m1ptr->nlinks[cat]++] = i;
 	m2ptr->links[cat][m2ptr->nlinks[cat]++] = i;
 
+	/* update max distance of link list */
+	if (dist > m1ptr->maxdist[cat])
+	    m1ptr->maxdist[cat] = dist;
+	if (dist > m2ptr->maxdist[cat])
+	    m2ptr->maxdist[cat] = dist;
 //	fts_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d  pos %p m1o %d m2o %d m2pos %p -> %d %d %d\n", m1, m2, len, sys->lprev[i], cat, sys->pos, m1 * NDIM, m2 * NDIM, m2pos, i, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
 
 	return i;
@@ -478,6 +552,8 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
     else
 	return -1;
 }
+
+
 
 /* set rigidity parameter for all links */
 void rta_msdr_set_K1 (rta_msdr_t *sys, float k1)
@@ -564,8 +640,22 @@ void rta_msdr_clear_links (rta_msdr_t *sys)
 	for (c = 0; c < RTA_MSDR_MAXCAT; c++)
 	{
 	    m->nlinks[c]  = 0;
-	    m->maxdist[c] = 0;
+	    m->maxdist[c] = FLT_MAX;
 	}
+    }
+}
+
+/* clear links of mass m and category cat */
+void rta_msdr_clear_mass_links (rta_msdr_t *sys, int m, int cat)
+{
+    rta_msdr_mass_t *mass   = &sys->masses[m];
+    int              nlinks = mass->nlinks[cat];
+    int i, c;
+
+    for (i = 0; i < nlinks; i++)
+	// rta_msdr_remove_link(sys, i, ...)
+	rta_msdr_mass_t *link = &sys->links[mass->links[cat][i]];
+	// DANG! remove link backpointer in mass2 leaves hole!!!
     }
 }
 
@@ -631,7 +721,6 @@ void rta_msdr_set (rta_msdr_t *sys, int nmasses, float *pos, float *invmass)
     int i, c;
     
     sys->nmasses = nmasses;
-    sys->nlinks  = 0;
     sys->pos     = pos;
     sys->invmass = invmass;
 
@@ -641,16 +730,7 @@ void rta_msdr_set (rta_msdr_t *sys, int nmasses, float *pos, float *invmass)
     bzero(sys->speed, sys->nmasses * NDIM * sizeof(float));
 
     /* init masses' links lists */
-    for (i = 0; i < sys->nmasses; i++)
-    {
-	rta_msdr_mass_t *m = sys->masses + i;
-
-	for (c = 0; c < RTA_MSDR_MAXCAT; c++)
-	{
-	    m->nlinks[c]  = 0;
-	    m->maxdist[c] = 0;
-	}
-    }
+    rta_msdr_clear_links (sys);
 }
 
 

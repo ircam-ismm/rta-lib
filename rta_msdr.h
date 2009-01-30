@@ -44,6 +44,9 @@ typedef struct _rta_msdr_mass {
 typedef struct _rta_msdr_link {
     int m1; /** index of mass 1 */
     int m2; /** index of mass 2 */
+    int ind1; /** index in link list of mass 1 */
+    int ind2; /** index in link list of mass 2 */
+    int cat;  /** category of link list of masses */
 } rta_msdr_link_t;
 
 
@@ -86,6 +89,9 @@ typedef struct _rta_msdr {
 
 int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 		       float K1, float D1, float D2, float Rt, float Rf);
+
+int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
+			  float K1, float D1, float D2, float Rt, float Rf);
 
 void rta_msdr_clear_links (rta_msdr_t *sys);
 
@@ -151,6 +157,9 @@ int rta_msdr_get_num_links (rta_msdr_t *sys);
 /* copy ncol columns if link data to out(nlinks, 8):
    masses id(2), masses pos (4), stress, force */
 int rta_msdr_get_links (rta_msdr_t *sys, float *out);
+
+/* get max link distance of category */
+float rta_msdr_get_maxdist(rta_msdr_t *sys, int massi, int cat);
 
 /* get total movement after last masses update */
 float rta_msdr_get_movement (rta_msdr_t *sys);
