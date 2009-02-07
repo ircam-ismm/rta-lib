@@ -93,8 +93,7 @@ static float update_links (rta_msdr_t *sys)
 		+= forcenorm - sys->D2[i] * sys->speed[m2 * NDIM + d];
 	}
 
-	fts_post("update link %2d: dist %f len %f -> stress %f forceabs %f\n", 
-		 i, dist, sys->l0[i], sys->stress[i], sys->forceabs[i]);
+//	fts_post("update link %2d: dist %f len %f -> stress %f forceabs %f\n",  		 i, dist, sys->l0[i], sys->stress[i], sys->forceabs[i]);
 
 	sys->lprev[i] = dist;
 	totalstress += fabs(sys->stress[i]);
@@ -105,7 +104,7 @@ static float update_links (rta_msdr_t *sys)
 
 
 /* compute damping and friction forces */
-float rta_msdr_update_links_damping (rta_msdr_t *sys)
+static float rta_msdr_update_links_damping (rta_msdr_t *sys)
 {
     int i, d;
 
@@ -133,12 +132,12 @@ float rta_msdr_update_links_damping (rta_msdr_t *sys)
 	    sys->force[m2 * NDIM + d] 
 		+= forceorth - sys->D2[i] * sys->speed[m2 * NDIM + d];
 	}
-	fts_post("update link damping %2d: len0 %f  lprev %f  lcurr %f  -> forceabs %f\n", i, sys->l0[i], sys->lprev[i], dist, sys->forceabs[i]);
+//	fts_post("update link damping %2d: len0 %f  lprev %f  lcurr %f  -> forceabs %f\n", i, sys->l0[i], sys->lprev[i], dist, sys->forceabs[i]);
     }
 }
 
 /* compute link elasticity forces */
-float rta_msdr_update_links_elasticity (rta_msdr_t *sys)
+static float rta_msdr_update_links_elasticity (rta_msdr_t *sys)
 {
     float totalstress = 0;
     int i, d;
@@ -172,7 +171,7 @@ float rta_msdr_update_links_elasticity (rta_msdr_t *sys)
 	    sys->force[m2 * NDIM + d] += forceorth;
 	}
 
-	fts_post("update link elasticity %2d: len0 %f  lprev %f  lcurr %f  -> forceabs %f  stress %f\n", i, sys->l0[i], sys->lprev[i], dist, sys->forceabs[i], sys->stress[i]);
+//	fts_post("update link elasticity %2d: len0 %f  lprev %f  lcurr %f  -> forceabs %f  stress %f\n", i, sys->l0[i], sys->lprev[i], dist, sys->forceabs[i], sys->stress[i]);
 
 	sys->lprev[i] = dist;
 	totalstress += fabs(sys->stress[i]);
@@ -212,7 +211,7 @@ static void update_masses (rta_msdr_t *sys)
 
 
 /* update masses from link forces */
-void rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind)
+static void rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind)
 {
     int i, d;
 
@@ -231,7 +230,7 @@ void rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind)
 	    sys->speed[dd] = limit(&sys->speedlim, d, pnew - pold);
 	    pnew           = limit(&sys->poslim,   d, pold + sys->speed[dd]);
 
-	    fts_post("update_masses_ind i %d -> ind %d  mass %f  dim %d:  force %f -> speed %f  pold %f -> pnew %f\n", i, ind[i], 1. / mass, d, sys->force [dd], sys->speed[dd], pold, pnew);
+//	    fts_post("update_masses_ind i %d -> ind %d  mass %f  dim %d:  force %f -> speed %f  pold %f -> pnew %f\n", i, ind[i], 1. / mass, d, sys->force [dd], sys->speed[dd], pold, pnew);
 
 	    /* cycle state: clear applied force */
 	    sys->pos   [dd] = pnew;
@@ -241,8 +240,36 @@ void rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind)
     }
 }
 
+
 /* update masses from link forces without inertia */
-void rta_msdr_update_masses_limp_ind (rta_msdr_t *sys, int nind, int *ind)
+static void rta_msdr_update_masses_limp (rta_msdr_t *sys)
+{
+    int i, d;
+
+    for (i = 0; i < sys->nmasses; i++)
+    {
+	int    dd   = i * NDIM;	/* element index of row i */
+	float  mass = sys->invmass[i];
+
+	for (d = 0; d < NDIM; d++, dd++)
+	{
+	    /* apply force, DON'T apply last speed, because no inertia! */
+	    float pold = sys->pos[dd];
+	    float pnew = sys->force[dd] * mass + pold;
+
+	    /* calc and clip speed, recalc new position */
+	    sys->speed[dd] = limit(&sys->speedlim, d, pnew - pold);
+	    pnew           = limit(&sys->poslim,   d, pold + sys->speed[dd]);
+
+	    /* cycle state: clear applied force */
+	    sys->pos   [dd] = pnew;
+	    sys->force [dd] = 0;
+	}
+    }
+}
+
+/* update indexed masses from link forces without inertia */
+static void rta_msdr_update_masses_limp_ind (rta_msdr_t *sys, int nind, int *ind)
 {
     int i, d;
 
@@ -261,7 +288,7 @@ void rta_msdr_update_masses_limp_ind (rta_msdr_t *sys, int nind, int *ind)
 	    sys->speed[dd] = limit(&sys->speedlim, d, pnew - pold);
 	    pnew           = limit(&sys->poslim,   d, pold + sys->speed[dd]);
 
-	    fts_post("update_masses_ind i %d -> ind %d  mass %f  dim %d:  force %f -> speed %f  pold %f -> pnew %f\n", i, ind[i], 1. / mass, d, sys->force [dd], sys->speed[dd], pold, pnew);
+//	    fts_post("update_masses_ind i %d -> ind %d  mass %f  dim %d:  force %f -> speed %f  pold %f -> pnew %f\n", i, ind[i], 1. / mass, d, sys->force [dd], sys->speed[dd], pold, pnew);
 
 	    /* cycle state: clear applied force */
 	    sys->pos   [dd] = pnew;
@@ -277,10 +304,6 @@ float rta_msdr_update (rta_msdr_t *sys)
 {
     float stress;
 
-/* single-step:
-    stress = update_links(sys);
-    update_masses(sys, move);
-*/
     /* two-step: */
     rta_msdr_update_links_damping(sys);
     update_masses(sys);
@@ -289,14 +312,27 @@ float rta_msdr_update (rta_msdr_t *sys)
 	rta_msdr_get_force(sys);
     update_masses(sys);
 
-//    fts_post("update: damp move %f  elastic move %f  stress %f\n",
-//	     move1, move ? *move : 0, stress);
+    return stress;
+}
+
+
+/* update links and mass positions
+   return total stress */
+float rta_msdr_update_limp (rta_msdr_t *sys)
+{
+    float stress = update_links(sys);
+
+    if (sys->outforce)
+	rta_msdr_get_force(sys);
+
+    rta_msdr_update_masses_limp(sys);
 
     return stress;
 }
 
+
 /* update links and mass positions
-   return total stress, on demand return total movement magnitude */
+   return total stress */
 float rta_msdr_update_limp_ind (rta_msdr_t *sys, int nind, int *ind)
 {
     float stress = update_links(sys);
@@ -653,7 +689,8 @@ void rta_msdr_clear_mass_links (rta_msdr_t *sys, int m, int cat)
     int i, c;
 
     for (i = 0; i < nlinks; i++)
-	// rta_msdr_remove_link(sys, i, ...)
+    {
+    	// rta_msdr_remove_link(sys, i, ...)
 	rta_msdr_mass_t *link = &sys->links[mass->links[cat][i]];
 	// DANG! remove link backpointer in mass2 leaves hole!!!
     }
