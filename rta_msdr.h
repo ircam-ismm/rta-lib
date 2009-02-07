@@ -87,6 +87,10 @@ typedef struct _rta_msdr {
 } rta_msdr_t;
 
 
+/*
+ *  links 
+ */
+
 int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 		       float K1, float D1, float D2, float Rt, float Rf);
 
@@ -94,6 +98,25 @@ int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 			  float K1, float D1, float D2, float Rt, float Rf);
 
 void rta_msdr_clear_links (rta_msdr_t *sys);
+
+
+/*
+ *  masses
+ */
+
+/* set mass data (pos and masses) and reset to initial state */
+void rta_msdr_set (rta_msdr_t *sys, int nmasses, float *pos, float *invmass);
+
+/* copy masses pos only, n rows from index i  */
+void rta_msdr_set_pos (rta_msdr_t *sys, int i, int n, float *pos);
+
+/* copy inv. mass only, n rows from index i */
+void rta_msdr_set_mass (rta_msdr_t *sys, int i, int n, float *invmass);
+
+
+/*
+ *  system update
+ */
 
 /* update links and mass positions
    return total stress */
@@ -107,27 +130,11 @@ float rta_msdr_update_ind (rta_msdr_t *sys, int nind, int *ind);
    return total stress */
 float rta_msdr_update_limp_ind (rta_msdr_t *sys, int nind, int *ind);
 
-/** update nind masses in index list ind */
-void  rta_msdr_update_masses_ind (rta_msdr_t *sys, int nind, int *ind);
 
-/** compute damping and friction forces */
-float rta_msdr_update_links_damping (rta_msdr_t *sys);
-
-/** compute link elasticity forces */
-float rta_msdr_update_links_elasticity (rta_msdr_t *sys);
 
 void rta_msdr_init (rta_msdr_t *sys, int maxmass, int maxlinkstotal, int maxlinkscat);
 
 void rta_msdr_free (rta_msdr_t *sys);
-
-/* set mass data (pos and masses) and reset to initial state */
-void rta_msdr_set (rta_msdr_t *sys, int nmasses, float *pos, float *invmass);
-
-/* copy masses pos only, n rows from index i  */
-void rta_msdr_set_pos (rta_msdr_t *sys, int i, int n, float *pos);
-
-/* copy inv. mass only, n rows from index i */
-void rta_msdr_set_mass (rta_msdr_t *sys, int i, int n, float *invmass);
 
 
 /* set vector to recieve current link forces */
