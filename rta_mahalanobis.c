@@ -16,12 +16,12 @@
 
 
 /* update non-zero sigma index list */
-int rta_find_nz (int n, rta_real_t *vec, int *indnz)
+int rta_find_nz (int n, rta_real_t *vec, int stride, int *indnz)
 {
     int j, nnz = 0;
 
-    for (j = 0; j < n; j++)
-	if (vec[j] != 0)
+    for (j = 0; j < n; j++, vec += stride)
+	if (*vec != 0)
 	    indnz[nnz++] = j;
 
     return nnz;

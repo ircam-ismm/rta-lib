@@ -20,7 +20,7 @@ extern "C" {
 
 
 /* update non-zero sigma index list */
-int rta_find_nz (int n, rta_real_t *vec, int *indnz);
+int rta_find_nz (int n, rta_real_t *vec, int stride, int *indnz);
 
 
 /** Pure Mahalanobis distance calculation
