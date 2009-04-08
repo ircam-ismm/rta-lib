@@ -6,7 +6,7 @@
  * @brief  Integer mathematical functions
  * 
  *
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
 #ifndef _RTA_INT_H_

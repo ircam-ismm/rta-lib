@@ -8,7 +8,7 @@
  * Quick selection, qsort-like, with array selection (for median of a
  * vector of even size among others).
  *
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  *
  */
 #ifndef _RTA_SELECTION_H_

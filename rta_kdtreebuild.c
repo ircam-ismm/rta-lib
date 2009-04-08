@@ -11,6 +11,7 @@
 #define DEBUG_KDTREEBUILD 0
 #endif
 
+#define MAX_FLOAT 0x7FFFFFFF
 
 static void compute_mean (kdtree_t *t, int node, int dim) 
 {

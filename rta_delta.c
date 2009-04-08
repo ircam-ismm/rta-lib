@@ -10,7 +10,7 @@
  * Simple linear slope. Each column (a scalar value during time) is
  * filtered separately.
  *
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
 

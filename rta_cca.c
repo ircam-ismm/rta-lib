@@ -2,7 +2,7 @@
  *  rta_cca.c
  *
  *  Created by Caramiaux Baptiste on 08/10/08.
- *  Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
+ *  Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  *
  *	Using GSL (GNU Scientific Library) under GPL Licence
  */

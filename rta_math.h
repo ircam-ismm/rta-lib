@@ -6,7 +6,7 @@
  * @brief  Mathematical functions, <math.h> for rta_real_t type
  *
  * 
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
 #ifndef _RTA_MATH_H_

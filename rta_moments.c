@@ -10,7 +10,7 @@
  * sampled). Note that all moments (but the first) are centered. The
  * results unit is index (starting from 0).
  *
- * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
 

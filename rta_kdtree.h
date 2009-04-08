@@ -34,7 +34,7 @@ Call sequence for builing and using the tree:
 
 - 7. then you can query the tree with kdtree_search_knn().
 
-Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
+Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
 
 

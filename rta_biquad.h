@@ -22,7 +22,7 @@
  * For every function, a1 is a[0] and a2 is a[1]. b0 is b[0], b1 is
  * b[1] and b2 is b[2].
  *
- * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  *
  */
 

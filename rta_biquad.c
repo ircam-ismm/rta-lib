@@ -8,7 +8,7 @@
  * Based on the "Cookbook formulae for audio EQ biquad filter
  * coefficients" by Robert Bristow-Johnson 
  *
- * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
 
