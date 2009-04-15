@@ -15,9 +15,7 @@ extern "C" {
 #endif
 	
 #include "mnm.h"
-	
-	
-	
+		
 	/*
 	 * Compute Canonical Correlation Analysis between X and Y
 	 *		i.e. X.A and Y.B are maximally correlated with

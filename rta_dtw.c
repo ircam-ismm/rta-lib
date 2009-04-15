@@ -141,8 +141,9 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
 	int	j	= n-1;
 	int cpt = 0;
 	int k, tb;
-	
-	
+	float * pD;
+	int * pP;
+
 	/*
 	 * C is the step and weight matrix
 	 * two first columns : first and second dimension steps
@@ -154,10 +155,10 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
 	C[6] = 0; C[7] = 1; C[8] = 1;
 	
 	//cost matrix
-	float * pD	= malloc( m * n * sizeof(float));
+	pD	= malloc( m * n * sizeof(float));
 	
 	//index matrix
-	int * pP	= malloc( m * n * sizeof(int));
+	pP	= malloc( m * n * sizeof(int));
 	
 	//initialization
 	for( k = 0; k < m * n; k++)
@@ -203,16 +204,17 @@ rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m
 {
 	
 	int i;
-	
-	
+	int * p;
+	int * q;
+
 	//Fill cost (or score) matrix : SM
 	float * SM	= malloc( left_m * right_m * sizeof(float));
 	prepare_score_matrix( left_ptr, left_m, right_ptr, right_m, left_n, SM);
 	
 	
 	//Compute index tables p,q using dynamic programming
-	int * p		= malloc( (left_m + right_m + 1) * sizeof(int));
-	int * q		= malloc( (left_m + right_m + 1) * sizeof(int));
+	p = malloc( (left_m + right_m + 1) * sizeof(int));
+	q = malloc( (left_m + right_m + 1) * sizeof(int));
 	dpfast(SM, left_m, right_m, 1, 1, p, q, length);
 
 	

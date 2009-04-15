@@ -3,13 +3,14 @@
  * Copyright (C) 1994, 1995, 1998, 1999, 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
 
+#include <math.h>
+
 #ifdef WIN32
 #include <malloc.h>
+static double log2(double x){ return log(x)/log(2);}
 #else
 #include <alloca.h>
 #endif
-#include <math.h>
-
 
 #include "rta_kdtree.h"
 #include "rta_kdtreeintern.h"
@@ -25,7 +26,7 @@ void kdtree_profile_clear (kdtree_t *t)
     t->profile.v2v   	  = 0; 
     t->profile.v2n   	  = 0;
     t->profile.mean  	  = 0;
-    t->profile.hyper 	  = 0;
+    t->profile.hyperp 	  = 0;
     t->profile.searches   = 0;
     t->profile.neighbours = 0;
     t->profile.maxstack   = 0;
@@ -95,8 +96,12 @@ void kdtree_raw_display (kdtree_t* t)
 
 void kdtree_data_display(kdtree_t* t, int print_data) 
 {
-    rta_real_t plane[t->ndim];
-    int l, n, i;
+#ifdef WIN32
+	rta_real_t plane[2048];
+#else
+	rta_real_t plane[t->ndim];
+#endif 
+	int l, n, i;
 
     rta_post("\nTree Data:\n");
     if (t->height == 0 || t->ndata == 0) rta_post("Empty Tree\n");
@@ -116,7 +121,11 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 		
 	    if (t->dmode == dmode_orthogonal)
 	    {	/* splitplane implicit orthogonal to splitdim */
+#ifndef WIN32
 		bzero(plane, t->ndim * sizeof(rta_real_t));
+#else
+		memset(plane, 0.0, t->ndim * sizeof(rta_real_t));
+#endif
 		plane[node->splitdim] = 1;
 		vec_post(plane, 1, t->ndim, "");
 	    }
@@ -199,8 +208,11 @@ int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n)
 void kdtree_init_nodes (kdtree_t* self, kdtree_node_t *nodes, rta_real_t *planes, rta_real_t *means) 
 {
   auto_alloc(self->nodes, nodes, self->nnodes);
+#ifndef WIN32
   bzero(self->nodes, self->nnodes * sizeof(kdtree_node_t));
-
+#else
+  memset(self->nodes, 0.0, self->nnodes * sizeof(kdtree_node_t));
+#endif
   auto_alloc(self->mean,  means,  self->nnodes * self->ndim);
 
   if (self->dmode != dmode_orthogonal)

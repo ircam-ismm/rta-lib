@@ -131,7 +131,7 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
     kdtree_node_t *n = &t->nodes[node];
 
  #if KDTREE_PROFILE_BUILD
-    t->profile.hyper++;
+    t->profile.hyperp++;
 #endif
     switch (t->dmode)
     {
@@ -139,7 +139,11 @@ static void compute_splitplane (kdtree_t* t, int node, int level)
     {	/* compute hyperplane orthogonal to the base vector number b */
 	rta_real_t *split_ptr = t->split + node * t->ndim;
 
+#ifndef WIN32
 	bzero(split_ptr, t->ndim * sizeof(rta_real_t));
+#else
+	memset(split_ptr, 0.0, t->ndim * sizeof(rta_real_t));
+#endif
 	split_ptr[n->splitdim] = 1;
 
 #if DEBUG_KDTREEBUILD

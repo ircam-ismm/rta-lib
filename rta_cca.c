@@ -14,7 +14,7 @@
 #include<gsl/gsl_linalg.h>
 #include<gsl/gsl_blas.h>
 #include<gsl/gsl_statistics_float.h>
-
+#include<gsl/gsl_math.h>
 
 #include<math.h>
 #include "rta_cca.h"
@@ -124,7 +124,7 @@ sorted_QR_decomposition( gsl_matrix * M, gsl_matrix * Q, gsl_matrix * R, gsl_per
 	
 	gsl_vector * Tau	= gsl_vector_alloc( min_mn);
 	gsl_vector * Norms	= gsl_vector_alloc( n);
-	int * Signs			= malloc( n * sizeof(int));
+	int * Signs			= (int *)malloc( n * sizeof(int));
 	
 	
 	//QR decomposition with permutations in P
@@ -475,7 +475,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	//Compute ResX
 	matrix_product( invsubRX, L1, ResX);
-	gsl_matrix_scale( ResX, sqrt(left_m - 1));
+	gsl_matrix_scale( ResX, sqrt((float)(left_m - 1)));
 	
 
 	//Pseudo-inverse of subRY
@@ -485,7 +485,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	//Compute ResY
 	matrix_product( invsubRY, L2, ResY);
-	gsl_matrix_scale( ResY, sqrt(right_m - 1));	
+	gsl_matrix_scale( ResY, sqrt((float)(right_m - 1)));	
 	
 	
 	

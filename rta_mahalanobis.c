@@ -68,7 +68,7 @@ int rta_mahalanobis(int M, int N, int C,
 	{
 	  rta_real_t *inrow     = inptr;
 	  rta_real_t *murow     = muptr    + i * muskip;
-	  rta_real_t *sigmarow  = sigmaptr + i * sigmaskip;;
+	  rta_real_t *sigmarow  = sigmaptr + i * sigmaskip;
 	  rta_real_t  v = 0.f;
 
 	  /* for each input column j: calculate
@@ -130,7 +130,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
 	{
 	  rta_real_t *inrow     = inptr;
 	  rta_real_t *murow     = muptr    + i * muskip;
-	  rta_real_t *sigmarow  = sigmaptr + i * sigmaskip;;
+	  rta_real_t *sigmarow  = sigmaptr + i * sigmaskip;
 	  rta_real_t  v = 0.f;
 
 	  /* for each NON-zero-sigma input column jj: calculate

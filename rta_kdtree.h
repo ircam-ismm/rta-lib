@@ -112,6 +112,16 @@ typedef struct _kdtree_node_struct
     rta_real_t  splitnorm;	/**< spatial length of split vector */
 } kdtree_node_t;
 
+typedef struct _kdtree_profile_struct
+{
+	int v2v;	  /**< vector to vector distances */
+	int v2n;	  /**< vector to node distances */
+	int mean;	  /**< mean vector calculations */
+	int hyperp;    /**< split plane calculations */
+	int searches;	  /**< searches performed */
+	int neighbours;	  /**< neighbours found */
+	int maxstack;	  /**< highest stack size */
+} kdtree_profile_t;
 
 /** k-dimensional search tree data structure */
 typedef struct _kdtree_struct
@@ -143,15 +153,8 @@ typedef struct _kdtree_struct
     kdtree_stack_t stack;
 
     /** profiling data: count internal operations */
-    struct {
-	int v2v;	  /**< vector to vector distances */
-	int v2n;	  /**< vector to node distances */
-	int mean;	  /**< mean vector calculations */
-	int hyper;	  /**< split plane calculations */
-	int searches;	  /**< searches performed */
-	int neighbours;	  /**< neighbours found */
-	int maxstack;	  /**< highest stack size */
-    } profile;
+	kdtree_profile_t profile;
+
 } kdtree_t;
 
 
