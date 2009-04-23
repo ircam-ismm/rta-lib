@@ -333,7 +333,7 @@ void kdtree_delete (kdtree_t* t, int index, int num);
  * @param d	output vector (size == \p r <= \p k) of squared distances to data vectors 
  * @return \p r = the number of actual neighbours found, 0 <= \p r <= \p k
  */
-int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, rta_real_t r, int use_sigma, /*out*/ rta_real_t *y, rta_real_t *d);
+int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, const rta_real_t r, int use_sigma, /*out*/ rta_real_t *y, rta_real_t *d);
 
 
 #ifdef __cplusplus

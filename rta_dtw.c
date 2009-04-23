@@ -120,6 +120,7 @@ dpcore(float * pM, int rows, int cols, int * pC, int crows, int ccols, float * p
 	free((void *)costs);
 	free((void *)steps);
 	
+	return 0;
 }
 
 
@@ -149,16 +150,16 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
 	 * two first columns : first and second dimension steps
 	 * thirs columns : the corresponding weight at (i,j)
 	 */
-	int * C = malloc( 9 * sizeof(int));
+	int * C = (int *)malloc( 9 * sizeof(int));
 	C[0] = 1; C[1] = 1; C[2] = 1;
 	C[3] = 1; C[4] = 0; C[5] = 1;
 	C[6] = 0; C[7] = 1; C[8] = 1;
 	
 	//cost matrix
-	pD	= malloc( m * n * sizeof(float));
+	pD	= (float *)malloc( m * n * sizeof(float));
 	
 	//index matrix
-	pP	= malloc( m * n * sizeof(int));
+	pP	= (int *)malloc( m * n * sizeof(int));
 	
 	//initialization
 	for( k = 0; k < m * n; k++)
@@ -190,6 +191,8 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
 	}
 	
 	*length = cpt + 1;
+
+	return 0;
 }
 
 
@@ -208,13 +211,13 @@ rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m
 	int * q;
 
 	//Fill cost (or score) matrix : SM
-	float * SM	= malloc( left_m * right_m * sizeof(float));
+	float * SM	= (float *)malloc( left_m * right_m * sizeof(float));
 	prepare_score_matrix( left_ptr, left_m, right_ptr, right_m, left_n, SM);
 	
 	
 	//Compute index tables p,q using dynamic programming
-	p = malloc( (left_m + right_m + 1) * sizeof(int));
-	q = malloc( (left_m + right_m + 1) * sizeof(int));
+	p = (int *)malloc( (left_m + right_m + 1) * sizeof(int));
+	q = (int *)malloc( (left_m + right_m + 1) * sizeof(int));
 	dpfast(SM, left_m, right_m, 1, 1, p, q, length);
 
 	
@@ -224,5 +227,5 @@ rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m
 			output_p[i] = p[(*length - 1) - i];
 			output_q[i] = q[(*length - 1) - i];
 	}
-	
+	return 0;
 }

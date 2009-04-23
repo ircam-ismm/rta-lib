@@ -304,7 +304,7 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
 
 
 /* vector to node distance */
-rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, int node)
+rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, const int node)
 {
 #if KDTREE_PROFILE_BUILD
     t->profile.v2n++;
@@ -324,7 +324,7 @@ rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, int node)
 	return 0;
     }
 }
-rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, int node)
+rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, const int node)
 {
 #if KDTREE_PROFILE_BUILD
     t->profile.v2n++;
