@@ -248,7 +248,8 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	//Condition : same number of observations
 	if ( left_m != right_m )
 		return 1;
-	
+	else if ( left_m == 0 || left_n == 0 || right_m == 0 || right_n == 0)
+		return 1;
 	
 	
 	//X : first multivariate table
@@ -305,16 +306,16 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	int rankY		= compute_rank( RY);
 	int min_ranks	= GSL_MIN_INT( rankX, rankY);
 	
+	if (rankX == 0 || rankY == 0)
+		return 3;
+	
 	// Modifying matrices
 	gsl_matrix * subQX = gsl_matrix_alloc( left_m, rankX);
 	gsl_matrix * subRX = gsl_matrix_alloc( rankX, rankX);
 	gsl_matrix * subQY = gsl_matrix_alloc( right_m, rankY);
 	gsl_matrix * subRY = gsl_matrix_alloc( rankY, rankY);
 	
-	if (rankX == 0)
-		return 3;
-	else
-	{
+	
 		for(i = 0; i < rankX; i++)
 			for(j = 0; j < rankX; j++)
 			{
@@ -326,12 +327,9 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 			{
 				gsl_matrix_set(subQX, i, j, gsl_matrix_get(QX, i, j));
 			}
-	}
 	
-	if (rankY == 0)
-		return 3;
-	else
-	{
+	
+	
 		for(i = 0; i < rankY; i++)
 			for(j = 0; j < rankY; j++)
 			{
@@ -344,7 +342,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 				gsl_matrix_set(subQY, i, j, gsl_matrix_get(QY, i, j));
 			}
 		
-	}
+	
 	
 	gsl_matrix_free(RX);
 	gsl_matrix_free(QX);
