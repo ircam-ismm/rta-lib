@@ -109,7 +109,10 @@ static int check_node (kdtree_t *t, int node, int dim)
     rta_real_t min, max;
     int        i;
 
-    min = max = kdtree_get_element(t, nstart, dim);
+    if (nstart <= nend)
+	min = max = kdtree_get_element(t, nstart, dim);
+    else
+	return 0;
 
     for (i = nstart + 1; i <= nend; i++) 
     {

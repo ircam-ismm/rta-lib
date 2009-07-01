@@ -155,6 +155,13 @@ void rta_msdr_set_Rt (rta_msdr_t *sys, float rt);
 /* set repulsion force parameter for all links */
 void rta_msdr_set_Rf (rta_msdr_t *sys, float rf);
 
+/* set length by index */
+void rta_msdr_set_link_length (rta_msdr_t *sys, int i, float L);
+void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, float K1);
+void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, float D1);
+void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, float D2);
+
+
 /* get number of masses in system */
 int rta_msdr_get_num_masses (rta_msdr_t *sys);
 

@@ -139,7 +139,8 @@ int rta_mahalanobis_nz(int M, int N, int C,
 	  for (j = 0; j < nnz; j++)
 	  {
 	      int        jj = sigma_indnz[j];
-	      rta_real_t x  = (inrow[jj * instride] - murow[jj * mustride]) / sigmarow[jj * sigmastride];
+	      rta_real_t x  = (inrow[jj * instride] - murow[jj * mustride]) 
+			      / sigmarow[jj * sigmastride];
 	      v += x * x;
 	  }
 

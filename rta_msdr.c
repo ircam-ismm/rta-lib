@@ -43,7 +43,7 @@ static float distance (float *x1, float *x2)
 	dist += distorth * distorth;
     }
 
-//    fts_post("distance %p: %f %f - %p: %f %f -> d^2 %f  d %f\n", x1, x1[0], x1[1], x2, x2[0], x2[1], dist, (double) sqrtf(dist));
+    fts_post("distance x1 %p: %f %f - x2 %p: %f %f -> d^2 %f  d %f\n", x1, x1[0], x1[1], x2, x2[0], x2[1], dist, (double) sqrtf(dist));
 
     return sqrtf(dist);
 }
@@ -389,7 +389,7 @@ int rta_msdr_get_links (rta_msdr_t *sys, float *out)
     }
 }
 
-
+/* return distance to farthest neighbour, inf if no neighbours */
 float rta_msdr_get_mass_maxdist(rta_msdr_t *sys, int massi, int cat)
 {
     return sys->masses[massi].maxdist[cat];
@@ -486,7 +486,7 @@ void rta_msdr_set_unlimited (rta_msdr_t *sys, int id)
 
 
 /* set link data only */
-static float set_link  (rta_msdr_t *sys, int i, int m1, int m2, float len,
+static float set_link (rta_msdr_t *sys, int i, int m1, int m2, float len,
 		       float K1, float D1, float D2, float Rt, float Rf)
 {
     float *m1pos = sys->pos + m1 * NDIM;
@@ -502,10 +502,27 @@ static float set_link  (rta_msdr_t *sys, int i, int m1, int m2, float len,
     sys->D2[i] 	     = D2;
     sys->Rt[i] 	     = Rt;
     sys->Rf[i] 	     = Rf;
-        
+
     return dist;
 }
 
+
+void rta_msdr_set_link_length (rta_msdr_t *sys, int i, float L)
+{
+    sys->l0[i] 	     = L; /* set length by index */
+}
+void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, float K1)
+{
+    sys->K1[i] 	     = K1; /* set stiffness */
+}
+void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, float D1)
+{
+    sys->D1[i] 	     = D1; /* set viscosity */
+}
+void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, float D2)
+{
+    sys->D2[i] 	     = D2; /* set friction */
+}
 
 /* set backpointers to linked masses in link */
 static void set_link_masses (rta_msdr_t *sys, int i, int m1, int m2, int cat, float dist)
@@ -540,12 +557,13 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 {
     if (sys->nlinks < sys->linksalloc  &&  m1 != m2)
     {
-	int		 i     = sys->nlinks++;
+	int i = sys->nlinks++;
 
 	float dist = set_link(sys, i, m1, m2, len, K1, D1, D2, Rt, Rf);
 	set_link_masses(sys, i, m1, m2, cat, dist);
 
-//	fts_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d  pos %p m1o %d m2o %d m2pos %p -> %d %d %d\n", m1, m2, len, sys->lprev[i], cat, sys->pos, m1 * NDIM, m2 * NDIM, m2pos, i, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
+	fts_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d -> %d nlinks %d %d\n", 
+		 m1, m2, len, sys->lprev[i], cat, i, sys->masses[m1].nlinks[cat], sys->masses[m2].nlinks[cat]);
 
 	return i;
     }
@@ -560,16 +578,19 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 			  float K1, float D1, float D2, float Rt, float Rf)
 {
-    if (sys->nlinks < sys->linksalloc  &&  m1 != m2)
+    rta_msdr_mass_t *m1ptr, *m2ptr;
+    
+    /* record linkage in both masses' links lists */
+    m1ptr = &sys->masses[m1];
+    m2ptr = &sys->masses[m2];
+
+    if (m1 != m2  &&  
+	sys->nlinks        < sys->linksalloc     &&  
+	m1ptr->nlinks[cat] < sys->linklistalloc  &&
+	m2ptr->nlinks[cat] < sys->linklistalloc)
     {
-	rta_msdr_mass_t *m1ptr, *m2ptr;
-	int		 i     = sys->nlinks++;
-
+	int   i    = sys->nlinks++;
 	float dist = set_link(sys, i, m1, m2, len, K1, D1, D2, Rt, Rf);
-
-	/* record linkage in both masses' links lists */
-	m1ptr = &sys->masses[m1];
-	m2ptr = &sys->masses[m2];
 
 	/* if (nlinks[cat] < maxlinks[cat]) */
 	/* todo: insert into sorted list; if already present: overwrite link */
@@ -581,12 +602,18 @@ int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 	    m1ptr->maxdist[cat] = dist;
 	if (dist > m2ptr->maxdist[cat])
 	    m2ptr->maxdist[cat] = dist;
-//	fts_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d  pos %p m1o %d m2o %d m2pos %p -> %d %d %d\n", m1, m2, len, sys->lprev[i], cat, sys->pos, m1 * NDIM, m2 * NDIM, m2pos, i, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
+
+	fts_post("rta_msdr_insert_link %d %d len %f  prev %f  dist %f  cat %d -> %d nlinks %d %d\n", 
+		 m1, m2, len, sys->lprev[i], dist, cat, i, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
 
 	return i;
     }
     else
+    {
+	fts_post("REFUSED!!!  rta_msdr_insert_link %d %d len %f  cat %d -> nlinks %d %d\n", 
+		 m1, m2, len, cat, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
 	return -1;
+    }
 }
 
 
@@ -667,8 +694,9 @@ void rta_msdr_clear_links (rta_msdr_t *sys)
 {
     int i, c;
 
-    sys->nlinks = 0;
-
+    for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+	sys->nlinks[c] = 0;
+    
     for (i = 0; i < sys->massalloc; i++)
     {
 	rta_msdr_mass_t *m = sys->masses + i;
@@ -681,18 +709,19 @@ void rta_msdr_clear_links (rta_msdr_t *sys)
     }
 }
 
-/* clear links of mass m and category cat */
-void rta_msdr_clear_mass_links (rta_msdr_t *sys, int m, int cat)
+/* clear all links of category cat in all masses*/
+void rta_msdr_clear_cat_links (rta_msdr_t *sys, int cat)
 {
-    rta_msdr_mass_t *mass   = &sys->masses[m];
-    int              nlinks = mass->nlinks[cat];
-    int i, c;
+    int i;
 
-    for (i = 0; i < nlinks; i++)
+    sys->nlinks[cat] = 0;
+
+    for (i = 0; i < sys->massalloc; i++)
     {
-    	// rta_msdr_remove_link(sys, i, ...)
-	rta_msdr_mass_t *link = &sys->links[mass->links[cat][i]];
-	// DANG! remove link backpointer in mass2 leaves hole!!!
+	rta_msdr_mass_t *m = sys->masses + i;
+
+	m->nlinks[cat]  = 0;
+	m->maxdist[cat] = FLT_MAX;
     }
 }
 

@@ -70,22 +70,6 @@ void rta_choose_k_from_n (int k, int n, int *sample)
 }
 
 
-rta_real_t weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2, rta_real_t *sigma, int ndim) 
-{
-    int i;
-    rta_real_t sum = 0;
-
-    for (i = 0; i < ndim; i++) 
-	if (sigma[i] > 0)
-	{
-	    rta_real_t diff = (v2[i] - v1[i]) / sigma[i];
-	    sum += diff * diff;
-	}
-
-    return (rta_real_t) sqrtf(sum);
-}
-
-
 //    rta_mds_hybrid_preplace_random(sys, nsamp, sampind, ndata, ndim, data, weights);
     //- place data[sampind] into layout space
     //- add full links with length = distance_weighted(p1, p2, weights)

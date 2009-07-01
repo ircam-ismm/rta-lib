@@ -336,6 +336,14 @@ void kdtree_delete (kdtree_t* t, int index, int num);
 int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, const rta_real_t r, int use_sigma, /*out*/ rta_real_t *y, rta_real_t *d);
 
 
+/** Weighted squared vector distance (v1 - v2)^2
+*/
+rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2, 
+					    rta_real_t *sigma, int ndim);
+rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1, rta_real_t* v2, 
+					    rta_real_t *sigma, int ndim);
+
+
 #ifdef __cplusplus
 }
 #endif
