@@ -273,7 +273,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	
 	
-
+	
 	/* 
 	 * QR Decomposition
 	 *
@@ -286,14 +286,14 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	gsl_permutation * PX	= gsl_permutation_alloc( left_n);
 	
 	sorted_QR_decomposition(X, QX, RX, PX);
-
+	
 	
 	gsl_matrix * QY			= gsl_matrix_alloc( right_m, right_m);
 	gsl_matrix * RY			= gsl_matrix_alloc( right_m, right_n);
 	gsl_permutation * PY	= gsl_permutation_alloc( right_n);
 	
 	sorted_QR_decomposition(Y, QY, RY, PY);
-
+	
 	
 	
 	/*
@@ -306,8 +306,28 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	int rankY		= compute_rank( RY);
 	int min_ranks	= GSL_MIN_INT( rankX, rankY);
 	
-	if (rankX == 0 || rankY == 0)
+	if (rankX == 0 || rankY == 0) 
+	{
+		if ((rankX <= rankY) && (rankY != 0))
+		{	
+			for(i = 0; i < rankY; i++)
+						output_C[i] = 0;	
+		}
+		else
+		{
+			if ((rankX >= rankY) && (rankX != 0))
+			{	
+				for(i = 0; i < rankX; i++)
+					output_C[i] = 0;	
+			}
+			else
+			{
+				output_C[0] = 0;
+			}
+		}
+		
 		return 3;
+	}
 	
 	// Modifying matrices
 	gsl_matrix * subQX = gsl_matrix_alloc( left_m, rankX);
@@ -316,32 +336,32 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	gsl_matrix * subRY = gsl_matrix_alloc( rankY, rankY);
 	
 	
-		for(i = 0; i < rankX; i++)
-			for(j = 0; j < rankX; j++)
-			{
-				gsl_matrix_set(subQX, i, j, gsl_matrix_get(QX, i, j));
-				gsl_matrix_set(subRX, i, j, gsl_matrix_get(RX, i, j));
-			}
-		for(i = rankX; i < left_m; i++)
-			for(j = 0; j < rankX; j++)
-			{
-				gsl_matrix_set(subQX, i, j, gsl_matrix_get(QX, i, j));
-			}
+	for(i = 0; i < rankX; i++)
+		for(j = 0; j < rankX; j++)
+		{
+			gsl_matrix_set(subQX, i, j, gsl_matrix_get(QX, i, j));
+			gsl_matrix_set(subRX, i, j, gsl_matrix_get(RX, i, j));
+		}
+	for(i = rankX; i < left_m; i++)
+		for(j = 0; j < rankX; j++)
+		{
+			gsl_matrix_set(subQX, i, j, gsl_matrix_get(QX, i, j));
+		}
 	
 	
 	
-		for(i = 0; i < rankY; i++)
-			for(j = 0; j < rankY; j++)
-			{
-				gsl_matrix_set(subQY, i, j, gsl_matrix_get(QY, i, j));
-				gsl_matrix_set(subRY, i, j, gsl_matrix_get(RY, i, j));
-			}
-		for(i = rankY; i < right_m; i++)
-			for(j = 0; j < rankY; j++)
-			{
-				gsl_matrix_set(subQY, i, j, gsl_matrix_get(QY, i, j));
-			}
-		
+	for(i = 0; i < rankY; i++)
+		for(j = 0; j < rankY; j++)
+		{
+			gsl_matrix_set(subQY, i, j, gsl_matrix_get(QY, i, j));
+			gsl_matrix_set(subRY, i, j, gsl_matrix_get(RY, i, j));
+		}
+	for(i = rankY; i < right_m; i++)
+		for(j = 0; j < rankY; j++)
+		{
+			gsl_matrix_set(subQY, i, j, gsl_matrix_get(QY, i, j));
+		}
+	
 	
 	
 	gsl_matrix_free(RX);
@@ -388,7 +408,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 				
 				gsl_matrix_set(M_svd, i, j, tmp_sum);
 			}
-
+		
 	}
 	else
 	{
@@ -414,7 +434,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	V		= gsl_matrix_alloc( svdn, svdn);
 	S		= gsl_vector_alloc( svdn);
 	work	= gsl_vector_alloc( svdn);
-
+	
 	gsl_linalg_SV_decomp( M_svd, V, S, work);
 	
 	
@@ -465,7 +485,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	 * ResY = invsubRY.L2
 	 *
 	 */
-
+	
 	//Pseudo-inverse of subRX
 	gsl_matrix * ResX = gsl_matrix_alloc( rankX, min_ranks);
 	gsl_matrix * invsubRX = gsl_matrix_alloc( rankX, rankX);
@@ -475,7 +495,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	matrix_product( invsubRX, L1, ResX);
 	gsl_matrix_scale( ResX, sqrt((float)(left_m - 1)));
 	
-
+	
 	//Pseudo-inverse of subRY
 	gsl_matrix * ResY = gsl_matrix_alloc( rankY, min_ranks);
 	gsl_matrix * invsubRY = gsl_matrix_alloc( rankY, rankY);
@@ -521,7 +541,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	for(i = 0; i < right_n; i++)
 		for(j = 0; j < min_ranks; j++)
 			output_B[(int) gsl_permutation_get( PY, i) * min_ranks + j] = (float) gsl_matrix_get( preB, i, j);
-
+	
 	for(i = 0; i < S->size; i++)
 		output_C[i] = (float) gsl_vector_get( S, i);
 	
