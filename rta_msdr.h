@@ -44,8 +44,8 @@ typedef struct _rta_msdr_mass {
 typedef struct _rta_msdr_link {
     int m1; /** index of mass 1 */
     int m2; /** index of mass 2 */
-    int ind1; /** index in link list of mass 1 */
-    int ind2; /** index in link list of mass 2 */
+    int ind1; /** index in link list of mass 1 UNUSED??? */
+    int ind2; /** index in link list of mass 2 UNUSED??? */
     int cat;  /** category of link list of masses */
 } rta_msdr_link_t;
 
@@ -69,21 +69,22 @@ typedef struct _rta_msdr {
     rta_msdr_limits_t speedlim;	/** speed limits for masses */
 
     /** links */
-    int nlinks;			/** number of links in system */
-    int linksalloc;		/** allocated number of links in system */
-    rta_msdr_link_t *links;
+    int nlinks [RTA_MSDR_MAXCAT];		/** number of links in system */
+    int nactive [RTA_MSDR_MAXCAT];		/** number of links active */
+    int linksalloc;				/** allocated number of links in system */
+    rta_msdr_link_t *links [RTA_MSDR_MAXCAT];
 
-    float	*K1;		/** rigidity(nlink) */
-    float	*D1;		/** damping1(nlink) */
-    float	*D2;		/** damping2(nlink) friction? */
-    float	*Rt;		/** repulsion length(nlink) */
-    float	*Rf;		/** repulsion force(nlink) */
+    float	*K1 [RTA_MSDR_MAXCAT];		/** rigidity(nlink) */
+    float	*D1 [RTA_MSDR_MAXCAT];		/** damping1(nlink) */
+    float	*D2 [RTA_MSDR_MAXCAT];		/** damping2(nlink) friction? */
+    float	*Rt [RTA_MSDR_MAXCAT];		/** repulsion length(nlink) */
+    float	*Rf [RTA_MSDR_MAXCAT];		/** repulsion force(nlink) */
 
-    float	*l0;		/** nominal length(nlink) */
-    float	*lcurr;		/** current length(nlink) */
-    float	*lprev;		/** previous length(nlink) */
-    float       *stress;     	/** link stress(nlink, 1) */
-    float       *forceabs;     	/** link force(nlink, 1) */
+    float	*l0 [RTA_MSDR_MAXCAT];		/** nominal length(nlink) */
+    float	*lcurr [RTA_MSDR_MAXCAT];	/** current length(nlink) */
+    float	*lprev [RTA_MSDR_MAXCAT];	/** previous length(nlink) */
+    float       *stress [RTA_MSDR_MAXCAT];     	/** link stress(nlink, 1) */
+    float       *forceabs [RTA_MSDR_MAXCAT];   	/** link force(nlink, 1) */
 } rta_msdr_t;
 
 
@@ -95,7 +96,7 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 		       float K1, float D1, float D2, float Rt, float Rf);
 
 int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
-			  float K1, float D1, float D2, float Rt, float Rf);
+			  float K1, float D1, float D2, float Rt, float Rf, int max);
 
 void rta_msdr_clear_links (rta_msdr_t *sys);
 
@@ -121,6 +122,8 @@ void rta_msdr_set_mass (rta_msdr_t *sys, int i, int n, float *invmass);
 /* update links and mass positions
    return total stress */
 float rta_msdr_update (rta_msdr_t *sys);
+
+float rta_msdr_update_limp (rta_msdr_t *sys);
 
 /* update links and mass positions
    return total stress */
@@ -156,10 +159,10 @@ void rta_msdr_set_Rt (rta_msdr_t *sys, float rt);
 void rta_msdr_set_Rf (rta_msdr_t *sys, float rf);
 
 /* set length by index */
-void rta_msdr_set_link_length (rta_msdr_t *sys, int i, float L);
-void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, float K1);
-void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, float D1);
-void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, float D2);
+void rta_msdr_set_link_length (rta_msdr_t *sys, int i, int c, float L);
+void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, int c, float K1);
+void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, int c, float D1);
+void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, int c, float D2);
 
 
 /* get number of masses in system */
@@ -167,13 +170,21 @@ int rta_msdr_get_num_masses (rta_msdr_t *sys);
 
 /* get number of links in system */
 int rta_msdr_get_num_links (rta_msdr_t *sys);
+int rta_msdr_get_num_active_links (rta_msdr_t *sys);
+
+int rta_msdr_get_num_links_cat (rta_msdr_t *sys, int c);
+
+int rta_msdr_get_mass_num_links(rta_msdr_t *sys, int massi, int cat);
+
+void rta_msdr_clear_cat_links (rta_msdr_t *sys, int cat);
+
 
 /* copy ncol columns if link data to out(nlinks, 8):
    masses id(2), masses pos (4), stress, force */
 int rta_msdr_get_links (rta_msdr_t *sys, float *out);
 
 /* get max link distance of category */
-float rta_msdr_get_maxdist(rta_msdr_t *sys, int massi, int cat);
+float rta_msdr_get_mass_maxdist(rta_msdr_t *sys, int massi, int cat);
 
 /* get total movement after last masses update */
 float rta_msdr_get_movement (rta_msdr_t *sys);
