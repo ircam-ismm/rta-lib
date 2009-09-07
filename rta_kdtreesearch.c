@@ -124,7 +124,7 @@ rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2, rta_
 	    rta_real_t diff = (v2[i] - v1[i]) / sigma[i];
 	    sum += diff * diff;
 
-	    fts_post("rta_weighted_euclidean_distance %d (%f - %f)  ->  %f sum d^2 %f sum %f\n",
+	    rta_post("rta_weighted_euclidean_distance %d (%f - %f)  ->  %f sum d^2 %f sum %f\n",
 		     i, v2[i], v1[i], diff, sum, sqrt(sum));
 	}
     sqrtsum = sqrt(sum); 
