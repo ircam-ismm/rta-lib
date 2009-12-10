@@ -18,7 +18,11 @@ static double log2(double x){ return log(x)/log(2);}
 #include <alloca.h>
 #endif
 
+#include <assert.h>
+#include <string.h>
+
 #include "mif.h"
+#include "rta_math.h"
 #include "rta_util.h"
 
 
@@ -293,27 +297,74 @@ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
 }
 
 
+#include <search.h>
+#define MAXLEN   (8 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
+
+static void mif_object_hash_create(mif_index_t *self)
+{
+    hcreate(self->numobj);
+}
+
+static void mif_object_hash_destroy(mif_index_t *self)
+{
+    hdestroy();
+}
+
+static void mif_object_hash_makekey(mif_object_t *obj, char *key)
+{
+    int len = sprintf(key, "%x%x", (unsigned int) obj->base, obj->index);
+    assert(len < MAXLEN - 1);
+}
+
+static int mif_object_hash_exists(char *key)
+{
+    ENTRY item;
+
+    item.key = key;
+    return (hsearch(item, FIND) != NULL);
+}
+
+static void mif_object_hash_new(char *key, int value)
+{
+    ENTRY item;
+
+    item.key  = strdup(key);
+    item.data = (void *) value;
+    hsearch(item, ENTER);
+}
+
+static int *mif_object_hash_get(char *key)
+{
+    ENTRY item, *ret;
+
+    item.key  = key;
+    ret = hsearch(item, FIND);
+    return (int *) &ret->data;
+}
+
+
 
 /* out:    indx[K] = index of the Kth nearest neighbour (in float for interfacing reasons)
    return: actual number of found neighbours */
 int mif_search_knn (mif_index_t *self, mif_object_t *query, int k, 
-		    /* out */ rta_real_t *indx) 
+		    /* out */ int *indx) 
 {
-    int          *indx = alloca(self->ks * sizeof(*indx));	/* ref. obj. index */
     rta_real_t   *dist = alloca(self->ks * sizeof(*dist));	/* distance to obj */
-    int r;
+    int r, kfound = k;
 
     /* index query by ref. objects */
     mif_index_object(self, query, self->ks, indx, dist);
 
     /* hash of objects seen in ks closest ref. objects posting lists */
+    mif_object_hash_create(self);
 
     /* induced limited spearman footrule distance */
     for (r = 0; r < self->ks; r++)
     {
-	int minp = MAX(0,        indx[r] - self->mpd);
-	int maxp = MIN(self->ki, indx[r] + self->mpd);
-	mif_postinglist_t *pl = self->pl[r];
+	int minp = rta_max(0,        indx[r] - self->mpd);
+	int maxp = rta_min(self->ki, indx[r] + self->mpd);
+	mif_postinglist_t *pl = &self->pl[r];
+	int p;
 
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
@@ -322,23 +373,28 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	    
 	    while (bin)
 	    {
-		int obj = makehash(bin->obj);
+		char keybuf[MAXLEN];
+		mif_object_hash_makekey(&bin->obj, keybuf);
 
-		if (exists(hash, obj))
+		if (mif_object_hash_exists(keybuf))
 		{
-		    int *accu = hget(obj);
+		    int *accu = mif_object_hash_get(keybuf);
 		    *accu += abs(r - p) - self->ki;
 		}
 		else
 		{ /* new occurence of obj */
 		    /* insert into accumulator hash */
-		    hinsert(obj, self->ki * self->ks);
+		    mif_object_hash_new(keybuf, self->ki * self->ks);
 		}
 		
 		bin = bin->next;
 	    }
 	}
     }
+
+    mif_object_hash_destroy(self);
+
+    return kfound;
 }
 
 
@@ -372,11 +428,12 @@ int main (int argc, char *argv[])
 {
 #   define      nrow 3
 #   define	nref 2
+#   define	ks   3
 
     mif_index_t mif;
     int		nobj = 5; 	/* (nrow * 2 + (nrow - 2))*/
     rta_real_t  *data = rta_malloc(sizeof(rta_real_t) * nobj * NDIM);
-    int i;
+    int i, j, kfound;
 
     /* create some test data */
     for (i = 0; i < nobj; i++)
@@ -388,6 +445,25 @@ int main (int argc, char *argv[])
     mif_init(&mif, mif_euclidean_distance, nref, nref);
     mif_add_data(&mif, 1, (void **) &data, &nobj);
     mif_print(&mif, 1);
+
+    { /* test searching */
+	int *indx = alloca(ks * sizeof(*indx));	/* ref. obj. index */
+	mif_object_t query;
+
+	for (i = 0; i < nobj; i++)
+	{
+	    query.base = data;
+	    query.index = i;
+	    
+	    kfound = mif_search_knn(&mif, &query, ks, indx);
+
+	    rta_post("%d-NN of obj %d (found %d):  ", ks, i, kfound);
+	    for (j = 0; j < kfound; j++)
+		rta_post("%d ", indx[j]);
+	    rta_post("\n");
+	}
+    }
+
     mif_free(&mif);
 
     rta_free(data);
