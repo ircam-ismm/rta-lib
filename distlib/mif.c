@@ -150,7 +150,7 @@ void mif_print (mif_index_t *self, int verb)
     {
 	int i;
 
-	rta_post("\npostinglists: ro -> <order, object...>  i.e.  for object, ro is order-closest ref.obj\n");
+	rta_post("\npostinglists: ro -> <order: object...>  i.e.  for object, ro is order-closest ref.obj\n");
 
 	for (i = 0; i < self->numref; i++)
 	    mif_print_pl(self, i);
@@ -200,13 +200,15 @@ static int mif_choose_refobj (mif_index_t *self, int numbase, void **base, int *
     return numobj;
 }
      
-/** find ki closest reference objects for new object <base[b], i> and their ordering 
+/** find ki closest reference objects for new object <base[b], index> and their ordering 
 
   newobj	object to index
-  indx[ki]	out: ref. obj. index is list of ref.obj. ordered by distance dist
-  dist[ki]	out: distance to obj 
+  indx[ki]	out: ref. obj. index is list of ref.obj. index ordered by distance dist
+  dist[ki]	out: distance between obj and refobj indx[i]
+
+  @return	number k of reference objects found (k <= ki)
 */
-static void mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
+static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
 			      /*out*/ int *indx, rta_real_t *dist)
 {
     int r, kmax = 0; /* numfound */
@@ -242,6 +244,8 @@ static void mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
 	    dist[pos] = d;
 	}
     }
+
+    return kmax;
 }
 
 
@@ -251,7 +255,7 @@ static void mif_build_index (mif_index_t *self, int numbase, void **base, int *n
     int          *indx = alloca(self->ki * sizeof(*indx));	/* ref. obj. index */
     rta_real_t   *dist = alloca(self->ki * sizeof(*dist));	/* distance to obj */
     mif_object_t  newobj;	/* object to index */
-    int b, i, k;
+    int b, i, k, kfound;
 
     /* for each object */
     for (b = 0; b < numbase; b++)
@@ -263,11 +267,11 @@ static void mif_build_index (mif_index_t *self, int numbase, void **base, int *n
 	    newobj.index = i;
 	    	    	
 	    /* find ki closest reference objects for object <base[b], i> and their ordering */
-	    mif_index_object(self, &newobj, self->ki, indx, dist);
+	    kfound = mif_index_object(self, &newobj, self->ki, indx, dist);
 	    /* now indx is list of ref.obj. ordered by distance dist */
 
 	    /* insert object into posting lists of ki closest reference objects with order k */
-	    for (k = 0; k < self->ki; k++)
+	    for (k = 0; k < kfound; k++)
 	    {
 		mif_pl_insert(&self->pl[indx[k]], &newobj, k);
 	    }
@@ -297,6 +301,13 @@ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
 }
 
 
+
+/******************************************************************************
+ *
+ *	Searching
+ *
+ */
+
 #include <search.h>
 #define MAXLEN   (8 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
 
@@ -324,13 +335,14 @@ static int mif_object_hash_exists(char *key)
     return (hsearch(item, FIND) != NULL);
 }
 
-static void mif_object_hash_new(char *key, int value)
+static int *mif_object_hash_new(char *key, int value)
 {
-    ENTRY item;
+    ENTRY item, *ret;
 
     item.key  = strdup(key);
     item.data = (void *) value;
-    hsearch(item, ENTER);
+    ret = hsearch(item, ENTER);
+    return (ret ? (int *) &ret->data : NULL);
 }
 
 static int *mif_object_hash_get(char *key)
@@ -339,32 +351,44 @@ static int *mif_object_hash_get(char *key)
 
     item.key  = key;
     ret = hsearch(item, FIND);
-    return (int *) &ret->data;
+    return (ret ? (int *) &ret->data : NULL);
 }
 
 
 
-/* out:    indx[K] = index of the Kth nearest neighbour (in float for interfacing reasons)
+/* out:    indx[K] = index of the Kth nearest neighbour
    return: actual number of found neighbours */
 int mif_search_knn (mif_index_t *self, mif_object_t *query, int k, 
-		    /* out */ int *indx) 
+		    /* out */ int *indx, int *dist) 
 {
-    rta_real_t   *dist = alloca(self->ks * sizeof(*dist));	/* distance to obj */
-    int r, kfound = k;
+    rta_real_t *qdist = alloca(self->ks * sizeof(*qdist));	/* distance of query to refobj */
+    int r, kq, kmax = 0;
 
-    /* index query by ref. objects */
-    mif_index_object(self, query, self->ks, indx, dist);
+    /* index query object by ks-closest ref. objects, sorted by
+       distance to query object.  N.B.: indx is temporally used here
+       to hold the sorted indices of the refobj */
+    kq = mif_index_object(self, query, self->ks, indx, qdist);
+
+    rta_post("query %d indexed: (indx, dist) ", query->index);
+    for (r = 0; r < kq; r++)
+	rta_post("(ro %d = obj %d, %f) ", 
+		 indx[r], self->refobj[indx[r]].index, qdist[r]);
+    rta_post("\n");
 
     /* hash of objects seen in ks closest ref. objects posting lists */
     mif_object_hash_create(self);
 
-    /* induced limited spearman footrule distance */
-    for (r = 0; r < self->ks; r++)
-    {
-	int minp = rta_max(0,        indx[r] - self->mpd);
-	int maxp = rta_min(self->ki, indx[r] + self->mpd);
-	mif_postinglist_t *pl = &self->pl[r];
+    /* induced limited spearman footrule distance:
+       for all ks-closest ref. obj. (sort order position r) */
+    for (r = 0; r < kq; r++)
+    {   /* */
+	int minp = rta_max(0,            r - self->mpd);
+	int maxp = rta_min(self->ki - 1, r + self->mpd);
+	mif_postinglist_t *pl = &self->pl[indx[r]];
 	int p;
+
+	//rta_post("r %d  refobj #%d=obj %d:  range %d..%d\n", 
+	//	 r, indx[r], self->refobj[indx[r]].index, minp, maxp);
 
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
@@ -374,27 +398,73 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	    while (bin)
 	    {
 		char keybuf[MAXLEN];
+		int *accu;
+
+		bin->obj.base = 0;	/*!!!!*/
 		mif_object_hash_makekey(&bin->obj, keybuf);
 
-		if (mif_object_hash_exists(keybuf))
-		{
-		    int *accu = mif_object_hash_get(keybuf);
-		    *accu += abs(r - p) - self->ki;
+		if (!mif_object_hash_exists(keybuf))
+		{ /* new occurence of obj: insert into accumulator hash */
+		    accu = mif_object_hash_new(keybuf, self->ki * self->ks);
 		}
 		else
-		{ /* new occurence of obj */
-		    /* insert into accumulator hash */
-		    mif_object_hash_new(keybuf, self->ki * self->ks);
+		{
+		    accu = mif_object_hash_get(keybuf);
 		}
-		
+		*accu += abs(r - p) - self->ki;
+		//rta_post("  dist %d  accu %s = %d\n", p, keybuf, *accu);
+
 		bin = bin->next;
 	    }
 	}
     }
 
+
+    /* init distances, from here on, indx holds the k-nearest object indices */ 
+    for (r = 0; r < k; r++) 
+	dist[r] = MAX_FLOAT;
+
+    for (r = 0; r < self->numobj; r++)
+    {
+	char keybuf[MAXLEN];
+	int  *dtrans;
+	mif_object_t obj;
+
+	obj.base = 0;	/*!!!!*/
+	obj.index = r;
+
+	mif_object_hash_makekey(&obj, keybuf);
+	dtrans = mif_object_hash_get(keybuf);
+	
+	rta_post("  dist %d: %d\n", r, *dtrans);
+	    
+	if (dtrans  &&  *dtrans <= dist[kmax]) 
+	{   /* return original index in data and distance */
+	    int pos = kmax;	/* where to insert */
+
+	    if (kmax < k - 1)
+	    {   /* first move or override */
+		dist[kmax + 1] = dist[kmax];
+		indx[kmax + 1] = indx[kmax];\
+		kmax++;
+	    }
+
+	    /* insert into sorted list of distance */
+	    while (pos > 0  &&  *dtrans < dist[pos - 1])
+	    {   /* move up */
+		dist[pos] = dist[pos - 1];
+		indx[pos] = indx[pos - 1];
+		pos--;
+	    }
+
+	    indx[pos] = r;
+	    dist[pos] = *dtrans;
+	}
+    }
+
     mif_object_hash_destroy(self);
 
-    return kfound;
+    return kmax;
 }
 
 
@@ -427,11 +497,12 @@ static rta_real_t mif_euclidean_distance (mif_object_t *a, mif_object_t *b)
 int main (int argc, char *argv[])
 {
 #   define      nrow 3
-#   define	nref 2
-#   define	ks   3
+#   define	nref 3
+#   define	ki   3
+#   define	K    3
 
     mif_index_t mif;
-    int		nobj = 5; 	/* (nrow * 2 + (nrow - 2))*/
+    int		nobj = 10; 	/* (nrow * 2 + (nrow - 2))*/
     rta_real_t  *data = rta_malloc(sizeof(rta_real_t) * nobj * NDIM);
     int i, j, kfound;
 
@@ -442,12 +513,15 @@ int main (int argc, char *argv[])
 	data[i * NDIM + 1] = 0;
     }
 
-    mif_init(&mif, mif_euclidean_distance, nref, nref);
+    mif_init(&mif, mif_euclidean_distance, nref, ki);
     mif_add_data(&mif, 1, (void **) &data, &nobj);
+    mif.ks  = 3;
+    mif.mpd = 2;
     mif_print(&mif, 1);
 
     { /* test searching */
-	int *indx = alloca(ks * sizeof(*indx));	/* ref. obj. index */
+	int *indx = alloca(K * sizeof(*indx));	/* ref. obj. index */
+	int *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
 	mif_object_t query;
 
 	for (i = 0; i < nobj; i++)
@@ -455,11 +529,11 @@ int main (int argc, char *argv[])
 	    query.base = data;
 	    query.index = i;
 	    
-	    kfound = mif_search_knn(&mif, &query, ks, indx);
+	    kfound = mif_search_knn(&mif, &query, K, indx, dist);
 
-	    rta_post("%d-NN of obj %d (found %d):  ", ks, i, kfound);
+	    rta_post("--> %d-NN of query obj %d (found %d):  ", K, i, kfound);
 	    for (j = 0; j < kfound; j++)
-		rta_post("%d ", indx[j]);
+		rta_post("ro %d = obj %d,  ", indx[j], mif.refobj[indx[j]].index);
 	    rta_post("\n");
 	}
     }
