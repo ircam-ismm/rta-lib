@@ -345,9 +345,16 @@ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
 #include <search.h>
 #define MAXLEN   (8 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
 
+typedef struct _mif_hash_entry_t 
+{
+    mif_object_t *obj;
+    int		  accumulator;
+} mif_hash_entry_t;
+
+
 static void mif_object_hash_create(mif_index_t *self)
 {
-    hcreate(self->numobj);
+    hcreate(self->numobj);	/* todo: ki * ks */
 }
 
 static void mif_object_hash_destroy(mif_index_t *self)
@@ -361,31 +368,24 @@ static void mif_object_hash_makekey(mif_object_t *obj, char *key)
     assert(len < MAXLEN - 1);
 }
 
-static int mif_object_hash_exists(char *key)
-{
-    ENTRY item;
-
-    item.key = key;
-    return (hsearch(item, FIND) != NULL);
-}
-
-static int *mif_object_hash_new(char *key, int value)
+static mif_hash_entry_t *mif_object_hash_new(char *key, mif_hash_entry_t *entry)
 {
     ENTRY item, *ret;
 
     item.key  = strdup(key);
-    item.data = (void *) value;
+    item.data = (void *) entry;
+
     ret = hsearch(item, ENTER);
-    return (ret ? (int *) &ret->data : NULL);
+    return (mif_hash_entry_t *) (ret  ?  ret->data  :  NULL);
 }
 
-static int *mif_object_hash_get(char *key)
+static mif_hash_entry_t *mif_object_hash_get(char *key)
 {
     ENTRY item, *ret;
 
     item.key  = key;
     ret = hsearch(item, FIND);
-    return (ret ? (int *) &ret->data : NULL);
+    return (mif_hash_entry_t *) (ret  ?  ret->data  :  NULL);
 }
 
 
@@ -393,16 +393,16 @@ static int *mif_object_hash_get(char *key)
 /* out:    indx[K] = index of the Kth nearest neighbour
    return: actual number of found neighbours */
 int mif_search_knn (mif_index_t *self, mif_object_t *query, int k, 
-		    /* out */ int *indx, int *dist) 
+		    /* out */ mif_object_t *obj, int *dist) 
 {
     rta_real_t *qdist = alloca(self->ks * sizeof(*qdist));	/* distance of query to refobj */
-    int        *qind  = (k <= self->ks  ?  indx : 
-			 alloca(self->ks * sizeof(*qind)));	/* index of closest refobj */
+    int        *qind  = alloca(self->ks * sizeof(*qind));	/* index of closest refobj */
+    int		numhashobj = 0, hashobjalloc = self->ks * self->ki * 2;
+    mif_hash_entry_t *hashobj = rta_malloc(hashobjalloc * sizeof(*hashobj));
     int r, kq, kmax = 0;
 
     /* index query object by ks-closest ref. objects, sorted by
-       distance to query object.  N.B.: indx is temporally used here
-       to hold the sorted indices of the refobj */
+       distance to query object. */
     kq = mif_index_object(self, query, self->ks, qind, qdist);
 
     rta_post("query %d indexed %d: (indx, dist) ", query->index, kq);
@@ -434,20 +434,21 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	    while (bin)
 	    {
 		char keybuf[MAXLEN];
-		int *accu;
+		mif_hash_entry_t *hobj;
 
-		bin->obj.base = 0;	/*!!!!*/
 		mif_object_hash_makekey(&bin->obj, keybuf);
+		hobj = mif_object_hash_get(keybuf);
 
-		if (!mif_object_hash_exists(keybuf))
+		if (!hobj)
 		{ /* new occurence of obj: insert into accumulator hash */
-		    accu = mif_object_hash_new(keybuf, self->ki * self->ks);
+		    assert(numhashobj < hashobjalloc);
+		    hashobj[numhashobj].obj = &bin->obj;
+		    hashobj[numhashobj].accumulator =  self->ki * self->ks;
+
+		    hobj = mif_object_hash_new(keybuf, &hashobj[numhashobj++]);
 		}
-		else
-		{
-		    accu = mif_object_hash_get(keybuf);
-		}
-		*accu += abs(r - p) - self->ki;
+
+		hobj->accumulator += abs(r - p) - self->ki;
 		//rta_post("  dist %d  accu %s = %d\n", p, keybuf, *accu);
 
 		bin = bin->next;
@@ -460,45 +461,40 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     }
 
 
-    /* init distances, from here on, indx holds the k-nearest object indices */ 
+    /* init distances */ 
     for (r = 0; r < k; r++) 
 	dist[r] = MAX_FLOAT;
 
-    rta_post("  dist 0..%d: ", self->numobj);
-    for (r = 0; r < self->numobj; r++)
+    /* iterate through hash and pick k lowest distances */
+    rta_post("  dist of %d hashed obj: ", numhashobj);
+    for (r = 0; r < numhashobj; r++)	/*!!!! preliminary stupid iteration */
     {
-	char keybuf[MAXLEN];
-	int  *dtrans;
-	mif_object_t obj;
+	int  dtrans;
 
-	obj.base = 0;	/*!!!!*/
-	obj.index = r;
-
-	mif_object_hash_makekey(&obj, keybuf);
-	dtrans = mif_object_hash_get(keybuf);
-	rta_post("%d ", *dtrans);
+	dtrans = hashobj[r].accumulator;
+	rta_post("(%d, %d)  ", hashobj[r].obj->index, dtrans);
 	    
-	if (dtrans  &&  *dtrans <= dist[kmax]) 
+	if (dtrans <= dist[kmax]) 
 	{   /* return original index in data and distance */
 	    int pos = kmax;	/* where to insert */
 
 	    if (kmax < k - 1)
 	    {   /* first move or override */
 		dist[kmax + 1] = dist[kmax];
-		indx[kmax + 1] = indx[kmax];\
+		obj [kmax + 1] = obj [kmax];
 		kmax++;
 	    }
 
 	    /* insert into sorted list of distance */
-	    while (pos > 0  &&  *dtrans < dist[pos - 1])
+	    while (pos > 0  &&  dtrans < dist[pos - 1])
 	    {   /* move up */
 		dist[pos] = dist[pos - 1];
-		indx[pos] = indx[pos - 1];
+		obj [pos] = obj [pos - 1];
 		pos--;
 	    }
 
-	    indx[pos] = r;
-	    dist[pos] = *dtrans;
+	    obj [pos] = *hashobj[r].obj;  /* de-hash */
+	    dist[pos] = dtrans;
 	}
     }
     rta_post("\n");
@@ -547,7 +543,7 @@ int main (int argc, char *argv[])
 #   define      nrow 3
 #   define	nref 3
 #   define	ki   3
-#   define	K    4
+#   define	K    3
 
     mif_index_t mif;
     int		nobj = 10; 	/* (nrow * 2 + (nrow - 2))*/
@@ -570,21 +566,21 @@ int main (int argc, char *argv[])
     mif_profile_clear(&mif.profile);
 
     { /* test searching */
-	int *indx = alloca(K * sizeof(*indx));	/* ref. obj. index */
-	int *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
-	mif_object_t query;
+	mif_object_t *obj  = alloca(K * sizeof(*obj));	/* objects */
+	int          *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
+	mif_object_t  query;
 
 	for (i = 0; i < nobj; i++)
 	{
 	    query.base = data;
 	    query.index = i;
 	    
-	    kfound = mif_search_knn(&mif, &query, K, indx, dist);
+	    kfound = mif_search_knn(&mif, &query, K, obj, dist);
 
 	    rta_post("--> %d-NN of query obj %d (found %d):  ", K, i, kfound);
 	    for (j = 0; j < kfound; j++)
-		rta_post("%d ", indx[j]);
-	    rta_post("\n");
+		rta_post("%d ", obj[j].index);
+	    rta_post("\n\n");
 	}
     }
 
