@@ -146,6 +146,24 @@ void mif_print (mif_index_t *self, int verb)
     rta_post("k_i      = %d\n", self->ki);
     rta_post("k_s      = %d\n", self->ks);
  
+    {	/* space used */
+	int i, npe = 0;
+	unsigned long spl     = self->numref * sizeof(*self->pl);
+	unsigned long srefobj = self->numref * sizeof(mif_object_t);
+
+	for (i = 0; i < self->numref; i++)
+	    npe += self->pl[i].size;
+
+	spl += npe * sizeof(*self->pl[i].entries);
+	
+
+	rta_post("\nspace for struct        = %4lu B\n", sizeof(mif_index_t));
+	rta_post("%3d ref.obj.            = %4lu B\n", self->numref, srefobj);
+	rta_post("%3d postinglist entries = %4lu B\n", npe, spl);
+	rta_post("TOTAL %4lu B            = %4lu B/refobj\n", 
+		 srefobj + spl, (srefobj + spl) / self->numref);
+    }
+
     if (verb >= 1)
     {
 	int i;
@@ -160,8 +178,18 @@ void mif_print (mif_index_t *self, int verb)
 /** set all counters in mif_index_t#profile to zero */
 void mif_profile_clear (mif_profile_t *t)
 {
-    t->v2v = 0;
+    t->o2o = 0;
     t->searches = 0;
+    t->indexaccess = 0;
+}
+
+/** print profile info */
+void mif_profile_print (mif_profile_t *t)
+{
+    rta_post("Profile:\n"
+	     "#dist        %d\n"
+	     "#indexaccess %d\n"
+	     "#searches    %d\n\n", t->o2o, t->indexaccess, t->searches);
 }
 
 
@@ -199,8 +227,8 @@ static int mif_choose_refobj (mif_index_t *self, int numbase, void **base, int *
 
     return numobj;
 }
-     
-/** find ki closest reference objects for new object <base[b], index> and their ordering 
+
+/** Find ki closest reference objects for new object <base[b], index> and their ordering 
 
   newobj	object to index
   indx[ki]	out: ref. obj. index is list of ref.obj. index ordered by distance dist
@@ -277,6 +305,10 @@ static void mif_build_index (mif_index_t *self, int numbase, void **base, int *n
 	    {
 		mif_pl_insert(&self->pl[indx[k]], &newobj, k);
 	    }
+
+#if MIF_PROFILE_BUILD
+	    self->profile.o2o += self->numref;
+#endif
 	}
     }
 }
@@ -391,8 +423,8 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	mif_postinglist_t *pl = &self->pl[qind[r]];
 	int p;
 
-	//rta_post("r %d  refobj #%d=obj %d:  range %d..%d\n", 
-	//	 r, qind[r], self->refobj[qind[r]].index, minp, maxp);
+	rta_post("  r %d  refobj #%d=obj %d:  MPD range %d..%d\n", 
+		 r, qind[r], self->refobj[qind[r]].index, minp, maxp);
 
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
@@ -419,6 +451,10 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 		//rta_post("  dist %d  accu %s = %d\n", p, keybuf, *accu);
 
 		bin = bin->next;
+
+#if MIF_PROFILE_SEARCH
+		self->profile.indexaccess++;
+#endif
 	    }
 	}
     }
@@ -468,6 +504,11 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     rta_post("\n");
 
     mif_object_hash_destroy(self);
+
+#if MIF_PROFILE_SEARCH
+    self->profile.o2o += self->ks;
+    self->profile.searches++;
+#endif
 
     /* return actual number of found objects, can be less than k,
        then kmax is the index of the next one to find */
@@ -525,6 +566,8 @@ int main (int argc, char *argv[])
     mif.ks  = 3;
     mif.mpd = 2;
     mif_print(&mif, 1);
+    mif_profile_print(&mif.profile);
+    mif_profile_clear(&mif.profile);
 
     { /* test searching */
 	int *indx = alloca(K * sizeof(*indx));	/* ref. obj. index */
@@ -545,6 +588,7 @@ int main (int argc, char *argv[])
 	}
     }
 
+    mif_profile_print(&mif.profile);
     mif_free(&mif);
 
     rta_free(data);
