@@ -4,5 +4,13 @@ doc:
 tex:
 	make -C doc/latex/
 
+mif:	mifclean miftest
+	./miftest
+
+miftest:	mif.c mif.h ../rta_util.c
+	gcc -g -Wall -I. -I.. -DMIF_BUILD_TEST -o $@ $^
+
+mifclean:
+	rm miftest
 
 .PHONY: doc
