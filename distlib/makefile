@@ -13,4 +13,9 @@ miftest:	mif.c mif.h ../rta_util.c
 mifclean:
 	rm miftest
 
-.PHONY: doc
+mifdoc:
+	doxygen mif.doxyfile; $(MAKE) miftex
+miftex:
+	make -C mifdoc/latex/
+
+.PHONY: doc mifdoc
