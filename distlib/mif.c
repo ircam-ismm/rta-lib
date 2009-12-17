@@ -145,23 +145,25 @@ void mif_print (mif_index_t *self, int verb)
     rta_post("n_ref    = %d\n", self->numref);
     rta_post("k_i      = %d\n", self->ki);
     rta_post("k_s      = %d\n", self->ks);
+    rta_post("mpd      = %d\n", self->mpd);
  
     {	/* space used */
 	int i, npe = 0;
 	unsigned long spl     = self->numref * sizeof(*self->pl);
 	unsigned long srefobj = self->numref * sizeof(mif_object_t);
+	unsigned long stotal;
 
 	for (i = 0; i < self->numref; i++)
 	    npe += self->pl[i].size;
 
 	spl += npe * sizeof(*self->pl[i].entries);
-	
+	stotal = srefobj + spl;
 
 	rta_post("\nspace for struct        = %4lu B\n", sizeof(mif_index_t));
 	rta_post("%3d ref.obj.            = %4lu B\n", self->numref, srefobj);
 	rta_post("%3d postinglist entries = %4lu B\n", npe, spl);
-	rta_post("TOTAL %4lu B            = %4lu B/refobj\n", 
-		 srefobj + spl, (srefobj + spl) / self->numref);
+	rta_post("TOTAL %4lu B            = %4lu B/refobj  %f B/obj\n", 
+		 stotal, stotal / self->numref, (float) stotal / self->numobj);
     }
 
     if (verb >= 1)
@@ -202,7 +204,7 @@ static int mif_choose_refobj (mif_index_t *self, int numbase, void **base, int *
 {	
     int numobj = 0;
     int *cumobj = alloca((numbase + 1) * sizeof(int));
-    int *sample = alloca(self->numref);
+    int *sample = alloca(self->numref * sizeof(int));
     int i;
 
     /* how many elements are given */
@@ -343,7 +345,7 @@ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
  */
 
 #include <search.h>
-#define MAXLEN   (8 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
+#define MAXLEN   (sizeof(unsigned int) * 2 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
 
 typedef struct _mif_hash_entry_t 
 {
@@ -368,7 +370,7 @@ static void mif_object_hash_makekey(mif_object_t *obj, char *key)
     assert(len < MAXLEN - 1);
 }
 
-static mif_hash_entry_t *mif_object_hash_new(char *key, mif_hash_entry_t *entry)
+static int mif_object_hash_new(char *key, int entry)
 {
     ENTRY item, *ret;
 
@@ -376,19 +378,19 @@ static mif_hash_entry_t *mif_object_hash_new(char *key, mif_hash_entry_t *entry)
     item.data = (void *) entry;
 
     ret = hsearch(item, ENTER);
-    return (mif_hash_entry_t *) (ret  ?  ret->data  :  NULL);
+    return (ret  ?  (int) ret->data  :  -1);
 }
 
-static mif_hash_entry_t *mif_object_hash_get(char *key)
+static int mif_object_hash_get(char *key)
 {
     ENTRY item, *ret;
 
     item.key  = key;
     ret = hsearch(item, FIND);
-    return (mif_hash_entry_t *) (ret  ?  ret->data  :  NULL);
+    return (ret  ?  (int) ret->data  :  -1);
 }
 
-
+#define MIF_DEBUG_SEARCH 0
 
 /* out:    indx[K] = index of the Kth nearest neighbour
    return: actual number of found neighbours */
@@ -397,7 +399,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 {
     rta_real_t *qdist = alloca(self->ks * sizeof(*qdist));	/* distance of query to refobj */
     int        *qind  = alloca(self->ks * sizeof(*qind));	/* index of closest refobj */
-    int		numhashobj = 0, hashobjalloc = self->ks * self->ki * 2;
+    int		numhashobj = 0, hashobjalloc = self->ks * self->ki * 4;
     mif_hash_entry_t *hashobj = rta_malloc(hashobjalloc * sizeof(*hashobj));
     int r, kq, kmax = 0;
 
@@ -405,11 +407,13 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
        distance to query object. */
     kq = mif_index_object(self, query, self->ks, qind, qdist);
 
+#if MIF_DEBUG_SEARCH
     rta_post("query %d indexed %d: (indx, dist) ", query->index, kq);
     for (r = 0; r < kq; r++)
 	rta_post("(ro %d = obj %d, %f) ", 
 		 qind[r], self->refobj[qind[r]].index, qdist[r]);
     rta_post("\n");
+#endif
 
     /* hash of objects seen in ks closest ref. objects posting lists */
     mif_object_hash_create(self);
@@ -423,8 +427,8 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	mif_postinglist_t *pl = &self->pl[qind[r]];
 	int p;
 
-	rta_post("  r %d  refobj #%d=obj %d:  MPD range %d..%d\n", 
-		 r, qind[r], self->refobj[qind[r]].index, minp, maxp);
+//	rta_post("  r %d  refobj #%d=obj %d:  MPD range %d..%d\n", 
+//		 r, qind[r], self->refobj[qind[r]].index, minp, maxp);
 
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
@@ -434,21 +438,28 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	    while (bin)
 	    {
 		char keybuf[MAXLEN];
-		mif_hash_entry_t *hobj;
+		int hind;
 
 		mif_object_hash_makekey(&bin->obj, keybuf);
-		hobj = mif_object_hash_get(keybuf);
-
-		if (!hobj)
+		hind = (int) mif_object_hash_get(keybuf);
+		
+		if (hind < 0)
 		{ /* new occurence of obj: insert into accumulator hash */
-		    assert(numhashobj < hashobjalloc);
+		    if (numhashobj >= hashobjalloc)
+		    {
+			hashobjalloc *= 2;
+			rta_post("reallocate hash object store to %d obj (size %lu)\n", 
+				 hashobjalloc, hashobjalloc * sizeof(*hashobj));
+			hashobj = rta_realloc(hashobj, hashobjalloc * sizeof(*hashobj));
+		    }
+		    assert(hashobj);
 		    hashobj[numhashobj].obj = &bin->obj;
 		    hashobj[numhashobj].accumulator =  self->ki * self->ks;
 
-		    hobj = mif_object_hash_new(keybuf, &hashobj[numhashobj++]);
+		    hind = mif_object_hash_new(keybuf, numhashobj++);
 		}
 
-		hobj->accumulator += abs(r - p) - self->ki;
+		hashobj[hind].accumulator += abs(r - p) - self->ki;
 		//rta_post("  dist %d  accu %s = %d\n", p, keybuf, *accu);
 
 		bin = bin->next;
@@ -465,14 +476,20 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     for (r = 0; r < k; r++) 
 	dist[r] = MAX_FLOAT;
 
-    /* iterate through hash and pick k lowest distances */
+#if MIF_DEBUG_SEARCH    
     rta_post("  dist of %d hashed obj: ", numhashobj);
+#endif
+
+    /* iterate through hash and pick k lowest distances */
     for (r = 0; r < numhashobj; r++)	/*!!!! preliminary stupid iteration */
     {
 	int  dtrans;
 
 	dtrans = hashobj[r].accumulator;
+
+#if MIF_DEBUG_SEARCH    
 	rta_post("(%d, %d)  ", hashobj[r].obj->index, dtrans);
+#endif
 	    
 	if (dtrans <= dist[kmax]) 
 	{   /* return original index in data and distance */
@@ -497,7 +514,9 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	    dist[pos] = dtrans;
 	}
     }
+#if MIF_DEBUG_SEARCH    
     rta_post("\n");
+#endif
 
     mif_object_hash_destroy(self);
 
@@ -541,12 +560,11 @@ static rta_real_t mif_euclidean_distance (mif_object_t *a, mif_object_t *b)
 int main (int argc, char *argv[])
 {
 #   define      nrow 3
-#   define	nref 3
 #   define	ki   3
 #   define	K    3
 
     mif_index_t mif;
-    int		nobj = 10; 	/* (nrow * 2 + (nrow - 2))*/
+    int		nref, nobj = 10; 	/* (nrow * 2 + (nrow - 2))*/
     rta_real_t  *data = rta_malloc(sizeof(rta_real_t) * nobj * NDIM);
     int i, j, kfound;
 
@@ -557,10 +575,13 @@ int main (int argc, char *argv[])
 	data[i * NDIM + 1] = 0;
     }
 
+    /* num. ref. obj. >= 2 * sqrt(nobj) */
+    nref = 2 * sqrt(nobj);
+
     mif_init(&mif, mif_euclidean_distance, nref, ki);
     mif_add_data(&mif, 1, (void **) &data, &nobj);
     mif.ks  = 3;
-    mif.mpd = 2;
+    mif.mpd = 3;
     mif_print(&mif, 1);
     mif_profile_print(&mif.profile);
     mif_profile_clear(&mif.profile);
