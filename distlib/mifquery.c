@@ -33,9 +33,14 @@ static rta_real_t disco_euclidean_distance (mif_object_t *a, mif_object_t *b)
     return sum;
 }
 
+
+
+
+
 int main (int argc, char *argv[])
 {
     const char *outname = NULL, *inname = NULL;
+    int   nref = 0, ks = 0, ki = 0, mpd = 0;
     FILE *outfile;
     int fd;
 
@@ -45,12 +50,21 @@ int main (int argc, char *argv[])
 
     mif_index_t mif;
 
+    /* args: nref ki ks mpd  disco-file-name [result-file-name] */
     switch (argc)
     {
+    case 7:
+	outname = argv[6];
+    case 6:
+	inname = argv[5];
+    case 5:
+	mpd = atoi(argv[4]);
+    case 4:
+	ks = atoi(argv[3]);
     case 3:
-	outname = argv[2];
+	ki = atoi(argv[2]);
     case 2:
-	inname = argv[1];
+	nref = atoi(argv[1]);
     }
 
     /* open DISCO file */
@@ -97,14 +111,21 @@ int main (int argc, char *argv[])
 	outfile = stdout;
 
     {   /* index every frame (= model) */
-	/* num. ref. obj. >= 2 * sqrt(nobj) */
-	int nref = 2 * sqrt(ndata);
-	int ki   = nref / 2;
+	/* check args */
+	if (nref <= 0)  /* num. ref. obj. >= 2 * sqrt(nobj) */
+	    nref = 2 * sqrt(ndata);
+	if (ki <= 0)
+	    ki   = nref / 4;
+	if (ks <= 0)
+	    ks   = nref / 4;
+	if (mpd <= 0)
+	    mpd   = 5;
+
 
 	mif_init(&mif, disco_euclidean_distance, nref, ki);
 	mif_add_data(&mif, 1, (void **) &base, &ndata);
-	mif.ks  = 10;
-	mif.mpd = 5;
+	mif.ks  = ks;
+	mif.mpd = mpd;
 	mif_print(&mif, 0);
 	mif_profile_print(&mif.profile);
 	mif_profile_clear(&mif.profile);
@@ -127,9 +148,9 @@ int main (int argc, char *argv[])
 	    //rta_post("--> %d-NN of query obj %d (found %d):  ", K, i, kfound);
 
 	    /* write result file line */
-	    fprintf(outfile, "%s.%d %d ", inname, i, K);
+	    fprintf(outfile, "%d.%d %d ", 0, i, K);
 	    for (j = 0; j < kfound; j++)
-		fprintf(outfile, "%s.%d %d%c", inname, obj[j].index, dist[j], 
+		fprintf(outfile, "%d.%d %d%c", 0, obj[j].index, dist[j], 
 			j < kfound - 1  ?  ' ' : '\n');
 	}
 
