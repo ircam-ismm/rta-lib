@@ -2,13 +2,29 @@
 @file	mif.h
 @author	Diemo Schwarz
 @date	21.11.2008
-@version 0.1 
-
 @brief	Metric Inverted File Index Structure
 
-
-
 Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
+ */
+
+/** \mainpage
+
+@author	 Diemo Schwarz
+@date	 21.11.2009
+@version 0.1
+
+@brief	Library for an index on metric spaces using inverted files
+
+The ::mif_index_t and the related functions in mif.h implement efficient
+indexing and similarity search algorithms on objects in a metric
+space, where only distances are known.  These distances are calculated
+by a caller-defined distance function with prototype
+::mif_distance_function_t, that operates on anonymous objects represented as ::mif_object_t.
+
+It implements the algorithm described in Amato G., Savino P., <i>Approximate similarity search in metric spaces using inverted files</i>, 
+Third Interational ICST Conference on Scalable Information Systems, 2008.
+
+Copyright (C) 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  */
 
 
@@ -32,7 +48,16 @@ extern "C" {
 #define MIF_PROFILE	       (MIF_PROFILE_BUILD || MIF_PROFILE_SEARCH)
 
 
-/** an "object" stored in the mif index */
+/** representation of an object to index 
+
+    A data "object" stored in the mif index is represented as an anonymous base
+    pointer and an index relative to it.  The pointer can for instance
+    refer to a matrix and the index to the rows, or the pointer points
+    to a sound file structure, and the index refers to analysis
+    windows or frames.  The index code never looks at these values,
+    but only passes them to the distance function, defined by the
+    caller.
+*/
 typedef struct _mif_object
 {
     void *base;		/**< base pointer of the object */
@@ -47,27 +72,38 @@ typedef struct _mif_pl_entry
 } mif_pl_entry_t;
 
 
-/** one posting list of ki objects
+/** one posting list of mif_index_t::ki objects
+
     indexed (sorted) by start of runs of ref. object order */
 typedef struct _mif_postinglist
 {
     int 	    size;	/**< number of objects stored */
-    mif_pl_entry_t **entries;    /**< array[ki] entries indexed by sort order */
+    mif_pl_entry_t **entries;   /**< array[ki] entries indexed by sort order */
 } mif_postinglist_t;
 
 
+/** structure to collect profiling data */
 typedef struct _mif_profile_struct
 {
-	int v2v;	  /**< vector to vector distances */
-	int searches;	  /**< searches performed */
+    int o2o;		/**< number of object to object distance calculations */
+    int searches;	/**< number of searches performed */
+    int indexaccess;	/**< number of accesses to the index entries in the posting lists */
 } mif_profile_t;
 
 
-/** distance function pointer */
+/** distance function 
+
+    This defines a pointer to a function prototype that must be
+    defined by the user of the MIF index.  The function is passed two
+    pointers to external mif_object_t objects and returns a distance value. */
 typedef rta_real_t (*mif_distance_function_t) (mif_object_t *a, mif_object_t *b);
 
 
-/** k-dimensional search tree data structure */
+/** Metric inverted file index data structure 
+
+    This is the main data structure holding the MIF index.  Note that
+    the objects themselves are not stored in the index, only mif_index_t::numref reference objects.
+*/
 typedef struct _mif_index
 {
     /* parameters */
@@ -86,12 +122,15 @@ typedef struct _mif_index
 
 
 
-/** print only tree info to console */
+/** print index info to console */
  void mif_print (mif_index_t* t, int verbosity);
 
 
 /** set all counters in mif_index_t#profile to zero */
 void mif_profile_clear (mif_profile_t *t);
+
+/** print profile info */
+void mif_profile_print (mif_profile_t *t);
 
 
 /** initialise index structure */
@@ -100,52 +139,41 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc, int nr, int 
 /** free allocated memory */
 void mif_free (mif_index_t *self);
 
+
 /** bulk load new data and index it
     
     @param self		mif structure
     @param base		base pointer to data
     @param numobj	number of data objects on this base pointer
 
-    (@return the number of nodes the tree will build)
+    @return the number of objects in the data
 */
 int mif_add_data  (mif_index_t *self, int numbase, void **base, int *numbaseobj);
 
 
-/** build tree 
-    
-    @param self		kd-tree structure
-    @param use_sigma	use weights for distance calculations while building tre    
-    \em Prerequisites: 
-    - tree data(m, n) must have been set with mif_set_data(), this returned nnodes
-    - nodes must have been initialised with mif_init_nodes()
-    - if \p use_sigma is on, sigma must have been set with mif_set_sigma().
-*/
-void mif_build (mif_index_t *self, int use_sigma);
-
-
-/** TBI: rebuild search tree from changed data or weights 
+/** TBI: rebuild search index from changed data or weights 
  *
- * @param t		kd-tree structure
- * @param use_sigma	use weights for distance calculations while rebuilding tree*/
+ * @param t		index structure
+ * @param use_sigma	use weights for distance calculations while rebuilding index*/
 void mif_rebuild (mif_index_t* t, int use_sigma);
 
-/** TBI: (re-)insert data vectors into tree.  
+/** TBI: (re-)insert data vectors into index.  
  *
  * New or changed vectors are already within or appended to
  * mif_index_t::data.  If index < ndata, move to correct node, otherwise
  * insert and increment ndata.
  *
- * @param t	kd-tree structure
+ * @param t	index structure
  * @param index	start index of vectors to insert
  * @param num	number of vectors to insert
  */
 void mif_insert (mif_index_t* t, int index, int num);
 
-/** TBI: remove data vectors from tree.  
+/** TBI: remove data vectors from index.  
  *
- * Signal removal of rows in mif_index_t::data from search tree.  
+ * Signal removal of rows in mif_index_t::data from search index.  
  *
- * @param t	kd-tree structure
+ * @param t	index structure
  * @param index	start index of vectors to remove
  * @param num	number of vectors to remove
  */
@@ -154,23 +182,29 @@ void mif_delete (mif_index_t* t, int index, int num);
 
 /** Perform search in mif index structure
  *
- * Return the \p k nearest neighbours in multi-dimensional data using
- * the search tree \p t.  The output vector \p d contains the squared
- * distances to the \p r closest data vectors in mif_index_t::data
+ * Return the \p k nearest neighbours in MIF index.
+ * The output vector \p dist contains the transformed
+ * distances to the \p r closest data objects in \p obj
  * according to the reference objects.
  *
+ * The search uses these parameters: the mif_index_t::ks number of nearest reference objects to search and the 
+ * mif_index_t::mpd max position distance ref. objects to take into account.
+ *
  * @param mif	mif structure
- * @param x	vector of mif_index_t#ndim elements to search nearest neighbours of
- * @param ks	number of nearest reference objects to search
- * @param mpd	max position distance ref. objects to take into account
+ * @param query	object to search nearest neighbours of
  * @param k	max number of neighbours to find (actual number can be lower)
- * @param r	max squared distance of neighbours to find (\p r = 0 means no limit)
- * @param y	output vector (size == \p r <= \p k) of indices into original data mif_index_t#data 
- * @param d	output vector (size == \p r <= \p k) of squared distances to data vectors 
+ * @param obj	output vector (size == \p r <= \p k) of mif_object_t object structures
+ * @param dist	output vector (size == \p r <= \p k) of transformed distances to data objects
  * @return \p r = the number of actual neighbours found, 0 <= \p r <= \p k
  */
-int mif_search (mif_index_t *mif, mif_object_t* x, int ks, int mpd, int k, const rta_real_t r, 
-		/*out*/ rta_real_t *y, rta_real_t *d);
+int mif_search_knn (mif_index_t *self, mif_object_t *query, int k, 
+		    /*out*/ mif_object_t *obj, int *dist) ;
+
+/* @param ks	number of nearest reference objects to search
+ * @param mpd	max position distance ref. objects to take into account
+ * @param r	max squared distance of neighbours to find (\p r = 0 means no limit) */
+//int mif_search (mif_index_t *mif, mif_object_t* x, int ks, int mpd, int k, const rta_real_t r, 
+//		/*out*/ rta_real_t *y, rta_real_t *d);
 
 
 #ifdef __cplusplus
