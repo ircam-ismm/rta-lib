@@ -399,7 +399,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 {
     rta_real_t *qdist = alloca(self->ks * sizeof(*qdist));	/* distance of query to refobj */
     int        *qind  = alloca(self->ks * sizeof(*qind));	/* index of closest refobj */
-    int		numhashobj = 0, hashobjalloc = self->ks * self->ki * 4;
+    int		numhashobj = 0, hashobjalloc = self->ks * self->ki * 8;
     mif_hash_entry_t *hashobj = rta_malloc(hashobjalloc * sizeof(*hashobj));
     int r, kq, kmax = 0;
 
@@ -448,8 +448,8 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 		    if (numhashobj >= hashobjalloc)
 		    {
 			hashobjalloc *= 2;
-			rta_post("reallocate hash object store to %d obj (size %lu)\n", 
-				 hashobjalloc, hashobjalloc * sizeof(*hashobj));
+			rta_post("reallocate hash object store from %d to %d obj (size %lu)\n", 
+				 hashobjalloc / 2, hashobjalloc, hashobjalloc * sizeof(*hashobj));
 			hashobj = rta_realloc(hashobj, hashobjalloc * sizeof(*hashobj));
 		    }
 		    assert(hashobj);
