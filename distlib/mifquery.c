@@ -35,6 +35,71 @@ static rta_real_t disco_euclidean_distance (mif_object_t *a, mif_object_t *b)
 
 
 
+static rta_real_t disco_KLS (mif_object_t *a, mif_object_t *b)
+{
+/*    return rta_euclidean_distance(a->base + a->index * NDIM, 1,
+                 b->base + b->index * NDIM, NDIM);
+*/
+   rta_real_t* v1 = DISCO_VECTOR(a);
+   rta_real_t* v2 = DISCO_VECTOR(b);
+   rta_real_t* D;
+   rta_real_t dist = 0;
+   int i,j, ndim = DISCO_NDIM(a);
+
+   for (i=0;i<10;i++)
+       cout<<v1[i]<<" ";
+
+   cout<<endl;
+
+      int r1,r2,N;
+   float T1=0;
+   float T2=0;
+   float S1=0;
+   float S2=0;
+   float tmp1=0;
+   float tmp2=0;
+
+   N=  (int) ((-1 + sqrt(1 + 8 *(ndim - 1))) / 4);
+   r1=N;
+   r2=N*N+N;
+
+    D =  (rta_real_t*)malloc(sizeof(rta_real_t)*N);
+
+   for (i=0 ; i < N; i++){
+       D[i]=v1[i]-v2[i];
+   }
+
+   for ( i=0 ; i < N; i++){
+
+       tmp1=0;
+       tmp2=0;
+
+       for ( j=0 ; j < N; j++){
+
+           T1=T1 + v2[j+i*N+r2]*v1[i+j*N+r1];
+           T2=T2 + v2[j+i*N+r1]*v1[i+j*N+r2];
+
+           tmp1= tmp1 + v2[i+j*N+r2]*D[j];
+           tmp2= tmp2 + v1[i+j*N+r2]*D[j];
+
+       }
+
+       S1=S1+tmp1*D[i]-1;
+       S2=S2+tmp2*D[i]-1;
+   }
+
+
+   dist=(S1+S2+T1+T2)/4 ;
+
+
+   if (dist <0)
+       dist=0;
+
+   free(D);
+
+   return dist;
+}
+
 
 
 int main (int argc, char *argv[])
