@@ -4,18 +4,36 @@ doc:
 tex:
 	make -C doc/latex/
 
-mif:	mifclean miftest
+mif:	mifclean mifquery
+	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 
+
+mif-test:	libmif.o mifclean miftest
 	./miftest
+
+mif.o:	mif.c mif.h ../rta.h
+	gcc -c -g -Wall -I. -I.. -o $@ $<
+
+../rta_util.o:	../rta_util.c ../rta_util.h ../rta.h
+	gcc -c -g -Wall -I. -I.. -o $@ $<
+
+libmif.o:	mif.o ../rta_util.o
+	libtool -static -o $@ $^
 
 miftest:	mif.c mif.h ../rta_util.c
 	gcc -g -Wall -I. -I.. -DMIF_BUILD_TEST -o $@ $^
 
+mifquery:	mifquery.c mif.c mif.h ../rta_util.c
+	gcc -g -Wall -I. -I.. -o $@ $^
+
 mifclean:
-	rm miftest
+	-rm miftest mifquery
 
 mifdoc:
 	doxygen mif.doxyfile; $(MAKE) miftex
 miftex:
 	make -C mifdoc/latex/
+
+mifdist:
+	zip -r mif-0.1-src.zip mif.c mif.h makefile ../rta.h ../rta_util.[ch] rta_configuration.h
 
 .PHONY: doc mifdoc
