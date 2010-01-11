@@ -12,7 +12,7 @@
 
 /* calculate pointer to start of frame vector (skipping time) */
 #define DISCO_NDIM(o) ((int *) o->base)[1]
-#define DISCO_VECTOR(o) (rta_real_t *) (o->base + 4 * sizeof(int) + o->index * DISCO_NDIM(o))
+#define DISCO_VECTOR(o) (rta_real_t *) ((float *) (o->base + 3 * sizeof(int)) + 1 + o->index * DISCO_NDIM(o))
 
 static rta_real_t disco_euclidean_distance (mif_object_t *a, mif_object_t *b)
 {
@@ -42,10 +42,10 @@ static rta_real_t disco_KLS (mif_object_t *a, mif_object_t *b)
    rta_real_t dist = 0;
    int i,j, ndim = DISCO_NDIM(a);
 
-   for (i=0; i < 10; i++)
+/*   for (i=0; i < 10; i++)
        rta_post("%f ", v1[i]);
    rta_post("\n");
-
+*/
    int r1,r2,N;
    double T1=0;
    double T2=0;

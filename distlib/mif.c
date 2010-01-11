@@ -345,7 +345,7 @@ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
  */
 
 #include <search.h>
-#define MAXLEN   (sizeof(unsigned int) * 2 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
+#define MAXLEN   (sizeof(void *) * 2 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
 
 typedef struct _mif_hash_entry_t 
 {
@@ -366,7 +366,7 @@ static void mif_object_hash_destroy(mif_index_t *self)
 
 static void mif_object_hash_makekey(mif_object_t *obj, char *key)
 {
-    int len = sprintf(key, "%x%x", (unsigned int) obj->base, obj->index);
+    int len = sprintf(key, "%lx%x", (long unsigned int) obj->base, obj->index);
     assert(len < MAXLEN - 1);
 }
 
@@ -422,6 +422,11 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
        for all ks-closest ref. obj. (sort order position r) */
     for (r = 0; r < kq; r++)
     {   /* */
+#undef rta_max
+#undef rta_min
+#define rta_max(a,b) (((a)>(b))? (a) : (b))
+#define rta_min(a,b) (((a)<(b))? (a) : (b))
+
 	int minp = rta_max(0,            r - self->mpd);
 	int maxp = rta_min(self->ki - 1, r + self->mpd);
 	mif_postinglist_t *pl = &self->pl[qind[r]];
