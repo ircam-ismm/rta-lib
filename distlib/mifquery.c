@@ -10,9 +10,78 @@
 #include "rta.h"
 #include "mif.h"
 
+
+
+/*
+ *	DISCO descriptor file format support
+ */
+
+/* header (12 bytes):
+   int32 ndata		number of vectors
+   int32 ndim		number of elements of each vector
+   int32 descrid	descriptor ID
+
+   data: ndata * ndim float32 values
+ */
+
+typedef struct _disco_file_header
+{
+    int 	ndata;		/* number of vectors */
+    int 	ndim;		/* number of elements of each vector */
+    int 	descrid;	/* descriptor ID */
+    float	data[0];	/* ndata * ndim float32 values */
+} disco_file_header_t;
+
+
+typedef struct _disco_file
+{
+    int		fd;		/* file descriptor */
+    size_t	len;		/* mapped length in bytes */
+    const char *filename;	/* file name opened */
+    disco_file_header_t *base;
+} disco_file_t;
+
+
+
 /* calculate pointer to start of frame vector (skipping time) */
 #define DISCO_NDIM(o) ((int *) o->base)[1]
 #define DISCO_VECTOR(o) (rta_real_t *) ((float *) (o->base + 3 * sizeof(int)) + 1 + o->index * DISCO_NDIM(o))
+
+static void *disco_file_map (disco_file_t *file, const char *name, int nvec)
+{
+    file->filename = name;
+    file->base = NULL;
+    file->fd = open(name, O_RDONLY);
+
+    if (file->fd <= 0)
+    {
+	fprintf(stderr, "can't open file '%s'\n", name);
+	return NULL;
+    }
+
+    /* get length (LATER: map only nvec records if >= 0) */
+    file->len = lseek(file->fd, 0, SEEK_END);
+    lseek(file->fd, 0, SEEK_SET);
+
+    /* map to memory */
+    file->base = mmap(NULL, file->len, PROT_READ, MAP_FILE | MAP_SHARED, file->fd, 0);
+	
+    if (file->base == MAP_FAILED)
+    {
+	fprintf(stderr, "can't map file '%s', errno = %d\n", name, errno);
+	return NULL;
+    }
+
+    return (void *) file->base;
+}
+
+static void disco_file_unmap (disco_file_t *file)
+{
+    munmap(file->base, file->len);
+    close(file->fd);
+}
+
+
 
 static rta_real_t disco_euclidean_distance (mif_object_t *a, mif_object_t *b)
 {
@@ -90,44 +159,23 @@ static rta_real_t disco_KLS (mif_object_t *a, mif_object_t *b)
    return dist;
 }
 
-static void *disco_map_file(const char *name, int nvec, 
-			    /*out*/ int *len, int *ndata, int *ndim, int *descrid)
-{
-    int  *base = NULL;
-    int   fd   = open(name, O_RDONLY);
-
-    if (fd > 0)
-    {
-	fprintf(stderr, "can't open file '%s'\n", name);
-	return NULL;
-    }
-
-    /* get length (LATER: map only nvec records if > 0) */
-    *len = lseek(fd, 0, SEEK_END);
-    lseek(fd, 0, SEEK_SET);
-
-    /* map to memory */
-    base = mmap(NULL, *len, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0);
-	
-    if (base == MAP_FAILED)
-    {
-	fprintf(stderr, "can't map file '%s', errno = %d\n", name, errno);
-	return NULL;
-    }
-
-    *ndata = base[0];
-    *ndim  = base[1];
-    *descrid = base[2];
-
-    return base;
-}
-
 
 static void usage()
 {
-    fprintf(stderr, "usage: mifquery nref ki ks mpd  db-file-name query-file-name [nquery] [K to query]  [result-file-name]\n"
-	    "\t(-1 for defaults)  data files are in DISCO format\n"
-	    "\tquery nquery first vectors from query-file against db-file\n");
+    fprintf(stderr, "\
+Query nquery first vectors from query-file against db-file, write results to result-file or stdout.\n\
+Data files are in DISCO format.\n\
+\n\
+usage: mifquery nref ki ks mpd  db-file-name query-file-name [nquery] [K to query]  [result-file-name]\n\
+(-1 for defaults)\n\
+\n\
+result-file-name will be created as a text file which contains nquery lines of results: \n\
+[audioID.segID of the query1] [K] [audioID1.segID1] [dist] ... [audioIDk.segIDk] [dist] \n\
+[audioID.segID of the query2] [K] [audioID1.segID1] [dist] ... [audioIDk.segIDk] [dist] \n\
+...\n\
+[audioID.segID of the queryN] [K] [audioID1.segID1] [dist] ... [audioIDk.segIDk] [dist] \n\
+\n");
+
     exit(1);
 }
 
@@ -135,16 +183,14 @@ static void usage()
 int main (int argc, char *argv[])
 {
     const char *outname = NULL, *dbname = NULL, *queryname = NULL;
-    int   nref = 0, ks = 0, ki = 0, mpd = 0, nquery = 0, K = 5;
+    int   nref = 0, ks = 0, ki = 0, mpd = 0, nquery = -1, K = 5;
     FILE *outfile;
-    int   dbfd, queryfd;
+    disco_file_t dbfile, qfile;
+    mif_index_t mif;
 
     int  *base = NULL;
-    int   len, ndata, ndim, descrid;
-    int  *qbase = NULL;
-    int   qlen, qndata, qndim, qdescrid;
+    int   ndata, ndim;
 
-    mif_index_t mif;
 
     /* args: nref ki ks mpd  db-disco-file-name query-disco-file-name nquery k [result-file-name] */
     switch (argc)
@@ -169,13 +215,13 @@ int main (int argc, char *argv[])
     /* open DISCO db file */
     if (dbname)
     {
-	base = disco_map_file(dbname, 0, &len, &ndata, &ndim, &descrid);
+	disco_file_map(&dbfile, dbname, 0);
 
-	if (base == NULL)
+	if (dbfile.base == NULL)
 	    return -3;
 	else
-	    fprintf(stderr, "mapped database file '%s' length %d to pointer %p,\n ndata %d  ndim %d  descr %d\n",
-		    dbname, len, base, ndata, ndim, descrid);
+	    fprintf(stderr, "mapped database file '%s' length %ld to pointer %p,\n ndata %d  ndim %d  descr %d\n",
+		    dbname, dbfile.len, dbfile.base, dbfile.base->ndata, dbfile.base->ndim, dbfile.base->descrid);
     }
     else
     {
@@ -186,13 +232,13 @@ int main (int argc, char *argv[])
     /* open DISCO query file */
     if (queryname)
     {
-	qbase = disco_map_file(queryname, nquery, &qlen, &qndata, &qndim, &qdescrid);
+	disco_file_map(&qfile, queryname, nquery);
 
-	if (qbase == NULL)
+	if (qfile.base == NULL)
 	    return -2;
 	else
-	    fprintf(stderr, "mapped query file '%s' length %d to pointer %p,\n ndata %d  ndim %d  descr %d\n",
-		    dbname, len, base, ndata, ndim, descrid);
+	    fprintf(stderr, "mapped query file '%s' length %ld to pointer %p,\n ndata %d  ndim %d  descr %d\n",
+		    queryname, qfile.len, qfile.base, qfile.base->ndata, qfile.base->ndim, qfile.base->descrid);
     }
     else
     {
@@ -206,8 +252,12 @@ int main (int argc, char *argv[])
     else
 	outfile = stdout;
 
+    base  = dbfile.base;
+    ndim  = dbfile.base->ndim;
+    ndata = dbfile.base->ndata;
+
     /* check compatibility*/
-    if (ndim != qndim  ||  descrid != qdescrid)
+    if (ndim != qfile.base->ndim  ||  dbfile.base->descrid != qfile.base->descrid)
     {
 	fprintf(stderr, "db and query files are incompatible!\n");
 	return -4;
@@ -258,10 +308,10 @@ int main (int argc, char *argv[])
 	mif_object_t *obj  = alloca(K * sizeof(*obj));	/* query objects */
 	int          *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
 	mif_object_t  query;
-	query.base  = qbase;
+	query.base  = qfile.base;
 
-	if (nquery == 0)
-	    nquery = qndata;
+	if (nquery < 0)
+	    nquery = qfile.base->ndata;
 
 	for (i = 0; i < nquery; i++)
 	{
@@ -271,8 +321,8 @@ int main (int argc, char *argv[])
 
 	    //rta_post("--> %d-NN of query obj %d (found %d):  ", K, i, kfound);
 
-	    /* write result file line */
-	    fprintf(outfile, "%d.%d %d ", 0, i, K);
+	    /* write result file line (outfile as index 1, db file as index 0) */
+	    fprintf(outfile, "%d.%d %d ", 1, i, K);
 	    for (j = 0; j < kfound; j++)
 		fprintf(outfile, "%d.%d %d%c", 0, obj[j].index, dist[j], 
 			j < kfound - 1  ?  ' ' : '\n');
@@ -283,10 +333,9 @@ int main (int argc, char *argv[])
 
     /* cleanup and close files */
     mif_free(&mif);
-    munmap(base, len);
-    munmap(qbase, qlen);
-    close(dbfd);
-    close(queryfd);
+    disco_file_unmap(&dbfile);
+    disco_file_unmap(&qfile);
+
     if (outfile != stdout)
 	fclose(outfile);
 
