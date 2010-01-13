@@ -5,7 +5,7 @@ tex:
 	make -C doc/latex/
 
 mif:	mifclean mifquery
-	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 
+	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5
 
 mif-test:	libmif.o mifclean miftest
 	./miftest
