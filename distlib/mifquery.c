@@ -90,73 +90,114 @@ static rta_real_t disco_KLS (mif_object_t *a, mif_object_t *b)
    return dist;
 }
 
+static void *disco_map_file(const char *name, int nvec, 
+			    /*out*/ int *len, int *ndata, int *ndim, int *descrid)
+{
+    int  *base = NULL;
+    int   fd   = open(name, O_RDONLY);
+
+    if (fd > 0)
+    {
+	fprintf(stderr, "can't open file '%s'\n", name);
+	return NULL;
+    }
+
+    /* get length (LATER: map only nvec records if > 0) */
+    *len = lseek(fd, 0, SEEK_END);
+    lseek(fd, 0, SEEK_SET);
+
+    /* map to memory */
+    base = mmap(NULL, *len, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0);
+	
+    if (base == MAP_FAILED)
+    {
+	fprintf(stderr, "can't map file '%s', errno = %d\n", name, errno);
+	return NULL;
+    }
+
+    *ndata = base[0];
+    *ndim  = base[1];
+    *descrid = base[2];
+
+    return base;
+}
+
+
+static void usage()
+{
+    fprintf(stderr, "usage: mifquery nref ki ks mpd  db-file-name query-file-name [nquery] [K to query]  [result-file-name]\n"
+	    "\t(-1 for defaults)  data files are in DISCO format\n"
+	    "\tquery nquery first vectors from query-file against db-file\n");
+    exit(1);
+}
 
 
 int main (int argc, char *argv[])
 {
-    const char *outname = NULL, *inname = NULL;
-    int   nref = 0, ks = 0, ki = 0, mpd = 0;
+    const char *outname = NULL, *dbname = NULL, *queryname = NULL;
+    int   nref = 0, ks = 0, ki = 0, mpd = 0, nquery = 0, K = 5;
     FILE *outfile;
-    int fd;
+    int   dbfd, queryfd;
 
     int  *base = NULL;
-    int   len;
-    int   ndata, ndim, descrid;
+    int   len, ndata, ndim, descrid;
+    int  *qbase = NULL;
+    int   qlen, qndata, qndim, qdescrid;
 
     mif_index_t mif;
 
-    /* args: nref ki ks mpd  disco-file-name [result-file-name] */
+    /* args: nref ki ks mpd  db-disco-file-name query-disco-file-name nquery k [result-file-name] */
     switch (argc)
-    {
-    case 7:
-	outname = argv[6];
-    case 6:
-	inname = argv[5];
-    case 5:
-	mpd = atoi(argv[4]);
-    case 4:
-	ks = atoi(argv[3]);
-    case 3:
-	ki = atoi(argv[2]);
-    case 2:
-	nref = atoi(argv[1]);
+    {	/* fallthrough */
+    case 10:	outname	  = argv[9];
+    case 9:	K	  = atoi(argv[8]);
+    case 8:	nquery	  = atoi(argv[7]);
+    case 7:	queryname = argv[6];
+    case 6:	dbname	  = argv[5];
+    case 5:	mpd	  = atoi(argv[4]);
+    case 4:	ks	  = atoi(argv[3]);
+    case 3:	ki	  = atoi(argv[2]);
+    case 2:	nref	  = atoi(argv[1]);
+    break;
+
+    default:	/* wrong number or no args */
+    case 1:
+	usage();
+    break;
     }
 
-    /* open DISCO file */
-    if (inname)
+    /* open DISCO db file */
+    if (dbname)
     {
-	fd = open(inname, O_RDONLY);
+	base = disco_map_file(dbname, 0, &len, &ndata, &ndim, &descrid);
 
-	if (fd <= 0)
-	{
-	    fprintf(stderr, "can't open file '%s'\n", inname);
+	if (base == NULL)
 	    return -3;
-	}
-
-	/* get length */
-	len = lseek(fd, 0, SEEK_END);
-	lseek(fd, 0, SEEK_SET);
-
-	/* map to memory */
-	base = mmap(NULL, len, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0);
-	
-	if (base == MAP_FAILED)
-	{
-	    fprintf(stderr, "can't map file '%s', errno = %d\n", inname, errno);
-	    return -2;
-	}
-
-	ndata = base[0];
-	ndim  = base[1];
-	descrid = base[2];
-
-	fprintf(stderr, "mapped file '%s' length %d to pointer %p,\n ndata %d  ndim %d  descr %d\n",
-		inname, len, base, ndata, ndim, descrid);
+	else
+	    fprintf(stderr, "mapped database file '%s' length %d to pointer %p,\n ndata %d  ndim %d  descr %d\n",
+		    dbname, len, base, ndata, ndim, descrid);
     }
     else
     {
-	fprintf(stderr, "no input file name given\n");
-	return -1;
+	fprintf(stderr, "no input database file name given\n");
+	usage();
+    }
+
+    /* open DISCO query file */
+    if (queryname)
+    {
+	qbase = disco_map_file(queryname, nquery, &qlen, &qndata, &qndim, &qdescrid);
+
+	if (qbase == NULL)
+	    return -2;
+	else
+	    fprintf(stderr, "mapped query file '%s' length %d to pointer %p,\n ndata %d  ndim %d  descr %d\n",
+		    dbname, len, base, ndata, ndim, descrid);
+    }
+    else
+    {
+	fprintf(stderr, "no query file name given\n");
+	usage();
     }
 
     /* open result file */
@@ -165,6 +206,15 @@ int main (int argc, char *argv[])
     else
 	outfile = stdout;
 
+    /* check compatibility*/
+    if (ndim != qndim  ||  descrid != qdescrid)
+    {
+	fprintf(stderr, "db and query files are incompatible!\n");
+	return -4;
+    }
+
+
+#if 0
     { /* test distance function: voila ce que l'on est sensé obtenir:
 	D(O1,O2) = 0.9310
 	D(O1,O3) = 1.6384
@@ -181,6 +231,7 @@ int main (int argc, char *argv[])
 		fprintf(stderr, "D(o%d, o%d) = %f\n", i+1, j+1, d);
 	    }
     }
+#endif
 
     {   /* index every frame (= model) */
 	/* check args */
@@ -202,15 +253,17 @@ int main (int argc, char *argv[])
 	mif_profile_clear(&mif.profile);
     }
 
-    {   /* query with every frame (= model) */
-	int K = 5;
+    {   /* query with first nquery frames from query file */
 	int i, j, kfound;
-	mif_object_t *obj  = alloca(K * sizeof(*obj));	/* objects */
+	mif_object_t *obj  = alloca(K * sizeof(*obj));	/* query objects */
 	int          *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
 	mif_object_t  query;
-	query.base  = base;
+	query.base  = qbase;
 
-	for (i = 0; i < ndata; i++)
+	if (nquery == 0)
+	    nquery = qndata;
+
+	for (i = 0; i < nquery; i++)
 	{
 	    query.index = i;
 	    
@@ -231,7 +284,9 @@ int main (int argc, char *argv[])
     /* cleanup and close files */
     mif_free(&mif);
     munmap(base, len);
-    close(fd);
+    munmap(qbase, qlen);
+    close(dbfd);
+    close(queryfd);
     if (outfile != stdout)
 	fclose(outfile);
 
