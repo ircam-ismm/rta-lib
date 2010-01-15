@@ -11,7 +11,7 @@ Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 
 @author	 Diemo Schwarz
 @date	 21.11.2009
-@version 0.1
+@version 0.5
 
 @brief	Library for an index on metric spaces using inverted files
 
@@ -25,7 +25,35 @@ It implements the algorithm described in Amato G., Savino P., <i>Approximate sim
 Third Interational ICST Conference on Scalable Information Systems, 2008.
 
 Copyright (C) 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
- */
+
+
+
+\section parcompl Parameters and Complexities
+
+This section explains the connection of the algorithm's parameters to
+the computational complexity.
+
+There are 4 parameters, the first two used for building the index, the
+last two used for searching it.  According to Amato and Savino (2008),
+the bounds should be (depending on the number of data vectors \f$ n_{data} \f$):
+
+- mif_index_t::numref number of reference objects 			 
+	\f$ n_{ref} \ge  2 \sqrt n_{data} \f$ 
+- mif_index_t::ki     number of reference objects used for indexing
+ 	 \f$ k_i    \le  n_{ref} \f$
+- mif_index_t::ks     number of reference objects used for searching
+ 	 \f$ k_s    \le k_i \f$
+- mif_index_t::mpd    maximum allowed position difference
+	 \f$ mpd    \le k_i \f$
+
+The complexities are then:
+
+- Number of distance calculations for building: \f$  n_{data} \cdot n_{ref} \f$
+- Number of distance calculations for searching: \f$ n_{ref} \f$
+- Number of posting list entries after building: \f$ O\left( k_i \cdot n_{data} \right) \f$
+- Number of posting list accesses for searching: \f$ O\left( \frac{k_s \cdot mpd \cdot n_{data}}{n_{ref}} \right) \f$
+
+*/
 
 
 /* build doc with:
@@ -87,6 +115,7 @@ typedef struct _mif_profile_struct
 {
     int o2o;		/**< number of object to object distance calculations */
     int searches;	/**< number of searches performed */
+    int placcess;	/**< number of posting lists accessed */
     int indexaccess;	/**< number of accesses to the index entries in the posting lists */
 } mif_profile_t;
 
@@ -112,7 +141,7 @@ typedef struct _mif_index
     int		numref;	/**< number of reference objects */
     int		ki;	/**< number of reference objects used for indexing */
     int		ks;	/**< number of reference objects used for searching */
-    int		mpd;	/**< maximum allowed position difference */    
+    int		mpd;	/**< maximum allowed position difference */		
 
     mif_object_t *refobj;  /**< array[numref] of reference objects */
     mif_postinglist_t *pl; /**< array[numref] of postinglists */

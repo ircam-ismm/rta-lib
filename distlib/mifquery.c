@@ -11,6 +11,8 @@
 #include "mif.h"
 
 
+#define BLOCKSIZE 4096
+
 
 /*
  *	DISCO descriptor file format support
@@ -308,6 +310,8 @@ int main (int argc, char *argv[])
 	mif_object_t *obj  = alloca(K * sizeof(*obj));	/* query objects */
 	int          *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
 	mif_object_t  query;
+	size_t	      bytesaccessed, bytesaccoopt;
+
 	query.base  = qfile.base;
 
 	if (nquery < 0)
@@ -329,6 +333,18 @@ int main (int argc, char *argv[])
 	}
 
 	mif_profile_print(&mif.profile);
+	
+	bytesaccessed = mif.profile.placcess * sizeof(mif_postinglist_t) +
+			mif.profile.indexaccess * sizeof(mif_pl_entry_t);
+	bytesaccoopt  = mif.profile.placcess * sizeof(mif_postinglist_t) +
+			mif.profile.indexaccess * 4;
+	fprintf(stderr, 
+		"#bytes accessed in index:\t\t%ld bytes\t%d blocks of %d\n"
+		"#bytes accessed in optimal index:\t%ld bytes\t%d blocks of %d\n", 
+		bytesaccessed, (int) ceil(bytesaccessed / BLOCKSIZE), BLOCKSIZE,
+		bytesaccoopt,  (int) ceil(bytesaccoopt  / BLOCKSIZE), BLOCKSIZE);
+
+
     }
 
     /* cleanup and close files */

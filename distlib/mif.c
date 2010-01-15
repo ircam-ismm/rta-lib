@@ -182,6 +182,7 @@ void mif_profile_clear (mif_profile_t *t)
 {
     t->o2o = 0;
     t->searches = 0;
+    t->placcess = 0;
     t->indexaccess = 0;
 }
 
@@ -189,9 +190,12 @@ void mif_profile_clear (mif_profile_t *t)
 void mif_profile_print (mif_profile_t *t)
 {
     rta_post("Profile:\n"
-	     "#dist        %d\n"
-	     "#indexaccess %d\n"
-	     "#searches    %d\n\n", t->o2o, t->indexaccess, t->searches);
+	     "#dist:        %d\n"
+	     "#placcess:    %d \t(%ld bytes each)\n"
+	     "#indexaccess: %d \t(%ld bytes each)\n"
+	     "#searches:    %d\n", 
+	     t->o2o, t->placcess, sizeof(mif_postinglist_t), 
+	     t->indexaccess, sizeof(mif_pl_entry_t), t->searches);
 }
 
 
@@ -435,6 +439,9 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 //	rta_post("  r %d  refobj #%d=obj %d:  MPD range %d..%d\n", 
 //		 r, qind[r], self->refobj[qind[r]].index, minp, maxp);
 
+#if MIF_PROFILE_SEARCH
+	self->profile.placcess++;
+#endif
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
 	{
@@ -452,7 +459,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 		{ /* new occurence of obj: insert into accumulator hash */
 		    if (numhashobj >= hashobjalloc)
 		    {
-			hashobjalloc *= 2;
+			hashobjalloc += rta_max(2, self->ks);
 			rta_post("reallocate hash object store from %d to %d obj (size %lu)\n", 
 				 hashobjalloc / 2, hashobjalloc, hashobjalloc * sizeof(*hashobj));
 			hashobj = rta_realloc(hashobj, hashobjalloc * sizeof(*hashobj));
