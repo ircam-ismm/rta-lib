@@ -43,4 +43,13 @@ mifdist:
 	tar cvfz mif-$(MIFVERSION)-src.tar.gz mif.c mif.h mifquery.c makefile rta_configuration.h -C .. rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
 #	zip -r mif-0.3-src.zip mif.c mif.h mifquery.c makefile ../rta.h ../rta_stdio.h ../rta_stdlib.h ../rta_util.[ch] rta_configuration.h
 
+PUBLISH_ROOT      = DISCO/mifdoc
+PUBLISH_FILES	  = mifdoc/html/\*
+PUBLISH_HOST      = recherche.ircam.fr
+PUBLISH_USER      = wwwas
+
+mifpub:	mifdoc
+	echo mput $(PUBLISH_FILES) | ncftp -u$(PUBLISH_USER) -p$(PW) ftp://$(PUBLISH_HOST)/$(PUBLISH_ROOT)
+
+
 .PHONY: doc mifdoc
