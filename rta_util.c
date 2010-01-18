@@ -1,3 +1,17 @@
+/**
+ * @file   rta_util.c
+ * @author Diemo Schwarz
+ * @date   1.12.2009
+ * 
+ * @brief  file with common support functions
+ *
+ * 
+ * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * 
+ */
+
+
+#include "rta_util.h"
 
 
 static int compint (const void *a, const void *b)
@@ -19,7 +33,7 @@ void rta_choose_k_from_n (int k, int n, int *sample)
     {	/* error: non-specified case */
 	for (i = 0; i < k; i++)
 	    sample[i] = i % n;
-	fts_post("illegal parameters for choose %d from %d!!!\n", k, n);
+	rta_post("illegal parameters for choose %d from %d!!!\n", k, n);
 	return;
     }
 
@@ -38,7 +52,8 @@ void rta_choose_k_from_n (int k, int n, int *sample)
 		sample[i] = random() % n;
 		doubles++;
 	    }
-	fts_post("choose %d from %d -> doubles %d\n", k, n, doubles);
+	if (doubles > 0)
+	    rta_post("choose %d from %d -> doubles %d\n", k, n, doubles);
     }
 }
 
