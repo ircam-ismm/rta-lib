@@ -1,13 +1,19 @@
-
-/* Hybrid multi-dimensional scaling 
-   (Chalmers, Ross, Morrison algorithm) 
-*/
+/**
+ * @file   rta_util.h
+ * @author Diemo Schwarz
+ * @date   1.12.2009
+ * 
+ * @brief  file with common support functions
+ *
+ * 
+ * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * 
+ */
 
 #ifndef _RTA_UTIL_H_
 #define _RTA_UTIL_H_
 
 #include "rta.h"
-#include "rta_msdr.h"
 
 #ifdef __cplusplus
 extern "C" {
