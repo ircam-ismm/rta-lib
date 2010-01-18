@@ -64,11 +64,12 @@ The complexities are then:
 #ifndef _RTA_MIF_H_
 #define _RTA_MIF_H_
 
-#include "rta.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "rta.h"
+
 
 
 #define MIF_PROFILE_BUILD  1
@@ -86,14 +87,6 @@ typedef struct _mif_profile_struct
 } mif_profile_t;
 
 
-/** distance function 
-
-    This defines a pointer to a function prototype that must be
-    defined by the user of the MIF index.  The function is passed two
-    pointers to external mif_object_t objects and returns a distance value. */
-typedef rta_real_t (*mif_distance_function_t) (mif_object_t *a, mif_object_t *b);
-
-
 /** representation of an object to index 
 
     A data "object" stored in the mif index is represented as an anonymous base
@@ -109,6 +102,15 @@ typedef struct _mif_object
     void *base;		/**< base pointer of the object */
     int   index;	/**< index of the object relative to base */
 } mif_object_t;
+
+
+/** distance function 
+
+    This defines a pointer to a function prototype that must be
+    defined by the user of the MIF index.  The function is passed two
+    pointers to external mif_object_t objects and returns a distance value. */
+typedef rta_real_t (*mif_distance_function_t) (mif_object_t *a, mif_object_t *b);
+
 
 /** linked list of objects */
 typedef struct _mif_pl_entry
