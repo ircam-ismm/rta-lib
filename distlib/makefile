@@ -6,8 +6,11 @@ tex:
 
 MIFVERSION = 0.5
 
-mif:	mifclean mifquery
-	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5
+mif:	mifclean discotrunc mifquery
+	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 20
+
+mif10:	mifquery
+	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 100 20 result10.log 2>&1| tee log10.txt
 
 mifprofile:
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \
@@ -19,17 +22,27 @@ mif-test:	libmif.o mifclean miftest
 mif.o:	mif.c mif.h rta.h
 	gcc -c -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
 
+discofile.o:	discofile.c discofile.h
+	gcc -c -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
+
 ../rta_util.o:	../rta_util.c ../rta_util.h ../rta.h
 	gcc -c -g -Wall -I. -I.. -o $@ $<
 
-libmif.o:	mif.o rta_util.o
+libmif.o:	mif.o discofile.o rta_util.o 
 	libtool -static -o $@ $^
+
+#### executables
 
 miftest:	mif.c mif.h rta_util.c
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -DMIF_BUILD_TEST -o $@ $^
 
-mifquery:	mifquery.c mif.c mif.h rta_util.c
+mifquery:	mifquery.c mif.c mif.h discofile.c discofile.h rta_util.c
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
+
+discotrunc:	discotrunc.c discofile.c discofile.h
+	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $^
+
+#### misc
 
 mifclean:
 	-rm miftest mifquery
