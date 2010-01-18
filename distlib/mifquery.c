@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/mman.h>
@@ -189,10 +190,10 @@ int main (int argc, char *argv[])
     FILE *outfile;
     disco_file_t dbfile, qfile;
     mif_index_t mif;
-
     int  *base = NULL;
     int   ndata, ndim;
-
+    clock_t startbuild, startquery;
+    float   buildtime, querytime;
 
     /* args: nref ki ks mpd  db-disco-file-name query-disco-file-name nquery k [result-file-name] */
     switch (argc)
@@ -297,12 +298,18 @@ int main (int argc, char *argv[])
 	    mpd   = 5;
 
 	mif_init(&mif, disco_KLS, nref, ki);
+	startbuild = clock();
 	mif_add_data(&mif, 1, (void **) &base, &ndata);
+	buildtime = ((float) clock() - startbuild) / (float) CLOCKS_PER_SEC;
 	mif.ks  = ks;
 	mif.mpd = mpd;
 	mif_print(&mif, 0);
 	mif_profile_print(&mif.profile);
 	mif_profile_clear(&mif.profile);
+
+	fprintf(stderr, "time for building of index = %f s, %f s / obj\n\n", 
+		buildtime, buildtime / mif.numobj);
+	fflush(stderr);
     }
 
     {   /* query with first nquery frames from query file */
@@ -313,6 +320,7 @@ int main (int argc, char *argv[])
 	size_t	      bytesaccessed, bytesaccoopt;
 
 	query.base  = qfile.base;
+	startquery  = clock();
 
 	if (nquery < 0)
 	    nquery = qfile.base->ndata;
@@ -321,17 +329,20 @@ int main (int argc, char *argv[])
 	{
 	    query.index = i;
 	    
+	    fprintf(stderr, "querying %d-NN of query obj %d ", K, i);
 	    kfound = mif_search_knn(&mif, &query, K, obj, dist);
-
-	    //rta_post("--> %d-NN of query obj %d (found %d):  ", K, i, kfound);
+	    fprintf(stderr, "--> found %d NN, best is db obj %d with dist %d\n", 
+		    kfound, obj[0].index, dist[0]);
 
 	    /* write result file line (outfile as index 1, db file as index 0) */
 	    fprintf(outfile, "%d.%d %d ", 1, i, K);
 	    for (j = 0; j < kfound; j++)
 		fprintf(outfile, "%d.%d %d%c", 0, obj[j].index, dist[j], 
 			j < kfound - 1  ?  ' ' : '\n');
+	    fflush(outfile);
 	}
 
+	querytime = ((float) clock() - startquery) / (float) CLOCKS_PER_SEC;
 	mif_profile_print(&mif.profile);
 	
 	bytesaccessed = mif.profile.placcess * sizeof(mif_postinglist_t) +
@@ -339,11 +350,12 @@ int main (int argc, char *argv[])
 	bytesaccoopt  = mif.profile.placcess * sizeof(mif_postinglist_t) +
 			mif.profile.indexaccess * 4;
 	fprintf(stderr, 
-		"#bytes accessed in index:\t\t%ld bytes\t%d blocks of %d\n"
-		"#bytes accessed in optimal index:\t%ld bytes\t%d blocks of %d\n", 
-		bytesaccessed, (int) ceil(bytesaccessed / BLOCKSIZE), BLOCKSIZE,
-		bytesaccoopt,  (int) ceil(bytesaccoopt  / BLOCKSIZE), BLOCKSIZE);
-
+		"#bytes accessed in index:         %f MB = %d blocks of %d\n"
+		"#bytes accessed in optimal index: %f MB = %d blocks of %d\n", 
+		bytesaccessed / 1e6, (int) ceil(bytesaccessed / BLOCKSIZE), BLOCKSIZE,
+		bytesaccoopt  / 1e6, (int) ceil(bytesaccoopt  / BLOCKSIZE), BLOCKSIZE);
+	fprintf(stderr, "time for %d queries = %f s, %f s / queryobj\n\n", 
+		nquery, querytime, querytime / nquery);
 
     }
 
