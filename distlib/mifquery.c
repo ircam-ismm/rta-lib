@@ -2,88 +2,17 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/fcntl.h>
-#include <unistd.h>
 
-#include "rta.h"
 #include "mif.h"
+#include "discofile.h"
 
 
 #define BLOCKSIZE 4096
 
 
-/*
- *	DISCO descriptor file format support
- */
-
-/* header (12 bytes):
-   int32 ndata		number of vectors
-   int32 ndim		number of elements of each vector
-   int32 descrid	descriptor ID
-
-   data: ndata * ndim float32 values
- */
-
-typedef struct _disco_file_header
-{
-    int 	ndata;		/* number of vectors */
-    int 	ndim;		/* number of elements of each vector */
-    int 	descrid;	/* descriptor ID */
-    float	data[0];	/* ndata * ndim float32 values */
-} disco_file_header_t;
-
-
-typedef struct _disco_file
-{
-    int		fd;		/* file descriptor */
-    size_t	len;		/* mapped length in bytes */
-    const char *filename;	/* file name opened */
-    disco_file_header_t *base;
-} disco_file_t;
-
-
-
 /* calculate pointer to start of frame vector (skipping time) */
 #define DISCO_NDIM(o) ((int *) o->base)[1]
 #define DISCO_VECTOR(o) (rta_real_t *) ((float *) (o->base + 3 * sizeof(int)) + 1 + o->index * DISCO_NDIM(o))
-
-static void *disco_file_map (disco_file_t *file, const char *name, int nvec)
-{
-    file->filename = name;
-    file->base = NULL;
-    file->fd = open(name, O_RDONLY);
-
-    if (file->fd <= 0)
-    {
-	fprintf(stderr, "can't open file '%s'\n", name);
-	return NULL;
-    }
-
-    /* get length (LATER: map only nvec records if >= 0) */
-    file->len = lseek(file->fd, 0, SEEK_END);
-    lseek(file->fd, 0, SEEK_SET);
-
-    /* map to memory */
-    file->base = mmap(NULL, file->len, PROT_READ, MAP_FILE | MAP_SHARED, file->fd, 0);
-	
-    if (file->base == MAP_FAILED)
-    {
-	fprintf(stderr, "can't map file '%s', errno = %d\n", name, errno);
-	return NULL;
-    }
-
-    return (void *) file->base;
-}
-
-static void disco_file_unmap (disco_file_t *file)
-{
-    munmap(file->base, file->len);
-    close(file->fd);
-}
-
 
 
 static rta_real_t disco_euclidean_distance (mif_object_t *a, mif_object_t *b)
