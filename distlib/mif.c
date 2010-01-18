@@ -159,11 +159,13 @@ void mif_print (mif_index_t *self, int verb)
 	spl += npe * sizeof(*self->pl[i].entries);
 	stotal = srefobj + spl;
 
-	rta_post("\nspace for struct        = %4lu B\n", sizeof(mif_index_t));
-	rta_post("%3d ref.obj.            = %4lu B\n", self->numref, srefobj);
-	rta_post("%3d postinglist entries = %4lu B\n", npe, spl);
-	rta_post("TOTAL %4lu B            = %4lu B/refobj  %f B/obj\n", 
-		 stotal, stotal / self->numref, (float) stotal / self->numobj);
+	rta_post("\nspace for struct              = %14lu B\n", sizeof(mif_index_t));
+	rta_post("%9d ref.obj.            = %14lu B\n", self->numref, srefobj);
+	rta_post("%9d postinglist entries = %14lu B", npe, spl);
+	rta_post(" (%d #/refobj, %f #/bin)\n", 
+		 npe / self->numref, (float) npe / self->numref / self->ki);
+	rta_post("TOTAL %20f MB = %14lu B (%lu B/refobj, %f B/obj)\n", 
+		 stotal / 1e6, stotal, stotal / self->numref, (float) stotal / self->numobj);
     }
 
     if (verb >= 1)
@@ -189,7 +191,7 @@ void mif_profile_clear (mif_profile_t *t)
 /** print profile info */
 void mif_profile_print (mif_profile_t *t)
 {
-    rta_post("Profile:\n"
+    rta_post("\nProfile:\n"
 	     "#dist:        %d\n"
 	     "#placcess:    %d \t(%ld bytes each)\n"
 	     "#indexaccess: %d \t(%ld bytes each)\n"
