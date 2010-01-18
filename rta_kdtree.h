@@ -338,10 +338,13 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, const rta_
 
 /** Weighted squared vector distance (v1 - v2)^2
 */
-rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2, 
-					    rta_real_t *sigma, int ndim);
-rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1, rta_real_t* v2, 
-					    rta_real_t *sigma, int ndim);
+rta_real_t rta_euclidean_distance 		  (rta_real_t* v1, int stride1, 
+						   rta_real_t* v2, int dim);
+rta_real_t rta_weighted_euclidean_distance 	  (rta_real_t* v1, rta_real_t* v2, 
+					   	   rta_real_t *sigma, int ndim);
+rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1, 
+						   rta_real_t* v2, 
+						   rta_real_t *sigma, int ndim);
 
 
 #ifdef __cplusplus
