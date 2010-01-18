@@ -98,7 +98,8 @@ static int maxArr (rta_real_t* array, int size)
     return index;
 }
 
-static rta_real_t euclidean_distance (rta_real_t* v1, int stride1, rta_real_t* v2, int dim) 
+rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1, 
+				   rta_real_t* v2, int dim) 
 {
     int i, i1;
     rta_real_t sum = 0;
@@ -113,7 +114,9 @@ static rta_real_t euclidean_distance (rta_real_t* v1, int stride1, rta_real_t* v
 }
 
 
-rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2, rta_real_t *sigma, int ndim) 
+rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, 
+					    rta_real_t* v2, 
+					    rta_real_t *sigma, int ndim) 
 {
     int i;
     rta_real_t sum = 0, sqrtsum = 0;
@@ -131,7 +134,8 @@ rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2, rta_
     return sqrtsum;
 }
 
-rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1, rta_real_t* v2, 
+rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
+						   rta_real_t* v2, 
 						   rta_real_t *sigma, int ndim) 
 {
     int i, i1;
@@ -207,7 +211,7 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
 			dxx = rta_weighted_euclidean_distance_stride(vector, stride, 
 				kdtree_get_vector(t, i), sigmaptr, t->ndim);
 		    else
-			dxx = euclidean_distance(vector, stride, 
+			dxx = rta_euclidean_distance(vector, stride, 
 				kdtree_get_vector(t, i), t->ndim);
 #if KDTREE_PROFILE_SEARCH
 		    t->profile.v2v++;
