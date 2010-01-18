@@ -76,6 +76,24 @@ extern "C" {
 #define MIF_PROFILE	       (MIF_PROFILE_BUILD || MIF_PROFILE_SEARCH)
 
 
+/** structure to collect profiling data */
+typedef struct _mif_profile_struct
+{
+    int o2o;		/**< number of object to object distance calculations */
+    int searches;	/**< number of searches performed */
+    int placcess;	/**< number of posting lists accessed */
+    int indexaccess;	/**< number of accesses to the index entries in the posting lists */
+} mif_profile_t;
+
+
+/** distance function 
+
+    This defines a pointer to a function prototype that must be
+    defined by the user of the MIF index.  The function is passed two
+    pointers to external mif_object_t objects and returns a distance value. */
+typedef rta_real_t (*mif_distance_function_t) (mif_object_t *a, mif_object_t *b);
+
+
 /** representation of an object to index 
 
     A data "object" stored in the mif index is represented as an anonymous base
@@ -108,24 +126,6 @@ typedef struct _mif_postinglist
     int 	    size;	/**< number of objects stored */
     mif_pl_entry_t **entries;   /**< array[ki] entries indexed by sort order */
 } mif_postinglist_t;
-
-
-/** structure to collect profiling data */
-typedef struct _mif_profile_struct
-{
-    int o2o;		/**< number of object to object distance calculations */
-    int searches;	/**< number of searches performed */
-    int placcess;	/**< number of posting lists accessed */
-    int indexaccess;	/**< number of accesses to the index entries in the posting lists */
-} mif_profile_t;
-
-
-/** distance function 
-
-    This defines a pointer to a function prototype that must be
-    defined by the user of the MIF index.  The function is passed two
-    pointers to external mif_object_t objects and returns a distance value. */
-typedef rta_real_t (*mif_distance_function_t) (mif_object_t *a, mif_object_t *b);
 
 
 /** Metric inverted file index data structure 
