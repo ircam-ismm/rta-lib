@@ -11,6 +11,8 @@ mif:	mifclean discotrunc mifquery
 
 mif10:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 100 20 result10.log 2>&1| tee log10.txt
+mif100:	mifquery
+	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_100000.4001 QueryData.4001 100 20 result100.log 2>&1| tee log100.txt
 
 mifprofile:
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \
@@ -18,6 +20,8 @@ mifprofile:
 
 mif-test:	libmif.o mifclean miftest
 	./miftest
+
+#### compilation
 
 mif.o:	mif.c mif.h rta.h
 	gcc -c -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
@@ -31,6 +35,7 @@ discofile.o:	discofile.c discofile.h
 libmif.o:	mif.o discofile.o rta_util.o 
 	libtool -static -o $@ $^
 
+
 #### executables
 
 miftest:	mif.c mif.h rta_util.c
@@ -42,10 +47,16 @@ mifquery:	mifquery.c mif.c mif.h discofile.c discofile.h rta_util.c
 discotrunc:	discotrunc.c discofile.c discofile.h
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $^
 
+#### profiling
+
+mifquery.prof:	mifquery.c mif.c mif.h discofile.c discofile.h rta_util.c
+	gcc -pg -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
+	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 100 20 result10.log 2>&1| tee log10.txt
+
 #### misc
 
 mifclean:
-	-rm miftest mifquery
+	-rm miftest mifquery mifquery.prof
 
 mifdoc:
 	doxygen mif.doxyfile; $(MAKE) miftex
