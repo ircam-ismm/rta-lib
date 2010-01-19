@@ -49,9 +49,10 @@ the bounds should be (depending on the number of data vectors \f$ n_{data} \f$):
 The complexities are then:
 
 - Number of distance calculations for building: \f$  n_{data} \cdot n_{ref} \f$
-- Number of distance calculations for searching: \f$ n_{ref} \f$
 - Number of posting list entries after building: \f$ O\left( k_i \cdot n_{data} \right) \f$
-- Number of posting list accesses for searching: \f$ O\left( \frac{k_s \cdot mpd \cdot n_{data}}{n_{ref}} \right) \f$
+
+- Number of distance calculations for searching: \f$ n_{ref} \f$
+- Number of posting list accesses for searching: \f$ O\left( \frac{k_s \cdot (2 mpd + 1) \cdot n_{data}}{n_{ref}} \right) \f$
 
 */
 
@@ -120,8 +121,8 @@ typedef void (*mif_manage_function_t) (void *private, mif_object_t *obj);
 /** linked list of objects */
 typedef struct _mif_pl_entry
 {
-    struct _mif_pl_entry *next;	/**< next entry */
     mif_object_t obj;		/**< object */
+    struct _mif_pl_entry *next;	/**< next entry */
 } mif_pl_entry_t;
 
 
