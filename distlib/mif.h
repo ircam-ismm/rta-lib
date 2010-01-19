@@ -83,6 +83,7 @@ typedef struct _mif_profile_struct
     int o2o;		/**< number of object to object distance calculations */
     int searches;	/**< number of searches performed */
     int placcess;	/**< number of posting lists accessed */
+    int plbinaccess;	/**< number of posting list bins accessed */
     int indexaccess;	/**< number of accesses to the index entries in the posting lists */
     int numhashobj;	/**< number of hashed objects allocated for searching */
 } mif_profile_t;

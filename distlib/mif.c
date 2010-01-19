@@ -201,6 +201,7 @@ void mif_profile_clear (mif_profile_t *t)
     t->o2o = 0;
     t->searches = 0;
     t->placcess = 0;
+    t->plbinaccess = 0;
     t->indexaccess = 0;
     t->numhashobj  = 0;
 }
@@ -213,11 +214,13 @@ void mif_profile_print (mif_profile_t *t)
 	     "#searches:    %9d\n" 
 	     "#dist:        %9d %6d\n"
 	     "#placcess:    %9d %6d\t(%ld bytes each)\n"
-	     "#indexaccess: %9d %6d\t(%ld bytes each)\n"
+	     "#binaccess:   %9d %6d\t(%ld bytes each)\n"
+	     "#entryaccess: %9d %6d\t(%ld bytes each)\n"
 	     "#hashobj:     %9d %6d\t(%ld bytes each)\n",
 	     t->searches, 
 	     t->o2o,	     t->o2o / n, 	     
-	     t->placcess,    t->placcess    / n, sizeof(mif_postinglist_t), 
+	     t->placcess,    t->placcess / n,         sizeof(mif_postinglist_t), 
+	     t->plbinaccess, t->plbinaccess / n, sizeof(mif_pl_entry_t *), 
 	     t->indexaccess, t->indexaccess / n, sizeof(mif_pl_entry_t), 
 	     t->numhashobj,  t->numhashobj  / n, sizeof(mif_hash_entry_t) + MAXLEN);
 }
@@ -465,15 +468,18 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 
 //	rta_post("  r %d  refobj #%d=obj %d:  MPD range %d..%d\n", 
 //		 r, qind[r], self->refobj[qind[r]].index, minp, maxp);
-
 #if MIF_PROFILE_SEARCH
-	self->profile.placcess++;
+	    self->profile.placcess++;
 #endif
+
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
 	{
 	    mif_pl_entry_t *bin = pl->entries[p];
-	    
+
+#if MIF_PROFILE_SEARCH
+	    self->profile.plbinaccess++;
+#endif
 	    while (bin)
 	    {
 		char keybuf[MAXLEN];
