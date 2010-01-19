@@ -27,6 +27,14 @@ static double log2(double x){ return log(x)/log(2);}
 
 #define MAX_FLOAT 0x7FFFFFFF
 
+/* hash */
+#define MAXLEN   (sizeof(void *) * 2 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
+typedef struct _mif_hash_entry_t 
+{
+    mif_object_t *obj;
+    int		  accumulator;
+} mif_hash_entry_t;
+
 
 /*
  * posting list handling 
@@ -154,6 +162,7 @@ void mif_print (mif_index_t *self, int verb)
     rta_post("k_s      = %d\n", self->ks);
     rta_post("mpd      = %d\n", self->mpd);
  
+    if (verb >= 1)
     {	/* space used */
 	int i, npe = 0;
 	unsigned long spl     = self->numref * sizeof(*self->pl);
@@ -175,7 +184,7 @@ void mif_print (mif_index_t *self, int verb)
 		 stotal / 1e6, stotal, stotal / self->numref, (float) stotal / self->numobj);
     }
 
-    if (verb >= 1)
+    if (verb >= 2)
     {
 	int i;
 
@@ -193,18 +202,24 @@ void mif_profile_clear (mif_profile_t *t)
     t->searches = 0;
     t->placcess = 0;
     t->indexaccess = 0;
+    t->numhashobj  = 0;
 }
 
 /** print profile info */
 void mif_profile_print (mif_profile_t *t)
 {
-    rta_post("\nProfile:\n"
-	     "#dist:        %d\n"
-	     "#placcess:    %d \t(%ld bytes each)\n"
-	     "#indexaccess: %d \t(%ld bytes each)\n"
-	     "#searches:    %d\n", 
-	     t->o2o, t->placcess, sizeof(mif_postinglist_t), 
-	     t->indexaccess, sizeof(mif_pl_entry_t), t->searches);
+    int n = t->searches ? t->searches : 0x7fffffff;
+    rta_post("\nProfile: (total / per search)\n"
+	     "#searches:    %9d\n" 
+	     "#dist:        %9d %6d\n"
+	     "#placcess:    %9d %6d\t(%ld bytes each)\n"
+	     "#indexaccess: %9d %6d\t(%ld bytes each)\n"
+	     "#hashobj:     %9d %6d\t(%ld bytes each)\n",
+	     t->searches, 
+	     t->o2o,	     t->o2o / n, 	     
+	     t->placcess,    t->placcess    / n, sizeof(mif_postinglist_t), 
+	     t->indexaccess, t->indexaccess / n, sizeof(mif_pl_entry_t), 
+	     t->numhashobj,  t->numhashobj  / n, sizeof(mif_hash_entry_t) + MAXLEN);
 }
 
 
@@ -369,14 +384,6 @@ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
  */
 
 #include <search.h>
-#define MAXLEN   (sizeof(void *) * 2 + 4 + 1) /* 32 bit pointer + 16 bit index in hex */
-
-typedef struct _mif_hash_entry_t 
-{
-    mif_object_t *obj;
-    int		  accumulator;
-} mif_hash_entry_t;
-
 
 static void mif_object_hash_create(mif_index_t *self)
 {
@@ -494,12 +501,11 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 		hashobj[hind].accumulator += abs(r - p) - self->ki;
 		//rta_post("  dist %d  accu %s = %d\n", p, keybuf, *accu);
 
-		bin = bin->next;
-
 #if MIF_PROFILE_SEARCH
 		self->profile.indexaccess++;
 #endif
-	    }
+		bin = bin->next;
+	    }   /* end while posting list entry bin not empty */
 	}
     }
 
@@ -553,6 +559,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     mif_object_hash_destroy(self);
 
 #if MIF_PROFILE_SEARCH
+    self->profile.numhashobj += numhashobj;
     self->profile.o2o += self->ks;
     self->profile.searches++;
 #endif

@@ -4,7 +4,7 @@ doc:
 tex:
 	make -C doc/latex/
 
-MIFVERSION = 0.6
+MIFVERSION = 0.7
 
 mif:	mifclean discotrunc mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 20
@@ -13,6 +13,8 @@ mif10:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 100 20 result10.log 2>&1| tee log10.txt
 mif100:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_100000.4001 QueryData.4001 100 20 result100.log 2>&1| tee log100.txt
+mif500:	mifquery
+	/usr/bin/time ./mifquery -1 100 100 5 DESCRIPTOR_SubSet_500000.4001 QueryData.4001 100 20 result500.log 2>&1| tee log500.txt
 
 mifprofile:
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \

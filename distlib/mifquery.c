@@ -153,7 +153,7 @@ int main (int argc, char *argv[])
 	buildtime = ((float) clock() - startbuild) / (float) CLOCKS_PER_SEC;
 	mif.ks  = ks;
 	mif.mpd = mpd;
-	mif_print(&mif, 0);
+	mif_print(&mif, 1);
 	mif_profile_print(&mif.profile);
 	mif_profile_clear(&mif.profile);
 
@@ -193,6 +193,7 @@ int main (int argc, char *argv[])
 	}
 
 	querytime = ((float) clock() - startquery) / (float) CLOCKS_PER_SEC;
+	mif_print(&mif, 0);
 	mif_profile_print(&mif.profile);
 	
 	bytesaccessed = mif.profile.placcess * sizeof(mif_postinglist_t) +
