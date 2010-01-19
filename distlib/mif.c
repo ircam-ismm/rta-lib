@@ -25,7 +25,6 @@ static double log2(double x){ return log(x)/log(2);}
 #include "rta_math.h"
 #include "rta_util.h"
 
-
 #define MAX_FLOAT 0x7FFFFFFF
 
 
@@ -81,11 +80,16 @@ void mif_pl_insert (mif_postinglist_t *pl, mif_object_t *newobj, int k)
  */
 
 /** initialise index structure */
-void mif_init (mif_index_t *self, mif_distance_function_t distfunc, int nr, int ki)
+void mif_init (mif_index_t *self, mif_distance_function_t distfunc, 	    
+	       mif_manage_function_t distinit, mif_manage_function_t distfree, 
+	       void *distprivate,  int nr, int ki)
 {
     int i;
 
-    self->distance = distfunc;
+    self->distance_private = distprivate;
+    self->distance	   = distfunc;
+    self->distance_init    = distinit;
+    self->distance_free    = distfree;
     self->numobj = 0;
     self->numref = nr;
     self->ki     = ki;
@@ -105,6 +109,9 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc, int nr, int 
 void mif_free (mif_index_t *self)
 {
     int i;
+
+    if (self->distance_free)
+	(*self->distance_free)(self->distance_private, NULL);
 
     /* free posting lists */
     for (i = 0; i < self->numref; i++)
@@ -255,7 +262,7 @@ static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
 
     for (r = 0; r < self->numref; r++)
     {
-	rta_real_t d = (*self->distance)(&self->refobj[r], newobj);
+	rta_real_t d = (*self->distance)(self->distance_private, &self->refobj[r], newobj);
 	    
 	if (d <= dist[kmax]) 
 	{   /* return original index in data and distance */
@@ -293,7 +300,18 @@ static void mif_build_index (mif_index_t *self, int numbase, void **base, int *n
     int          *indx = alloca(self->ki * sizeof(*indx));	/* ref. obj. index */
     rta_real_t   *dist = alloca(self->ki * sizeof(*dist));	/* distance to obj */
     mif_object_t  newobj;	/* object to index */
-    int b, i, k, kfound;
+    int b = 0, i, k, kfound;
+
+    /* init distance function with very first object (in first non-empty file) */
+    while (b < numbase  &&  numbaseobj[b] == 0)
+	b++;
+
+    if (b < numbase)
+    {
+	newobj.base  = base[b];
+	newobj.index = 0;
+	(*self->distance_init)(self->distance_private, &newobj);
+    } /* else: no objects at all */	
 
     /* for each object */
     for (b = 0; b < numbase; b++)
