@@ -109,7 +109,10 @@ typedef struct _mif_object
     This defines a pointer to a function prototype that must be
     defined by the user of the MIF index.  The function is passed two
     pointers to external mif_object_t objects and returns a distance value. */
-typedef rta_real_t (*mif_distance_function_t) (mif_object_t *a, mif_object_t *b);
+typedef rta_real_t (*mif_distance_function_t) (void *private, mif_object_t *a, mif_object_t *b);
+
+/** init/deinit of temporary data for distance function */
+typedef void (*mif_manage_function_t) (void *private, mif_object_t *obj);
 
 
 /** linked list of objects */
@@ -138,7 +141,10 @@ typedef struct _mif_postinglist
 typedef struct _mif_index
 {
     /* parameters */
-    mif_distance_function_t distance;  /**< domain distance function */
+    mif_distance_function_t distance;	      /**< domain distance function */
+    void		   *distance_private; /**< private data for distance function */  
+    mif_manage_function_t   distance_init;    /**< domain init     function */
+    mif_manage_function_t   distance_free;    /**< domain cleanup  function */
     int		numobj;	/**< number of data objects */
     int		numref;	/**< number of reference objects */
     int		ki;	/**< number of reference objects used for indexing */
@@ -165,7 +171,9 @@ void mif_profile_print (mif_profile_t *t);
 
 
 /** initialise index structure */
-void mif_init (mif_index_t *self, mif_distance_function_t distfunc, int nr, int ki);
+void mif_init (mif_index_t *self, mif_distance_function_t distfunc, 
+	       mif_manage_function_t distinit, mif_manage_function_t distfree, 
+	       void *distprivate, int nr, int ki);
 
 /** free allocated memory */
 void mif_free (mif_index_t *self);
