@@ -4,7 +4,7 @@ doc:
 tex:
 	make -C doc/latex/
 
-MIFVERSION = 0.5
+MIFVERSION = 0.6
 
 mif:	mifclean discotrunc mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 20
@@ -41,7 +41,7 @@ libmif.o:	mif.o discofile.o rta_util.o
 miftest:	mif.c mif.h rta_util.c
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -DMIF_BUILD_TEST -o $@ $^
 
-mifquery:	mifquery.c mif.c mif.h discofile.c discofile.h rta_util.c
+mifquery:	mifquery.c mif.c mif.h discodist.c discodist.h discofile.c discofile.h rta_util.c
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
 
 discotrunc:	discotrunc.c discofile.c discofile.h
@@ -50,8 +50,8 @@ discotrunc:	discotrunc.c discofile.c discofile.h
 #### profiling
 
 mifquery.prof:	mifquery.c mif.c mif.h discofile.c discofile.h rta_util.c
-	gcc -pg -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
-	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 100 20 result10.log 2>&1| tee log10.txt
+	gcc -finstrument-functions -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^ /usr/lib/libSaturn.dylib
+	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 10 20 result10.log 2>&1| tee log10.txt
 
 #### misc
 
@@ -64,6 +64,7 @@ miftex:
 	make -C mifdoc/latex/
 
 mifdist:
+	svn copy -m 'tagging metric inverted file index distribution $(MIFVERSION)' . http://trac.ircam.fr/repos/imtr-libs/tags/mif-$(MIFVERSION)
 	tar cvfz mif-$(MIFVERSION)-src.tar.gz mif.c mif.h mifquery.c makefile rta_configuration.h -C .. rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
 #	zip -r mif-0.3-src.zip mif.c mif.h mifquery.c makefile ../rta.h ../rta_stdio.h ../rta_stdlib.h ../rta_util.[ch] rta_configuration.h
 
