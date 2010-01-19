@@ -24,13 +24,13 @@ mif-test:	libmif.o mifclean miftest
 #### compilation
 
 mif.o:	mif.c mif.h rta.h
-	gcc -c -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
+	gcc -c -O3 -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
 
 discofile.o:	discofile.c discofile.h
-	gcc -c -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
+	gcc -c -O3 -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $<
 
 ../rta_util.o:	../rta_util.c ../rta_util.h ../rta.h
-	gcc -c -g -Wall -I. -I.. -o $@ $<
+	gcc -c -O3 -g -Wall -I. -I.. -o $@ $<
 
 libmif.o:	mif.o discofile.o rta_util.o 
 	libtool -static -o $@ $^
@@ -42,7 +42,7 @@ miftest:	mif.c mif.h rta_util.c
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -DMIF_BUILD_TEST -o $@ $^
 
 mifquery:	mifquery.c mif.c mif.h discodist.c discodist.h discofile.c discofile.h rta_util.c
-	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
+	gcc -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
 
 discotrunc:	discotrunc.c discofile.c discofile.h
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $^
@@ -51,8 +51,8 @@ discotrunc:	discotrunc.c discofile.c discofile.h
 
 mifquery.prof:	mifquery.c mif.c mif.h discodist.c discodist.h discofile.c discofile.h rta_util.c
 #mac:	gcc -finstrument-functions -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^ /usr/lib/libSaturn.dylib
-	gcc -pg -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
-	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 10 20 result10.log 2>&1| tee log10k.txt
+	gcc -pg -O3 -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
+	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 10 20 result-$(MIFVERSION)-10k.log 2>&1| tee log-$(MIFVERSION)-10k.txt
 	gprof mifquery.prof gmon.out > gprof-$(MIFVERSION)-10k.txt
 
 #### misc
