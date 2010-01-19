@@ -5,91 +5,11 @@
 
 #include "mif.h"
 #include "discofile.h"
+#include "discodist.h"
 
 
 #define BLOCKSIZE 4096
 
-
-/* calculate pointer to start of frame vector (skipping time) */
-#define DISCO_NDIM(o) ((int *) o->base)[1]
-#define DISCO_VECTOR(o) (rta_real_t *) ((float *) (o->base + 3 * sizeof(int)) + 1 + o->index * DISCO_NDIM(o))
-
-
-static rta_real_t disco_euclidean_distance (mif_object_t *a, mif_object_t *b)
-{
-/*    return rta_euclidean_distance(a->base + a->index * NDIM, 1,
-				  b->base + b->index * NDIM, NDIM);
-*/
-    rta_real_t* v1 = DISCO_VECTOR(a);
-    rta_real_t* v2 = DISCO_VECTOR(b);
-    rta_real_t sum = 0;
-    int i, ndim = DISCO_NDIM(a);
-
-    for (i = 0; i < ndim; i++) 
-    {
-	rta_real_t diff = v2[i] - v1[i];
-	sum += diff * diff;
-    }
-
-    return sum;
-}
-
-
-static rta_real_t disco_KLS (mif_object_t *a, mif_object_t *b)
-{
-   rta_real_t* v1 = DISCO_VECTOR(a);
-   rta_real_t* v2 = DISCO_VECTOR(b);
-   rta_real_t* D;
-   rta_real_t dist = 0;
-   int i,j, ndim = DISCO_NDIM(a);
-
-/*   for (i=0; i < 10; i++)
-       rta_post("%f ", v1[i]);
-   rta_post("\n");
-*/
-   int r1,r2,N;
-   double T1=0;
-   double T2=0;
-   double S1=0;
-   double S2=0;
-   double tmp1=0;
-   double tmp2=0;
-
-   N=  (int) ((-1 + sqrt(1 + 8 *(ndim - 1))) / 4);
-   r1=N;
-   r2=N*N+N;
-
-    D =  (rta_real_t*)alloca(sizeof(rta_real_t)*N);
-
-   for (i=0 ; i < N; i++){
-       D[i]=v1[i]-v2[i];
-   }
-
-   for (i=0 ; i < N; i++){
-
-       tmp1=0;
-       tmp2=0;
-
-       for ( j=0 ; j < N; j++){
-
-           T1 += v2[j+i*N+r2]*v1[i+j*N+r1];
-           T2 += v2[j+i*N+r1]*v1[i+j*N+r2];
-
-           tmp1 += v2[i+j*N+r2]*D[j];
-           tmp2 += v1[i+j*N+r2]*D[j];
-       }
-
-       S1 += tmp1*D[i]-1;
-       S2 += tmp2*D[i]-1;
-   }
-
-   dist=(S1+S2+T1+T2)/4 ;
-
-   if (dist <0)
-       dist=0;
-
-   return dist;
-}
 
 
 static void usage()
@@ -118,6 +38,7 @@ int main (int argc, char *argv[])
     int   nref = 0, ks = 0, ki = 0, mpd = 0, nquery = -1, K = 5;
     FILE *outfile;
     disco_file_t dbfile, qfile;
+    disco_KLS_private_t kls;
     mif_index_t mif;
     int  *base = NULL;
     int   ndata, ndim;
@@ -226,7 +147,7 @@ int main (int argc, char *argv[])
 	if (mpd <= 0)
 	    mpd   = 5;
 
-	mif_init(&mif, disco_KLS, nref, ki);
+	mif_init(&mif, disco_KLS, disco_KLS_init, disco_KLS_free, &kls, nref, ki);
 	startbuild = clock();
 	mif_add_data(&mif, 1, (void **) &base, &ndata);
 	buildtime = ((float) clock() - startbuild) / (float) CLOCKS_PER_SEC;
