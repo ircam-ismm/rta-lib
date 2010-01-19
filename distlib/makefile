@@ -50,8 +50,10 @@ discotrunc:	discotrunc.c discofile.c discofile.h
 #### profiling
 
 mifquery.prof:	mifquery.c mif.c mif.h discofile.c discofile.h rta_util.c
-	gcc -finstrument-functions -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^ /usr/lib/libSaturn.dylib
-	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 10 20 result10.log 2>&1| tee log10.txt
+#mac:	gcc -finstrument-functions -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^ /usr/lib/libSaturn.dylib
+	gcc -pg -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
+	/usr/bin/time ./$@ -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 10 20 result10.log 2>&1| tee log10k.txt
+	gprof mifquery.prof gmon.out > gprof-$(MIFVERSION)-10k.txt
 
 #### misc
 
