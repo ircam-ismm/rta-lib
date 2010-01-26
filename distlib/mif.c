@@ -195,6 +195,8 @@ void mif_print (mif_index_t *self, int verb)
     t->plbinaccess = 0;
     t->indexaccess = 0;
     t->numhashobj  = 0;
+    t->numhashalloc  = 0;
+    t->numhashbin  = 0;
 }
 
 /** print profile info */ void mif_profile_print (mif_profile_t *t)
@@ -206,13 +208,17 @@ void mif_print (mif_index_t *self, int verb)
 	     "#placcess:    %9d %6d\t(%ld bytes each)\n"
 	     "#binaccess:   %9d %6d\t(%ld bytes each)\n"
 	     "#entryaccess: %9d %6d\t(%ld bytes each)\n"
-	     "#hashobj:     %9d %6d\t(%ld bytes each)\n",
+	     "#hashobj:     %9d %6d\t(%ld bytes each)\n"
+	     "#hashalloc:   %9d %6d\t(%ld bytes each)\n"
+	     "#hashbin:     %9d %6d\t(%ld bytes each)\n",
 	     t->searches, 
 	     t->o2o,	     t->o2o / n, 	     
 	     t->placcess,    t->placcess / n,    sizeof(mif_postinglist_t), 
 	     t->plbinaccess, t->plbinaccess / n, sizeof(mif_pl_entry_t *), 
 	     t->indexaccess, t->indexaccess / n, sizeof(mif_pl_entry_t), 
-	     t->numhashobj,  t->numhashobj  / n, HASHOBJSIZE);
+	     t->numhashobj,  t->numhashobj  / n, HASHOBJSIZE,
+	     t->numhashalloc, t->numhashalloc / n, HASHOBJSIZE,
+	     t->numhashbin,  t->numhashbin  / n, sizeof(unsigned int));
 }
 
 
@@ -382,6 +388,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     rta_real_t *qdist = alloca(self->ks * sizeof(*qdist));	/* distance of query to refobj */
     int        *qind  = alloca(self->ks * sizeof(*qind));	/* index of closest refobj */
     int r, kq, kmax = 0;
+    int hashpredict = self->ks * (2 * self->mpd + 1) * self->numobj / self->numref;
 
     /* preliminary array to allow iterating over hash.  WARNING: not reentrant */
     static int		   hash_allocated = 0;
@@ -391,8 +398,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 
     if (hash_allocated == 0)
     {
-	fts_hashtable_init(&hash, 2 * self->ks * (2 * self->mpd + 1) * self->numobj / self->numref,
-			   self->ks * self->mpd);
+	fts_hashtable_init(&hash, hashpredict, self->ks * self->mpd);
 	hash_allocated = 1;
     }
     else
@@ -512,7 +518,9 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 #endif
 
 #if MIF_PROFILE_SEARCH
-    self->profile.numhashobj += hash.count;
+    self->profile.numhashobj   += hash.count;
+    self->profile.numhashalloc += hash.alloc;
+    self->profile.numhashbin   += hash.length;
     self->profile.o2o += self->ks;
     self->profile.searches++;
 #endif

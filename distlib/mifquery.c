@@ -195,6 +195,8 @@ int main (int argc, char *argv[])
 	querytime = ((float) clock() - startquery) / (float) CLOCKS_PER_SEC;
 	mif_print(&mif, 0);
 	mif_profile_print(&mif.profile);
+	rta_post("#accesses predicted:    %6d\n",
+		 mif.ks * (mif.mpd * 2 + 1) * mif.numobj / mif.numref); 
 	
 	bytesaccessed = mif.profile.placcess * sizeof(mif_postinglist_t) +
 			mif.profile.indexaccess * sizeof(mif_pl_entry_t);

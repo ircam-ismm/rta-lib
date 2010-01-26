@@ -15,6 +15,8 @@ mif100:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_100000.4001 QueryData.4001 100 20 result100.log 2>&1| tee log100.txt
 mif500:	mifquery
 	/usr/bin/time ./mifquery -1 100 100 5 DESCRIPTOR_SubSet_500000.4001 QueryData.4001 100 20 result500.log 2>&1| tee log500.txt
+mif1000: mifquery
+	/usr/bin/time ./mifquery -1 150 150 5 DESCRIPTOR_SubSet_1000000.4001 QueryData.4001 100 20 result1000.log 2>&1| tee log1000.txt
 
 mifprof mifprofile:
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \
@@ -67,10 +69,13 @@ mifdoc:
 miftex:
 	TEXINPUTS='' make -C mifdoc/latex/
 
-mifdist:
-	svn copy -m 'tagging metric inverted file index distribution $(MIFVERSION)' . http://trac.ircam.fr/repos/imtr-libs/tags/mif-$(MIFVERSION)
-	tar cvfz mif-$(MIFVERSION)-src.tar.gz mif.c mif.h mifquery.c makefile rta_configuration.h -C .. rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
-#	zip -r mif-0.3-src.zip mif.c mif.h mifquery.c makefile ../rta.h ../rta_stdio.h ../rta_stdlib.h ../rta_util.[ch] rta_configuration.h
+MIFREPOSITORY = http://trac.ircam.fr/repos/imtr-libs/tags/mif-$(MIFVERSION)
+miftag:
+	svn remove -m 'overwrite tag $(MIFVERSION)' $(MIFREPOSITORY)
+	svn copy -m 'tagging metric inverted file index distribution $(MIFVERSION)' . $(MIFREPOSITORY)
+
+mifdist: miftag
+	tar cvfz mif-$(MIFVERSION)-src.tar.gz mif.c mif.h mifhash.h mifquery.c makefile rta_configuration.h -C .. rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
 
 PUBLISH_ROOT      = DISCO/mifdoc
 PUBLISH_FILES	  = mifdoc/html/\*

@@ -92,7 +92,9 @@ typedef struct _mif_profile_struct
     int placcess;	/**< number of posting lists accessed */
     int plbinaccess;	/**< number of posting list bins accessed */
     int indexaccess;	/**< number of accesses to the index entries in the posting lists */
-    int numhashobj;	/**< number of hashed objects allocated for searching */
+    int numhashobj;	/**< number of hashed objects used for searching */
+    int numhashalloc;	/**< number of hashed objects allocated for searching */
+    int numhashbin;	/**< number of hashed table bins allocated for searching */
 } mif_profile_t;
 
 

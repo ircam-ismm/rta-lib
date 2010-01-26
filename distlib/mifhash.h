@@ -6,6 +6,8 @@
 extern "C" {
 #endif
 
+#include <assert.h>
+
 #include "mif.h"
 #include "rta.h"
 
