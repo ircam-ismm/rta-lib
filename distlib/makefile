@@ -16,7 +16,7 @@ mif100:	mifquery
 mif500:	mifquery
 	/usr/bin/time ./mifquery -1 100 100 5 DESCRIPTOR_SubSet_500000.4001 QueryData.4001 100 20 result500.log 2>&1| tee log500.txt
 
-mifprofile:
+mifprof mifprofile:
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \
 	| & tee log.txt | awk '/\#bytes.*in index/ { print $7 } /\#bytes.*in optimal index/ { print $8 }'
 

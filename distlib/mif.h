@@ -38,7 +38,7 @@ last two used for searching it.  According to Amato and Savino (2008),
 the bounds should be (depending on the number of data vectors \f$ n_{data} \f$):
 
 - mif_index_t::numref number of reference objects 			 
-	\f$ n_{ref} \ge  2 \sqrt n_{data} \f$ 
+	\f$ n_{ref} \ge  2 \sqrt{n_{data}} \f$ 
 - mif_index_t::ki     number of reference objects used for indexing
  	 \f$ k_i    \le  n_{ref} \f$
 - mif_index_t::ks     number of reference objects used for searching
@@ -46,13 +46,19 @@ the bounds should be (depending on the number of data vectors \f$ n_{data} \f$):
 - mif_index_t::mpd    maximum allowed position difference
 	 \f$ mpd    \le k_i \f$
 
-The complexities are then:
+The complexities are then 
+(using a balancing factor \f$\alpha \ge 2\f$ for \f$ n_{ref} = \alpha \sqrt{n_{data}} \f$):
 
-- Number of distance calculations for building: \f$  n_{data} \cdot n_{ref} \f$
-- Number of posting list entries after building: \f$ O\left( k_i \cdot n_{data} \right) \f$
+- Number of distance calculations for building: 
+	\f$  n_{data} \cdot n_{ref}  =   \alpha \, n_{data}^{\frac{3}{2}} \f$
+- Number of posting list entries after building: 
+	\f$ O\left( k_i \cdot n_{data} \right) \f$
 
-- Number of distance calculations for searching: \f$ n_{ref} \f$
-- Number of posting list accesses for searching: \f$ O\left( \frac{k_s \cdot (2 mpd + 1) \cdot n_{data}}{n_{ref}} \right) \f$
+- Number of distance calculations for searching: 
+	\f$ n_{ref} =  \alpha \sqrt{n_{data}} \f$
+- Number of posting list accesses for searching: 
+	\f$  O\left( \frac{k_s \cdot (2 mpd + 1) \cdot n_{data}}{n_{ref}} \right) 
+	  =  O\left( k_s \cdot (2 mpd + 1) \cdot \frac{1}{\alpha} \sqrt{n_{data}} \right) \f$
 
 */
 
