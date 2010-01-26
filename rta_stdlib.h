@@ -28,6 +28,12 @@
 #include <stdlib.h>
 #endif
 
+/** default define for memory reallocation */
+#ifndef rta_zalloc
+#define rta_zalloc(n) (calloc(1, (n)))
+#include <stdlib.h>
+#endif
+
 /** default define for memory deallocation */
 #ifndef rta_free
 #define rta_free free
