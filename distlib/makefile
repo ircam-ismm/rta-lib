@@ -65,7 +65,7 @@ mifclean:
 mifdoc:
 	doxygen mif.doxyfile; $(MAKE) miftex
 miftex:
-	make -C mifdoc/latex/
+	TEXINPUTS='' make -C mifdoc/latex/
 
 mifdist:
 	svn copy -m 'tagging metric inverted file index distribution $(MIFVERSION)' . http://trac.ircam.fr/repos/imtr-libs/tags/mif-$(MIFVERSION)
@@ -76,6 +76,7 @@ PUBLISH_ROOT      = DISCO/mifdoc
 PUBLISH_FILES	  = mifdoc/html/\*
 PUBLISH_HOST      = recherche.ircam.fr
 PUBLISH_USER      = wwwas
+PW = $(shell perl -ne 'm/^username=(.*)/ && do {$$u=$$1}; m/^password=(.*)/ && ($$u eq "$(PUBLISH_USER)") && do { print $$1; exit; }' $(HOME)/.gftp/bookmarks)
 
 mifpub:	mifdoc
 	echo mput $(PUBLISH_FILES) | ncftp -u$(PUBLISH_USER) -p$(PW) ftp://$(PUBLISH_HOST)/$(PUBLISH_ROOT)
