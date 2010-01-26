@@ -17,7 +17,6 @@
 
 #include "rta_stdio.h"
 #include "rta_stdlib.h"
-#define rta_zalloc(sz)	calloc(1, sz)
 
 
 /** redefine console printing */
