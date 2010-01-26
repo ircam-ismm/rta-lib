@@ -264,9 +264,10 @@ int fts_hashtable_put (fts_hashtable_t *h, const mif_object_t *key, /*inout*/ in
     (cc)->next = c; //NULL;
     h->count++;
     
-    if ( h->count >= h->rehash_count)
+    if ( h->count == h->rehash_count) /* usually: >= */
     {
-	rta_post("hashtable (count %d) wants to rehash( h);\n", h->count);
+	rta_post("hashtable (count %d) wants to rehash table of length %d\n", h->count, h->length);
+	// rehash( h);
     }  
     return 0;
 }
