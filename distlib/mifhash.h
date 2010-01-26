@@ -132,23 +132,20 @@ static const unsigned int primes_suite[] = {
   33554467,
 };
 
-static unsigned int 
-hash( const mif_object_t *p)
+static unsigned int hash (const mif_object_t *p)
 {
     /* fine with pointers */
     return (unsigned int) p->base + p->index;
 }
 
 
-static int 
-equals( const mif_object_t *p1, const mif_object_t *p2)
+static int equals (const mif_object_t *p1, const mif_object_t *p2)
 {
     return p1->base == p2->base  &&  p1->index == p2->index;
 }
 
 
-static unsigned int 
-new_length( unsigned int length)
+static unsigned int new_length (unsigned int length)
 {
   unsigned int i;
   
@@ -158,8 +155,6 @@ new_length( unsigned int length)
   
   return primes_suite[i-1];
 }
-
-
 
 
 void fts_hashtable_init (fts_hashtable_t *h, int initial_capacity, int alloc_increment)
@@ -179,7 +174,7 @@ void fts_hashtable_clear (fts_hashtable_t *h)
 {
   unsigned int i;
   
-  for ( i = 0; i < h->length; i++)
+  for (i = 0; i <= h->length; i++)
       h->table[i] = 0;
   
   h->count = 0;
