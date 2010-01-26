@@ -1,4 +1,12 @@
 
+#ifndef _MIF_HASH_H_
+#define _MIF_HASH_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "mif.h"
 #include "rta.h"
 
 typedef struct _mif_hash_entry_t 
@@ -326,3 +334,9 @@ static void hashtable_iterator_get( const fts_hashtable_t *h, fts_iterator_t *i,
 #endif
 
 #endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _MIF_HASH_H_ */
