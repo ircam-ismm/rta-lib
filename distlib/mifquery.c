@@ -105,7 +105,7 @@ int main (int argc, char *argv[])
     else
 	outfile = stdout;
 
-    base  = dbfile.base;
+    base  = (void *) dbfile.base;
     ndim  = dbfile.base->ndim;
     ndata = dbfile.base->ndata;
 
