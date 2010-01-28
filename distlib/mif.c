@@ -256,11 +256,11 @@ void mif_print (mif_index_t *self, int verb)
     return numobj;
 }
 
-/** Find ki closest reference objects for new object <base[b], index> and their ordering 
+/** Find k closest reference objects for object <base[b], index> and their ordering 
 
   newobj	object to index
-  indx[ki]	out: ref. obj. index is list of ref.obj. index ordered by distance dist
-  dist[ki]	out: distance between obj and refobj indx[i]
+  indx[k]	out: ref. obj. index is list of ref.obj. index ordered by distance dist
+  dist[k]	out: distance between obj and refobj indx[i]
 
   @return	number k of reference objects found (k <= ki)
 */ static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
@@ -521,7 +521,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     self->profile.numhashobj   += hash.count;
     self->profile.numhashalloc += hash.alloc;
     self->profile.numhashbin   += hash.length;
-    self->profile.o2o += self->ks;
+    self->profile.o2o	       += self->numref;
     self->profile.searches++;
 #endif
 
