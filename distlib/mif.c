@@ -33,44 +33,52 @@ static double log2(double x){ return log(x)/log(2);}
  * posting list handling 
  */
 
-void mif_pl_init(mif_postinglist_t *pl, int ki)
+#define PLBLOCKSIZE 4
+#define PLBLOCKS(n) ((int) (n / PLBLOCKSIZE))
+
+void mif_pl_init(mif_postinglist_t *pl, int ki, int kpl)
 {
-    pl->size     = 0;
-    pl->entries  = rta_zalloc(ki * sizeof(*pl->entries));
+    int i;
+
+    pl->size = 0;
+    pl->bin  = rta_malloc(ki * sizeof(mif_pl_bin_t));
+
+    for (i = 0; i < ki; i++)
+    {
+	kpl = PLBLOCKS(kpl) * PLBLOCKSIZE;
+	pl->bin[i].num   = 0;
+	pl->bin[i].alloc = kpl;
+	pl->bin[i].obj   = rta_malloc(kpl * sizeof(mif_object_t));
+    }
 }
 
 void mif_pl_free(mif_postinglist_t *pl, int ki)
 {
     int i;
 
-    pl->size     = 0;
-
     for (i = 0; i < ki; i++)
-    {
-	mif_pl_entry_t *entry = pl->entries[i], *next;
+	rta_free(pl->bin[i].obj);
 
-	while (entry)
-	{
-	    next = entry->next;
-	    rta_free(entry);
-	    entry = next;
-	}
-    }
-
-    rta_free(pl->entries);
+    rta_free(pl->bin);
 }
 
 /* insert object into correct bin of posting list pl of a reference object with order k */
 void mif_pl_insert (mif_postinglist_t *pl, mif_object_t *newobj, int k)
 {
-    /* create new entry */
-    mif_pl_entry_t *newentry = rta_malloc(sizeof(mif_pl_entry_t));
-    
-    newentry->obj  = *newobj;
-    newentry->next = pl->entries[k];
+    mif_pl_bin_t *bin = &pl->bin[k];
 
-    /* prepend entry to bin list */
-    pl->entries[k] = newentry;
+    /* grow list if necessary */
+    if (bin->num + 1 >= bin->alloc)
+    {
+	bin->alloc += PLBLOCKSIZE;
+	bin->obj    = realloc(bin->obj, bin->alloc * sizeof(mif_object_t));
+	assert(bin->obj);
+    }
+
+    bin->obj[bin->num].base  = newobj->base;
+    bin->obj[bin->num].index = newobj->index;
+
+    bin->num++;
     pl->size++;
 }
 
@@ -85,8 +93,6 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc,
 	       mif_manage_function_t distinit, mif_manage_function_t distfree, 
 	       void *distprivate,  int nr, int ki)
 {
-    int i;
-
     self->distance_private = distprivate;
     self->distance	   = distfunc;
     self->distance_init    = distinit;
@@ -98,15 +104,12 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc,
     self->refobj = rta_malloc(nr * sizeof(mif_object_t));
     self->pl     = rta_zalloc(nr * sizeof(mif_postinglist_t));
 
-    /* init posting lists */
-    for (i = 0; i < nr; i++)
-	mif_pl_init(&self->pl[i], ki);
-
     mif_profile_clear(&self->profile);
 }
 
 
-/** free allocated memory */ void mif_free (mif_index_t *self)
+/** free allocated memory */ 
+void mif_free (mif_index_t *self)
 {
     int i;
 
@@ -125,20 +128,19 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc,
 void mif_print_pl(mif_index_t *self, int i)
 {
     mif_postinglist_t *pl = &self->pl[i];
-    int k;
+    int j, k;
 
     rta_post("pl %d  refobj %d  size %d:\n", i, self->refobj[i].index, pl->size);
 
     for (k = 0; k < self->ki; k++)
     {
-	mif_pl_entry_t *entry = pl->entries[k];
+	mif_pl_bin_t *bin = &pl->bin[k];
 
 	rta_post("  <%d: ", k);
-	while (entry)
+	for (j = 0; j < bin->num; j++)
 	{
-	    rta_post("%d ", entry->obj.index);
+	    rta_post("%d ", bin->obj[j].index);
 	    //rta_post("%p.%d ", entry->obj.base, entry->obj.index);
-	    entry = entry->next;
 	}
 	rta_post(">\n");
     }
@@ -164,7 +166,7 @@ void mif_print (mif_index_t *self, int verb)
 	for (i = 0; i < self->numref; i++)
 	    npe += self->pl[i].size;
 
-	spl += npe * sizeof(*self->pl[i].entries);
+	spl += npe * sizeof(mif_pl_bin_t);
 	stotal = srefobj + spl;
 
 	rta_post("\nspace for struct              = %14lu B\n", sizeof(mif_index_t));
@@ -187,7 +189,8 @@ void mif_print (mif_index_t *self, int verb)
     }
 }
 
-/** set all counters in mif_index_t#profile to zero */ void mif_profile_clear (mif_profile_t *t)
+/** set all counters in mif_index_t#profile to zero */ 
+void mif_profile_clear (mif_profile_t *t)
 {
     t->o2o = 0;
     t->searches = 0;
@@ -199,7 +202,8 @@ void mif_print (mif_index_t *self, int verb)
     t->numhashbin  = 0;
 }
 
-/** print profile info */ void mif_profile_print (mif_profile_t *t)
+/** print profile info */ 
+void mif_profile_print (mif_profile_t *t)
 {
     int n = t->searches ? t->searches : 0x7fffffff;
     rta_post("\nProfile: (total / per search)\n"
@@ -214,8 +218,8 @@ void mif_print (mif_index_t *self, int verb)
 	     t->searches, 
 	     t->o2o,	     t->o2o / n, 	     
 	     t->placcess,    t->placcess / n,    sizeof(mif_postinglist_t), 
-	     t->plbinaccess, t->plbinaccess / n, sizeof(mif_pl_entry_t *), 
-	     t->indexaccess, t->indexaccess / n, sizeof(mif_pl_entry_t), 
+	     t->plbinaccess, t->plbinaccess / n, sizeof(mif_pl_bin_t *), 
+	     t->indexaccess, t->indexaccess / n, sizeof(mif_pl_bin_t), 
 	     t->numhashobj,  t->numhashobj  / n, HASHOBJSIZE,
 	     t->numhashalloc, t->numhashalloc / n, HASHOBJSIZE,
 	     t->numhashbin,  t->numhashbin  / n, sizeof(unsigned int));
@@ -226,8 +230,10 @@ void mif_print (mif_index_t *self, int verb)
  *  build index
  */
 
-/*choose reference objects and fill refobj array in mif struct */ static int mif_choose_refobj (mif_index_t *self, int numbase, void **base, int *numbaseobj)
+/*choose reference objects and fill refobj array in mif struct */ 
+static int mif_choose_refobj (mif_index_t *self, mif_files_t *files)
 {	
+    int numbase = files->nbase;
     int numobj = 0;
     int *cumobj = alloca((numbase + 1) * sizeof(int));
     int *sample = alloca(self->numref * sizeof(int));
@@ -236,7 +242,7 @@ void mif_print (mif_index_t *self, int verb)
     /* how many elements are given */
     for (i = 0, cumobj[0] = 0; i < numbase; i++)
     {
-	cumobj[i + 1] = numobj += numbaseobj[i];
+	cumobj[i + 1] = numobj += files->numbaseobj[i];
     }
 	
     /* choose reference objects: draw numref random indices */
@@ -249,7 +255,7 @@ void mif_print (mif_index_t *self, int verb)
 	int baseind = rta_find_int(objind, numbase, cumobj + 1);
 	int relind  = objind - cumobj[baseind];
 	    
-	self->refobj[i].base  = base[baseind];
+	self->refobj[i].base  = baseind;
 	self->refobj[i].index = relind;
     }
 
@@ -263,8 +269,9 @@ void mif_print (mif_index_t *self, int verb)
   dist[k]	out: distance between obj and refobj indx[i]
 
   @return	number k of reference objects found (k <= ki)
-*/ static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
-			      /*out*/ int *indx, rta_real_t *dist)
+*/ 
+static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
+			     /*out*/ int *indx, rta_real_t *dist)
 {
     int r, kmax = 0; /* numfound */
 
@@ -306,30 +313,24 @@ void mif_print (mif_index_t *self, int verb)
 }
 
 
-/* index data objects by reference objects, build postinglists */ static void mif_build_index (mif_index_t *self, int numbase, void **base, int *numbaseobj)
+/* index data objects by reference objects, build postinglists */ 
+static void mif_build_index (mif_index_t *self, mif_files_t *files)
 {  
     int          *indx = alloca(self->ki * sizeof(*indx));	/* ref. obj. index */
     rta_real_t   *dist = alloca(self->ki * sizeof(*dist));	/* distance to obj */
     mif_object_t  newobj;	/* object to index */
-    int b = 0, i, k, kfound;
+    int		  numbase = files->nbase;
+    int		  b, i, k, kfound;
 
-    /* init distance function with very first object (in first non-empty file) */
-    while (b < numbase  &&  numbaseobj[b] == 0)
-	b++;
-
-    if (b < numbase)
-    {
-	newobj.base  = base[b];
-	newobj.index = 0;
-	(*self->distance_init)(self->distance_private, &newobj);
-    } /* else: no objects at all */	
+    /* init distance function with file list */
+    (*self->distance_init)(self->distance_private, files);
 
     /* for each object */
     for (b = 0; b < numbase; b++)
     {
-	newobj.base = base[b];
+	newobj.base = b;
 
-	for (i = 0; i < numbaseobj[b]; i++)
+	for (i = 0; i < files->numbaseobj[b]; i++)
 	{
 	    newobj.index = i;
 	    	    	
@@ -359,13 +360,20 @@ void mif_print (mif_index_t *self, int verb)
     @param numobj	array[numbase] of number of data objects on this base pointer
 
     (@return the number of nodes the tree will build)
-*/ int mif_add_data (mif_index_t *self, int numbase, void **base, int *numbaseobj)
+*/ 
+int mif_add_data (mif_index_t *self, mif_files_t *db)
 {
+    int i;
+
+    /* init posting lists */
+    for (i = 0; i < self->numref; i++)
+	mif_pl_init(&self->pl[i], self->ki, self->numobj / self->numref);
+
     /* choose numref reference objects and fill refobj array in mif struct */
-    self->numobj = mif_choose_refobj(self, numbase, base, numbaseobj);
+    self->numobj = mif_choose_refobj(self, db);
 
     /* index data */
-    mif_build_index(self, numbase, base, numbaseobj);
+    mif_build_index(self, db);
 
     return self->numobj;
 }
@@ -407,7 +415,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     }
 
     /* index query object by ks-closest ref. objects, sorted by
-       distance to query object. */
+        distance to query object. (cost: nref distance calculations) */
     kq = mif_index_object(self, query, self->ks, qind, qdist);
 
 #if MIF_DEBUG_SEARCH >= 2
@@ -441,7 +449,8 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	/* go through posting list order range between minp and maxp */
 	for (p = minp; p <= maxp; p++)
 	{
-	    mif_pl_entry_t *bin = pl->entries[p];
+	    mif_pl_bin_t *bin = &pl->bin[p];
+	    int i;
 
 #if MIF_PROFILE_SEARCH
 	    self->profile.plbinaccess++;
@@ -449,11 +458,11 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 #if MIF_DEBUG_SEARCH
 	    rta_post("  accessing bin %d of refobj %d (pl size %d).\n", p, r, pl->size);
 #endif
-	    while (bin)
+	    for (i = 0; i < bin->num; i++)
 	    {
 		int *accumulator;
 
-		if (fts_hashtable_put(&hash, &bin->obj, &accumulator) == 0)
+		if (fts_hashtable_put(&hash, &bin[i].obj, &accumulator) == 0)
 		{ /* new occurence of obj: init entry inserted into accumulator hash */
 		    *accumulator = self->ki * self->ks;	/* largest possible distance */
 		}
@@ -465,7 +474,6 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 #if MIF_PROFILE_SEARCH
 		self->profile.indexaccess++;
 #endif
-		bin = bin->next;
 	    }   /* end while posting list entry bin not empty */
 	}
     }

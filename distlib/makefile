@@ -45,6 +45,9 @@ libmif.o:	mif.o discofile.o rta_util.o
 miftest:	mif.c mif.h rta_util.c
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -DMIF_BUILD_TEST -o $@ $^
 
+mifindex:	mifindex.c mif.c mif.h mifhash.h mifdb.h mifdbsqlite3.c discodist.c discodist.h discofile.c discofile.h rta_util.c
+	gcc -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -lsqlite3 -o $@ $^
+
 mifquery:	mifquery.c mif.c mif.h mifhash.h discodist.c discodist.h discofile.c discofile.h rta_util.c
 	gcc -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
 

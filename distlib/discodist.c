@@ -4,17 +4,20 @@
 #include "discofile.h"
 #include "discodist.h"
 
-/* calculate pointer to start of frame vector (skipping time) */
-#define DISCO_NDIM(o) ((int *) o->base)[1]
-#define DISCO_VECTOR(o) (rta_real_t *) ((float *) (o->base + 3 * sizeof(int)) + 1 + o->index * DISCO_NDIM(o))
 
+/* rta_real_t *DISCO_VECTOR(mif_files_t *db, mif_object_t *o) 
+   calculate pointer to start of frame vector (skipping time) */
+#define DISCO_VECTOR(db, o) (rta_real_t *) (disco_file_data((disco_file_header_t *) db->base[o->base]) \
+					    + 1 /* skip first element in feature vector (contains time) */ \
+					    + o->index * db->ndim)
 
 /** precalc and preallocate everything */
-void disco_KLS_init (void *private, mif_object_t *obj)
+void disco_KLS_init (void *private, mif_files_t *db)
 {
     disco_KLS_private_t *kls = private;
 
-    kls->N  = (int) ((-1 + sqrt(1 + 8 * (DISCO_NDIM(obj) - 1))) / 4);
+    kls->db = db;
+    kls->N  = (int) ((-1 + sqrt(1 + 8 * (db->ndim - 1))) / 4);
     kls->r1 = kls->N;
     kls->r2 = kls->N * kls->N + kls->N;
 
@@ -22,7 +25,7 @@ void disco_KLS_init (void *private, mif_object_t *obj)
 }
 
 /** precalc and preallocate everything */
-void disco_KLS_free (void *private, mif_object_t *base)
+void disco_KLS_free (void *private, mif_files_t *db)
 {
     free(((disco_KLS_private_t *) private)->D);
 }
@@ -30,8 +33,8 @@ void disco_KLS_free (void *private, mif_object_t *base)
 rta_real_t disco_KLS (void *private, mif_object_t *a, mif_object_t *b)
 {
     disco_KLS_private_t *kls = private;
-    rta_real_t* v1 = DISCO_VECTOR(a);
-    rta_real_t* v2 = DISCO_VECTOR(b);
+    rta_real_t* v1 = DISCO_VECTOR(kls->db, a);
+    rta_real_t* v2 = DISCO_VECTOR(kls->db, b);
     rta_real_t dist = 0;
     int i,j;
 

@@ -1,7 +1,7 @@
 /**
 @file	mif.h
 @author	Diemo Schwarz
-@date	21.11.2008
+@date	21.11.2009
 @brief	Metric Inverted File Index Structure
 
 Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
@@ -78,7 +78,6 @@ extern "C" {
 #include "rta.h"
 
 
-
 #define MIF_PROFILE_BUILD  1
 #define MIF_PROFILE_SEARCH 1
 #define MIF_PROFILE	       (MIF_PROFILE_BUILD || MIF_PROFILE_SEARCH)
@@ -110,9 +109,36 @@ typedef struct _mif_profile_struct
 */
 typedef struct _mif_object
 {
-    void *base;		/**< base pointer of the object */
-    int   index;	/**< index of the object relative to base */
+    int base;	/**< base ID of the object */
+    int index;	/**< index of the object relative to base */
 } mif_object_t;
+
+
+/** array of objects */
+typedef struct _mif_pl_bin
+{
+    int		  num;	 /**< number of objects in bin */
+    int		  alloc; /**< number of objects allocated while building index, byte size of compressed blob while searching */
+    mif_object_t *obj;	 /**< pointer to array(num) objects */
+} mif_pl_bin_t;
+
+
+/** one posting list of mif_index_t::ki objects
+    indexed (sorted) by start of runs of ref. object order */
+typedef struct _mif_postinglist
+{
+    int 	  size;   /**< number of objects stored */
+    mif_pl_bin_t *bin;   /**< array[ki] bins indexed by sort order */
+} mif_postinglist_t;
+
+typedef struct _mif_files
+{
+    int		nbase;			    /**< number of base files */
+    int		ndim;  			    /**< copy of number of dims (to avoid access to memory-mapped file header) */
+    int 	descrid;		    /**< descriptor ID */
+    void      **base;			    /**< array(nbase) of base files */
+    int	       *numbaseobj;		    /**< array(nbase) of num obj. per base */
+} mif_files_t;
 
 
 /** distance function 
@@ -123,25 +149,7 @@ typedef struct _mif_object
 typedef rta_real_t (*mif_distance_function_t) (void *private, mif_object_t *a, mif_object_t *b);
 
 /** init/deinit of temporary data for distance function */
-typedef void (*mif_manage_function_t) (void *private, mif_object_t *obj);
-
-
-/** linked list of objects */
-typedef struct _mif_pl_entry
-{
-    mif_object_t obj;		/**< object */
-    struct _mif_pl_entry *next;	/**< next entry */
-} mif_pl_entry_t;
-
-
-/** one posting list of mif_index_t::ki objects
-
-    indexed (sorted) by start of runs of ref. object order */
-typedef struct _mif_postinglist
-{
-    int 	    size;	/**< number of objects stored */
-    mif_pl_entry_t **entries;   /**< array[ki] entries indexed by sort order */
-} mif_postinglist_t;
+typedef void (*mif_manage_function_t) (void *private, mif_files_t *database);
 
 
 /** Metric inverted file index data structure 
@@ -152,11 +160,14 @@ typedef struct _mif_postinglist
 typedef struct _mif_index
 {
     /* parameters */
-    mif_distance_function_t distance;	      /**< domain distance function */
-    void		   *distance_private; /**< private data for distance function */  
-    mif_manage_function_t   distance_init;    /**< domain init     function */
-    mif_manage_function_t   distance_free;    /**< domain cleanup  function */
-    int		numobj;	/**< number of data objects */
+    mif_distance_function_t distance;	    /**< domain distance function */
+    mif_manage_function_t   distance_init;  /**< domain init     function */
+    mif_manage_function_t   distance_free;  /**< domain cleanup  function */
+    void       *distance_private;	    /**< private data for distance function */
+    mif_files_t *files;		    /**< link to database */
+/* todo: void *database */  
+
+    int		numobj;	/**< total number of data objects */
     int		numref;	/**< number of reference objects */
     int		ki;	/**< number of reference objects used for indexing */
     int		ks;	/**< number of reference objects used for searching */
@@ -198,7 +209,7 @@ void mif_free (mif_index_t *self);
 
     @return the number of objects in the data
 */
-int mif_add_data  (mif_index_t *self, int numbase, void **base, int *numbaseobj);
+int mif_add_data  (mif_index_t *self, mif_files_t *db);
 
 
 /** TBI: rebuild search index from changed data or weights 

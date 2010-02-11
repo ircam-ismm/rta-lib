@@ -29,6 +29,7 @@ typedef struct _disco_file_header
 } disco_file_header_t;
 
 
+/* open and memory-mapped disco file information */
 typedef struct _disco_file
 {
     int		fd;		/* file descriptor */
@@ -37,6 +38,11 @@ typedef struct _disco_file
     disco_file_header_t *base;
 } disco_file_t;
 
+/*  int disco_file_ndim(disco_file_header_t *db) */
+#define disco_file_ndim(file) ((file)->ndim)
+
+/* pointer to start of frame vectors */
+#define disco_file_data(file) ((file)->data)
 
 
 void *disco_file_map (disco_file_t *file, const char *name, int nvec);
