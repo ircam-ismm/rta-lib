@@ -27,7 +27,9 @@ usage: mifindex nref ki database-name input-file-names...\n\
 
 static int mifdb_dump (mifdb_t *mifdb, mif_index_t *mif, disco_file_t *infile)
 {
-    int i, j, ok = 1;
+    int i, j, ok;
+    
+    ok = mifdb_begin_transaction(mifdb);
 
     for (i = 0; ok  &&  i < mif->files->nbase; i++)
 	ok &= mifdb_add_file(mifdb, i, infile[i].filename, mif->files->numbaseobj[i]);
@@ -40,6 +42,8 @@ static int mifdb_dump (mifdb_t *mifdb, mif_index_t *mif, disco_file_t *infile)
 	    ok &= mifdb_add_postinglist(mifdb, i, j, 
 					mif->pl[i].bin[j].num, 
 					mif->pl[i].bin[j].obj);
+
+    ok &= mifdb_commit_transaction(mifdb);
 
     return ok;
 }

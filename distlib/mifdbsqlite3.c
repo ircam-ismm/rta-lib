@@ -100,6 +100,36 @@ int mifdb_close (mifdb_t *database)
     /* check errors */
 }
 
+int mifdb_begin_transaction (mifdb_t *database)
+{
+    mifdbsqlite_t *db = (mifdbsqlite_t *) database;
+    const char *query = "begin;";
+    char *errmsg;
+
+    if (sqlite3_exec(db->sqlite3db, query, NULL, NULL, &errmsg) != SQLITE_OK)
+    {
+	rta_post("***sqlite query execution error %d: '%s'\n  query '%s'\n",
+		 sqlite3_errcode(db->sqlite3db), errmsg, query);
+	return 0;
+    }   
+    return 1;
+}
+
+int mifdb_commit_transaction(mifdb_t *database)
+{
+    mifdbsqlite_t *db = (mifdbsqlite_t *) database;
+    const char *query = "commit;";
+    char *errmsg;
+
+    if (sqlite3_exec(db->sqlite3db, query, NULL, NULL, &errmsg) != SQLITE_OK)
+    {
+	rta_post("***sqlite query execution error %d: '%s'\n  query '%s'\n",
+		 sqlite3_errcode(db->sqlite3db), errmsg, query);
+	return 0;
+    }   
+    return 1;
+}
+
 
 /* sql commands to create schema */
 static const char *create = "\n\

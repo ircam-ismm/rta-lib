@@ -40,6 +40,8 @@ typedef struct _mifdb
 int mifdb_open (mifdb_t *database, const char *dbname);
 int mifdb_close (mifdb_t *database);
 int mifdb_create(mifdb_t *database, const char *dbname, int nref, int ki, int ndim, int descrid);
+int mifdb_begin_transaction (mifdb_t *database);
+int mifdb_commit_transaction (mifdb_t *database);
 int mifdb_add_file (mifdb_t *database, int index, const char *filename, int nobj);
 int mifdb_add_refobj (mifdb_t *database, int index, const mif_object_t *obj);
 int mifdb_add_postinglist (mifdb_t *database, int index, int binindex, int size, const mif_object_t *obj);
