@@ -1,4 +1,5 @@
 
+#include <assert.h>
 #include <math.h>
 #include "mif.h"
 #include "discofile.h"
@@ -22,6 +23,7 @@ void disco_KLS_init (void *private, mif_files_t *db)
     kls->r2 = kls->N * kls->N + kls->N;
 
     kls->D =  (rta_real_t *) rta_malloc(sizeof(rta_real_t) * kls->N);
+    assert(kls->D);
 }
 
 /** precalc and preallocate everything */

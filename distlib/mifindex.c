@@ -25,22 +25,42 @@ usage: mifindex nref ki database-name input-file-names...\n\
     exit(1);
 }
 
+static int mifdb_dump (mifdb_t *mifdb, mif_index_t *mif, disco_file_t *infile)
+{
+    int i, j, ok = 1;
+
+    for (i = 0; ok  &&  i < mif->files->nbase; i++)
+	ok &= mifdb_add_file(mifdb, i, infile[i].filename, mif->files->numbaseobj[i]);
+
+    for (i = 0; ok  &&  i < mif->numref; i++)
+	ok &= mifdb_add_refobj(mifdb, i, &mif->refobj[i]);
+
+    for (i = 0; ok  &&  i < mif->numref; i++)
+	for (j = 0; ok  &&  j < mif->ki; j++)
+	    ok &= mifdb_add_postinglist(mifdb, i, j, 
+					mif->pl[i].bin[j].num, 
+					mif->pl[i].bin[j].obj);
+
+    return ok;
+}
+
 
 int main (int argc, char *argv[])
 {
-    const char	       *inname = NULL, *dbname = NULL;
-    int			nref = 0, ki = 0;
-    disco_KLS_private_t kls;
-    disco_file_t       *infile;
-    mif_index_t		mif;
-    mifdb_t		mifdb;
-    int  		ntotal = 0;	/* total number of objects */
-    int  		nfiles, ndim = 0, descrid = 0;
-    int  	       *ndata, *base;
+    const char	       	 *inname = NULL, *dbname = NULL;
+    int		       	  nref = 0, ki = 0;
+    disco_KLS_private_t	  kls;
+    disco_file_t       	 *infile;
+    disco_file_header_t	**base;
+    int  	       	 *ndata;
+    mif_index_t	       	  mif;
+    mifdb_t	       	  mifdb;
+    int  	       	  ntotal = 0;	/* total number of objects */
+    int  	       	  nfiles, ndim = 0, descrid = 0;
 
     clock_t startbuild, startdump;
     float   buildtime, dumptime;
-    int i, j;
+    int i;
 
     /* args: nref ki dbname disco-file-names... */
     if (argc < 4)
@@ -57,9 +77,9 @@ int main (int argc, char *argv[])
     mifdb_open(&mifdb, dbname);
 
     nfiles = argc;
-    infile = (disco_file_t *) alloca(nfiles * sizeof(disco_file_t));
-    base   = (int *) alloca(nfiles * sizeof(int));
-    ndata  = (int *) alloca(nfiles * sizeof(int));
+    infile = (disco_file_t *)	     alloca(nfiles * sizeof(disco_file_t));
+    base   = (disco_file_header_t *) alloca(nfiles * sizeof(void *));
+    ndata  = (int *)		     alloca(nfiles * sizeof(int));
 
     /* open DISCO input files */
     for (i = 0; i < nfiles; i++)
@@ -74,7 +94,7 @@ int main (int argc, char *argv[])
 	}
 
 	/* store base pointer and num. obj. per base in array */
-	base[i]  = i;
+	base[i]  = infile[i].base;	/* start of mapped file */
 	ndata[i] = infile[i].base->ndata;
 	ntotal  += infile[i].base->ndata;
 
@@ -106,7 +126,7 @@ int main (int argc, char *argv[])
     mifdb.files.nbase    = nfiles;
     mifdb.files.ndim     = ndim;
     mifdb.files.descrid  = descrid;
-    mifdb.files.base     = infile;
+    mifdb.files.base     = (void **) base;
     mifdb.files.numbaseobj = ndata;
 
     /* init index */
@@ -126,14 +146,8 @@ int main (int argc, char *argv[])
     
     /* dump whole index to db */
     startdump = clock();
-    mifdb_create(&mifdb, dbname, nref, ki, ndim, descrid);
-    for (i = 0; i < nfiles; i++)
-	mifdb_add_file(&mifdb, i, infile[i].filename, ndata[i]);
-    for (i = 0; i < nref; i++)
-	mifdb_add_refobj(&mifdb, i, &mif.refobj[i]);
-    for (i = 0; i < nref; i++)
-	for (j = 0; j < mif.ki; j++)
-	    mifdb_add_postinglist(&mifdb, i, j, mif.pl[i].bin[j].num, mif.pl[i].bin[j].obj);
+    if (mifdb_create(&mifdb, dbname, nref, ki, ndim, descrid))
+	mifdb_dump(&mifdb, &mif, infile);
     mifdb_close(&mifdb);
 
     dumptime = ((float) clock() - startdump) / (float) CLOCKS_PER_SEC;

@@ -6,7 +6,12 @@ tex:
 
 MIFVERSION = 0.7
 
-mif:	mifclean discotrunc mifquery
+mif:	mifclean discotrunc mifindex mifindex-test # mifquery
+
+mifindex-test:	mifindex
+	/usr/bin/time ./mifindex -1 -1 testindex.db DescFile.4001
+
+mifquery-test:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 20
 
 mif10:	mifquery
@@ -64,6 +69,8 @@ mifquery.prof:	mifquery.c mif.c mif.h discodist.c discodist.h discofile.c discof
 
 #### misc
 
+tags etags:
+	etags *.[ch]
 mifclean:
 	-rm miftest mifquery mifquery.prof
 
@@ -90,4 +97,4 @@ mifpub:	mifdoc
 	echo mput $(PUBLISH_FILES) | ncftp -u$(PUBLISH_USER) -p$(PW) ftp://$(PUBLISH_HOST)/$(PUBLISH_ROOT)
 
 
-.PHONY: doc mifdoc
+.PHONY: doc mif mifdoc mifindex

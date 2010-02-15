@@ -365,6 +365,8 @@ int mif_add_data (mif_index_t *self, mif_files_t *db)
 {
     int i;
 
+    self->files = db;
+
     /* init posting lists */
     for (i = 0; i < self->numref; i++)
 	mif_pl_init(&self->pl[i], self->ki, self->numobj / self->numref);
