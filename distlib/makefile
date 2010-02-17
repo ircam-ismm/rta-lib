@@ -7,10 +7,11 @@ tex:
 MIFVERSION = 0.7
 data = data
 
-mif:	mifclean discotrunc mifindex mifindex-test # mifquery
+mif:	mifclean discotrunc mifindex mifquery mifindex-test mifquery-test
 
 mifindex-test:	mifindex
 	/usr/bin/time ./mifindex -1 -1 testindex.db DescFile.4001
+
 mifindex-all:	mifindex
 	/usr/bin/time ./mifindex -1 -1  ${data}/testindex10k.db   DESCRIPTOR_SubSet_10000.4001   2>&1| tee testindex10k.log   &
 	/usr/bin/time ./mifindex -1 -1  ${data}/testindex100k.db  DESCRIPTOR_SubSet_100000.4001  2>&1| tee testindex100k.log  &
@@ -18,7 +19,7 @@ mifindex-all:	mifindex
 	/usr/bin/time ./mifindex -1 150 ${data}/testindex1000k.db DESCRIPTOR_SubSet_1000000.4001 2>&1| tee testindex1000k.log &
 
 mifquery-test:	mifquery
-	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 20
+	/usr/bin/time ./mifquery -1 -1 testindex.db DescFile.4001 100 20
 
 mif10:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DESCRIPTOR_SubSet_10000.4001 QueryData.4001 100 20 result10.log 2>&1| tee log10.txt
@@ -59,8 +60,8 @@ miftest:	mif.c mif.h rta_util.c
 mifindex:	mifindex.c mif.c mif.h mifhash.h mifdb.h mifdbsqlite3.c discodist.c discodist.h discofile.c discofile.h rta_util.c
 	gcc -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -lsqlite3 -o $@ $^
 
-mifquery:	mifquery.c mif.c mif.h mifhash.h discodist.c discodist.h discofile.c discofile.h rta_util.c
-	gcc -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -o $@ $^
+mifquery:	mifquery.c mif.c mif.h mifhash.h mifdb.h mifdbsqlite3.c discodist.c discodist.h discofile.c discofile.h rta_util.c
+	gcc -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -lm -lsqlite3 -o $@ $^
 
 discotrunc:	discotrunc.c discofile.c discofile.h
 	gcc -g -Wall -DMIFVERSION=$(MIFVERSION) -I. -I.. -o $@ $^

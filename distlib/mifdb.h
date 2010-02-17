@@ -23,9 +23,8 @@ extern "C" {
 typedef struct _mifdbsqlite
 {
     sqlite3	 *sqlite3db;
-    sqlite3_stmt *insfile;
-    sqlite3_stmt *insrefobj;
-    sqlite3_stmt *inspl;
+    sqlite3_stmt *insfile, *insrefobj, *inspl;
+    sqlite3_stmt *getfile, *getrefobj, *getpl;
 } mifdbsqlite_t;
 
 

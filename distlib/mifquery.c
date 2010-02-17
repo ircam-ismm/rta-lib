@@ -1,9 +1,11 @@
 
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <time.h>
 
 #include "mif.h"
+#include "mifdb.h"
 #include "discofile.h"
 #include "discodist.h"
 
@@ -15,10 +17,10 @@
 static void usage()
 {
     fprintf(stderr, "\
-Query nquery first vectors from query-file against db-file, write results to result-file or stdout.\n\
-Data files are in DISCO format.\n\
+Query nquery first vectors from query-file against index in index-file, write results to result-file or stdout.\n\
+Query-file is in DISCO format, index is an sqlite database generated with mifindex.\n\
 \n\
-usage: mifquery nref ki ks mpd  db-file-name query-file-name [nquery] [K to query]  [result-file-name]\n\
+usage: mifquery ks mpd  index-file-name query-file-name [nquery] [K to query]  [result-file-name]\n\
 (-1 for defaults)\n\
 \n\
 result-file-name will be created as a text file which contains nquery lines of results: \n\
@@ -32,31 +34,85 @@ result-file-name will be created as a text file which contains nquery lines of r
 }
 
 
+static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
+{
+    int i, j, ok;
+    
+    ok = mifdb_begin_transaction(mifdb);
+
+    /* read file names */
+    for (i = 0; ok  &&  i < mif->files->nbase; i++)
+    {
+	int ind, nobj;
+	char *name;
+
+	if (!(ok &= mifdb_get_file(mifdb, &ind, &name, &nobj)))  break;
+	mif->files->filename[ind]   = strdup(name);
+	mif->files->numbaseobj[ind] = nobj;
+    }
+
+    /* read refobj */
+    for (i = 0; ok  &&  i < mif->numref; i++)
+    {
+	int ind;
+	mif_object_t obj;
+
+	if (!(ok &= mifdb_get_refobj(mifdb, &ind, &obj)))  break;
+	mif->refobj[ind].base  = obj.base;
+	mif->refobj[ind].index = obj.index;
+	mif->pl[ind].size = 0;
+    }
+
+    /* read postinglists */
+    for (i = 0; ok  &&  i < mif->numref; i++)
+    {
+	for (j = 0; ok  &&  j < mif->ki; j++)
+	{
+	    int indref, indbin, num, bytes;
+	    mif_object_t *entries;
+
+	    if ((ok &= mifdb_get_postinglist(mifdb, &indref, &indbin, &num, &bytes, &entries)))
+	    {
+		mif_pl_bin_t *bin = &mif->pl[indref].bin[indbin];
+		    
+		mif->pl[indref].size += num;
+		bin->num   = num;
+		bin->alloc = bytes;
+		bin->obj   = rta_malloc(bytes);
+		memcpy(bin->obj, entries, bytes);
+	    }
+	}
+    }
+
+    ok &= mifdb_commit_transaction(mifdb);
+
+    return ok;
+}
+
+
 int main (int argc, char *argv[])
 {
-    const char *outname = NULL, *dbname = NULL, *queryname = NULL;
-    int   nref = 0, ks = 0, ki = 0, mpd = 0, nquery = -1, K = 5;
-    FILE *outfile;
-    disco_file_t dbfile, qfile;
+    const char  *outname = NULL, *dbname = NULL, *queryname = NULL;
+    int		 ks = 0, mpd = 0, nquery = -1, K = 5;
+    mif_index_t  mif;
+    mifdb_t	 mifdb;
+    FILE	*outfile;
+    disco_file_t qfile, *dbfile;
     disco_KLS_private_t kls;
-    mif_index_t mif;
-    int  *base = NULL;
-    int   ndata, ndim;
-    clock_t startbuild, startquery;
-    float   buildtime, querytime;
+    int		 i, nref, ki, nfiles, ndata, ndim, descrid;
+    clock_t	 startload, startquery;
+    float	 loadtime, querytime;
 
     /* args: nref ki ks mpd  db-disco-file-name query-disco-file-name nquery k [result-file-name] */
     switch (argc)
     {	/* fallthrough */
-    case 10:	outname	  = argv[9];
-    case 9:	K	  = atoi(argv[8]);
-    case 8:	nquery	  = atoi(argv[7]);
-    case 7:	queryname = argv[6];
-    case 6:	dbname	  = argv[5];
-    case 5:	mpd	  = atoi(argv[4]);
-    case 4:	ks	  = atoi(argv[3]);
-    case 3:	ki	  = atoi(argv[2]);
-    case 2:	nref	  = atoi(argv[1]);
+    case 8:	outname	  = argv[7];	  
+    case 7:	K	  = atoi(argv[6]);
+    case 6:	nquery	  = atoi(argv[5]);
+    case 5:	queryname = argv[4];	  
+    case 4:	dbname	  = argv[3];	  
+    case 3:	mpd	  = atoi(argv[2]);
+    case 2:	ks	  = atoi(argv[1]);
     break;
 
     default:	/* wrong number or no args */
@@ -65,20 +121,23 @@ int main (int argc, char *argv[])
     break;
     }
 
-    /* open DISCO db file */
+    /* open DISCO db file, get parameters */
     if (dbname)
     {
-	disco_file_map(&dbfile, dbname, 0);
-
-	if (dbfile.base == NULL)
-	    return -3;
+	if (mifdb_open(&mifdb, dbname)  &&
+	    mifdb_get_params(&mifdb, &nref, &ki, &ndim, &descrid, &nfiles, &ndata))
+	{
+	    fprintf(stderr, "opened index database file '%s'\n", dbname);
+	}
 	else
-	    fprintf(stderr, "mapped database file '%s' length %ld to pointer %p,\n ndata %d  ndim %d  descr %d\n",
-		    dbname, dbfile.len, dbfile.base, dbfile.base->ndata, dbfile.base->ndim, dbfile.base->descrid);
+	{
+	    fprintf(stderr, "error: can't open index database file '%s'\n", dbname);
+	    return -3;
+	}
     }
     else
     {
-	fprintf(stderr, "no input database file name given\n");
+	fprintf(stderr, "error: no input index database file name given\n");
 	usage();
     }
 
@@ -99,68 +158,67 @@ int main (int argc, char *argv[])
 	usage();
     }
 
+    /* check compatibility*/
+    if (ndim != qfile.base->ndim  ||  descrid != qfile.base->descrid)
+    {
+	fprintf(stderr, "error: index database (ndim %d, descrid %d) and query file (ndim %d, descrid %d) are incompatible!\n",
+		ndim, descrid, qfile.base->ndim, qfile.base->descrid);
+	return -4;
+    }
+
+    /* init index with parameters */
+    mif_init(&mif, disco_KLS, disco_KLS_init, disco_KLS_free, &kls, 
+	     nref, 0 /* ki = 0: don't preallocate since we'll do that on loading */);
+
+    /* read index from database */
+    startload = clock();
+
+    /* set up files list */
+    mifdb.files.nbase      = nfiles;
+    mifdb.files.ndim       = ndim;
+    mifdb.files.descrid    = descrid;
+    mifdb.files.base       =          alloca(nfiles * sizeof(void *));
+    mifdb.files.filename   = (char *) alloca(nfiles * sizeof(char *));
+    mifdb.files.numbaseobj =  (int *) alloca(nfiles * sizeof(int));
+    dbfile =         (disco_file_t *) alloca(nfiles * sizeof(disco_file_t));
+
+    if (!mifdb_read(&mifdb, &mif))
+    {
+	fprintf(stderr, "error: can't read from index database file '%s'\n", dbname);
+	return -5;
+    }
+    else
+    {
+	loadtime = ((float) clock() - startload) / (float) CLOCKS_PER_SEC;
+	fprintf(stderr, "time for loading index = %f s, %f s / obj\n\n", 
+		loadtime, loadtime / mif.numobj);
+	fflush(stderr);
+    }
+
+    /* open DISCO database files */
+    for (i = 0; i < nfiles; i++)
+    {	
+	disco_file_map(&dbfile[i], mifdb.files.filename[i], 0);
+	mifdb.files.base[i] = dbfile[i].base;	/* start of mapped file */
+    }
+
     /* open result file */
     if (outname)
 	outfile = fopen(outname, "w");
     else
 	outfile = stdout;
 
-    base  = (void *) dbfile.base;
-    ndim  = dbfile.base->ndim;
-    ndata = dbfile.base->ndata;
+    /* check args and set for search */
+    if (ks <= 0)
+	ks   = nref / 4;
+    if (mpd <= 0)
+	mpd   = 5;
 
-    /* check compatibility*/
-    if (ndim != qfile.base->ndim  ||  dbfile.base->descrid != qfile.base->descrid)
-    {
-	fprintf(stderr, "db and query files are incompatible!\n");
-	return -4;
-    }
-
-
-#if 0
-    { /* test distance function: voila ce que l'on est sensé obtenir:
-	D(O1,O2) = 0.9310
-	D(O1,O3) = 1.6384
-	D(O2,O3) =  0.2559
-	où O1 O2 et O3 sont les trois premiers objets de la base... */
-	int i, j;
-
-	for (i = 0; i < 2; i++)
-	    for (j = i + 1; j < 3; j++)
-	    {
-		mif_object_t a = { (void *) base, i };
-		mif_object_t b = { (void *) base, j };
-		rta_real_t d = disco_KLS(&a, &b);
-		fprintf(stderr, "D(o%d, o%d) = %f\n", i+1, j+1, d);
-	    }
-    }
-#endif
-
-    {   /* index every frame (= model) */
-	/* check args */
-	if (nref <= 0)  /* num. ref. obj. >= 2 * sqrt(nobj) */
-	    nref = 2 * sqrt(ndata);
-	if (ki <= 0)
-	    ki   = nref / 4;
-	if (ks <= 0)
-	    ks   = nref / 4;
-	if (mpd <= 0)
-	    mpd   = 5;
-
-	mif_init(&mif, disco_KLS, disco_KLS_init, disco_KLS_free, &kls, nref, ki);
-	startbuild = clock();
-	mif_add_data(&mif, 1, (void **) &base, &ndata);
-	buildtime = ((float) clock() - startbuild) / (float) CLOCKS_PER_SEC;
-	mif.ks  = ks;
-	mif.mpd = mpd;
-	mif_print(&mif, 1);
-	mif_profile_print(&mif.profile);
-	mif_profile_clear(&mif.profile);
-
-	fprintf(stderr, "time for building of index = %f s, %f s / obj\n\n", 
-		buildtime, buildtime / mif.numobj);
-	fflush(stderr);
-    }
+    mif.ks  = ks;
+    mif.mpd = mpd;
+    mif_print(&mif, 1);
+    mif_profile_print(&mif.profile);
+    mif_profile_clear(&mif.profile);
 
     {   /* query with first nquery frames from query file */
 	int i, j, kfound;
@@ -169,7 +227,7 @@ int main (int argc, char *argv[])
 	mif_object_t  query;
 	size_t	      bytesaccessed, bytesaccoopt;
 
-	query.base  = qfile.base;
+	query.base  = 0; /////aaaaaaaaaaaaaaaaaaa!
 	startquery  = clock();
 
 	if (nquery < 0)
@@ -184,8 +242,8 @@ int main (int argc, char *argv[])
 	    fprintf(stderr, "--> found %d NN, best is db obj %d with dist %d\n", 
 		    kfound, obj[0].index, dist[0]);
 
-	    /* write result file line (outfile as index 1, db file as index 0) */
-	    fprintf(outfile, "%d.%d %d ", 1, i, K);
+	    /* write result file line (query file as index -1, db file with their index) */
+	    fprintf(outfile, "%d.%d %d ", -1, i, K);
 	    for (j = 0; j < kfound; j++)
 		fprintf(outfile, "%d.%d %d%c", 0, obj[j].index, dist[j], 
 			j < kfound - 1  ?  ' ' : '\n');
@@ -199,7 +257,7 @@ int main (int argc, char *argv[])
 		 mif.ks * (mif.mpd * 2 + 1) * mif.numobj / mif.numref); 
 	
 	bytesaccessed = mif.profile.placcess * sizeof(mif_postinglist_t) +
-			mif.profile.indexaccess * sizeof(mif_pl_entry_t);
+	    mif.profile.indexaccess * sizeof(mif_pl_bin_t); //todo: size
 	bytesaccoopt  = mif.profile.placcess * sizeof(mif_postinglist_t) +
 			mif.profile.indexaccess * 4;
 	fprintf(stderr, 
@@ -214,8 +272,14 @@ int main (int argc, char *argv[])
 
     /* cleanup and close files */
     mif_free(&mif);
-    disco_file_unmap(&dbfile);
+    mifdb_close(&mifdb);
     disco_file_unmap(&qfile);
+
+    for (i = 0; i < nfiles; i++)
+    {
+	disco_file_unmap(&dbfile[i]);
+	free(mifdb.files.filename);
+    }
 
     if (outfile != stdout)
 	fclose(outfile);

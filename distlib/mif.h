@@ -136,7 +136,8 @@ typedef struct _mif_files
     int		nbase;			    /**< number of base files */
     int		ndim;  			    /**< copy of number of dims (to avoid access to memory-mapped file header) */
     int 	descrid;		    /**< descriptor ID */
-    void      **base;			    /**< array(nbase) of base files */
+    char      **filename;		    /**< array(nbase) of file names */
+    void      **base;			    /**< array(nbase) of file base pointer */
     int	       *numbaseobj;		    /**< array(nbase) of num obj. per base */
 } mif_files_t;
 
