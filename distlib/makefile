@@ -5,11 +5,17 @@ tex:
 	make -C doc/latex/
 
 MIFVERSION = 0.7
+data = data
 
 mif:	mifclean discotrunc mifindex mifindex-test # mifquery
 
 mifindex-test:	mifindex
 	/usr/bin/time ./mifindex -1 -1 testindex.db DescFile.4001
+mifindex-all:	mifindex
+	/usr/bin/time ./mifindex -1 -1  ${data}/testindex10k.db   DESCRIPTOR_SubSet_10000.4001   2>&1| tee testindex10k.log   &
+	/usr/bin/time ./mifindex -1 -1  ${data}/testindex100k.db  DESCRIPTOR_SubSet_100000.4001  2>&1| tee testindex100k.log  &
+	/usr/bin/time ./mifindex -1 100 ${data}/testindex500k.db  DESCRIPTOR_SubSet_500000.4001  2>&1| tee testindex500k.log  &
+	/usr/bin/time ./mifindex -1 150 ${data}/testindex1000k.db DESCRIPTOR_SubSet_1000000.4001 2>&1| tee testindex1000k.log &
 
 mifquery-test:	mifquery
 	/usr/bin/time ./mifquery -1 -1 -1 -1 DescFile.4001 DescFile.4001 100 20

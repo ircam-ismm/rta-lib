@@ -261,7 +261,7 @@ int fts_hashtable_put (fts_hashtable_t *h, const mif_object_t *key, /*inout*/ in
     (cc)->obj = key;
     // (*c)->accumulator = *value;
     *value = &(cc)->accumulator;
-    (cc)->next = c; //NULL;
+    (cc)->next = 0; //NULL;
     h->count++;
     
     if ( h->count == h->rehash_count) /* usually: >= */

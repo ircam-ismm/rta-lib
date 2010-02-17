@@ -36,7 +36,7 @@ static int mifdbsqlite3_prepare (mifdbsqlite_t *db, const char *query,
     const char *tail   = NULL;
     const char *errstr = NULL;
 
-    if (sqlite3_prepare_v2(db->sqlite3db, query, strlen(query) + 1, stmt, &tail) != SQLITE_OK)
+    if (sqlite3_prepare(db->sqlite3db, query, strlen(query) + 1, stmt, &tail) != SQLITE_OK)
     {
 	rta_post("***sqlite query preparation error %d: '%s'\n  query '%s'\n",
 		 sqlite3_errcode(db->sqlite3db), sqlite3_errmsg(db->sqlite3db), query);
