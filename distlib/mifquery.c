@@ -36,9 +36,10 @@ result-file-name will be created as a text file which contains nquery lines of r
 
 static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
 {
-    int i, j, ok;
+    int i, j, ok = 1;
     
-    ok = mifdb_begin_transaction(mifdb);
+    ok = mifdb_begin_read(mifdb);
+    mif->numobj = 0;
 
     /* read file names */
     for (i = 0; ok  &&  i < mif->files->nbase; i++)
@@ -49,6 +50,8 @@ static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
 	if (!(ok &= mifdb_get_file(mifdb, &ind, &name, &nobj)))  break;
 	mif->files->filename[ind]   = strdup(name);
 	mif->files->numbaseobj[ind] = nobj;
+	mif->numobj += nobj;
+	fprintf(stderr, "get file %d of %d: %s\n", ind, mif->files->nbase, name);
     }
 
     /* read refobj */
@@ -62,6 +65,10 @@ static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
 	mif->refobj[ind].index = obj.index;
 	mif->pl[ind].size = 0;
     }
+
+    /* init posting lists */
+    for (i = 0; i < mif->numref; i++)
+	mif_pl_init(&mif->pl[i], mif->ki, -1);
 
     /* read postinglists */
     for (i = 0; ok  &&  i < mif->numref; i++)
@@ -84,7 +91,7 @@ static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
 	}
     }
 
-    ok &= mifdb_commit_transaction(mifdb);
+    ok &= mifdb_end_read(mifdb);
 
     return ok;
 }
@@ -167,20 +174,20 @@ int main (int argc, char *argv[])
     }
 
     /* init index with parameters */
-    mif_init(&mif, disco_KLS, disco_KLS_init, disco_KLS_free, &kls, 
-	     nref, 0 /* ki = 0: don't preallocate since we'll do that on loading */);
+    mif_init(&mif, disco_KLS, disco_KLS_init, disco_KLS_free, &kls, nref, ki);
 
     /* read index from database */
     startload = clock();
 
-    /* set up files list */
+    /* set up files list (allocate one more space for query file) */
     mifdb.files.nbase      = nfiles;
     mifdb.files.ndim       = ndim;
     mifdb.files.descrid    = descrid;
-    mifdb.files.base       =          alloca(nfiles * sizeof(void *));
-    mifdb.files.filename   = (char *) alloca(nfiles * sizeof(char *));
-    mifdb.files.numbaseobj =  (int *) alloca(nfiles * sizeof(int));
-    dbfile =         (disco_file_t *) alloca(nfiles * sizeof(disco_file_t));
+    mifdb.files.base       =          alloca((nfiles+1) * sizeof(void *));
+    mifdb.files.filename   = (char *) alloca((nfiles+1) * sizeof(char *));
+    mifdb.files.numbaseobj =  (int *) alloca((nfiles+1) * sizeof(int));
+    dbfile =         (disco_file_t *) alloca((nfiles+1) * sizeof(disco_file_t));
+    mif.files = &mifdb.files;
 
     if (!mifdb_read(&mifdb, &mif))
     {
@@ -202,6 +209,11 @@ int main (int argc, char *argv[])
 	mifdb.files.base[i] = dbfile[i].base;	/* start of mapped file */
     }
 
+    /* add query file to files list */
+    mifdb.files.base[nfiles]	   = qfile.base;	/* start of mapped file */
+    mifdb.files.filename[nfiles]   = qfile.filename;	/* start of mapped file */
+    mifdb.files.numbaseobj[nfiles] = qfile.base->ndata;	/* start of mapped file */
+
     /* open result file */
     if (outname)
 	outfile = fopen(outname, "w");
@@ -213,6 +225,9 @@ int main (int argc, char *argv[])
 	ks   = nref / 4;
     if (mpd <= 0)
 	mpd   = 5;
+
+    /* init distance function for query */ 
+    mif_init_index(&mif, &mifdb.files);
 
     mif.ks  = ks;
     mif.mpd = mpd;
@@ -227,8 +242,8 @@ int main (int argc, char *argv[])
 	mif_object_t  query;
 	size_t	      bytesaccessed, bytesaccoopt;
 
-	query.base  = 0; /////aaaaaaaaaaaaaaaaaaa!
 	startquery  = clock();
+	query.base = nfiles;
 
 	if (nquery < 0)
 	    nquery = qfile.base->ndata;
@@ -242,11 +257,11 @@ int main (int argc, char *argv[])
 	    fprintf(stderr, "--> found %d NN, best is db obj %d with dist %d\n", 
 		    kfound, obj[0].index, dist[0]);
 
-	    /* write result file line (query file as index -1, db file with their index) */
-	    fprintf(outfile, "%d.%d %d ", -1, i, K);
+	    /* write result file line (query file as no. nfiles, db file with their index) */
+	    fprintf(outfile, "%d.%d %d ", query.base, query.index, K);
 	    for (j = 0; j < kfound; j++)
-		fprintf(outfile, "%d.%d %d%c", 0, obj[j].index, dist[j], 
-			j < kfound - 1  ?  ' ' : '\n');
+		fprintf(outfile, "%d.%d %d ", obj[j].base, obj[j].index, dist[j]);
+	    fprintf(outfile, "\n");
 	    fflush(outfile);
 	}
 
@@ -267,7 +282,6 @@ int main (int argc, char *argv[])
 		bytesaccoopt  / 1e6, (int) ceil(bytesaccoopt  / BLOCKSIZE), BLOCKSIZE);
 	fprintf(stderr, "time for %d queries = %f s, %f s / queryobj\n\n", 
 		nquery, querytime, querytime / nquery);
-
     }
 
     /* cleanup and close files */

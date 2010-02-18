@@ -201,6 +201,8 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc,
 /** free allocated memory */
 void mif_free (mif_index_t *self);
 
+/* init distance function for query */ 
+void mif_init_index (mif_index_t *self, mif_files_t *db);
 
 /** bulk load new data and index it
     

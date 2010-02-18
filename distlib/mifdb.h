@@ -38,12 +38,25 @@ typedef struct _mifdb
 
 int mifdb_open (mifdb_t *database, const char *dbname);
 int mifdb_close (mifdb_t *database);
+int mifdb_begin_read (mifdb_t *database);
+int mifdb_end_read (mifdb_t *database);
+
 int mifdb_create(mifdb_t *database, const char *dbname, int nref, int ki, int ndim, int descrid);
+
+/* get parameters from db */
+int mifdb_get_params  (mifdb_t *database, int *nref, int *ki, int *ndim, int *descrid, int *nfiles, int *ndata); 
+
 int mifdb_begin_transaction (mifdb_t *database);
 int mifdb_commit_transaction (mifdb_t *database);
+
 int mifdb_add_file (mifdb_t *database, int index, const char *filename, int nobj);
+int mifdb_get_file (mifdb_t *database, int *index, const unsigned char **filename, int *nobj);
+
 int mifdb_add_refobj (mifdb_t *database, int index, const mif_object_t *obj);
+int mifdb_get_refobj (mifdb_t *database, int *index, mif_object_t *obj);
+
 int mifdb_add_postinglist (mifdb_t *database, int index, int binindex, int size, const mif_object_t *obj);
+int mifdb_get_postinglist (mifdb_t *database, int *index, int *binindex, int *size, int *bytes, mif_object_t **entries);
 
 
 #ifdef __cplusplus

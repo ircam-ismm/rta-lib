@@ -43,13 +43,14 @@ void mif_pl_init(mif_postinglist_t *pl, int ki, int kpl)
     pl->size = 0;
     pl->bin  = rta_malloc(ki * sizeof(mif_pl_bin_t));
 
-    for (i = 0; i < ki; i++)
-    {
-	kpl = PLBLOCKS(kpl) * PLBLOCKSIZE;
-	pl->bin[i].num   = 0;
-	pl->bin[i].alloc = kpl;
-	pl->bin[i].obj   = rta_malloc(kpl * sizeof(mif_object_t));
-    }
+    if (kpl >= 0)
+	for (i = 0; i < ki; i++)
+	{
+	    kpl = PLBLOCKS(kpl) * PLBLOCKSIZE;
+	    pl->bin[i].num   = 0;
+	    pl->bin[i].alloc = kpl;
+	    pl->bin[i].obj   = rta_malloc(kpl * sizeof(mif_object_t));
+	}
 }
 
 void mif_pl_free(mif_postinglist_t *pl, int ki)
@@ -312,6 +313,12 @@ static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
     return kmax + (dist[kmax] < MAX_FLOAT);
 }
 
+/* init distance function for query */ 
+void mif_init_index (mif_index_t *self, mif_files_t *files)
+{  
+    /* init distance function with file list */
+    (*self->distance_init)(self->distance_private, files);
+}
 
 /* index data objects by reference objects, build postinglists */ 
 static void mif_build_index (mif_index_t *self, mif_files_t *files)
@@ -321,9 +328,6 @@ static void mif_build_index (mif_index_t *self, mif_files_t *files)
     mif_object_t  newobj;	/* object to index */
     int		  numbase = files->nbase;
     int		  b, i, k, kfound;
-
-    /* init distance function with file list */
-    (*self->distance_init)(self->distance_private, files);
 
     /* for each object */
     for (b = 0; b < numbase; b++)
@@ -373,6 +377,9 @@ int mif_add_data (mif_index_t *self, mif_files_t *db)
 
     /* choose numref reference objects and fill refobj array in mif struct */
     self->numobj = mif_choose_refobj(self, db);
+
+    /* init distance function with file list */
+    mif_init_index(self, db);
 
     /* index data */
     mif_build_index(self, db);
