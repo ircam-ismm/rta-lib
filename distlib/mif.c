@@ -131,7 +131,8 @@ void mif_print_pl(mif_index_t *self, int i)
     mif_postinglist_t *pl = &self->pl[i];
     int j, k;
 
-    rta_post("pl %d  refobj %d  size %d:\n", i, self->refobj[i].index, pl->size);
+    rta_post("pl %d  refobj %d.%d  size %d:\n", 
+	     i, self->refobj[i].base, self->refobj[i].index, pl->size);
 
     for (k = 0; k < self->ki; k++)
     {
@@ -140,7 +141,7 @@ void mif_print_pl(mif_index_t *self, int i)
 	rta_post("  <%d: ", k);
 	for (j = 0; j < bin->num; j++)
 	{
-	    rta_post("%d ", bin->obj[j].index);
+	    rta_post("%d.%d ", bin->obj[j].base, bin->obj[j].index);
 	    //rta_post("%p.%d ", entry->obj.base, entry->obj.index);
 	}
 	rta_post(">\n");
@@ -148,9 +149,9 @@ void mif_print_pl(mif_index_t *self, int i)
     rta_post("\n");
 }
 
-void mif_print (mif_index_t *self, int verb)
+void mif_print (mif_index_t *self, int verb, char *message)
 {
-    rta_post("\nMIF index info:\n");
+    rta_post("\nMIF index info: %s\n", message);
     rta_post("n_obj    = %d\n", self->numobj);
     rta_post("n_ref    = %d\n", self->numref);
     rta_post("k_i      = %d\n", self->ki);
@@ -402,8 +403,8 @@ int mif_add_data (mif_index_t *self, mif_files_t *db)
 int mif_search_knn (mif_index_t *self, mif_object_t *query, int k, 
 		    /* out */ mif_object_t *obj, int *dist) 
 {
-    rta_real_t *qdist = alloca(self->ks * sizeof(*qdist));	/* distance of query to refobj */
-    int        *qind  = alloca(self->ks * sizeof(*qind));	/* index of closest refobj */
+    rta_real_t *qdist = alloca(self->ks * sizeof(rta_real_t));	/* distance of query to refobj */
+    int        *qind  = alloca(self->ks * sizeof(int));		/* index of closest refobj */
     int r, kq, kmax = 0;
     int hashpredict = self->ks * (2 * self->mpd + 1) * self->numobj / self->numref;
 
@@ -428,10 +429,11 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     kq = mif_index_object(self, query, self->ks, qind, qdist);
 
 #if MIF_DEBUG_SEARCH >= 2
-    rta_post("query %d indexed %d: (indx, dist) ", query->index, kq);
+    rta_post("query obj %d.%d indexed by %d refobj: (indx, dist) ", 
+	     query->base, query->index, kq);
     for (r = 0; r < kq; r++)
-	rta_post("(ro %d = obj %d, %f) ", 
-		 qind[r], self->refobj[qind[r]].index, qdist[r]);
+	rta_post("(ro %d = obj %d.%d, %f) ", 
+		 qind[r], self->refobj[qind[r]].base, self->refobj[qind[r]].index, qdist[r]);
     rta_post("\n");
 #endif
 
@@ -471,7 +473,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	    {
 		int *accumulator;
 
-		if (fts_hashtable_put(&hash, &bin[i].obj, &accumulator) == 0)
+		if (fts_hashtable_put(&hash, &bin->obj[i], &accumulator) == 0)
 		{ /* new occurence of obj: init entry inserted into accumulator hash */
 		    *accumulator = self->ki * self->ks;	/* largest possible distance */
 		}
@@ -493,7 +495,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	dist[r] = MAX_FLOAT;
 
 #if MIF_DEBUG_SEARCH >= 2   
-    rta_post("  dist of %d hashed obj: ", numhashobj);
+    rta_post("  dist of %d hashed obj: ", hash.count);
 #endif
 
     /* iterate through hash and pick k lowest distances */
@@ -504,7 +506,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 	dtrans = hash.cell_heap[r].accumulator;
 
 #if MIF_DEBUG_SEARCH >= 2
-	rta_post("(%d, %d)  ", hash.cell_heap[r].obj->index, dtrans);
+	rta_post("(%d.%d, %d)  ", hash.cell_heap[r].obj->base, hash.cell_heap[r].obj->index, dtrans);
 #endif
 	    
 	if (dtrans <= dist[kmax]) 

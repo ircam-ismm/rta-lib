@@ -12,6 +12,10 @@ mif:	mifclean discotrunc mifindex mifquery mifindex-test mifquery-test
 mifindex-test:	mifindex
 	/usr/bin/time ./mifindex -1 -1 testindex.db DescFile.4001 DescFile.4001 DescFile.4001
 
+miftest-mini: mifindex mifquery
+	/usr/bin/time ./mifindex -1 -1 testmini.db DescFile-20.4001
+	/usr/bin/time ./mifquery -1 -1 testmini.db DescFile-20.4001 10 5
+
 mifindex-all:	mifindex
 	/usr/bin/time ./mifindex -1 -1  ${data}/testindex10k.db   DESCRIPTOR_SubSet_10000.4001   2>&1| tee testindex10k.log   &
 	/usr/bin/time ./mifindex -1 -1  ${data}/testindex100k.db  DESCRIPTOR_SubSet_100000.4001  2>&1| tee testindex100k.log  &
@@ -26,8 +30,8 @@ mifquery-all:	mifquery
 	/usr/bin/time ./mifquery -1 -1 ${data}/testindex100k.db  QueryData.4001 100 20 result100.txt  2>&1| tee testquery100k.log  &
 	/usr/bin/time ./mifquery 100 5 ${data}/testindex500k.db  QueryData.4001 100 20 result500.txt  2>&1| tee testquery500k.log  &
 	/usr/bin/time ./mifquery 150 5 ${data}/testindex1000k.db QueryData.4001 100 20 result1000.txt 2>&1| tee testquery1000k.log &
-										       
-										                      
+
+
 mif10:	mifquery								       
 	/usr/bin/time ./mifquery -1 -1  testindex10k.db   QueryData.4001 100 20 result10.txt   2>&1| tee log10.txt
 mif100:	mifquery}			

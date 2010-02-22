@@ -231,7 +231,7 @@ int main (int argc, char *argv[])
 
     mif.ks  = ks;
     mif.mpd = mpd;
-    mif_print(&mif, 1);
+    mif_print(&mif, 1, "after loading");
     mif_profile_print(&mif.profile);
     mif_profile_clear(&mif.profile);
 
@@ -266,7 +266,7 @@ int main (int argc, char *argv[])
 	}
 
 	querytime = ((float) clock() - startquery) / (float) CLOCKS_PER_SEC;
-	mif_print(&mif, 0);
+	mif_print(&mif, 0, "after query");
 	mif_profile_print(&mif.profile);
 	rta_post("#accesses predicted:    %6d\n",
 		 mif.ks * (mif.mpd * 2 + 1) * mif.numobj / mif.numref); 
@@ -292,7 +292,7 @@ int main (int argc, char *argv[])
     for (i = 0; i < nfiles; i++)
     {
 	disco_file_unmap(&dbfile[i]);
-	free(mifdb.files.filename);
+	free(mifdb.files.filename[i]);
     }
 
     if (outfile != stdout)

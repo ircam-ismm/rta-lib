@@ -183,7 +183,7 @@ typedef struct _mif_index
 
 
 /** print index info to console */
- void mif_print (mif_index_t* t, int verbosity);
+void mif_print (mif_index_t* t, int verbosity, char *msg);
 
 
 /** set all counters in mif_index_t#profile to zero */

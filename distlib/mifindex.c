@@ -140,7 +140,7 @@ int main (int argc, char *argv[])
     startbuild = clock();
     mif_add_data(&mif, &mifdb.files);
     buildtime = ((float) clock() - startbuild) / (float) CLOCKS_PER_SEC;
-    mif_print(&mif, 0);
+    mif_print(&mif, 1, "after building");
     mif_profile_print(&mif.profile);
     mif_profile_clear(&mif.profile);
 
