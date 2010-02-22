@@ -118,7 +118,8 @@ typedef struct _mif_object
 typedef struct _mif_pl_bin
 {
     int		  num;	 /**< number of objects in bin */
-    int		  alloc; /**< number of objects allocated while building index, byte size of compressed blob while searching */
+    int		  alloc; /**< number of objects allocated while building index, 
+			      byte size of compressed blob rounded to object size while searching */
     mif_object_t *obj;	 /**< pointer to array(num) objects */
 } mif_pl_bin_t;
 

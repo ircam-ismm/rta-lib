@@ -168,7 +168,7 @@ void mif_print (mif_index_t *self, int verb, char *message)
 	for (i = 0; i < self->numref; i++)
 	    npe += self->pl[i].size;
 
-	spl += npe * sizeof(mif_pl_bin_t);
+	spl += npe * sizeof(mif_object_t);
 	stotal = srefobj + spl;
 
 	rta_post("\nspace for struct              = %14lu B\n", sizeof(mif_index_t));

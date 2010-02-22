@@ -33,13 +33,13 @@ mifquery-all:	mifquery
 
 
 mif10:	mifquery								       
-	/usr/bin/time ./mifquery -1 -1  testindex10k.db   QueryData.4001 100 20 result10.txt   2>&1| tee log10.txt
+	/usr/bin/time ./mifquery -1 -1  ${data}/testindex10k.db   QueryData.4001 100 20 result10.txt   2>&1| tee log10.txt
 mif100:	mifquery}			
-	/usr/bin/time ./mifquery -1 -1  testindex100k.db  QueryData.4001 100 20 result100.txt  2>&1| tee log100.txt
+	/usr/bin/time ./mifquery -1 -1  ${data}/testindex100k.db  QueryData.4001 100 20 result100.txt  2>&1| tee log100.txt
 mif500:	mifquery			
-	/usr/bin/time ./mifquery  100 5 testindex500k.db  QueryData.4001 100 20 result500.txt  2>&1| tee log500.txt
+	/usr/bin/time ./mifquery  100 5 ${data}/testindex500k.db  QueryData.4001 100 20 result500.txt  2>&1| tee log500.txt
 mif1000: mifquery			
-	/usr/bin/time ./mifquery  150 5 testindex1000k.db QueryData.4001 100 20 result1000.txt 2>&1| tee log1000.txt
+	/usr/bin/time ./mifquery  150 5 ${data}/testindex1000k.db QueryData.4001 100 20 result1000.txt 2>&1| tee log1000.txt
 
 mifprof mifprofile:
 	/usr/bin/time ./mifquery -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \
