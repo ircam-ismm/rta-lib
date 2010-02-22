@@ -57,6 +57,8 @@ create table postinglist (						\n\
 drop table if exists indexparams;					\n\
 create table indexparams (						\n\
   name		text,							\n\
+  date		time,							\n\
+  mifversion	decimal,						\n\
   nrefobj	integer, 						\n\
   ki		integer, 						\n\
   ndim		integer, 						\n\
@@ -66,7 +68,7 @@ create table indexparams (						\n\
 
 /* single sql commands to insert data */
 static const char *insparam = "\
-insert into indexparams values (?, ?, ?, ?, ?);";
+insert into indexparams values (?, datetime('now'), ?, ?, ?, ?, ?);";
 
 static const char *insfile = "\
 insert into discofile values (?, ?, ?);";
@@ -260,10 +262,11 @@ int mifdb_create (mifdb_t *database, const char *dbname, int nref, int ki, int n
     if (!mifdbsqlite3_prepare(db, insparam, &stmt))		return 0;
 
     sqlite3_bind_text(stmt, 1, dbname, strlen(dbname), SQLITE_STATIC);
-    sqlite3_bind_int (stmt, 2, nref);
-    sqlite3_bind_int (stmt, 3, ki);
-    sqlite3_bind_int (stmt, 4, ndim);
-    sqlite3_bind_int (stmt, 5, descrid);
+    sqlite3_bind_double(stmt, 2, MIFVERSION);
+    sqlite3_bind_int (stmt, 3, nref);
+    sqlite3_bind_int (stmt, 4, ki);
+    sqlite3_bind_int (stmt, 5, ndim);
+    sqlite3_bind_int (stmt, 6, descrid);
 
     if (!mifdbsqlite3_update(db, stmt))				return 0;
     sqlite3_finalize(stmt);
