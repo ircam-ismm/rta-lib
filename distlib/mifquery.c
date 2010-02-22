@@ -239,7 +239,7 @@ int main (int argc, char *argv[])
 	mif_object_t *obj  = alloca(K * sizeof(*obj));	/* query objects */
 	int          *dist = alloca(K * sizeof(*dist));	/* transformed distance to obj */
 	mif_object_t  query;
-	size_t	      bytesaccessed, bytesaccoopt;
+	size_t	      bytesaccpl, bytesaccessed, bytesaccopt, bytesacczip;
 
 	startquery  = clock();
 	query.base = nfiles;
@@ -270,15 +270,17 @@ int main (int argc, char *argv[])
 	rta_post("#accesses predicted:    %6d\n",
 		 mif.ks * (mif.mpd * 2 + 1) * mif.numobj / mif.numref); 
 	
-	bytesaccessed = mif.profile.placcess * sizeof(mif_postinglist_t) +
-	    mif.profile.indexaccess * sizeof(mif_pl_bin_t); //todo: size
-	bytesaccoopt  = mif.profile.placcess * sizeof(mif_postinglist_t) +
-			mif.profile.indexaccess * 4;
+	bytesaccpl    = mif.profile.placcess * sizeof(mif_postinglist_t);
+	bytesaccessed = bytesaccpl + mif.profile.indexaccess * sizeof(mif_object_t);
+	bytesaccopt   = bytesaccpl + mif.profile.indexaccess * 4;
+	bytesacczip   = bytesaccpl + mif.profile.indexaccessbytes;
 	fprintf(stderr, 
 		"#bytes accessed in index:         %f MB = %d blocks of %d\n"
-		"#bytes accessed in optimal index: %f MB = %d blocks of %d\n", 
+		"#bytes accessed in optimal index: %f MB = %d blocks of %d\n"
+		"#bytes accessed in zipped index:  %f MB = %d blocks of %d\n", 
 		bytesaccessed / 1e6, (int) ceil(bytesaccessed / BLOCKSIZE), BLOCKSIZE,
-		bytesaccoopt  / 1e6, (int) ceil(bytesaccoopt  / BLOCKSIZE), BLOCKSIZE);
+		bytesaccopt   / 1e6, (int) ceil(bytesaccopt   / BLOCKSIZE), BLOCKSIZE,
+		bytesacczip   / 1e6, (int) ceil(bytesacczip   / BLOCKSIZE), BLOCKSIZE);
 	fprintf(stderr, "time for %d queries = %f s, %f s / queryobj\n\n", 
 		nquery, querytime, querytime / nquery);
     }

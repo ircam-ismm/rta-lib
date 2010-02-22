@@ -199,6 +199,7 @@ void mif_profile_clear (mif_profile_t *t)
     t->placcess = 0;
     t->plbinaccess = 0;
     t->indexaccess = 0;
+    t->indexaccessbytes = 0;
     t->numhashobj  = 0;
     t->numhashalloc  = 0;
     t->numhashbin  = 0;
@@ -465,6 +466,8 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 
 #if MIF_PROFILE_SEARCH
 	    self->profile.plbinaccess++;
+	    self->profile.indexaccess += bin->num;
+	    self->profile.indexaccessbytes += bin->alloc * sizeof(mif_object_t);
 #endif
 #if MIF_DEBUG_SEARCH
 	    rta_post("  accessing bin %d of refobj %d (pl size %d).\n", p, r, pl->size);
@@ -480,11 +483,6 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
 
 		/* correct accumulated distance by actual transformed distance */
 		*accumulator += abs(r - p) - self->ki;
-		//rta_post("  dist %d  accu %s = %d\n", p, keybuf, *accu);
-
-#if MIF_PROFILE_SEARCH
-		self->profile.indexaccess++;
-#endif
 	    }   /* end while posting list entry bin not empty */
 	}
     }
