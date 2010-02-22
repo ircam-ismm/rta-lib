@@ -45,7 +45,7 @@ static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
     for (i = 0; ok  &&  i < mif->files->nbase; i++)
     {
 	int ind, nobj;
-	char *name;
+	const char *name;
 
 	if (!(ok &= mifdb_get_file(mifdb, &ind, &name, &nobj)))  break;
 	mif->files->filename[ind]   = strdup(name);
@@ -182,10 +182,10 @@ int main (int argc, char *argv[])
     mifdb.files.nbase      = nfiles;
     mifdb.files.ndim       = ndim;
     mifdb.files.descrid    = descrid;
-    mifdb.files.base       =          alloca((nfiles+1) * sizeof(void *));
-    mifdb.files.filename   = (char *) alloca((nfiles+1) * sizeof(char *));
-    mifdb.files.numbaseobj =  (int *) alloca((nfiles+1) * sizeof(int));
-    dbfile =         (disco_file_t *) alloca((nfiles+1) * sizeof(disco_file_t));
+    mifdb.files.base       =           alloca((nfiles+1) * sizeof(void *));
+    mifdb.files.filename   = (const char **) alloca((nfiles+1) * sizeof(char *));
+    mifdb.files.numbaseobj =   (int *) alloca((nfiles+1) * sizeof(int));
+    dbfile =          (disco_file_t *) alloca((nfiles+1) * sizeof(disco_file_t));
     mif.files = &mifdb.files;
 
     if (!mifdb_read(&mifdb, &mif))
@@ -293,7 +293,7 @@ int main (int argc, char *argv[])
     for (i = 0; i < nfiles; i++)
     {
 	disco_file_unmap(&dbfile[i]);
-	free(mifdb.files.filename[i]);
+	free((char *) mifdb.files.filename[i]);
     }
 
     if (outfile != stdout)

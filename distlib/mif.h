@@ -129,18 +129,18 @@ typedef struct _mif_pl_bin
     indexed (sorted) by start of runs of ref. object order */
 typedef struct _mif_postinglist
 {
-    int 	  size;   /**< number of objects stored */
+    int 	  size;  /**< number of objects stored */
     mif_pl_bin_t *bin;   /**< array[ki] bins indexed by sort order */
 } mif_postinglist_t;
 
 typedef struct _mif_files
 {
-    int		nbase;			    /**< number of base files */
-    int		ndim;  			    /**< copy of number of dims (to avoid access to memory-mapped file header) */
-    int 	descrid;		    /**< descriptor ID */
-    char      **filename;		    /**< array(nbase) of file names */
-    void      **base;			    /**< array(nbase) of file base pointer */
-    int	       *numbaseobj;		    /**< array(nbase) of num obj. per base */
+    int		 nbase;		/**< number of base files */
+    int		 ndim;  	/**< copy of number of dims (to avoid access to memory-mapped file header) */
+    int 	 descrid;	/**< descriptor ID */
+    const char **filename;	/**< array(nbase) of file names */
+    void       **base;		/**< array(nbase) of file base pointer */
+    int	        *numbaseobj;	/**< array(nbase) of num obj. per base */
 } mif_files_t;
 
 
@@ -203,8 +203,11 @@ void mif_init (mif_index_t *self, mif_distance_function_t distfunc,
 /** free allocated memory */
 void mif_free (mif_index_t *self);
 
-/* init distance function for query */ 
+/** init distance function for query */ 
 void mif_init_index (mif_index_t *self, mif_files_t *db);
+
+/** init and allocate posting lists */
+void mif_pl_init(mif_postinglist_t *pl, int ki, int kpl);
 
 /** bulk load new data and index it
     

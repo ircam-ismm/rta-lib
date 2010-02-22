@@ -81,9 +81,9 @@ int main (int argc, char *argv[])
     mifdb_open(&mifdb, dbname);
 
     nfiles = argc;
-    infile = (disco_file_t *)	     alloca(nfiles * sizeof(disco_file_t));
-    base   = (disco_file_header_t *) alloca(nfiles * sizeof(void *));
-    ndata  = (int *)		     alloca(nfiles * sizeof(int));
+    infile = (disco_file_t *) alloca(nfiles * sizeof(disco_file_t));
+    base   = (void *)	      alloca(nfiles * sizeof(disco_file_header_t *));
+    ndata  = (int *)	      alloca(nfiles * sizeof(int));
 
     /* open DISCO input files */
     for (i = 0; i < nfiles; i++)

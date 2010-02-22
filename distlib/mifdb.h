@@ -50,7 +50,7 @@ int mifdb_begin_transaction (mifdb_t *database);
 int mifdb_commit_transaction (mifdb_t *database);
 
 int mifdb_add_file (mifdb_t *database, int index, const char *filename, int nobj);
-int mifdb_get_file (mifdb_t *database, int *index, const unsigned char **filename, int *nobj);
+int mifdb_get_file (mifdb_t *database, int *index, const char **filename, int *nobj);
 
 int mifdb_add_refobj (mifdb_t *database, int index, const mif_object_t *obj);
 int mifdb_get_refobj (mifdb_t *database, int *index, mif_object_t *obj);

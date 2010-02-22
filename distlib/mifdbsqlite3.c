@@ -314,7 +314,7 @@ int mifdb_add_file (mifdb_t *database, int index, const char *filename, int nobj
     return 1;
 }
 /* get file from open db */
-int mifdb_get_file (mifdb_t *database, int *index, const unsigned char **filename, int *nobj)
+int mifdb_get_file (mifdb_t *database, int *index, const char **filename, int *nobj)
 {
     mifdbsqlite_t *db = (mifdbsqlite_t *) database;
     sqlite3_stmt  *stmt = db->getfile;
@@ -322,7 +322,7 @@ int mifdb_get_file (mifdb_t *database, int *index, const unsigned char **filenam
     if (mifdbsqlite3_step(db, stmt))
     {
 	*index    = sqlite3_column_int (stmt, 0);
-	*filename = sqlite3_column_text(stmt, 1);
+	*filename = (const char *) sqlite3_column_text(stmt, 1);
 	*nobj     = sqlite3_column_int (stmt, 2);
 	return 1;
     }
