@@ -111,7 +111,7 @@ miftex:
 
 MIFREPOSITORY = http://trac.ircam.fr/repos/imtr-libs/tags/mif-$(MIFVERSION)
 miftag:
-	svn remove -m 'overwrite tag $(MIFVERSION)' $(MIFREPOSITORY)
+	-svn remove -m 'overwrite tag $(MIFVERSION)' $(MIFREPOSITORY)
 	svn copy -m 'tagging metric inverted file index distribution $(MIFVERSION)' . $(MIFREPOSITORY)
 
 mifdist: miftag

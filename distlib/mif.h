@@ -65,7 +65,7 @@ The complexities are then
 
 \subsection v0_8 v0.8 23.02.2010
 	- Use zlib for compression of postinglists in sqlite database, reduces db size to 1/3
-	- DB is read entirely into memory by the mifquery program (uses up to 2.4 kB/obj, i.e. 2.4 GB of memory for 1M objects).
+	- DB is read entirely into memory by the mifquery program (uses up to 1.2 kB/obj, i.e. 1.2 GB of memory for 1M objects).
 
 \subsection v0_7 v0.7 22.02.2010
 	- persistent storage of MIF index in sqlite database
@@ -74,6 +74,92 @@ The complexities are then
 	- don't load db into memory for query, but access postinglist bins from db
 	- don't open all data disco files at once but only when accessed (for indexing query object by refobjs)
 	- even better: store refobj data vectors in a separate data file, so NO data file needs to be accessed for querying!
+
+
+\section performance Performance Mesurements v0.7 vs. v0.8 (...z.log)
+
+\subsection build Time for Building Index
+
+<pre>
+testindex10k.log:    time for building of index = 3.420000 s, 0.000342 s / obj
+testindex10kz.log:   time for building of index = 3.410000 s, 0.000341 s / obj
+testindex100k.log:   time for building of index = 157.059998 s, 0.001571 s / obj
+testindex100kz.log:  time for building of index = 171.610001 s, 0.001716 s / obj
+testindex500k.log:   time for building of index = 1832.589966 s, 0.003665 s / obj
+testindex500kz.log:  time for building of index = 1876.540039 s, 0.003753 s / obj
+testindex1000k.log:  time for building of index = 6316.720215 s, 0.006317 s / obj
+testindex1000kz.log: time for building of index = 6290.030273 s, 0.006290 s / obj
+</pre>
+
+
+\subsection dump Time for Dumping Index to Database
+
+<pre>
+testindex10k.log:    time for dumping index = 0.180000 s, 0.000018 s / obj
+testindex10kz.log:   time for dumping index = 1.630000 s, 0.000163 s / obj
+testindex100k.log:   time for dumping index = 3.380000 s, 0.000034 s / obj
+testindex100kz.log:  time for dumping index = 31.250000 s, 0.000312 s / obj
+testindex500k.log:   time for dumping index = 7.570048 s, 0.000015 s / obj
+testindex500kz.log:  time for dumping index = 67.499901 s, 0.000135 s / obj
+testindex1000k.log:  time for dumping index = 21.319679 s, 0.000021 s / obj
+testindex1000kz.log: time for dumping index = 178.099716 s, 0.000178 s / obj
+</pre>
+
+
+\subsection load Time for Loading Index from Database
+
+<pre>
+testquery10k.log:   time for loading index = 0.030000 s, 0.000003 s / obj
+testquery10z.log:   time for loading index = 0.120000 s, 0.000012 s / obj
+testquery100k.log:  time for loading index = 0.970000 s, 0.000010 s / obj
+testquery100z.log:  time for loading index = 2.820000 s, 0.000028 s / obj
+testquery500k.log:  time for loading index = 2.730000 s, 0.000005 s / obj
+testquery500z.log:  time for loading index = 6.590000 s, 0.000013 s / obj
+testquery1000k.log: time for loading index = 7.210000 s, 0.000007 s / obj
+testquery1000z.log: time for loading index = 11.100000 s, 0.000011 s / obj
+</pre>
+
+
+\subsection query Time for Querying
+
+<pre>
+testquery10k.log:   time for 100 queries = 0.340000 s, 0.003400 s / queryobj
+testquery10z.log:   time for 100 queries = 0.300000 s, 0.003000 s / queryobj
+testquery100k.log:  time for 100 queries = 7.570000 s, 0.075700 s / queryobj
+testquery100z.log:  time for 100 queries = 7.490000 s, 0.074900 s / queryobj
+testquery500k.log:  time for 100 queries = 17.570000 s, 0.175700 s / queryobj
+testquery500z.log:  time for 100 queries = 15.470000 s, 0.154700 s / queryobj
+testquery1000k.log: time for 100 queries = 68.769997 s, 0.687700 s / queryobj
+testquery1000z.log: time for 100 queries = 60.410000 s, 0.604100 s / queryobj
+</pre>
+
+
+\subsection space Size of Index Structure in Memory
+
+<pre>
+testindex10kz.log:   TOTAL    4.004000 MB =    4004000 B (20020 B/refobj, 400.399994 B/obj)
+testindex100kz.log:  TOTAL  125.830408 MB =  125830408 B (199098 B/refobj, 1258.304077 B/obj)
+testindex500kz.log:  TOTAL  398.893288 MB =  398893288 B (282102 B/refobj, 797.786560 B/obj)
+testindex1000kz.log: TOTAL 1198.917552 MB = 1198917552 B (599458 B/refobj, 1198.917480 B/obj)
+</pre>
+
+
+\subsection acc Simulated Number of Pages Accessed for Querying
+
+<pre>
+testquery10z.log:   #bytes accessed in zipped index:    12.159480 MB = 2968 blocks of 4096
+testquery10z.log:   #bytes accessed in optimal index:   20.146384 MB = 4918 blocks of 4096
+testquery10z.log:   #bytes accessed in index:           40.212768 MB = 9817 blocks of 4096
+testquery100z.log:  #bytes accessed in zipped index:   116.033352 MB = 28328 blocks of 4096
+testquery100z.log:  #bytes accessed in optimal index:  186.884948 MB = 45626 blocks of 4096
+testquery100z.log:  #bytes accessed in index:          373.517096 MB = 91190 blocks of 4096
+testquery500z.log:  #bytes accessed in zipped index:   187.737304 MB = 45834 blocks of 4096
+testquery500z.log:  #bytes accessed in optimal index:  314.145432 MB = 76695 blocks of 4096
+testquery500z.log:  #bytes accessed in index:          628.130864 MB = 153352 blocks of 4096
+testquery1000z.log: #bytes accessed in zipped index:   789.029648 MB = 192634 blocks of 4096
+testquery1000z.log: #bytes accessed in optimal index: 2022.288396 MB = 493722 blocks of 4096
+testquery1000z.log: #bytes accessed in index:         4044.336792 MB = 987386 blocks of 4096
+</pre>
 
 */
 

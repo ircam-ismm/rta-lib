@@ -21,7 +21,7 @@ select refobjid, binindex, size, quote(entries) from postinglist where refobjid 
 select refobjid, binindex, size, length(entries), round(length(entries) / (size * 8.0) * 100) as compression, quote(entries) from postinglist where refobjid <= 1;
 </code>
 
-
+\todo move mifdb_dump, mifdb_read into new file mifdb.c (mif index-struct dependent code), keep mifdbsqlite3.c independent from mif.h
 
 Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 */
@@ -225,7 +225,7 @@ int mifdb_begin_write (mifdb_t *database, int maxpl)
 {
     mifdbsqlite_t *db = (mifdbsqlite_t *) database;
 
-    db->complen = maxpl * sizeof(mif_object_t);
+    db->complen = maxpl * sizeof(mif_object_t) + 8; /* 8 B buffer for zlib markage */
     db->compbuf = malloc(db->complen);
 
     /* compile statements for later */
