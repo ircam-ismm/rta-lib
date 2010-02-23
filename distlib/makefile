@@ -1,15 +1,16 @@
 
-doc:
-	doxygen distlib.doxyfile; $(MAKE) tex
-tex:
-	make -C doc/latex/
-
 MIFVERSION = 0.8
 z	   = z
 CFLAGS	   = -g -O3 -Wall -DMIFVERSION=$(MIFVERSION) -DUSE_ZLIB=1 -I. -I..
 data       = data
 
 mif:	mifclean discotrunc mifindex mifquery mifindex-test mifquery-test
+
+# other distlib stuff
+doc:
+	doxygen distlib.doxyfile; $(MAKE) tex
+tex:
+	make -C doc/latex/
 
 mifindex-test:	mifindex
 	/usr/bin/time ./mifindex -1 -1 testindex.db$z DescFile.4001 DescFile.4001 DescFile.4001
@@ -116,11 +117,11 @@ miftag:
 
 MIFFILES = mif.c mif.h mifhash.h mifquery.c mifindex.c mifdb.h mifdbsqlite3.c \
 	   discodist.c discodist.h discofile.c discofile.h discotrunc.c \
-	   mif.doxyfile makefile rta_configuration.h
+	   mif.doxyfile makefile rta_configuration.h miftools.h
 RTAFILES = rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
 
-mifdist: miftag
-	tar --dereference cvfz mif-$(MIFVERSION)-src.tar.gz $(MIFFILES) -C .. $(RTAFILES)
+mifdist: 
+	tar cvfz mif-$(MIFVERSION)-src.tar.gz --dereference $(MIFFILES) -C .. $(RTAFILES)
 
 PUBLISH_ROOT      = DISCO/mifdoc
 PUBLISH_FILES	  = mifdoc/html/\*
