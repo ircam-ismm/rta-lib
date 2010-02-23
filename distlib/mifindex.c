@@ -27,9 +27,18 @@ usage: mifindex nref ki database-name input-file-names...\n\
 
 static int mifdb_dump (mifdb_t *mifdb, mif_index_t *mif, disco_file_t *infile)
 {
-    int i, j, ok;
-    
-    ok = mifdb_begin_transaction(mifdb);
+    int i, j, ok = 0;
+    int maxpl = 0;
+
+#if USE_ZLIB
+    /* find maximum length of posting list bin for compression buffer */
+    for (i = 0; i < mif->numref; i++)
+	for (j = 0; j < mif->ki; j++)
+	    if (mif->pl[i].bin[j].num > maxpl)
+		maxpl = mif->pl[i].bin[j].num;
+#endif
+
+    ok = mifdb_begin_write(mifdb, maxpl);
 
     for (i = 0; ok  &&  i < mif->files->nbase; i++)
 	ok &= mifdb_add_file(mifdb, i, infile[i].filename, mif->files->numbaseobj[i]);
@@ -43,7 +52,7 @@ static int mifdb_dump (mifdb_t *mifdb, mif_index_t *mif, disco_file_t *infile)
 					mif->pl[i].bin[j].num, 
 					mif->pl[i].bin[j].obj);
 
-    ok &= mifdb_commit_transaction(mifdb);
+    ok &= mifdb_end_write(mifdb);
 
     return ok;
 }

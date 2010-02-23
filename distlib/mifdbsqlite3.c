@@ -11,12 +11,14 @@ Creates an sqlite database.
 Useful queries in sqlite3 testindex.db:
 
 .headers on
-.mode tabs
-select nrefobj, ki, ndim, descrid, count(numobj), sum(numobj) from indexparams, discofile;
+.mode columns
+select *, count(numobj), sum(numobj) from indexparams, discofile;
 select * from discofile;
 select sum(size), min(size), max(size), avg(size) from postinglist;
 
-select * from postinglist where refobjid = 0 and binindex = 0;
+select refobjid, binindex, size, quote(entries) from postinglist where refobjid = 0;
+select refobjid, binindex, size, length(entries), round(length(entries) / (size * 8.0) * 100) as compression, quote(entries) from postinglist where refobjid <= 1;
+
 
 
 
@@ -24,9 +26,14 @@ Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 */
 
 
+#include <assert.h>
 #include <string.h>
 #include <sqlite3.h>
 #include "mifdb.h"
+
+#if USE_ZLIB
+#include <zlib.h>
+#endif
 
 
 #define DEBUG_MIFDB	0
@@ -194,6 +201,7 @@ int mifdb_begin_read (mifdb_t *database)
 {
     mifdbsqlite_t *db = (mifdbsqlite_t *) database;
 
+    /* compile statements for later */
     if (!mifdbsqlite3_prepare(db, getfile,   &db->getfile))	return 0;
     if (!mifdbsqlite3_prepare(db, getrefobj, &db->getrefobj))	return 0;
     if (!mifdbsqlite3_prepare(db, getpl,     &db->getpl))	return 0;
@@ -208,6 +216,34 @@ int mifdb_end_read (mifdb_t *database)
     if (sqlite3_finalize(db->getfile)   != SQLITE_OK)	return 0;
     if (sqlite3_finalize(db->getrefobj) != SQLITE_OK)	return 0;
     if (sqlite3_finalize(db->getpl)     != SQLITE_OK)	return 0;
+
+    return mifdb_commit_transaction(database);
+}
+
+int mifdb_begin_write (mifdb_t *database, int maxpl)
+{
+    mifdbsqlite_t *db = (mifdbsqlite_t *) database;
+
+    db->complen = maxpl * sizeof(mif_object_t);
+    db->compbuf = malloc(db->complen);
+
+    /* compile statements for later */
+    if (!mifdbsqlite3_prepare(db, insfile,   &db->insfile))	return 0;
+    if (!mifdbsqlite3_prepare(db, insrefobj, &db->insrefobj))	return 0;
+    if (!mifdbsqlite3_prepare(db, inspl,     &db->inspl))	return 0;
+
+    return mifdb_begin_transaction(database);
+}
+
+int mifdb_end_write (mifdb_t *database)
+{
+    mifdbsqlite_t *db = (mifdbsqlite_t *) database;
+
+    if (sqlite3_finalize(db->insfile)   != SQLITE_OK)	return 0;
+    if (sqlite3_finalize(db->insrefobj) != SQLITE_OK)	return 0;
+    if (sqlite3_finalize(db->inspl)     != SQLITE_OK)	return 0;
+
+    free (db->compbuf);
 
     return mifdb_commit_transaction(database);
 }
@@ -269,14 +305,7 @@ int mifdb_create (mifdb_t *database, const char *dbname, int nref, int ki, int n
     sqlite3_bind_int (stmt, 6, descrid);
 
     if (!mifdbsqlite3_update(db, stmt))				return 0;
-    sqlite3_finalize(stmt);
-
-    /* compile statements for later */
-    if (!mifdbsqlite3_prepare(db, insfile,   &db->insfile))	return 0;
-    if (!mifdbsqlite3_prepare(db, insrefobj, &db->insrefobj))	return 0;
-    if (!mifdbsqlite3_prepare(db, inspl,     &db->inspl))	return 0;
-
-    return 1;
+    return sqlite3_finalize(stmt) == SQLITE_OK;
 }
 
 /* get parameters from db */
@@ -372,27 +401,50 @@ int mifdb_add_postinglist (mifdb_t *database, int index, int binindex, int size,
     sqlite3_bind_int (db->inspl, 1, index);
     sqlite3_bind_int (db->inspl, 2, binindex);
     sqlite3_bind_int (db->inspl, 3, size);
+#if USE_ZLIB
+    {
+	uLongf complen = db->complen;
+	if (compress(db->compbuf, &complen, (const Bytef *) obj, size * sizeof(mif_object_t)) != Z_OK)
+	{
+	    rta_post("compression error!\n");
+	    return 0;
+	}
+	sqlite3_bind_blob(db->inspl, 4, db->compbuf, complen, SQLITE_STATIC);
+    }
+#else
     sqlite3_bind_blob(db->inspl, 4, obj, size * sizeof(mif_object_t), SQLITE_STATIC);
- 
+#endif 
     if (!mifdbsqlite3_update(db, db->inspl))		return 0;
 
     return 1;
 }
 
 /* get postinglist from open db */
-int mifdb_get_postinglist (mifdb_t *database, int *index, int *binindex, int *size, int *bytes, mif_object_t **entries)
+int mifdb_get_postinglist (mifdb_t *database, int *index, int *binindex, int *num, int *bytes, mif_object_t **entries)
 {
     mifdbsqlite_t *db = (mifdbsqlite_t *) database;
     sqlite3_stmt  *stmt = db->getpl;
-    
+    const char	  *blob;
+
     if (mifdbsqlite3_step(db, stmt))
     {
 	*index     = sqlite3_column_int(stmt, 0);
 	*binindex  = sqlite3_column_int(stmt, 1);
-	*size      = sqlite3_column_int(stmt, 2);
-	*entries   = (mif_object_t *) sqlite3_column_blob(stmt, 3);
+	*num       = sqlite3_column_int(stmt, 2);
+	blob       = sqlite3_column_blob(stmt, 3);
 	*bytes     = sqlite3_column_bytes(stmt, 3);
-
+	*entries   = rta_malloc(*num * sizeof(mif_object_t));
+#if USE_ZLIB
+	{   /* decompress into allocated pl bin */
+	    uLongf complen = *num * sizeof(mif_object_t);
+	    if (uncompress((Bytef *) *entries, &complen, (const Bytef *) blob, *bytes) != Z_OK)
+		return 0;
+	    assert(complen == *num * sizeof(mif_object_t));
+	}
+#else
+	/* copy given num. objects */
+	memcpy(*entries, blob, *num * sizeof(mif_object_t));
+#endif 	
 	return 1;
     }
     else

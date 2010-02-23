@@ -84,8 +84,7 @@ static int mifdb_read (mifdb_t *mifdb, mif_index_t *mif)
 		mif->pl[indref].size += num;
 		bin->num   = num;
 		bin->alloc = bytes / sizeof(mif_object_t);  /* store used space for blob (rounded to object size) */
-		bin->obj   = rta_malloc(bytes);
-		memcpy(bin->obj, entries, bytes);
+		bin->obj   = entries;
 	    }
 	}
     }

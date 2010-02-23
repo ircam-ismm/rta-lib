@@ -22,9 +22,11 @@ extern "C" {
 /* sqlite-specific db struct */
 typedef struct _mifdbsqlite
 {
-    sqlite3	 *sqlite3db;
-    sqlite3_stmt *insfile, *insrefobj, *inspl;
-    sqlite3_stmt *getfile, *getrefobj, *getpl;
+    sqlite3	  *sqlite3db;
+    sqlite3_stmt  *insfile, *insrefobj, *inspl;
+    sqlite3_stmt  *getfile, *getrefobj, *getpl;
+    size_t	   complen;
+    unsigned char *compbuf;
 } mifdbsqlite_t;
 
 
@@ -40,6 +42,8 @@ int mifdb_open (mifdb_t *database, const char *dbname);
 int mifdb_close (mifdb_t *database);
 int mifdb_begin_read (mifdb_t *database);
 int mifdb_end_read (mifdb_t *database);
+int mifdb_begin_write (mifdb_t *database, int maxpl);
+int mifdb_end_write (mifdb_t *database);
 
 int mifdb_create(mifdb_t *database, const char *dbname, int nref, int ki, int ndim, int descrid);
 
