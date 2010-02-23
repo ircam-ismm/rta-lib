@@ -37,20 +37,20 @@ mifquery-test:	mifquery
 	/usr/bin/time ./mifquery -1 -1 testindex.db$z DescFile.4001 10 5
 
 mifquery-all:	mifquery
-	/usr/bin/time ./mifquery -1 -1 ${data}/testindex10k.db$z   QueryData.4001 100 20 result10.txt   2>&1| tee testquery10k$z.log   &
-	/usr/bin/time ./mifquery -1 -1 ${data}/testindex100k.db$z  QueryData.4001 100 20 result100.txt  2>&1| tee testquery100k$z.log  &
-	/usr/bin/time ./mifquery 100 5 ${data}/testindex500k.db$z  QueryData.4001 100 20 result500.txt  2>&1| tee testquery500k$z.log  &
-	/usr/bin/time ./mifquery 150 5 ${data}/testindex1000k.db$z QueryData.4001 100 20 result1000.txt 2>&1| tee testquery1000k$z.log &
+	/usr/bin/time ./mifquery -1 -1 ${data}/testindex10k.db$z   QueryData.4001 100 20 result10$z.txt   2>&1| tee testquery10k$z.log   &
+	/usr/bin/time ./mifquery -1 -1 ${data}/testindex100k.db$z  QueryData.4001 100 20 result100$z.txt  2>&1| tee testquery100k$z.log  &
+	/usr/bin/time ./mifquery 100 5 ${data}/testindex500k.db$z  QueryData.4001 100 20 result500$z.txt  2>&1| tee testquery500k$z.log  &
+	/usr/bin/time ./mifquery 150 5 ${data}/testindex1000k.db$z QueryData.4001 100 20 result1000$z.txt 2>&1| tee testquery1000k$z.log &
 
 
 mif10:	mifquery								       
-	/usr/bin/time ./mifquery -1 -1  ${data}/testindex10k.db$z   QueryData.4001 100 20 result10.txt   2>&1| tee log10.txt
+	/usr/bin/time ./mifquery -1 -1  ${data}/testindex10k.db$z   QueryData.4001 100 20 result10$z.txt   2>&1| tee testquery10$z.log
 mif100:	mifquery}			
-	/usr/bin/time ./mifquery -1 -1  ${data}/testindex100k.db$z  QueryData.4001 100 20 result100.txt  2>&1| tee log100.txt
+	/usr/bin/time ./mifquery -1 -1  ${data}/testindex100k.db$z  QueryData.4001 100 20 result100$z.txt  2>&1| tee testquery100$z.log
 mif500:	mifquery			
-	/usr/bin/time ./mifquery  100 5 ${data}/testindex500k.db$z  QueryData.4001 100 20 result500.txt  2>&1| tee log500.txt
+	/usr/bin/time ./mifquery  100 5 ${data}/testindex500k.db$z  QueryData.4001 100 20 result500$z.txt  2>&1| tee testquery500$z.log
 mif1000: mifquery			
-	/usr/bin/time ./mifquery  150 5 ${data}/testindex1000k.db$z QueryData.4001 100 20 result1000.txt 2>&1| tee log1000.txt
+	/usr/bin/time ./mifquery  150 5 ${data}/testindex1000k.db$z QueryData.4001 100 20 result1000$z.txt 2>&1| tee testquery1000$z.log
 
 mifprof mifprofile:
 	/usr/bin/time ./mifquery -1 -1 DescFile.4001 DescFile.4001 100 5 result.txt \
