@@ -114,8 +114,13 @@ miftag:
 	-svn remove -m 'overwrite tag $(MIFVERSION)' $(MIFREPOSITORY)
 	svn copy -m 'tagging metric inverted file index distribution $(MIFVERSION)' . $(MIFREPOSITORY)
 
+MIFFILES = mif.c mif.h mifhash.h mifquery.c mifindex.c mifdb.h mifdbsqlite3.c \
+	   discodist.c discodist.h discofile.c discofile.h discotrunc.c \
+	   mif.doxyfile makefile rta_configuration.h
+RTAFILES = rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
+
 mifdist: miftag
-	tar cvfz mif-$(MIFVERSION)-src.tar.gz mif.c mif.h mifhash.h mifquery.c makefile rta_configuration.h -C .. rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
+	tar cvfz mif-$(MIFVERSION)-src.tar.gz $(MIFFILES) -C .. $(RTAFILES)
 
 PUBLISH_ROOT      = DISCO/mifdoc
 PUBLISH_FILES	  = mifdoc/html/\*
