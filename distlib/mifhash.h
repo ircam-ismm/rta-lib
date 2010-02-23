@@ -1,3 +1,13 @@
+/**
+@file	mifhash.h
+@author	Diemo Schwarz
+@date	19.1.2010
+@brief  Hash table
+
+Optimised hash table for query accumulator.  Based on FTS hashtable.c.
+
+Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
+*/
 
 #ifndef _MIF_HASH_H_
 #define _MIF_HASH_H_

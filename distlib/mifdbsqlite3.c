@@ -8,8 +8,9 @@ Implementation of the interface for persistent storage of a MIF index on sqlite3
 
 Creates an sqlite database.  
 
-Useful queries in sqlite3 testindex.db:
+Useful queries for sqlite3 testindex.db:
 
+<code>
 .headers on
 .mode columns
 select *, count(numobj), sum(numobj) from indexparams, discofile;
@@ -18,7 +19,7 @@ select sum(size), min(size), max(size), avg(size) from postinglist;
 
 select refobjid, binindex, size, quote(entries) from postinglist where refobjid = 0;
 select refobjid, binindex, size, length(entries), round(length(entries) / (size * 8.0) * 100) as compression, quote(entries) from postinglist where refobjid <= 1;
-
+</code>
 
 
 
@@ -41,28 +42,8 @@ Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 
 /* sql commands to create schema */
 static const char *create = "\n\
-drop table if exists discofile;						\n\
-create table discofile (						\n\
-  fileid	integer primary key,					\n\
-  filename	text,    						\n\
-  numobj	integer 						\n\
-);									\n\
-drop table if exists refobj;						\n\
-create table refobj (							\n\
-  refobjid	integer primary key,					\n\
-  fileid	integer references discofile (fileid),			\n\
-  objid		integer 						\n\
-);									\n\
-drop table if exists postinglist;					\n\
-create table postinglist (						\n\
-  refobjid	integer references refobj (refobjid),			\n\
-  binindex	integer, 						\n\
-  size		integer, /* number of entries */			\n\
-  entries	blob,    /* (compressed) array of (fileid, index) */	\n\
-  unique (refobjid, binindex)						\n\
-);									\n\
 drop table if exists indexparams;					\n\
-create table indexparams (						\n\
+create table indexparams ( /* parameters of index building */		\n\
   name		text,							\n\
   date		time,							\n\
   mifversion	decimal,						\n\
@@ -70,6 +51,26 @@ create table indexparams (						\n\
   ki		integer, 						\n\
   ndim		integer, 						\n\
   descrid	integer 						\n\
+);									\n\
+drop table if exists discofile;						\n\
+create table discofile ( /* data file names and number of vectors */	\n\
+  fileid	integer primary key,					\n\
+  filename	text,    						\n\
+  numobj	integer 						\n\
+);									\n\
+drop table if exists refobj;						\n\
+create table refobj ( /* reference objects 0..nrefobj-1 */		\n\
+  refobjid	integer primary key,					\n\
+  fileid	integer references discofile (fileid),			\n\
+  objid		integer 						\n\
+);									\n\
+drop table if exists postinglist;					\n\
+create table postinglist ( /* posting list bins per refobj and order */ \n\
+  refobjid	integer references refobj (refobjid),			\n\
+  binindex	integer, 						\n\
+  size		integer, /* number of entries */			\n\
+  entries	blob,    /* (compressed) array of (fileid, index) */	\n\
+  unique (refobjid, binindex)						\n\
 );									\n\
 ";
 

@@ -11,7 +11,7 @@ Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 
 @author	 Diemo Schwarz
 @date	 21.11.2009
-@version 0.5
+@version 0.8
 
 @brief	Library for an index on metric spaces using inverted files
 
@@ -59,6 +59,21 @@ The complexities are then
 - Number of posting list accesses for searching: 
 	\f$  O\left( \frac{k_s \cdot (2 mpd + 1) \cdot n_{data}}{n_{ref}} \right) 
 	  =  O\left( k_s \cdot (2 mpd + 1) \cdot \frac{1}{\alpha} \sqrt{n_{data}} \right) \f$
+
+
+\section versions Version History
+
+\subsection v0_8 v0.8 23.02.2010
+	- Use zlib for compression of postinglists in sqlite database, reduces db size to 1/3
+	- DB is read entirely into memory by the mifquery program (uses up to 2.4 kB/obj, i.e. 2.4 GB of memory for 1M objects).
+
+\subsection v0_7 v0.7 22.02.2010
+	- persistent storage of MIF index in sqlite database
+
+\todo
+	- don't load db into memory for query, but access postinglist bins from db
+	- don't open all data disco files at once but only when accessed (for indexing query object by refobjs)
+	- even better: store refobj data vectors in a separate data file, so NO data file needs to be accessed for querying!
 
 */
 

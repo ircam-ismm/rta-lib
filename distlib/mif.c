@@ -272,6 +272,8 @@ static int mif_choose_refobj (mif_index_t *self, mif_files_t *files)
   dist[k]	out: distance between obj and refobj indx[i]
 
   @return	number k of reference objects found (k <= ki)
+
+  \todo use priority heap 
 */ 
 static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
 			     /*out*/ int *indx, rta_real_t *dist)
@@ -286,6 +288,7 @@ static int mif_index_object (mif_index_t *self, mif_object_t *newobj, int k,
     {
 	rta_real_t d = (*self->distance)(self->distance_private, &self->refobj[r], newobj);
 	    
+	/**  \todo use priority heap */
 	if (d <= dist[kmax]) 
 	{   /* return original index in data and distance */
 	    int pos = kmax;	/* where to insert */
@@ -496,7 +499,7 @@ int mif_search_knn (mif_index_t *self, mif_object_t *query, int k,
     rta_post("  dist of %d hashed obj: ", hash.count);
 #endif
 
-    /* iterate through hash and pick k lowest distances */
+    /* iterate through hash and pick k lowest distances */ /** \todo use priority heap */
     for (r = 1; r <= hash.count; r++)
     {
 	int  dtrans;
