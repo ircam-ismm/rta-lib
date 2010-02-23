@@ -120,7 +120,7 @@ MIFFILES = mif.c mif.h mifhash.h mifquery.c mifindex.c mifdb.h mifdbsqlite3.c \
 RTAFILES = rta.h rta_stdio.h rta_stdlib.h rta_util.{c,h} rta_types.h rta_math.h
 
 mifdist: miftag
-	tar cvfz mif-$(MIFVERSION)-src.tar.gz $(MIFFILES) -C .. $(RTAFILES)
+	tar --dereference cvfz mif-$(MIFVERSION)-src.tar.gz $(MIFFILES) -C .. $(RTAFILES)
 
 PUBLISH_ROOT      = DISCO/mifdoc
 PUBLISH_FILES	  = mifdoc/html/\*

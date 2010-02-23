@@ -120,7 +120,7 @@ testquery1000z.log: time for loading index = 11.100000 s, 0.000011 s / obj
 </pre>
 
 
-\subsection query Time for Querying
+\subsection query Time for Querying 20-NN
 
 <pre>
 testquery10k.log:   time for 100 queries = 0.340000 s, 0.003400 s / queryobj
@@ -131,16 +131,6 @@ testquery500k.log:  time for 100 queries = 17.570000 s, 0.175700 s / queryobj
 testquery500z.log:  time for 100 queries = 15.470000 s, 0.154700 s / queryobj
 testquery1000k.log: time for 100 queries = 68.769997 s, 0.687700 s / queryobj
 testquery1000z.log: time for 100 queries = 60.410000 s, 0.604100 s / queryobj
-</pre>
-
-
-\subsection space Size of Index Structure in Memory
-
-<pre>
-testindex10kz.log:   TOTAL    4.004000 MB =    4004000 B (20020 B/refobj, 400.399994 B/obj)
-testindex100kz.log:  TOTAL  125.830408 MB =  125830408 B (199098 B/refobj, 1258.304077 B/obj)
-testindex500kz.log:  TOTAL  398.893288 MB =  398893288 B (282102 B/refobj, 797.786560 B/obj)
-testindex1000kz.log: TOTAL 1198.917552 MB = 1198917552 B (599458 B/refobj, 1198.917480 B/obj)
 </pre>
 
 
@@ -159,6 +149,30 @@ testquery500z.log:  #bytes accessed in index:          628.130864 MB = 153352 bl
 testquery1000z.log: #bytes accessed in zipped index:   789.029648 MB = 192634 blocks of 4096
 testquery1000z.log: #bytes accessed in optimal index: 2022.288396 MB = 493722 blocks of 4096
 testquery1000z.log: #bytes accessed in index:         4044.336792 MB = 987386 blocks of 4096
+</pre>
+
+
+\subsection space Size of Index Structure in Memory
+
+<pre>
+testindex10kz.log:   TOTAL    4.004000 MB =    4004000 B (20020 B/refobj, 400.399994 B/obj)
+testindex100kz.log:  TOTAL  125.830408 MB =  125830408 B (199098 B/refobj, 1258.304077 B/obj)
+testindex500kz.log:  TOTAL  398.893288 MB =  398893288 B (282102 B/refobj, 797.786560 B/obj)
+testindex1000kz.log: TOTAL 1198.917552 MB = 1198917552 B (599458 B/refobj, 1198.917480 B/obj)
+</pre>
+
+
+\subsection dbsize Size of Index in Database File
+
+<pre>
+   5.2M data/testindex10k.db
+   1.8M data/testindex10k.dbz
+ 146.1M data/testindex100k.db
+  58.3M data/testindex100k.dbz
+ 429.1M data/testindex500k.db
+ 153.5M data/testindex500k.dbz
+1224.7M data/testindex1000k.db
+ 228.5M data/testindex1000k.dbz
 </pre>
 
 */
