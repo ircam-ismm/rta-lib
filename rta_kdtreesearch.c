@@ -121,17 +121,17 @@ rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1,
     int i;
     rta_real_t sum = 0, sqrtsum = 0;
 
-    for (i = 0; i < ndim; i++) 
-	if (sigma[i] > 0)
-	{
-	    rta_real_t diff = (v2[i] - v1[i]) / sigma[i];
-	    sum += diff * diff;
-
-	    rta_post("rta_weighted_euclidean_distance %d (%f - %f)  ->  %f sum d^2 %f sum %f\n",
-		     i, v2[i], v1[i], diff, sum, sqrt(sum));
-	}
-    sqrtsum = sqrt(sum); 
-    return sqrtsum;
+  for (i = 0; i < ndim; i++) 
+    if (sigma[i] > 0)
+    {
+      rta_real_t diff = (v2[i] - v1[i]) / sigma[i];
+      sum += diff * diff;
+      
+      rta_post("rta_weighted_euclidean_distance %d (%f - %f)  ->  %f sum d^2 %f sum %f\n",
+               i, v2[i], v1[i], diff, sum, sqrt(sum));
+    }
+  sqrtsum = sqrt(sum); 
+  return sqrtsum;
 }
 
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
