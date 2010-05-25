@@ -1,14 +1,20 @@
 /**
 @file	mifdbsqlite3.c
+@brief	Metric Inverted File Index Database
 @author	Diemo Schwarz
 @date	11.2.2010
-@brief	Metric Inverted File Index Database
 
 Implementation of the interface for persistent storage of a MIF index on sqlite3.
 
 Creates an sqlite database.  
 
-Useful queries for sqlite3 testindex.db:
+Note that postinglists are stored as a (compressed) blob of
+mif_object_t in field \a entries.
+This eliminates the memory disadvantage of the design decision to
+identify objects by a base (sound file) index and an object (audio
+frame vector) index in mif_object_t.
+
+\section queries Useful queries for sqlite3 testindex.db:
 
 <code>
 .headers on
@@ -40,7 +46,7 @@ Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 #define DEBUG_MIFDB	0
 
 
-/* sql commands to create schema */
+/** sql commands to create schema */
 static const char *create = "\n\
 drop table if exists indexparams;					\n\
 create table indexparams ( /* parameters of index building */		\n\
