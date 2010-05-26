@@ -157,7 +157,7 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
    return: actual number of found neighbours */
 int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride, 
 		       int k, const rta_real_t r, int use_sigma, 
-		       /* out */ rta_real_t *indx, rta_real_t *dist) 
+		       /* out */ kdtree_object_t *indx, rta_real_t *dist) 
 {
     int		kmax         = 0; 	  /* index of current kth neighbour */
     int		leaves_start = t->ninner; /* first leaf node */
@@ -169,7 +169,7 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
     kdtree_stack_t     *s    = &t->stack;
     kdtree_stack_elem_t cur;		  /* current (node, dist) couple */
 
-    if (t->ndata == 0) 
+    if (t->ndatatot == 0) 
 	return 0;
 
     if (k < 1) 

@@ -372,7 +372,7 @@ rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride,
 /* swap positions of vectors i and j: only in indirection array */
 static void swap (kdtree_t* t, int i, int j) 
 {
-    int tmp;
+    kdtree_object_t tmp;
 
     tmp = t->dataindex[i];
     t->dataindex[i] = t->dataindex[j];
@@ -435,14 +435,14 @@ void kdtree_build (kdtree_t* t, int use_sigma)
     int	i, j;		// loop counters
 	
     /* Maximum length is equal to pow2(height-1) */ 
-    if (pow2(t->height - 1) > t->ndata  ||  t->ndim == 0) 
+    if (pow2(t->height - 1) > t->ndatatot  ||  t->ndim == 0) 
     {
-	if (t->ndata == 0) 
+	if (t->ndatatot == 0) 
 	    rta_post("tree is empty!\n");
 	else if (t->ndim == 0) 
 	    rta_post("tree has 0 dimensions!  Can't build!\n");
 	else
-	    rta_post("error: can't build this tree, try with a smaller height: %d > %d\n", pow2(t->height-1), t->ndata);
+	    rta_post("error: can't build this tree, try with a smaller height: %d > %d\n", pow2(t->height-1), t->ndatatot);
 
 	return;
     }

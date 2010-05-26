@@ -55,10 +55,10 @@ void kdtree_info_display (kdtree_t* t)
 #   define MB(b)  ((float) (b) / (float) (1024 * 1024))
 #   define FLT(b) ((b) * sizeof(rta_real_t))
 
-    float mbdata  = MB(FLT(t->ndata));
-    float mbindex = MB(t->ndata       * sizeof(int));
-    float mbstack = MB(t->stack.alloc * sizeof(kdtree_stack_elem_t));
-    float mbnodes = MB(t->nnodes      * sizeof(kdtree_node_t));
+    float mbdata  = MB(FLT(t->ndatatot * t->ndim));
+    float mbindex = MB(t->ndatatot     * sizeof(kdtree_object_t));
+    float mbstack = MB(t->stack.alloc  * sizeof(kdtree_stack_elem_t));
+    float mbnodes = MB(t->nnodes       * sizeof(kdtree_node_t));
     /* inner nodes' mean vectors and splitplanes 
        (these only in hyperplane mode) */
     float mbinner = MB(t->ninner * FLT(t->ndim) * 
@@ -66,8 +66,8 @@ void kdtree_info_display (kdtree_t* t)
 
     rta_post("\nTree Info:\n");
     rta_post("ndim        = %d\n", t->ndim);
-    rta_post("ndata       = %d  (%.3f MB extern alloc size)\n", t->ndata, mbdata);
-    rta_post("nalloc      = %d  (%.3f MB index)\n",  t->ndata, mbindex);
+    rta_post("ndata       = %d  (%.3f MB extern alloc size)\n", t->ndatatot, mbdata);
+    rta_post("nalloc      = %d  (%.3f MB index)\n",  t->ndatatot, mbindex);
     rta_post("maxheight   = %d\n", t->maxheight);
     rta_post("givenheight = %d\n", t->givenheight);
     rta_post("height      = %d\n", t->height);
@@ -83,15 +83,16 @@ void kdtree_info_display (kdtree_t* t)
 
 void kdtree_raw_display (kdtree_t* t) 
 {
-    int i;
+    int i, k;
 
-    if (t->height == 0 || t->ndata == 0) rta_post("Empty Tree\n");
+    if (t->height == 0 || t->ndatatot == 0) rta_post("Empty Tree\n");
 
-    for (i = 0; i < t->ndata; i++) 
-    {
-	rta_post("raw data vec %-3i = ", i);
-	vec_post(kdtree_get_row_ptr(t, i), 1, t->ndim, "\n");
-    }
+    for (k = 0; i < t->nblocks; i++) 
+	for (i = 0; i < t->ndata[k]; i++) 
+	{
+	    rta_post("block %d raw data vec %-3i = ", k, i);
+	    vec_post(kdtree_get_row_ptr(t, k, i), 1, t->ndim, "\n");
+	}
 }
 
 void kdtree_data_display(kdtree_t* t, int print_data) 
@@ -104,7 +105,7 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 	int l, n, i;
 
     rta_post("\nTree Data:\n");
-    if (t->height == 0 || t->ndata == 0) rta_post("Empty Tree\n");
+    if (t->height == 0 || t->ndatatot == 0) rta_post("Empty Tree\n");
 	
     for (l = 0; l < t->height; l++) 
     {
@@ -141,8 +142,8 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 	    rta_post(" = (");
 	    for (i = node->startind; i <= node->endind; i++) 
 	    {
-		rta_post("%svec %d = ", (print_data >= 2  ?  "\n    " : ""),
-			 t->dataindex[i]);
+		rta_post("%svec (%d, %d) = ", (print_data >= 2  ?  "\n    " : ""),
+			 t->dataindex[i].base, t->dataindex[i].index);
 		vec_post(kdtree_get_vector(t, i), 1, t->ndim,
 			 i < node->endind ? ", " : "");
 	    }
@@ -167,12 +168,24 @@ void kdtree_data_display(kdtree_t* t, int print_data)
     else field = in; /* external alloc */ } while (0)
 
 
-int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n)
+int kdtree_set_data (kdtree_t *self, int nblocks, rta_real_t **data, kdtree_object_t *index, 
+		     int *m, int n)
 {
-  int maxheight   = floor(log2(m));
-  int givenheight = self->givenheight;
-  int height      = givenheight > 0  ?  givenheight :  maxheight + givenheight;
-  int i;
+  int maxheight, givenheight, height;
+  int i, k;
+
+  self->data      = data;
+  self->nblocks   = nblocks;
+  self->ndata     = m;
+  self->ndim      = n;
+
+  self->ndatatot  = 0;
+  for (i = 0; i < nblocks; i++)
+    self->ndatatot += self->ndata[i];
+
+  maxheight   = floor(log2(self->ndatatot));
+  givenheight = self->givenheight;
+  height      = givenheight > 0  ?  givenheight :  maxheight + givenheight;
 
   /* clip height */
   if (height > maxheight)
@@ -183,19 +196,19 @@ int kdtree_set_data (kdtree_t *self, rta_real_t *data, int *index, int m, int n)
   self->maxheight = maxheight;
   self->height    = height;
 
-  self->data      = data;
-  self->ndata     = m;
-  self->ndim      = n;
-
   /* init num nodes */
   self->nnodes = pow2(height)     - 1;
   self->ninner = pow2(height - 1) - 1;
 
-  /* init index list */
-  auto_alloc(self->dataindex, index, m);
-  if (index == NULL) /* use indices from outside, if given */
-      for (i = 0; i < m; i++)
-	  self->dataindex[i] = i;
+  /* init original index list */
+  auto_alloc(self->dataindex, index, self->ndatatot);
+  if (index == NULL) /* no indices given, create them ourselves; else: use indices from outside */
+      for (k = 0; k < nblocks; k++)
+	  for (i = 0; i < m[k]; i++)
+	  {
+	      self->dataindex[i].base = k;
+	      self->dataindex[i].index = i;
+	  }
 
   /* init search stack size according to tree height 
      (with heuristic margin of 4 times) */
@@ -221,8 +234,8 @@ void kdtree_init_nodes (kdtree_t* self, kdtree_node_t *nodes, rta_real_t *planes
   if (self->nnodes > 0)
   {   /* init root node */
       self->nodes[0].startind = 0;		   
-      self->nodes[0].endind   = self->ndata - 1;
-      self->nodes[0].size     = self->ndata;
+      self->nodes[0].endind   = self->ndatatot - 1;
+      self->nodes[0].size     = self->ndatatot;
   }
 }
 
