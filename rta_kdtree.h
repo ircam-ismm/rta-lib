@@ -184,7 +184,7 @@ extern const char *kdtree_mmodestr[];
  * @return	data element at row \p i, column \p j
  */
 #if DOXYGEN_FUNCTIONS
-rta_real_t kdtree_get_element(kdtree_t *t, int k, int i, int j);
+rta_real_t kdtree_get_element(kdtree_t *t, int i, int j);
 #else
 #define    kdtree_get_element(t, i, j)  ((t)->data[(t)->dataindex[i].base][(t)->dataindex[i].index * (t)->ndim + (j)])
 #endif

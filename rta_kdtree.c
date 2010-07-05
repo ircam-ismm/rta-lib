@@ -172,7 +172,7 @@ int kdtree_set_data (kdtree_t *self, int nblocks, rta_real_t **data, kdtree_obje
 		     int *m, int n)
 {
   int maxheight, givenheight, height;
-  int i, k;
+  int i, j = 0, k;
 
   self->data      = data;
   self->nblocks   = nblocks;
@@ -204,10 +204,10 @@ int kdtree_set_data (kdtree_t *self, int nblocks, rta_real_t **data, kdtree_obje
   auto_alloc(self->dataindex, index, self->ndatatot);
   if (index == NULL) /* no indices given, create them ourselves; else: use indices from outside */
       for (k = 0; k < nblocks; k++)
-	  for (i = 0; i < m[k]; i++)
+	  for (i = 0; i < m[k]; i++, j++)
 	  {
-	      self->dataindex[i].base = k;
-	      self->dataindex[i].index = i;
+	      self->dataindex[j].base = k;
+	      self->dataindex[j].index = i;
 	  }
 
   /* init search stack size according to tree height 
