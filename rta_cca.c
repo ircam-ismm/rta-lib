@@ -28,7 +28,8 @@ static int
 center_variables(gsl_matrix * X, gsl_matrix * Y)
 {
 	int i, j, k;
-	
+	gsl_vector *left_means;
+	gsl_vector *right_means;
 	int left_m = X->size1;
 	int left_n = X->size2;
 	
@@ -36,9 +37,9 @@ center_variables(gsl_matrix * X, gsl_matrix * Y)
 	int right_n = Y->size2;
 	
 	
-	gsl_vector * left_means = gsl_vector_alloc( left_n);
+	left_means = gsl_vector_alloc( left_n);
 	gsl_vector_set_zero( left_means);
-	gsl_vector * right_means = gsl_vector_alloc( right_n);
+	right_means = gsl_vector_alloc( right_n);
 	gsl_vector_set_zero(right_means);
 	
 	
@@ -244,7 +245,36 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	
 	int i, j, k;
+	gsl_matrix * X;
+    gsl_matrix * Y;
+	gsl_matrix * QX;
+	gsl_matrix * RX;
+	gsl_permutation * PX;
+	gsl_matrix * QY;
+	gsl_matrix * RY;
+	gsl_permutation * PY;	
+	int rankX, rankY, min_ranks;	
+	gsl_matrix * subQX;
+	gsl_matrix * subRX;
+	gsl_matrix * subQY;
+	gsl_matrix * subRY; 
+	int svdm;
+	int svdn;
+	double tmp_sum = 0.;
 	
+	gsl_matrix * M_svd;
+	gsl_vector * S;
+	gsl_matrix * V;
+	gsl_vector * work;
+	gsl_matrix * L2;
+	gsl_matrix * L1;
+	gsl_matrix * ResX;
+	gsl_matrix * invsubRX;
+	gsl_matrix * ResY;
+	gsl_matrix * invsubRY; 
+	gsl_matrix * preA; 
+	gsl_matrix * preB;
+
 	//Condition : same number of observations
 	if ( left_m != right_m )
 		return 1;
@@ -254,8 +284,8 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	//X : first multivariate table
 	//Y : second multivariate table
-	gsl_matrix * X = gsl_matrix_alloc( left_m, left_n);
-	gsl_matrix * Y = gsl_matrix_alloc( right_m, right_n);
+	X = gsl_matrix_alloc( left_m, left_n);
+	Y = gsl_matrix_alloc( right_m, right_n);
 	
 	//Fill matrices
 	for (i = 0; i < left_m; i++)
@@ -281,16 +311,16 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	 * Y -> QY, RY
 	 */
 	
-	gsl_matrix * QX			= gsl_matrix_alloc( left_m, left_m);
-	gsl_matrix * RX			= gsl_matrix_alloc( left_m, left_n);
-	gsl_permutation * PX	= gsl_permutation_alloc( left_n);
+	QX	= gsl_matrix_alloc( left_m, left_m);
+	RX	= gsl_matrix_alloc( left_m, left_n);
+	PX	= gsl_permutation_alloc( left_n);
 	
 	sorted_QR_decomposition(X, QX, RX, PX);
 	
 	
-	gsl_matrix * QY			= gsl_matrix_alloc( right_m, right_m);
-	gsl_matrix * RY			= gsl_matrix_alloc( right_m, right_n);
-	gsl_permutation * PY	= gsl_permutation_alloc( right_n);
+	QY	= gsl_matrix_alloc( right_m, right_m);
+	RY	= gsl_matrix_alloc( right_m, right_n);
+	PY	= gsl_permutation_alloc( right_n);
 	
 	sorted_QR_decomposition(Y, QY, RY, PY);
 	
@@ -302,9 +332,9 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	 */
 	
 	// Computing ranks
-	int rankX		= compute_rank( RX);
-	int rankY		= compute_rank( RY);
-	int min_ranks	= GSL_MIN_INT( rankX, rankY);
+	rankX		= compute_rank( RX);
+	rankY		= compute_rank( RY);
+	min_ranks	= GSL_MIN_INT( rankX, rankY);
 	
 	if (rankX == 0 || rankY == 0) 
 	{
@@ -330,10 +360,10 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	}
 	
 	// Modifying matrices
-	gsl_matrix * subQX = gsl_matrix_alloc( left_m, rankX);
-	gsl_matrix * subRX = gsl_matrix_alloc( rankX, rankX);
-	gsl_matrix * subQY = gsl_matrix_alloc( right_m, rankY);
-	gsl_matrix * subRY = gsl_matrix_alloc( rankY, rankY);
+	subQX = gsl_matrix_alloc( left_m, rankX);
+	subRX = gsl_matrix_alloc( rankX, rankX);
+	subQY = gsl_matrix_alloc( right_m, rankY);
+	subRY = gsl_matrix_alloc( rankY, rankY);
 	
 	
 	for(i = 0; i < rankX; i++)
@@ -379,16 +409,6 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	 *	- if QXt number of rows > QY number of columns
 	 *	- if QXt number of rows < QY number of columns
 	 */
-	int svdm;
-	int svdn;
-	double tmp_sum = 0.;
-	
-	gsl_matrix * M_svd;
-	gsl_vector * S;
-	gsl_matrix * V;
-	gsl_vector * work;
-	gsl_matrix * L2;
-	gsl_matrix * L1;
 	
 	
 	//Compute QXtQY or QYtQX depending to the case
@@ -487,8 +507,8 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	 */
 	
 	//Pseudo-inverse of subRX
-	gsl_matrix * ResX = gsl_matrix_alloc( rankX, min_ranks);
-	gsl_matrix * invsubRX = gsl_matrix_alloc( rankX, rankX);
+	ResX = gsl_matrix_alloc( rankX, min_ranks);
+	invsubRX = gsl_matrix_alloc( rankX, rankX);
 	compute_pseudo_inverse( subRX, invsubRX);
 	
 	//Compute ResX
@@ -497,8 +517,8 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	
 	//Pseudo-inverse of subRY
-	gsl_matrix * ResY = gsl_matrix_alloc( rankY, min_ranks);
-	gsl_matrix * invsubRY = gsl_matrix_alloc( rankY, rankY);
+	ResY = gsl_matrix_alloc( rankY, min_ranks);
+	invsubRY = gsl_matrix_alloc( rankY, rankY);
 	compute_pseudo_inverse( subRY, invsubRY);
 	
 	//Compute ResY
@@ -515,7 +535,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	 * thanks to permutation matrices
 	 */
 	
-	gsl_matrix * preA = gsl_matrix_alloc( left_n, min_ranks);
+	preA = gsl_matrix_alloc( left_n, min_ranks);
 	gsl_matrix_set_zero(preA);
 	
 	for(i = 0; i < rankX; i++)
@@ -528,7 +548,7 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	
 	
 	
-	gsl_matrix * preB = gsl_matrix_alloc(right_n, min_ranks);
+	preB = gsl_matrix_alloc(right_n, min_ranks);
 	gsl_matrix_set_zero(preB);
 	
 	for(i = 0; i < rankY; i++)
