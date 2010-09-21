@@ -203,8 +203,12 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
 	}
     }
     t->nodes[node].splitdim = splitdim;
-    if (!nice_node) rta_post("warning: can't find non-degenerate dimension to split node %d at level %d, using dimension %d\n", node, level, splitdim);
 
+#if DEBUG_KDTREEBUILD
+    if (!nice_node) 
+      rta_post("warning: can't find non-degenerate dimension to split node %d at level %d, using dimension %d\n", node, level, splitdim);
+#endif
+  
     switch (t->mmode)
     { /* N.B.: middle and mean are only linearly  affected by sigma */
       case mmode_mean:
