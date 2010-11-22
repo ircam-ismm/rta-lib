@@ -42,7 +42,7 @@ extern "C" {
 	 */
 	int
 	rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m, int right_n,
-			float * output_p, float * output_q, int * length);
+			float * output_p, float * output_q, float * output_A, float * output_B, float * output_SM, int * length);
 	
 	
 	
