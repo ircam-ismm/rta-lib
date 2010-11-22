@@ -26,11 +26,11 @@ static int
 prepare_score_matrix(float * A, int m_A, float * B, int m_B, int n, float * out_R)
 {
 	int		i, j, k;
-	float	max_d = 0.;
-	float	tmp = 0.;
+	float	max_d	= 0.;
+	float	tmp		= 0.;
 	
-	//Compute euclidean distance between i-th first signal observation
-	//and i-th second signal observation for all i
+	//Compute euclidean distance between the i-th first signal observation
+	//and the j-th second signal observation for all i
 	for ( i = 0; i < m_A; i++ )
 		for ( j = 0; j < m_B; j++ )
 		{
@@ -179,6 +179,7 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
 	
 	while ( i!= 0 || j!= 0)
 	{
+		
 		tb = pP[i * n + j];
 			
 		i -= C[tb * 3];
@@ -188,6 +189,7 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
 		
 		p[cpt] = i;
 		q[cpt] = j;
+		
 	}
 	
 	*length = cpt + 1;
@@ -203,10 +205,15 @@ dpfast(float * SM, int m, int n, int T1, int T2, int * p, int * q, int * length)
  */
 int
 rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m, int right_n,
-		float * output_p, float * output_q, int * length)
+		float * output_p, float * output_q, float * output_A, float * output_B, float * output_SM, int * length)
 {
 	
 	int i;
+	int j;
+//	int cptp;
+//	int cptq;
+//	int indp1;
+//	int indq1;
 	int * p;
 	int * q;
 
@@ -227,5 +234,24 @@ rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m
 			output_p[i] = p[(*length - 1) - i];
 			output_q[i] = q[(*length - 1) - i];
 	}
+	
+	//Aligned data
+//	indp1 = (int)output_p[0];
+//	indq1 = (int)output_q[0];
+//	cptp = 0;
+//	cptq = 0;
+	for (i = 0; i < *length; i++)
+	{
+		for (j = 0; j < left_n; j++)
+		{
+			output_A[i * left_n + j]  = left_ptr[(int)output_p[i]  * left_n + j];
+			output_B[i * right_n + j] = right_ptr[(int)output_q[i] * right_n + j];
+		}
+	}
+	
+	for (i = 0; i < left_m; i++)
+		for (j = 0; j < right_m; j++)
+			output_SM[i * right_m + j] = SM[i * right_m + j];
+	
 	return 0;
 }
