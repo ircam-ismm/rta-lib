@@ -1,6 +1,7 @@
 
 #include "math.h"
 #include "rta_msdr.h"
+#include <float.h>
 
 /* local abbreviation for number of dimensions */
 #define NDIM	RTA_MSDR_NDIM
@@ -797,7 +798,11 @@ void rta_msdr_set_pos (rta_msdr_t *sys, int ind, int n, float *pos)
 {   /* reset also old pos and speed, leave forces! */
     memcpy(sys->pos   + ind * NDIM, pos, n * NDIM * sizeof(float));
     memcpy(sys->pos2  + ind * NDIM, pos, n * NDIM * sizeof(float));
+#ifndef WIN32
     bzero (sys->speed + ind * NDIM,      n * NDIM * sizeof(float));
+#else
+	memset(sys->speed + ind * NDIM, 0.0, n * NDIM * sizeof(float));
+#endif
 }
 
 /* set inv. mass only */
@@ -852,8 +857,12 @@ static float *vectors_alloc (int n)
 {
     int    size = n * NDIM * sizeof(float);
     float *vect = (float *) rta_malloc(size);
+#ifndef WIN32
     bzero(vect, size);
-    return vect;
+#else
+	memset(vect, 0.0, size);
+#endif
+	return vect;
 }
 
 #define vect_alloc(n)    ((float *) rta_malloc((n) * sizeof(float)))
@@ -918,8 +927,13 @@ void rta_msdr_set (rta_msdr_t *sys, int nmasses, float *pos, float *invmass)
 
 //    memcpy(sys->pos1, sys->pos, sys->nmasses * NDIM * sizeof(float));
     memcpy(sys->pos2, sys->pos, sys->nmasses * NDIM * sizeof(float));
+#ifndef WIN32
     bzero(sys->force, sys->nmasses * NDIM * sizeof(float));
     bzero(sys->speed, sys->nmasses * NDIM * sizeof(float));
+#else
+	memset(sys->force, 0.0, sys->nmasses * NDIM * sizeof(float));
+    memset(sys->speed, 0.0, sys->nmasses * NDIM * sizeof(float));
+#endif
 
     /* init masses' links lists */
     rta_msdr_clear_links (sys);

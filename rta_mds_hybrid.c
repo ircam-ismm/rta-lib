@@ -37,7 +37,11 @@ static float *vectors_alloc (int n)
 {
     int    size = n * NDIM * sizeof(float);
     float *vect = (float *) rta_malloc(size);
+#ifndef WIN32
     bzero(vect, size);
+#else
+	memset(vect, 0.0, size);
+#endif
     return vect;
 }
 

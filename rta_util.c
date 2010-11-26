@@ -12,7 +12,10 @@
 
 
 #include "rta_util.h"
-
+#include <stdlib.h>
+#ifdef WIN32
+static long random(){return rand();}
+#endif
 
 static int compint (const void *a, const void *b)
 {
@@ -38,7 +41,8 @@ void rta_choose_k_from_n (int k, int n, int *sample)
     }
 
     /* generate k random numbers with possible repetition */
-    for (i = 0; i < k; i++)
+
+	for (i = 0; i < k; i++)
 	sample[i] = random() % n;
 
     while (doubles > 0)
