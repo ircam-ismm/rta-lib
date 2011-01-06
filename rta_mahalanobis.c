@@ -141,18 +141,16 @@ int rta_mahalanobis_nz(int M, int N, int C,
 	      int        jj = sigma_indnz[j];
 #if USE_DISTFUNC	// ARGH!!! dependency on fts_array_t and bpf_t!!!
 	      //TODO: replace by rta_funclib, includes bpf (data-compatible?)
-	      rta_real_t xout, xin, x; xout = xin = x = (inrow[jj * instride] - murow[jj * mustride]);
+	      rta_real_t d = (inrow[jj * instride] - murow[jj * mustride]);
 	      fts_atom_t *dfun = fts_array_get_element((fts_array_t *) distfuncs, jj); //TODO: preget
 	      if (fts_is_a(dfun, bpf_class))
-		  xout = x = bpf_get_interpolated(fts_get_object(dfun), x);
-	      x /= sigmarow[jj * sigmastride];
+		  d = bpf_get_interpolated(fts_get_object(dfun), d);
+	      d /= sigmarow[jj * sigmastride];
 #else
-	      rta_real_t x  = (inrow[jj * instride] - murow[jj * mustride]) 
+	      rta_real_t d  = (inrow[jj * instride] - murow[jj * mustride]) 
 			      / sigmarow[jj * sigmastride];
 #endif /* USE_DISTFUNC */
-	      v += x * x;
-
-	      rta_post("distfunc: descr $d  d_in %g  d_out %g  d_scale %g   d2_sum %g\n", jj, xin, xout, x, v);
+	      v += d * d;
 	  }
 
 	  *outcol = v;
