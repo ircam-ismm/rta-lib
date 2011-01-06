@@ -96,7 +96,7 @@ int rta_mahalanobis(int M, int N, int C,
 
 /** Mahalanbis distance calculation on non-zero dimensions
  *
- * out = sum((in - mu) .^ 2 ./ sigma)
+ * out = sum(distfunc(in - mu) .^ 2 ./ sigma^2)
  *
  * with
  * 
@@ -116,7 +116,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
 		       rta_real_t *muptr,    int mustride,    int muskip, 
 		       rta_real_t *sigmaptr, int sigmastride, int sigmaskip, 
 		       rta_real_t *outptr,   int outstride,   int outskip,
-		       int nnz, int *sigma_indnz)
+		       int nnz, int *sigma_indnz, void *distfuncs)
 {
     int i, j, k;  
 
@@ -139,9 +139,20 @@ int rta_mahalanobis_nz(int M, int N, int C,
 	  for (j = 0; j < nnz; j++)
 	  {
 	      int        jj = sigma_indnz[j];
+#if USE_DISTFUNC	// ARGH!!! dependency on fts_array_t and bpf_t!!!
+	      //TODO: replace by rta_funclib, includes bpf (data-compatible?)
+	      rta_real_t xout, xin, x; xout = xin = x = (inrow[jj * instride] - murow[jj * mustride]);
+	      fts_atom_t *dfun = fts_array_get_element((fts_array_t *) distfuncs, jj); //TODO: preget
+	      if (fts_is_a(dfun, bpf_class))
+		  xout = x = bpf_get_interpolated(fts_get_object(dfun), x);
+	      x /= sigmarow[jj * sigmastride];
+#else
 	      rta_real_t x  = (inrow[jj * instride] - murow[jj * mustride]) 
 			      / sigmarow[jj * sigmastride];
+#endif /* USE_DISTFUNC */
 	      v += x * x;
+
+	      rta_post("distfunc: descr $d  d_in %g  d_out %g  d_scale %g   d2_sum %g\n", jj, xin, xout, x, v);
 	  }
 
 	  *outcol = v;
