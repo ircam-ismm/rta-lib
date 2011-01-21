@@ -416,8 +416,8 @@ void rta_msdr_set_outforce (rta_msdr_t *sys, float *outforce)
     sys->outforce = outforce;
 }
 
-/* copy ncol columns if link data to out(nlinks, 8):
-   masses id(2), masses pos (4), stress, force */
+/* copy ncol columns of link data to out(nlinks, 11):
+   masses id(2), masses pos (4), l0, lprev, stress, force, category */
 int rta_msdr_get_links (rta_msdr_t *sys, float *out)
 {
     int i, c, k = 0;
@@ -547,6 +547,24 @@ void rta_msdr_set_unlimited (rta_msdr_t *sys, int id)
 }
 
 
+void rta_msdr_set_link_length (rta_msdr_t *sys, int i, int c, float L)
+{
+    sys->l0[c][i] 	     = L; /* set length by index */
+}
+void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, int c, float K1)
+{
+    sys->K1[c][i] 	     = K1; /* set stiffness */
+}
+void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, int c, float D1)
+{
+    sys->D1[c][i] 	     = D1; /* set viscosity */
+}
+void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, int c, float D2)
+{
+    sys->D2[c][i] 	     = D2; /* set friction */
+}
+
+
 /* set link data only */
 static void set_link (rta_msdr_t *sys, int i, int c, int m1, int m2, float len,
 		      float K1, float D1, float D2, float Rt, float Rf, float *ret)
@@ -570,24 +588,6 @@ static void set_link (rta_msdr_t *sys, int i, int c, int m1, int m2, float len,
     *ret = dist;
 }
 
-
-void rta_msdr_set_link_length (rta_msdr_t *sys, int i, int c, float L)
-{
-    sys->l0[c][i] 	     = L; /* set length by index */
-}
-void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, int c, float K1)
-{
-    sys->K1[c][i] 	     = K1; /* set stiffness */
-}
-void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, int c, float D1)
-{
-    sys->D1[c][i] 	     = D1; /* set viscosity */
-}
-void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, int c, float D2)
-{
-    sys->D2[c][i] 	     = D2; /* set friction */
-}
-
 /* set backpointers to linked masses in link */
 static void set_link_masses (rta_msdr_t *sys, int i, int m1, int m2, int cat, float dist)
 {
@@ -601,7 +601,7 @@ static void set_link_masses (rta_msdr_t *sys, int i, int m1, int m2, int cat, fl
 	sys->links[cat][i].ind2 = m2ptr->nlinks[cat];
 	sys->links[cat][i].cat  = cat;
 
-	/* if (nlinks[cat] < maxlinks[cat]) */
+	/* nlinks[cat] < linklistalloc tested in caller */
 	/* todo: insert into sorted list; if already present: overwrite link */
 	m1ptr->links[cat][m1ptr->nlinks[cat]++] = i;
 	m2ptr->links[cat][m2ptr->nlinks[cat]++] = i;
@@ -612,7 +612,6 @@ static void set_link_masses (rta_msdr_t *sys, int i, int m1, int m2, int cat, fl
 	if (dist > m2ptr->maxdist[cat])
 	    m2ptr->maxdist[cat] = dist;
 }
-
 
 /** add link between masses m1, m2
     m1, m2 must be valid mass ids, cat must be valid link category */
@@ -733,11 +732,14 @@ int rta_msdr_insert_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 
 
 /* set rigidity parameter for all links */
-void rta_msdr_set_K1 (rta_msdr_t *sys, float k1)
+void rta_msdr_set_K1 (rta_msdr_t *sys, int cat, float k1)
 {
-    int i, c;
+    int i, c, c0 = 0, c1 = RTA_MSDR_MAXCAT - 1;
 
-    for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+    if (cat != -1)
+	c0 = c1 = cat;
+
+    for (c = c0; c <= c1; c++)
 	for (i = 0; i < sys->nlinks[c]; i++)
 	{
 	    sys->K1[c][i] = k1;
@@ -745,11 +747,14 @@ void rta_msdr_set_K1 (rta_msdr_t *sys, float k1)
 }
 
 /* set damping parameter for all links */
-void rta_msdr_set_D1 (rta_msdr_t *sys, float d1)
+void rta_msdr_set_D1 (rta_msdr_t *sys, int cat, float d1)
 {
-    int i, c;
+    int i, c, c0 = 0, c1 = RTA_MSDR_MAXCAT - 1;
 
-    for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+    if (cat != -1)
+	c0 = c1 = cat;
+
+    for (c = c0; c <= c1; c++)
 	for (i = 0; i < sys->nlinks[c]; i++)
 	{
 	    sys->D1[c][i] = d1;
@@ -757,11 +762,14 @@ void rta_msdr_set_D1 (rta_msdr_t *sys, float d1)
 }
 
 /* set friction parameter for all links */
-void rta_msdr_set_D2 (rta_msdr_t *sys, float d2)
+void rta_msdr_set_D2 (rta_msdr_t *sys, int cat, float d2)
 {
-    int i, c;
+    int i, c, c0 = 0, c1 = RTA_MSDR_MAXCAT - 1;
 
-    for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+    if (cat != -1)
+	c0 = c1 = cat;
+
+    for (c = c0; c <= c1; c++)
 	for (i = 0; i < sys->nlinks[c]; i++)
 	{
 	    sys->D2[c][i] = d2;
@@ -769,11 +777,14 @@ void rta_msdr_set_D2 (rta_msdr_t *sys, float d2)
 }
 
 /* set repulsion threshold parameter for all links */
-void rta_msdr_set_Rt (rta_msdr_t *sys, float rt)
+void rta_msdr_set_Rt (rta_msdr_t *sys, int cat, float rt)
 {
-    int i, c;
+    int i, c, c0 = 0, c1 = RTA_MSDR_MAXCAT - 1;
 
-    for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+    if (cat != -1)
+	c0 = c1 = cat;
+
+    for (c = c0; c <= c1; c++)
 	for (i = 0; i < sys->nlinks[c]; i++)
 	{
 	    sys->Rt[c][i] = rt;
@@ -781,11 +792,14 @@ void rta_msdr_set_Rt (rta_msdr_t *sys, float rt)
 }
 
 /* set repulsion force parameter for all links */
-void rta_msdr_set_Rf (rta_msdr_t *sys, float rf)
+void rta_msdr_set_Rf (rta_msdr_t *sys, int cat, float rf)
 {
-    int i, c;
+    int i, c, c0 = 0, c1 = RTA_MSDR_MAXCAT - 1;
 
-    for (c = 0; c < RTA_MSDR_MAXCAT; c++)
+    if (cat != -1)
+	c0 = c1 = cat;
+
+    for (c = c0; c <= c1; c++)
 	for (i = 0; i < sys->nlinks[c]; i++)
 	{
 	    sys->Rf[c][i] = rf;

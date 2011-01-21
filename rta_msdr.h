@@ -19,7 +19,7 @@ extern "C" {
 
 
 /** max. number of link categories */
-#define RTA_MSDR_MAXCAT	2
+#define RTA_MSDR_MAXCAT	3
 
 
 /** struct for bounding values */
@@ -143,20 +143,20 @@ void rta_msdr_free (rta_msdr_t *sys);
 /* set vector to recieve current link forces */
 void rta_msdr_set_outforce (rta_msdr_t *sys, float *outforce);
 
-/* set rigidity parameter for all links */
-void rta_msdr_set_K1 (rta_msdr_t *sys, float k1);
+/* set rigidity parameter for all links or in category */
+void rta_msdr_set_K1 (rta_msdr_t *sys, int cat, float k1);
 
 /* set damping parameter for all links */
-void rta_msdr_set_D1 (rta_msdr_t *sys, float d1);
+void rta_msdr_set_D1 (rta_msdr_t *sys, int cat, float d1);
 
 /* set friction parameter for all links */
-void rta_msdr_set_D2 (rta_msdr_t *sys, float d2);
+void rta_msdr_set_D2 (rta_msdr_t *sys, int cat, float d2);
 
 /* set repulsion threshold parameter for all links */
-void rta_msdr_set_Rt (rta_msdr_t *sys, float rt);
+void rta_msdr_set_Rt (rta_msdr_t *sys, int cat, float rt);
 
 /* set repulsion force parameter for all links */
-void rta_msdr_set_Rf (rta_msdr_t *sys, float rf);
+void rta_msdr_set_Rf (rta_msdr_t *sys, int cat, float rf);
 
 /* set length by index */
 void rta_msdr_set_link_length (rta_msdr_t *sys, int i, int c, float L);
