@@ -3,6 +3,7 @@
 #include "rta_kdtreeintern.h"
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 
 
 #ifdef DEBUG
