@@ -286,6 +286,7 @@ void kdtree_init (kdtree_t *self)
   self->dataindex   = NULL;
   self->nodes  	    = NULL;
   self->data   	    = NULL;
+  self->mean  	    = NULL;
   self->sigma  	    = NULL;
   self->sigma_nnz   = 0;
   self->sigma_indnz = NULL;
