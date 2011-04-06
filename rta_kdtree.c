@@ -277,7 +277,9 @@ void kdtree_init (kdtree_t *self)
   self->dmode       = dmode_orthogonal;
   self->mmode       = mmode_mean;
   self->sort        = 1;
-  self->ndata  	    = 0;
+  self->ndata  	    = NULL;
+  self->ndatatot    = 0;
+  self->nblocks     = 0;
   self->height 	    = 0;
   self->maxheight   = 0;
   self->givenheight = -1;	/* -1 gives less comparisons than -2 */
