@@ -563,6 +563,14 @@ void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, int c, float D2)
 {
     sys->D2[c][i] 	     = D2; /* set friction */
 }
+void rta_msdr_set_link_Rf (rta_msdr_t *sys, int i, int c, float rf)
+{
+    sys->Rf[c][i] 	     = rf; /* set repulsion force */
+}
+void rta_msdr_set_link_Rt (rta_msdr_t *sys, int i, int c, float rt)
+{
+    sys->Rt[c][i] 	     = rt; /* set repulsion distance */
+}
 
 
 /* set link data only */
@@ -634,14 +642,14 @@ int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,
 	set_link_masses(sys, i, m1, m2, cat, dist);
 	sys->nactive[cat]++;
 
-	//fts_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d -> %d nlinks %d %d\n", 
+	//rta_post("rta_msdr_add_link %d %d  len %f  dist %f  cat %d -> %d nlinks %d %d\n", 
 	//	 m1, m2, len, sys->lprev[cat][i], cat, i, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
 
 	return i;
     }
     else
     {
-	fts_post("REFUSED!!!  rta_msdr_add_link %d %d len %f  cat %d -> nlinks %d %d\n", 
+	rta_post("REFUSED!!!  rta_msdr_add_link %d %d len %f  cat %d -> nlinks %d %d\n", 
 		 m1, m2, len, cat, m1ptr->nlinks[cat], m2ptr->nlinks[cat]);
 	return -1;
     }

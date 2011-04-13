@@ -163,6 +163,8 @@ void rta_msdr_set_link_length (rta_msdr_t *sys, int i, int c, float L);
 void rta_msdr_set_link_K1 (rta_msdr_t *sys, int i, int c, float K1);
 void rta_msdr_set_link_D1 (rta_msdr_t *sys, int i, int c, float D1);
 void rta_msdr_set_link_D2 (rta_msdr_t *sys, int i, int c, float D2);
+void rta_msdr_set_link_Rt (rta_msdr_t *sys, int i, int c, float rt);
+void rta_msdr_set_link_Rf (rta_msdr_t *sys, int i, int c, float rf);
 
 
 /* get number of masses in system */
