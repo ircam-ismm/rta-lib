@@ -473,11 +473,11 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 		
 		while (i < j) 
 		{ /* sort node vectors by distance to splitplane */
-		    while (distV2N(t, kdtree_get_vector(t, i), n) <= 0) 
+		    while (i < j  &&  distV2N(t, kdtree_get_vector(t, i), n) <= 0) 
 		    {
 			i++;	// if (i >= t->ndata) rta_post("n %d: i=%d\n", n, i);
 		    }
-		    while (distV2N(t, kdtree_get_vector(t, j), n) > 0) 
+		    while (i < j  &&  distV2N(t, kdtree_get_vector(t, j), n) > 0) 
 		    {
 			j--;	// if (j < 0) rta_post("n %d: j=%d\n", n, j);
 		    }
