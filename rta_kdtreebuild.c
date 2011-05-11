@@ -498,11 +498,15 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 		row_post(t->mean, n, t->ndim, "\n");
 #endif		
 	    }
+#if DEBUG_KDTREEBUILD > 1
+	    rta_post("  --> decomposition (%i..%i), (%i..%i)\n", 
+		     t->nodes[n].startind, j - 1, i, t->nodes[n].endind); 
+#endif
 
 	    assert(2*n+2 < t->nnodes);
 	    t->nodes[2*n+1].startind = t->nodes[n].startind; // start index of left child of node n
-	    t->nodes[2*n+1].endind   = j;	             // end   index of left child of node n
-	    t->nodes[2*n+1].size     = j - t->nodes[n].startind + 1;
+	    t->nodes[2*n+1].endind   = j - 1;	             // end   index of left child of node n
+	    t->nodes[2*n+1].size     = j - t->nodes[n].startind;
 
 	    t->nodes[2*n+2].startind = i;	             // start index of right child of node n
 	    t->nodes[2*n+2].endind   = t->nodes[n].endind;   // end   index of right child of node n
