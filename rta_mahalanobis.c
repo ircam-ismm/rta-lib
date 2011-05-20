@@ -14,7 +14,6 @@
 #include "rta_mahalanobis.h"
 
 
-
 /* update non-zero sigma index list */
 int rta_find_nz (int n, rta_real_t *vec, int stride, int *indnz)
 {
@@ -108,6 +107,8 @@ int rta_mahalanobis(int M, int N, int C,
  * @param M     num. rows of query matrix in = num. cols of out
  * @param N     num. dimensions = num. cols of in, mu, sigma
  * @param C     num. points = num. rows of mu and maybe sigma
+ *
+ * @param distfuncs pointer to array of N distance function bpfs, or NULL
  * @return success
  */
 
@@ -116,7 +117,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
                        rta_real_t *muptr,    int mustride,    int muskip, 
                        rta_real_t *sigmaptr, int sigmastride, int sigmaskip, 
                        rta_real_t *outptr,   int outstride,   int outskip,
-                       int nnz, int *sigma_indnz, void *distfuncs)
+                       int nnz, int *sigma_indnz, rta_bpf_t *distfuncs[])
 {
     int i, j, k;  
 
@@ -142,9 +143,9 @@ int rta_mahalanobis_nz(int M, int N, int C,
 #if USE_DISTFUNC        // ARGH!!! dependency on fts_array_t and bpf_t!!!
               //TODO: replace by rta_funclib, includes bpf (data-compatible?)
               rta_real_t  d    = inrow[jj * instride] - murow[jj * mustride];
-              fts_atom_t *dfun = fts_array_get_element((fts_array_t *) distfuncs, jj); //TODO: preget
-              if (fts_is_a(dfun, bpf_class))
-                  d = bpf_get_interpolated(fts_get_object(dfun), d);
+              rta_bpf_t  *dfun = distfuncs[jj];
+              if (dfun)
+                  d = rta_bpf_get_interpolated(dfun, d);
               d /= sigmarow[jj * sigmastride];
 #else
               rta_real_t d  = (inrow[jj * instride] - murow[jj * mustride]) 

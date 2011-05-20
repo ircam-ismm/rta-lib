@@ -13,6 +13,7 @@
 #define _RTA_MAHALANOBIS_H_
 
 #include "rta.h"
+#include "rta_bpf.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,7 +70,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
 		       rta_real_t *muptr,    int mustride,    int muskip, 
 		       rta_real_t *sigmaptr, int sigmastride, int sigmaskip, 
 		       rta_real_t *outptr,   int outstride,   int outskip,
-		       int nnz, int *sigma_indnz, void *distfuncs);
+		       int nnz, int *sigma_indnz, rta_bpf_t *distfuncs[]);
 
 
 #ifdef __cplusplus
