@@ -10,7 +10,7 @@
 
 #include "rta_mean_variance.h"
 
-// Var(X) = E((X-mu)^2) = E(X^2) - mu^2
+/* Var(X) = E((X-mu)^2) = E(X^2) - mu^2 */
 void
 rta_mean_variance(rta_real_t * mean, rta_real_t * variance,
                   rta_real_t * input, const unsigned int i_size)
@@ -46,7 +46,7 @@ rta_mean_variance(rta_real_t * mean, rta_real_t * variance,
    return;
 } 
 
-// Var(X) = E((X-mu)^2) = E(X^2) - mu^2
+/* Var(X) = E((X-mu)^2) = E(X^2) - mu^2 */
 void
 rta_mean_variance_stride(rta_real_t * mean, rta_real_t * variance,
                          rta_real_t * input, const int i_stride,
