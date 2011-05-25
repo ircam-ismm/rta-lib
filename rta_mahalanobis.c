@@ -140,8 +140,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
           for (j = 0; j < nnz; j++)
           {
               int        jj    = sigma_indnz[j];
-#if USE_DISTFUNC        // ARGH!!! dependency on fts_array_t and bpf_t!!!
-              //TODO: replace by rta_funclib, includes bpf (data-compatible?)
+#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
               rta_real_t  d    = inrow[jj * instride] - murow[jj * mustride];
               rta_bpf_t  *dfun = distfuncs[jj];
               if (dfun)
