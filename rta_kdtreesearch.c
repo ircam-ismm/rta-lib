@@ -99,15 +99,23 @@ static int maxArr (rta_real_t* array, int size)
 }
 
 rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1, 
-				   rta_real_t* v2, int dim) 
+				   rta_real_t* v2, int dim,
+				   rta_bpf_t  *distfunc[]) 
 {
     int i, i1;
     rta_real_t sum = 0;
 
     for (i = 0, i1 = 0; i < dim; i++, i1 += stride1) 
     {
-	rta_real_t diff = v2[i] - v1[i1];
-	sum += diff * diff;
+#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+      rta_real_t diff = v2[i] - v1[i1];
+      rta_bpf_t *dfun = distfunc[i];
+      if (dfun)
+	diff = rta_bpf_get_interpolated(dfun, diff);
+#else
+      rta_real_t diff = v2[i] - v1[i1];
+#endif /* USE_DISTFUNC */
+      sum += diff * diff;
     }
 
     return sum;
@@ -116,7 +124,8 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
 
 rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, 
 					    rta_real_t* v2, 
-					    rta_real_t *sigma, int ndim) 
+					    rta_real_t *sigma, int ndim,
+					    rta_bpf_t  *distfunc[]) 
 {
     int i;
     rta_real_t sum = 0, sqrtsum = 0;
@@ -124,7 +133,15 @@ rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1,
   for (i = 0; i < ndim; i++) 
     if (sigma[i] > 0)
     {
+#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+      rta_real_t diff = v2[i] - v1[i];
+      rta_bpf_t *dfun = distfunc[i];
+      if (dfun)
+	diff = rta_bpf_get_interpolated(dfun, diff);
+      diff /= sigma[i];
+#else
       rta_real_t diff = (v2[i] - v1[i]) / sigma[i];
+#endif /* USE_DISTFUNC */
       sum += diff * diff;
       
       rta_post("rta_weighted_euclidean_distance %d (%f - %f)  ->  %f sum d^2 %f sum %f\n",
@@ -136,7 +153,8 @@ rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1,
 
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
 						   rta_real_t* v2, 
-						   rta_real_t *sigma, int ndim) 
+						   rta_real_t *sigma, int ndim,
+						   rta_bpf_t  *distfunc[]) 
 {
     int i, i1;
     rta_real_t sum = 0;
@@ -144,16 +162,24 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
     for (i = 0, i1 = 0; i < ndim; i++, i1 += stride1) 
 	if (sigma[i] > 0)
 	{
-	    rta_real_t diff = (v2[i] - v1[i1]) / sigma[i];
-	    sum += diff * diff;
+#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+	  rta_real_t diff = v2[i] - v1[i1];
+	  rta_bpf_t *dfun = distfunc[i];
+	  if (dfun)
+	    diff = rta_bpf_get_interpolated(dfun, diff);
+	  diff /= sigma[i];
+#else
+	  rta_real_t diff = (v2[i] - v1[i1]) / sigma[i];
+#endif /* USE_DISTFUNC */
+	  sum += diff * diff;
 	}
 
     return sum;
 }
 
 
-/* out:    y[K] = index of the Kth nearest neighbour (in float for interfacing reasons)
-	   d[K] = distance of the Kth nearest neighbour
+/* out:    indx[K] = index of the Kth nearest neighbour
+	   dist[K] = distance of the Kth nearest neighbour
    return: actual number of found neighbours */
 int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride, 
 		       int k, const rta_real_t r, int use_sigma, 
@@ -209,10 +235,10 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
 		{
 		    if (use_sigma)
 			dxx = rta_weighted_euclidean_distance_stride(vector, stride, 
-				kdtree_get_vector(t, i), sigmaptr, t->ndim);
+				kdtree_get_vector(t, i), sigmaptr, t->ndim, t->dfun);
 		    else
 			dxx = rta_euclidean_distance(vector, stride, 
-				kdtree_get_vector(t, i), t->ndim);
+				kdtree_get_vector(t, i), t->ndim, t->dfun);
 #if KDTREE_PROFILE_SEARCH
 		    t->profile.v2v++;
 #endif
