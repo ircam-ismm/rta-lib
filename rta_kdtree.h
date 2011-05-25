@@ -47,6 +47,7 @@ Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
 #define _RTA_KDTREE_H_
 
 #include "rta.h"
+#include "rta_bpf.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,6 +57,24 @@ extern "C" {
 #define KDTREE_PROFILE_BUILD  1
 #define KDTREE_PROFILE_SEARCH 1
 #define KDTREE_PROFILE	       (KDTREE_PROFILE_BUILD || KDTREE_PROFILE_SEARCH)
+
+
+#define USE_DISTFUNC 1
+#define KDTREE_MAX_DISTFUNC 256
+
+
+#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#  define DMAPW(x, y, s, dfun) ((dfun)  ?  rta_bpf_get_interpolated(dfun, ((x) - (y))) / (s)  :  ((x) - (y)) / (s))
+#else
+#  define DMAPW(x, y, s, dfun) ((x) - (y)) / (s))
+#endif /* USE_DISTFUNC */
+
+#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#  define DMAP(x, y, dfun) ((dfun)  ?  rta_bpf_get_interpolated(dfun, ((x) - (y)))  :  ((x) - (y)))
+#else
+#  define DMAP(x, y, dfun) ((x) - (y))
+#endif /* USE_DISTFUNC */
+
 
 
 /** stack element for search algorithm */
@@ -147,6 +166,7 @@ typedef struct _kdtree_struct
     rta_real_t *sigma;	  /**< 1/weight, 0 == inf */
     int     sigma_nnz;    /**< number of non-zero sigma */
     int    *sigma_indnz;  /**< non-zero sigma lines */
+    rta_bpf_t *dfun[KDTREE_MAX_DISTFUNC];	/* distance transfer functions */
 
     int     height;	  /**< Height of the kdtree */
     int     maxheight;	  /**< Maximal height of the kdtree */
@@ -356,12 +376,15 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, const rta_
 /** Weighted squared vector distance (v1 - v2)^2
 */
 rta_real_t rta_euclidean_distance 		  (rta_real_t* v1, int stride1, 
-						   rta_real_t* v2, int dim);
+						   rta_real_t* v2, int dim,
+						   rta_bpf_t  *distfunc[]);
 rta_real_t rta_weighted_euclidean_distance 	  (rta_real_t* v1, rta_real_t* v2, 
-					   	   rta_real_t *sigma, int ndim);
+					   	   rta_real_t *sigma, int ndim,
+						   rta_bpf_t  *distfunc[]);
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1, 
 						   rta_real_t* v2, 
-						   rta_real_t *sigma, int ndim);
+						   rta_real_t *sigma, int ndim,
+						   rta_bpf_t  *distfunc[]);
 
 
 #ifdef __cplusplus

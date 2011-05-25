@@ -292,6 +292,7 @@ void kdtree_init (kdtree_t *self)
   self->sigma  	    = NULL;
   self->sigma_nnz   = 0;
   self->sigma_indnz = NULL;
+  memset(self->dfun, 0, sizeof(void *) * KDTREE_MAX_DISTFUNC);
 
   kdtree_stack_init(&self->stack, 0);
 
