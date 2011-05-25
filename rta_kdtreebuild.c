@@ -240,24 +240,27 @@ static int decompose_node (kdtree_t *t, int node, int level, int use_sigma)
 
 /* vector to orthogonal plane node distance along split dimension dim */
 static rta_real_t distV2orthoH (const rta_real_t* vect, 
-				rta_real_t* mean, int dim) 
+				rta_real_t* mean, int dim,
+				rta_bpf_t  *distfunc[]) 
 {
-    return vect[dim] - mean[dim];
+    return DMAP(vect[dim], mean[dim], distfunc[dim]);
 }
 static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride, 
-				       rta_real_t* mean, int dim) 
+				       rta_real_t* mean, int dim,
+				       rta_bpf_t  *distfunc[]) 
 {
-    return vect[dim * stride] - mean[dim];
+    return DMAP(vect[dim * stride], mean[dim], distfunc[dim]);
 }
 static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, 
-					 rta_real_t* mean, const rta_real_t *sigma, int dim) 
+					 rta_real_t* mean, const rta_real_t *sigma, int dim,
+					 rta_bpf_t  *distfunc[]) 
 {
 #if DEBUG_KDTREEBUILD > 1
     rta_post("distV2orthoH_weighted on dim %d: (%f - %f) / %f = %f\n",
 	dim, vect[dim * stride], mean[dim], sigma[dim],
 	sigma[dim] > 0  ?  (vect[dim * stride] - mean[dim]) / sigma[dim]  :  0);
 #endif
-    return sigma[dim] > 0  ?  (vect[dim * stride] - mean[dim]) / sigma[dim]  
+    return sigma[dim] > 0  ?  DMAPW(vect[dim * stride], mean[dim], sigma[dim], distfunc[dim])  
 	                   :  0;
 }
 
@@ -266,7 +269,8 @@ static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride,
 static rta_real_t distV2H (const rta_real_t* vect, 
 			   const rta_real_t* plane, 
 			   const rta_real_t* mean, 
-			   int ndim, rta_real_t norm) 
+			   int ndim, rta_real_t norm,
+			   rta_bpf_t *distfunc[]) 
 {
     // standard algebra computing
     int i;
@@ -274,14 +278,15 @@ static rta_real_t distV2H (const rta_real_t* vect,
 
     for(i = 0; i < ndim; i++) 
     {
-	dotprod += (vect[i] - mean[i]) * plane[i];
+	dotprod += DMAP(vect[i], mean[i], distfunc[i]) * plane[i];
     }
     return (dotprod / norm);
 }
 static rta_real_t distV2H_stride (const rta_real_t* vect, int stride, 
 				  const rta_real_t* plane, 
 				  const rta_real_t* mean, 
-				  int ndim, rta_real_t norm) 
+				  int ndim, rta_real_t norm,
+				  rta_bpf_t *distfunc[]) 
 {
     // standard algebra computing
     int i, iv;
@@ -289,7 +294,7 @@ static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
 
     for(i = 0, iv = 0; i < ndim; i++, iv += stride) 
     {
-	dotprod += (vect[iv] - mean[i]) * plane[i];
+	dotprod += DMAP(vect[iv], mean[i], distfunc[i]) * plane[i];
     }
     return (dotprod / norm);
 }
@@ -297,7 +302,8 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
 				    const rta_real_t* plane, 
 				    const rta_real_t* mean, 
 				    const rta_real_t *sigma, 
-				    int ndim, rta_real_t norm) 
+				    int ndim, rta_real_t norm,
+				    rta_bpf_t *distfunc[]) 
 {
     // standard algebra computing
     int i, iv;
@@ -305,7 +311,7 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
 
     for (i = 0, iv = 0; i < ndim; i++, iv += stride) 
 	if (sigma[i] > 0)
-	    dotprod += (vect[iv] - mean[i]) / sigma[i] * plane[i];
+	    dotprod += DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i];
 
     return (dotprod / norm);
 }
@@ -322,11 +328,11 @@ rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, const int node)
     {
     case dmode_orthogonal:
 	return distV2orthoH(x, t->mean + node * t->ndim, 
-			       t->nodes[node].splitdim);
+			       t->nodes[node].splitdim, t->dfun);
     case dmode_hyperplane:
 	return distV2H(x, t->split + node * t->ndim, 
 			  t->mean  + node * t->ndim, t->ndim, 
-			  t->nodes[node].splitnorm);
+			  t->nodes[node].splitnorm, t->dfun);
     default:
 	rta_post("error: unknown mode %d", t->dmode);
 	return 0;
@@ -342,11 +348,11 @@ rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, const i
     {
     case dmode_orthogonal:
 	return distV2orthoH_stride(x, stride, t->mean + node * t->ndim, 
-				              t->nodes[node].splitdim);
+				              t->nodes[node].splitdim, t->dfun);
     case dmode_hyperplane:
 	return distV2H_stride(x, stride, t->split + node * t->ndim, 
 			                 t->mean  + node * t->ndim, t->ndim, 
-			                 t->nodes[node].splitnorm);
+			                 t->nodes[node].splitnorm, t->dfun);
     default:
 	rta_post("error: unknown mode %d", t->dmode);
 	return 0;
@@ -364,9 +370,9 @@ rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride,
     switch (t->dmode)
     {
     case dmode_orthogonal:
-	return distV2orthoH_weighted(x, stride, mean, sigma, n->splitdim);
+	return distV2orthoH_weighted(x, stride, mean, sigma, n->splitdim, t->dfun);
     case dmode_hyperplane:
-	return distV2H_weighted(x, stride, t->split + node * t->ndim, mean, sigma, t->ndim, n->splitnorm);
+	return distV2H_weighted(x, stride, t->split + node * t->ndim, mean, sigma, t->ndim, n->splitnorm, t->dfun);
     default:
 	rta_post("error: unknown mode %d", t->dmode);
 	return 0;

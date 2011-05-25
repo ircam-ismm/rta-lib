@@ -1,5 +1,6 @@
 
 #include "rta_bpf.h"
+#include "rta_float.h" // for DBL_MAX
 
 static int rta_bf_get_index (rta_bpf_t *bpf, double time)
 {
