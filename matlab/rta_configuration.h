@@ -43,6 +43,13 @@
 #undef RTA_MEX_UNSIGNED_INTEGER_TYPE
 #define RTA_MEX_UNSIGNED_INTEGER_TYPE mxUINT32_CLASS
 
+/* no inline functions for non C99 compiler */
+#if !defined(__STDC__) || (__STDC > 1 && __STDC__ < 199901L)  \
+    || (__STDC_VERSION__ < 199901L)                           \
+    || !defined (__cplusplus)
+#undef inline
+#define inline
+#endif
 
 /* shared pointers */
 #undef RTA_MEX_PTR_TYPE
