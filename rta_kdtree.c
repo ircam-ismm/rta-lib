@@ -88,7 +88,7 @@ void kdtree_raw_display (kdtree_t* t)
 
     if (t->height == 0 || t->ndatatot == 0) rta_post("Empty Tree\n");
 
-    for (k = 0; i < t->nblocks; i++) 
+  for (k = 0; i < t->nblocks; i++) 
 	for (i = 0; i < t->ndata[k]; i++) 
 	{
 	    rta_post("block %d raw data vec %-3i = ", k, i);
