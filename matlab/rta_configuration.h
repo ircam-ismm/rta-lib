@@ -48,8 +48,14 @@
     && __STDC_VERSION__ < 199901L                  \
     && !defined(__GNUC_GNU_INLINE__)               \
     && !defined(__GNUC_STDC_INLINE__)              \
-    && !defined (__cplusplus)
+    && !defined(__cplusplus)
+#undef inline  
+/* some support for Microsoft compiler */
+#if defined(_MSC_VER)
+#define inline __inline
+#else
 #define inline
+#endif
 #endif
 
 /* shared pointers */
@@ -58,5 +64,12 @@
 
 #undef rta_ptr_t
 #define rta_ptr_t unsigned long
+
+/* _WIN32 is always defined by Microsoft compiler */
+#if defined(_WIN32)
+#if !defined(WIN32)
+#define WIN32 1
+#endif
+#endif
 
 #endif /* _RTA_CONFIGURATION_H_ */
