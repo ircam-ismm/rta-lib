@@ -1,7 +1,8 @@
 CC		= mex
 CFLAGS		= 
 RTA_ROOT	= ..
-MEXEXT		= $(shell mexext)
+MEXEXT		= mexa64
+#MEXEXT		= $(shell mexext)
 
 ifdef DEBUG
 CFLAGS += -g
@@ -65,19 +66,19 @@ rta_delta_weights.$(MEXEXT): rta_delta.o rta_delta_weights_mex.o
 rta_downsample_int_mean.$(MEXEXT): rta_resample.o rta_downsample_int_mean_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_fft.$(MEXEXT): rta_fft.o rta_fft_mex.o
+rta_fft.$(MEXEXT): rta_fft.o rta_int.o rta_fft_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_fft_setup_delete.$(MEXEXT): rta_fft.o rta_fft_setup_delete_mex.o
+rta_fft_setup_delete.$(MEXEXT): rta_fft.o rta_int.o rta_fft_setup_delete_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_fft_setup_new.$(MEXEXT): rta_fft.o rta_int.o rta_fft_setup_new_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_ifft.$(MEXEXT): rta_fft.o rta_ifft_mex.o
+rta_ifft.$(MEXEXT): rta_fft.o rta_int.o rta_ifft_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_ifft_setup_delete.$(MEXEXT): rta_fft.o rta_ifft_setup_delete_mex.o
+rta_ifft_setup_delete.$(MEXEXT): rta_fft.o rta_int.o rta_ifft_setup_delete_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 rta_ifft_setup_new.$(MEXEXT): rta_fft.o rta_int.o rta_ifft_setup_new_mex.o
@@ -123,10 +124,10 @@ rta_window_weights.$(MEXEXT): rta_window.o rta_window_weights_mex.o
 rta_yin.$(MEXEXT): rta_yin.o rta_correlation.o rta_yin_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_yin_setup_delete.$(MEXEXT): rta_yin.o rta_yin_setup_delete_mex.o
+rta_yin_setup_delete.$(MEXEXT): rta_yin.o rta_correlation.o rta_yin_setup_delete_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
-rta_yin_setup_new.$(MEXEXT): rta_yin.o rta_yin_setup_new_mex.o
+rta_yin_setup_new.$(MEXEXT): rta_yin.o rta_correlation.o rta_yin_setup_new_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
 
 
