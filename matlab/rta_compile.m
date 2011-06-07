@@ -14,11 +14,11 @@ mex -O -I. -I.. ../rta_dct.c rta_dct_weights_mex.c -o rta_dct_weights
 mex -O -I. -I.. ../rta_delta.c rta_delta_apply_mex.c -o rta_delta_apply
 mex -O -I. -I.. ../rta_delta.c rta_delta_weights_mex.c -o rta_delta_weights
 mex -O -I. -I.. ../rta_resample.c rta_downsample_int_mean_mex.c -o rta_downsample_int_mean
-mex -O -I. -I.. ../rta_fft.c rta_fft_mex.c -o rta_fft
-mex -O -I. -I.. ../rta_fft.c rta_fft_setup_delete_mex.c -o rta_fft_setup_delete
+mex -O -I. -I.. ../rta_fft.c ../rta_int.c rta_fft_mex.c -o rta_fft
+mex -O -I. -I.. ../rta_fft.c ../rta_int.c rta_fft_setup_delete_mex.c -o rta_fft_setup_delete
 mex -O -I. -I.. ../rta_fft.c ../rta_int.c rta_fft_setup_new_mex.c -o rta_fft_setup_new
-mex -O -I. -I.. ../rta_fft.c rta_ifft_mex.c -o rta_ifft
-mex -O -I. -I.. ../rta_fft.c rta_ifft_setup_delete_mex.c -o rta_ifft_setup_delete
+mex -O -I. -I.. ../rta_fft.c ../rta_int.c rta_ifft_mex.c -o rta_ifft
+mex -O -I. -I.. ../rta_fft.c ../rta_int.c rta_ifft_setup_delete_mex.c -o rta_ifft_setup_delete
 mex -O -I. -I.. ../rta_fft.c ../rta_int.c rta_ifft_setup_new_mex.c -o rta_ifft_setup_new
 mex -O -I. -I.. ../rta_lifter.c rta_lifter_apply_mex.c -o rta_lifter_apply
 mex -O -I. -I.. ../rta_lifter.c rta_lifter_weights_mex.c -o rta_lifter_weights
@@ -33,5 +33,5 @@ mex -O -I. -I.. ../rta_mean_variance.c rta_var_mex.c -o rta_var
 mex -O -I. -I.. ../rta_window.c rta_window_apply_mex.c -o rta_window_apply
 mex -O -I. -I.. ../rta_window.c rta_window_weights_mex.c -o rta_window_weights
 mex -O -I. -I.. ../rta_yin.c ../rta_correlation.c rta_yin_mex.c -o rta_yin
-mex -O -I. -I.. ../rta_yin.c rta_yin_setup_delete_mex.c -o rta_yin_setup_delete
-mex -O -I. -I.. ../rta_yin.c rta_yin_setup_new_mex.c -o rta_yin_setup_new
+mex -O -I. -I.. ../rta_yin.c ../rta_correlation.c rta_yin_setup_delete_mex.c -o rta_yin_setup_delete
+mex -O -I. -I.. ../rta_yin.c ../rta_correlation.c rta_yin_setup_new_mex.c -o rta_yin_setup_new
