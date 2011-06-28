@@ -1,9 +1,6 @@
 #ifndef _RTA_UNISPRING
 #define _RTA_UNISPRING
 
-namespace UniSpring 
-{
-
 extern "C" {
 #define qh_QHimport
 #include "qhull_a.h"
@@ -11,11 +8,14 @@ extern "C" {
 
 #include <limits>
 #include <numeric>
+#include <vector>
+
+
 
 #define RTA_UNISPRING_NDIM 2
+
 // Physical model parameters / TODO change name to match RTA names
 #define H0 0.5 // Mean initial distance between points (for scaling)
-#define DPTOL 0.0015 // Stop criterion
 #define TTOL 0.1
 #define EPS 2.2204e-16
 #define GEPS 0.001*H0
@@ -25,7 +25,10 @@ extern "C" {
 // Scale factor for display
 #define RECT_SCALE sqrt(2) // Must be < 1
 
+#define SQUARE //TODO : put this as a default option
 
+namespace UniSpringSpace 
+{
 typedef enum { shape_disk, shape_square, shape_rect } shape_enum_t;
 
 class Shape {
@@ -76,11 +79,13 @@ public:
 	@param points	pointer to points x, y data
 	@param shape	defines shape
      */
-    void set_points (int n, float *points, Shape shape);
+    //void set_points (int n, float *points, Shape shape);
+	void set_points (int n, double *points, Shape shape);
 
     /** copy points to given pointer, scaled to dimension given by shape definition
      */
-    void get_points_scaled (float *points);
+    //void get_points_scaled (float *points);
+	void get_points_scaled (double *points);
 
     /** run one update step
 	@return stop flag, true if movement under tolerance
@@ -105,7 +110,6 @@ private:
 	void retriangulate();
 	void freeQhullMemory();
 	void resetPhysicalModel();
-	//void drawStopCriterion();
 	void print_summary();
 	int qh_new_qhull2(int dim, int numpoints, coordT *points, boolT ismalloc,
 					  char *qhull_cmd, FILE *outfile, FILE *errfile);
@@ -141,9 +145,7 @@ private:
 	std::vector<double> displacements; // Distance traveled during previous iteration
 	double max_displ_old, max_displ_prev; // Maximum displacement (interior points). Old / prev: since last triangulation / previous iteration
 	double dptol; // Stop criterion
-	bool stop;
-	bool mFirstUpdate;
-    
+	int stop;    
 
 };
 
