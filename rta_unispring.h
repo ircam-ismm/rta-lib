@@ -10,8 +10,6 @@ extern "C" {
 #include <numeric>
 #include <vector>
 
-
-
 #define RTA_UNISPRING_NDIM 2
 
 // Physical model parameters / TODO change name to match RTA names
@@ -25,47 +23,60 @@ extern "C" {
 // Scale factor for display
 #define RECT_SCALE sqrt(2) // Must be < 1
 
-#define SQUARE //TODO : put this as a default option
-
 namespace UniSpringSpace 
 {
+	
+	
 typedef enum { shape_disk, shape_square, shape_rect } shape_enum_t;
 
 class Shape {
 public:
     shape_enum_t type;
+	float ratio; // width/height
+	float scale_factor;
+	float shift_scaled_x;
+	float shift_scaled_y;
+
 };
 
 class Disk : public Shape 
 {
 public:
-    Disk (float r = 1) { type = shape_disk;  radius_ = r; };
-    float radius_;
+    Disk (float r = 1, float cx = 1, float cy = 1)
+	{ 
+		type = shape_disk;
+		ratio = 1;
+		scale_factor = r;
+		shift_scaled_x = cx - r;
+		shift_scaled_y = cy - r;
+	};
 };
 
 class Square : public Shape 
 {
 public:
-    Square (float s = 1) { type = shape_square;  size_ = s; };
-    float size_;
+    Square (float s = 1, float llx = 0, float lly = 0)
+	{
+		type = shape_square;
+		ratio = 1;
+		scale_factor = s/2;
+		shift_scaled_x = llx;
+		shift_scaled_y = lly;
+	};	
 };
 
-class Rect : public Shape
+class Rectangle : public Shape
 {
 public:
-    Rect (float llx = 0, float lly = 0, float urx = 1, float ury = 1) 
+    Rectangle (float llx = 0, float lly = 0, float urx = 1, float ury = 1)
     {
-	type = shape_rect; 
-	llx_ = llx;
-	lly_ = lly;
-	urx_ = urx;
-	ury_ = ury;
+		type = shape_rect; 
+		ratio = (urx-llx)/(ury-lly);
+		scale_factor = (ury - lly)/2;
+		shift_scaled_x = llx;
+		shift_scaled_y = lly;
     };
-    float llx_, lly_, urx_, ury_;
 };
-
-
-
 
 
 class UniSpring
@@ -79,13 +90,13 @@ public:
 	@param points	pointer to points x, y data
 	@param shape	defines shape
      */
-    //void set_points (int n, float *points, Shape shape);
-	void set_points (int n, double *points, Shape shape);
+    void set_points (int n, float *points, Shape shape);
+	//void set_points (int n, double *points, Shape shape);
 
     /** copy points to given pointer, scaled to dimension given by shape definition
      */
-    //void get_points_scaled (float *points);
-	void get_points_scaled (double *points);
+    void get_points_scaled (float *points);
+	//void get_points_scaled (double *points);
 
     /** run one update step
 	@return stop flag, true if movement under tolerance
@@ -97,8 +108,9 @@ public:
 private:
 	double euclDistance(int i1, int i2);
 	double euclDispl(int i1);
-	double fd_square(double px, double py, double x1, double x2, double y1, double y2);
-	double fd_disk(double px, double py, double centerx, double centery, double radius);		
+	double fd_disk(double px, double py, double r, double cx, double cy);
+	double fd_rect(double px, double py, double llx, double urx, double lly, double ury);
+	double fd_compute(double px, double py);
 	double fh(double px, double py);
 	double sum(std::vector<double> v);
 	void loadData();
@@ -132,6 +144,7 @@ private:
 	mergeT *merge, **mergep;
 	
 	// Physical model
+	Shape mShape;
 	std::vector<double> mPointsX; // For preuniformisation step
 	std::vector<double> mPointsY;
 	std::vector< std::vector<int> > mEdges; // Edge point indexes

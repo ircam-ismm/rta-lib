@@ -52,9 +52,9 @@ double UniSpring::sum(std::vector<double> v){
 /** 
  Definition of the signed distance function (square)
  */
-double UniSpring::fd_square(double px, double py, double x1, double x2, double y1, double y2){
+double UniSpring::fd_rect(double px, double py, double llx, double lly, double urx, double ury){
 	
-	double mindist = -std::min(std::min(std::min(-y1+py,y2-py),-x1+px),x2-px);
+	double mindist = -std::min(std::min(std::min(-lly+py,ury-py),-llx+px),urx-px);
 	return mindist;
 	
 }
@@ -62,12 +62,38 @@ double UniSpring::fd_square(double px, double py, double x1, double x2, double y
 /** 
  Definition of the signed distance function (disk)
  */
-double UniSpring::fd_disk(double px, double py, double centerx, double centery, double radius){
+double UniSpring::fd_disk(double px, double py, double r, double cx, double cy){
 							  
-	double mindist = sqrt(pow(px-centerx,2)+pow(py-centery,2)) - radius;
+	double mindist = sqrt(pow(px-cx,2)+pow(py-cy,2)) - r;
 	return mindist;
 																										
-}						  
+}
+
+double UniSpring::fd_compute(double px, double py){
+	
+	if (mShape.type == shape_square) {
+		
+		double mindist = fd_rect(px, py, 0, 2, 0, 2);
+		return mindist;
+		
+	}
+	
+	if (mShape.type == shape_disk) {
+		
+		double mindist = fd_disk(px, py, 1, 1, 1);
+		return mindist;
+		
+	}
+	
+	if (mShape.type == shape_rect) {
+		
+		double mindist = fd_rect(px, py, 0, 0, 2*mShape.ratio, 2);
+		return mindist;
+		
+	}
+
+}
+
 
 
 /** 
@@ -79,7 +105,6 @@ double UniSpring::fh(double px, double py){
 	return desdist;
 	
 }
-
 
 /** 
  Update point positions.
@@ -149,36 +174,19 @@ void UniSpring::updatePositions(){
 		
 		mPoints[i*DIM] = mPoints[i*DIM] + displ_temp[0];
 		mPoints[i*DIM+1] = mPoints[i*DIM+1] + displ_temp[1];
-		
-#ifdef SQUARE			
+				
 		// Check if point has moved outside
-		double d = fd_square(mPoints[i*DIM], mPoints[i*DIM+1], 0, 2, 0, 2);
+		double d = fd_compute(mPoints[i*DIM], mPoints[i*DIM+1]);
 		
 		if (d > 0) {
 			
 			//Bring it back to boundary
-			double dgradx = ( fd_square(mPoints[i*DIM] + deps, mPoints[i*DIM+1], 0, 2, 0, 2) - d ) / deps;
-			double dgrady = ( fd_square(mPoints[i*DIM], mPoints[i*DIM+1] + deps, 0, 2, 0, 2) - d ) / deps;
+			double dgradx = ( fd_compute(mPoints[i*DIM] + deps, mPoints[i*DIM+1]) - d ) / deps;
+			double dgrady = ( fd_compute(mPoints[i*DIM], mPoints[i*DIM+1] + deps) - d ) / deps;
 			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
 			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;			
 			
 		}
-#endif
-			
-#ifdef DISK
-		// Check if point has moved outside
-		double d = fd_disk(mPoints[i*DIM], mPoints[i*DIM+1], 1, 1, 1);
-		
-		if (d > 0) {
-			
-			//Bring it back to boundary
-			double dgradx = ( fd_disk(mPoints[i*DIM] + deps, mPoints[i*DIM+1], 1, 1, 1) - d ) / deps;
-			double dgrady = ( fd_disk(mPoints[i*DIM], mPoints[i*DIM+1] + deps, 1, 1, 1) - d ) / deps;
-			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
-			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;
-			
-		}
-#endif
 				
 		// Compute displacement relative to previous triangulation (_old) and previous step (_prev)
 		double displ_old = euclDispl(i);

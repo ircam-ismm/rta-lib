@@ -3,24 +3,35 @@
 
 using namespace UniSpringSpace ;
 
+
 UniSpring::UniSpring() {
 
 	max_displ_old = 0;
 	max_displ_prev = 0;
-	dptol = 0.0015;
+	dptol = 0.0016;
 	stop = 0;
 	
 	
 }
 
-void UniSpring::set_points(int n, double *points, Shape shape) { // TODO: points as float
+void UniSpring::set_points(int n, float *points, Shape shape) { // TODO: points as float
+	
+	// Select shape
+	mShape = shape; 
 
 	// Copy point data
 	mNpoints = n;
-	mPoints = new coordT[mNpoints*(DIM+1)];	
-	mPointsOld = new coordT[mNpoints*(DIM+1)];	
-	memcpy(mPoints,points,mNpoints*(DIM+1)*sizeof(coordT));
-	memcpy(mPointsOld,points,mNpoints*(DIM+1)*sizeof(coordT));
+	mPoints = new coordT[mNpoints*(DIM+1)];	//+1 for convex hull
+	mPointsOld = new coordT[mNpoints*(DIM+1)];
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPoints[i*DIM] = points[i*DIM];
+		mPoints[i*DIM+1] = points[i*DIM+1];
+		mPointsOld[i*DIM] = points[i*DIM];
+		mPointsOld[i*DIM+1] = points[i*DIM+1];		
+		
+	}
 	
 	// Init total force vectors
 	std::vector<double> F_temp(2,0); 
@@ -33,20 +44,64 @@ void UniSpring::set_points(int n, double *points, Shape shape) { // TODO: points
 
 }
 
-void UniSpring::get_points_scaled(double *points) {
+/** 
+ Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ */
+void UniSpring::preUniformize(){
 	
 	for (int i=0; i<mNpoints; i++) {
 		
-		points[i*DIM]=mPoints[i*DIM];
-		points[i*DIM+1]=mPoints[i*DIM+1];
+		mPointsX.push_back(mPoints[i*DIM]);
+		mPointsY.push_back(mPoints[i*DIM+1]);
 		
 	}
+	
+	// sort coordinates
+	sort (mPointsX.begin(), mPointsX.end());
+	sort (mPointsY.begin(), mPointsY.end());			
+	
+	// Pre-uniformize
+	std::vector<double>::iterator it_preuni_x;
+	std::vector<double>::iterator it_preuni_y;
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i*DIM]);
+		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i*DIM+1]);
+		
+		int index_x = it_preuni_x - mPointsX.begin();
+		int index_y = it_preuni_y - mPointsY.begin();
+		
+		// Scale coordinates
+		mPoints[i*DIM] = mShape.ratio + RECT_SCALE * mShape.ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape.ratio;
+		mPoints[i*DIM+1] = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
+		
+		// Assign values so that coordinates won't be found again
+		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
+		*it_preuni_y = -1;
+		
+	}	
+	
+}
+
+
+void UniSpring::get_points_scaled(float *points) {
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		points[i*DIM] = mPoints[i*DIM] * mShape.scale_factor + mShape.shift_scaled_x;
+		points[i*DIM+1] = mPoints[i*DIM+1] * mShape.scale_factor + mShape.shift_scaled_y;	
+		
+	}
+	
 }
 
 int UniSpring::update() {
 		
 	updatePositions();
+	
 	if (max_displ_prev / H0 < dptol) stop = 1;
+	
 	if (stop==0 && max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
@@ -56,6 +111,7 @@ int UniSpring::update() {
 		freeQhullMemory(); // Free memory
 		
 	}	
+
 	resetPhysicalModel();
 
 	return stop;
