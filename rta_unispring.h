@@ -31,8 +31,9 @@ typedef enum { shape_disk, shape_square, shape_rect } shape_enum_t;
 
 class Shape {
 public:
+	virtual double fd_compute2 (double px, double py) {printf("base");};
     shape_enum_t type;
-	float ratio; // width/height
+	float ratio; // width/height (of bounding box)
 	float scale_factor;
 	float shift_scaled_x;
 	float shift_scaled_y;
@@ -42,40 +43,23 @@ public:
 class Disk : public Shape 
 {
 public:
-    Disk (float r = 1, float cx = 1, float cy = 1)
-	{ 
-		type = shape_disk;
-		ratio = 1;
-		scale_factor = r;
-		shift_scaled_x = cx - r;
-		shift_scaled_y = cy - r;
-	};
+		
+    Disk (float r = 1, float cx = 1, float cy = 1);
+	virtual double fd_compute2 (double px, double py);
 };
 
 class Square : public Shape 
 {
 public:
-    Square (float s = 1, float llx = 0, float lly = 0)
-	{
-		type = shape_square;
-		ratio = 1;
-		scale_factor = s/2;
-		shift_scaled_x = llx;
-		shift_scaled_y = lly;
-	};	
+    Square (float s = 1, float llx = 0, float lly = 0);
+	virtual double fd_compute2 (double px, double py);
 };
 
 class Rectangle : public Shape
 {
 public:
-    Rectangle (float llx = 0, float lly = 0, float urx = 1, float ury = 1)
-    {
-		type = shape_rect; 
-		ratio = (urx-llx)/(ury-lly);
-		scale_factor = (ury - lly)/2;
-		shift_scaled_x = llx;
-		shift_scaled_y = lly;
-    };
+    Rectangle (float llx = 0, float lly = 0, float urx = 1, float ury = 1);
+	virtual double fd_compute2 (double px, double py);
 };
 
 
@@ -90,7 +74,7 @@ public:
 	@param points	pointer to points x, y data
 	@param shape	defines shape
      */
-    void set_points (int n, float *points, Shape shape);
+    void set_points (int n, float *points, Shape *shape);
 	//void set_points (int n, double *points, Shape shape);
 
     /** copy points to given pointer, scaled to dimension given by shape definition
@@ -104,12 +88,14 @@ public:
     int  update ();
 
     void set_tolerance (float tol);
+	
+	static double fd_disk(double px, double py, double r, double cx, double cy);
+	static double fd_rect(double px, double py, double llx, double urx, double lly, double ury);
+
 
 private:
 	double euclDistance(int i1, int i2);
 	double euclDispl(int i1);
-	double fd_disk(double px, double py, double r, double cx, double cy);
-	double fd_rect(double px, double py, double llx, double urx, double lly, double ury);
 	double fd_compute(double px, double py);
 	double fh(double px, double py);
 	double sum(std::vector<double> v);
@@ -117,8 +103,8 @@ private:
 	void preUniformize();
 	void setupQhull();
 	void triangulate();
-	void getEdgeVector();
 	void updatePositions();
+	void getEdgeVector();
 	void retriangulate();
 	void freeQhullMemory();
 	void resetPhysicalModel();
@@ -144,7 +130,7 @@ private:
 	mergeT *merge, **mergep;
 	
 	// Physical model
-	Shape mShape;
+	Shape *mShape;
 	std::vector<double> mPointsX; // For preuniformisation step
 	std::vector<double> mPointsY;
 	std::vector< std::vector<int> > mEdges; // Edge point indexes

@@ -8,10 +8,10 @@ using namespace UniSpringSpace ;
  */
 void UniSpring::setupQhull(){
 	
-	rows = new coordT*[mNpoints]; //TODO: put exact number here
+	rows = new coordT*[mNpoints];
 	ismalloc= False;    // True if qhull should free points in qh_freeqhull() or reallocation
 	flags = new char[250];          // option flags for qhull, see qh_opt.htm
-	outfile = stdout;    // output from qh_produce_output(). use NULL to skip qh_produce_output()
+	outfile = NULL;    // output from qh_produce_output(). use NULL to skip qh_produce_output(). Otherwise use stdout
 	errfile= stderr;    // error messages from qhull code
 	sprintf (flags, "qhull d Qt Qbb Qc %s", ""); // Options used in Distmesh	
 	
@@ -34,7 +34,7 @@ void UniSpring::triangulate(){
 	int i;
 	for (i=mNpoints; i--; )
 		rows[i]= mPoints+DIM*i;
-	//qh_printmatrix (outfile, "input", rows, mNpoints, DIM); // Print input points
+	//qh_printmatrix (outfile, "input", rows, mNpoints, DIM); // Unused, print input points
 	exitcode= qh_new_qhull (DIM, mNpoints, mPoints, ismalloc,
 							flags, outfile, errfile);
 	
@@ -49,12 +49,11 @@ void UniSpring::retriangulate(){
 	int i;
 	for (i=mNpoints; i--; )
 		rows[i]= mPoints+DIM*i;
-	//qh_printmatrix (outfile, "input", rows, mNpoints, DIM);
 	//oldqh = qh_save_qhull(); // unused, provided for example: to save intermediate complex hull
 	exitcode= qh_new_qhull2 (DIM, mNpoints, mPoints, ismalloc,
 							 flags, outfile, errfile);
 	
-	printf("Retriangulated.\n");
+	//printf("Retriangulated.\n");
 	
 }
 
@@ -121,7 +120,7 @@ void UniSpring::getEdgeVector(){
 				centroid[1] = (mPoints[Edges_temp[0][0]*DIM+1] + mPoints[Edges_temp[0][1]*DIM+1] + mPoints[Edges_temp[1][0]*DIM+1] + mPoints[Edges_temp[1][1]*DIM+1] + mPoints[Edges_temp[2][0]*DIM+1] + mPoints[Edges_temp[2][1]*DIM+1])/6;
 				
 				// if centroid is inside, record vertex indices of current facet				
-				if (fd_compute(centroid[0],centroid[1])<-GEPS) {
+				if (mShape->fd_compute2(centroid[0],centroid[1])<-GEPS) {
 					
 					FOREACHridge_(facet->ridges) {
 						

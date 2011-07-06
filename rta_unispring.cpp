@@ -3,22 +3,74 @@
 
 using namespace UniSpringSpace ;
 
+Disk::Disk (float r, float cx, float cy) { 
+	
+	type = shape_disk;
+	ratio = 1;
+	scale_factor = r;
+	shift_scaled_x = cx - r;
+	shift_scaled_y = cy - r;
+	
+}
+
+double Disk::fd_compute2 (double px, double py) {
+	
+	double mindist = UniSpring::fd_disk(px, py, 1, 1, 1);
+	return mindist;
+	
+}
+
+Square::Square (float s, float llx, float lly) {
+	
+	type = shape_square;
+	ratio = 1;
+	scale_factor = s/2;
+	shift_scaled_x = llx;
+	shift_scaled_y = lly;
+	
+}
+
+double Square::fd_compute2 (double px, double py) {
+	
+	double mindist = UniSpring::fd_rect(px, py, 0, 0, 2, 2);
+	return mindist;
+	
+}
+
+
+Rectangle::Rectangle (float llx, float lly, float urx, float ury) {
+	
+	type = shape_rect; 
+	ratio = (urx-llx)/(ury-lly);
+	scale_factor = (ury-lly)/2;
+	shift_scaled_x = llx;
+	shift_scaled_y = lly;
+	
+}
+
+double Rectangle::fd_compute2 (double px, double py) {
+
+	double mindist = UniSpring::fd_rect(px, py, 0, 0, 2*ratio, 2);
+	return mindist;
+
+}
+
 
 UniSpring::UniSpring() {
-
+	
 	max_displ_old = 0;
 	max_displ_prev = 0;
 	dptol = 0.0016;
 	stop = 0;
 	
-	
-}
+};
+		
 
-void UniSpring::set_points(int n, float *points, Shape shape) { // TODO: points as float
+void UniSpring::set_points(int n, float *points, Shape *shape) {
 	
-	// Select shape
-	mShape = shape; 
-
+	// Get pointer to Shape. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Disk, Rectangle, Square)
+	mShape = shape;	
+	
 	// Copy point data
 	mNpoints = n;
 	mPoints = new coordT[mNpoints*(DIM+1)];	//+1 for convex hull
@@ -48,7 +100,7 @@ void UniSpring::set_points(int n, float *points, Shape shape) { // TODO: points 
  Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
  */
 void UniSpring::preUniformize(){
-	
+		
 	for (int i=0; i<mNpoints; i++) {
 		
 		mPointsX.push_back(mPoints[i*DIM]);
@@ -73,7 +125,7 @@ void UniSpring::preUniformize(){
 		int index_y = it_preuni_y - mPointsY.begin();
 		
 		// Scale coordinates
-		mPoints[i*DIM] = mShape.ratio + RECT_SCALE * mShape.ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape.ratio;
+		mPoints[i*DIM] = mShape->ratio + RECT_SCALE * mShape->ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape->ratio;
 		mPoints[i*DIM+1] = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
 		
 		// Assign values so that coordinates won't be found again
@@ -87,19 +139,22 @@ void UniSpring::preUniformize(){
 
 void UniSpring::get_points_scaled(float *points) {
 	
+	//printf("%f",mShape->scale_factor);
+	double stop;
+		
 	for (int i=0; i<mNpoints; i++) {
 		
-		points[i*DIM] = mPoints[i*DIM] * mShape.scale_factor + mShape.shift_scaled_x;
-		points[i*DIM+1] = mPoints[i*DIM+1] * mShape.scale_factor + mShape.shift_scaled_y;	
+		points[i*DIM] = mPoints[i*DIM] * mShape->scale_factor + mShape->shift_scaled_x;
+		points[i*DIM+1] = mPoints[i*DIM+1] * mShape->scale_factor + mShape->shift_scaled_y;	
 		
 	}
 	
 }
 
 int UniSpring::update() {
-		
+			
 	updatePositions();
-	
+
 	if (max_displ_prev / H0 < dptol) stop = 1;
 	
 	if (stop==0 && max_displ_old / H0 > TTOL) { // Retriangulate
