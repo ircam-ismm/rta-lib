@@ -50,7 +50,7 @@ double UniSpring::sum(std::vector<double> v){
 
 
 /** 
- Definition of the signed distance function (square)
+ Definition of the signed distance function (rectangle)
  */
 double UniSpring::fd_rect(double px, double py, double llx, double lly, double urx, double ury){
 	
@@ -69,6 +69,38 @@ double UniSpring::fd_disk(double px, double py, double r, double cx, double cy){
 																										
 }
 
+/** 
+ Definition of the signed distance function (right parallelepiped)
+ */
+double UniSpring::fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz){
+	
+	double mindist = -std::min(std::min(std::min(std::min(std::min(-llbz+pz,urtz-pz),-llby+py),urty-py),-llbx+px),urtx-px);
+	
+	//    The formula used here is not quite correct.  In particular, it is wrong
+	//    for points exterior to the cube whose nearest point on the cube is at a corner.
+	//	
+	//   For DISTMESH_3D's purposes, though, this computation is accurate enough.
+	
+	//d = - min ( min ( min ( min ( min ( -0.0+p(:,3), 1.0-p(:,3) ), ...
+	//							 -0.0+p(:,2) ), ...
+	//					   1.0-p(:,2) ), ...
+	//				 -0.0+p(:,1) ), ...
+	//		   1.0-p(:,1) );
+	
+}
+
+/** 
+ Definition of the signed distance function (sphere)
+ */
+double UniSpring::fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz){
+	
+	double mindist = sqrt(pow(px-cx,2)+pow(py-cy,2)+pow(pz-cz,2)) - r;
+	return mindist;
+	
+}
+
+//UNUSED
+/*
 double UniSpring::fd_compute(double px, double py){
 	
 	if (mShape->type == shape_square) {
@@ -93,6 +125,7 @@ double UniSpring::fd_compute(double px, double py){
 	}
 
 }
+ */
 
 
 
@@ -176,13 +209,13 @@ void UniSpring::updatePositions(){
 		mPoints[i*DIM+1] = mPoints[i*DIM+1] + displ_temp[1];
 				
 		// Check if point has moved outside
-		double d = mShape->fd_compute2(mPoints[i*DIM], mPoints[i*DIM+1]);
+		double d = mShape->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1]);
 		
 		if (d > 0) {
 			
 			//Bring it back to boundary
-			double dgradx = ( mShape->fd_compute2(mPoints[i*DIM] + deps, mPoints[i*DIM+1]) - d ) / deps;
-			double dgrady = ( mShape->fd_compute2(mPoints[i*DIM], mPoints[i*DIM+1] + deps) - d ) / deps;
+			double dgradx = ( mShape->fd_compute(mPoints[i*DIM] + deps, mPoints[i*DIM+1]) - d ) / deps;
+			double dgrady = ( mShape->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1] + deps) - d ) / deps;
 			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
 			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;			
 			

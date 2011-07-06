@@ -10,7 +10,7 @@ extern "C" {
 #include <numeric>
 #include <vector>
 
-#define RTA_UNISPRING_NDIM 2
+#define RTA_UNISPRING_NDIM 3
 
 // Physical model parameters / TODO change name to match RTA names
 #define H0 0.5 // Mean initial distance between points (for scaling)
@@ -27,11 +27,12 @@ namespace UniSpringSpace
 {
 	
 	
-typedef enum { shape_disk, shape_square, shape_rect } shape_enum_t;
+typedef enum { shape_disk, shape_square, shape_rect } shape_enum_t; // 2D
+typedef enum { shape_3D_sphere, shape_3D_cube, shape_3D_rparallel } shape_3D_enum_t; // 3D
 
 class Shape {
 public:
-	virtual double fd_compute2 (double px, double py) {printf("base");};
+	virtual double fd_compute (double px, double py) {printf("base");}; // TODO remove printf "base" (for debug: base should'nt be print)
     shape_enum_t type;
 	float ratio; // width/height (of bounding box)
 	float scale_factor;
@@ -45,21 +46,56 @@ class Disk : public Shape
 public:
 		
     Disk (float r = 1, float cx = 1, float cy = 1);
-	virtual double fd_compute2 (double px, double py);
+	virtual double fd_compute (double px, double py);
 };
 
 class Square : public Shape 
 {
 public:
     Square (float s = 1, float llx = 0, float lly = 0);
-	virtual double fd_compute2 (double px, double py);
+	virtual double fd_compute (double px, double py);
 };
 
 class Rectangle : public Shape
 {
 public:
     Rectangle (float llx = 0, float lly = 0, float urx = 1, float ury = 1);
-	virtual double fd_compute2 (double px, double py);
+	virtual double fd_compute (double px, double py);
+};
+	
+class Shape_3D {
+public:
+	virtual double fd_compute (double px, double py, double pz) {printf("base");}; // TODO remove printf "base" (for debug)
+	shape_3D_enum_t type;
+	float ratio_1; // width/depth (of bounding box)
+	float ratio_2; // height/depth (of bounding box)
+	float scale_factor;
+	float shift_scaled_x;
+	float shift_scaled_y;
+	float shift_scaled_z;
+		
+};
+		
+class Sphere : public Shape_3D 
+{
+public:
+	Sphere (float r = 1, float cx = 1, float cy = 1, float cz = 1);
+	virtual double fd_compute (double px, double py, double pz);
+};
+	
+class Cube : public Shape_3D
+{
+public:
+	Cube (float s = 1, float llbx = 0, float llby = 0, float llbz = 0);
+	virtual double fd_compute (double px, double py, double pz);
+};	
+	
+class RParallel : public Shape_3D 
+{
+public:
+	
+	RParallel (float llbx = 0, float llby = 0, float llbz = 0, float urtx = 1, float urty = 1, float urtz = 1);
+	virtual double fd_compute (double px, double py, double pz);
 };
 
 
@@ -75,6 +111,15 @@ public:
 	@param shape	defines shape
      */
     void set_points (int n, float *points, Shape *shape);
+	
+	/** set points and initialise unispring algorithm:
+	 copy points array, pre-uniformise, do first triangulation
+	 @param n	number of points
+	 @param points	pointer to points x, y, z data
+	 @param shape_3D	defines 3D shape
+     */
+	void set_points_3D (int n, float *points, Shape_3D *shape);
+	
 	//void set_points (int n, double *points, Shape shape);
 
     /** copy points to given pointer, scaled to dimension given by shape definition
@@ -91,16 +136,18 @@ public:
 	
 	static double fd_disk(double px, double py, double r, double cx, double cy);
 	static double fd_rect(double px, double py, double llx, double urx, double lly, double ury);
+	static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
+	static double fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz);
 
 
 private:
 	double euclDistance(int i1, int i2);
 	double euclDispl(int i1);
-	double fd_compute(double px, double py);
 	double fh(double px, double py);
 	double sum(std::vector<double> v);
 	void loadData();
 	void preUniformize();
+	void preUniformize_3D();
 	void setupQhull();
 	void triangulate();
 	void updatePositions();
@@ -131,8 +178,10 @@ private:
 	
 	// Physical model
 	Shape *mShape;
+	Shape_3D *mShape_3D;
 	std::vector<double> mPointsX; // For preuniformisation step
 	std::vector<double> mPointsY;
+	std::vector<double> mPointsZ;
 	std::vector< std::vector<int> > mEdges; // Edge point indexes
 	int mNpoints; // Number of points
 	std::vector<double> hbars2; // Desired lengths (squared)

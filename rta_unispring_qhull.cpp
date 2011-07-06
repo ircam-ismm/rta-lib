@@ -120,7 +120,7 @@ void UniSpring::getEdgeVector(){
 				centroid[1] = (mPoints[Edges_temp[0][0]*DIM+1] + mPoints[Edges_temp[0][1]*DIM+1] + mPoints[Edges_temp[1][0]*DIM+1] + mPoints[Edges_temp[1][1]*DIM+1] + mPoints[Edges_temp[2][0]*DIM+1] + mPoints[Edges_temp[2][1]*DIM+1])/6;
 				
 				// if centroid is inside, record vertex indices of current facet				
-				if (mShape->fd_compute2(centroid[0],centroid[1])<-GEPS) {
+				if (mShape->fd_compute(centroid[0],centroid[1])<-GEPS) {
 					
 					FOREACHridge_(facet->ridges) {
 						
