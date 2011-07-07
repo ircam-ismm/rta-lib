@@ -17,6 +17,17 @@ double UniSpring::euclDistance(int i1, int i2){
 	
 }
 
+double UniSpring::euclDistance_3D(int i1, int i2){
+	
+	double diffx = mPoints[i1*DIM] - mPoints[i2*DIM];
+	double diffy = mPoints[i1*DIM+1] - mPoints[i2*DIM+1];
+	double diffz = mPoints[i1*DIM+2] - mPoints[i2*DIM+2];
+	double dist = pow(diffx,2) + pow(diffy,2) + pow(diffz,2);
+	
+    return sqrt(dist);
+	
+}
+
 
 /** 
  Compute displacement of point i1 from its previous position.
@@ -26,6 +37,17 @@ double UniSpring::euclDispl(int i1){
 	double diffx = mPoints[i1*DIM] - mPointsOld[i1*DIM];
 	double diffy = mPoints[i1*DIM+1] - mPointsOld[i1*DIM+1];
 	double dist = pow(diffx,2) + pow(diffy,2);
+	
+    return sqrt(dist);
+	
+}
+
+double UniSpring::euclDispl_3D(int i1){
+	
+	double diffx = mPoints[i1*DIM] - mPointsOld[i1*DIM];
+	double diffy = mPoints[i1*DIM+1] - mPointsOld[i1*DIM+1];
+	double diffz = mPoints[i1*DIM+2] - mPointsOld[i1*DIM+2];
+	double dist = pow(diffx,2) + pow(diffy,2) + pow(diffz,2);
 	
     return sqrt(dist);
 	
@@ -75,7 +97,7 @@ double UniSpring::fd_disk(double px, double py, double r, double cx, double cy){
 double UniSpring::fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz){
 	
 	double mindist = -std::min(std::min(std::min(std::min(std::min(-llbz+pz,urtz-pz),-llby+py),urty-py),-llbx+px),urtx-px);
-	
+	return mindist;
 	//    The formula used here is not quite correct.  In particular, it is wrong
 	//    for points exterior to the cube whose nearest point on the cube is at a corner.
 	//	
@@ -139,6 +161,13 @@ double UniSpring::fh(double px, double py){
 	
 }
 
+double UniSpring::fh_3D(double px, double py, double pz){
+	
+	double desdist = 1; // Uniform
+	return desdist;
+	
+}
+
 /** 
  Update point positions.
  */
@@ -188,7 +217,7 @@ void UniSpring::updatePositions(){
 		Fvec[1] = F * barvec[1];
 		
 		// Assign force due to current edge to point indices in Ftot		
-		int currentIndex = mEdges[i][0];
+		//int currentIndex = mEdges[i][0]; //debug
 		
 		Ftot[mEdges[i][0]][0] += Fvec[0];
 		Ftot[mEdges[i][0]][1] += Fvec[1];
@@ -243,6 +272,116 @@ void UniSpring::updatePositions(){
 	
 }
 
+void UniSpring::updatePositions_3D(){
+	
+	double deps = sqrt(EPS)*H0;
+	
+	// Compute edge lengths and initial target distances
+	for (int i = 0; i < mEdges.size(); i++) {
+		
+		double middlex;
+		double middley;
+		double middlez;
+		double length;
+		
+		middlex = (mPoints[mEdges[i][0]*DIM]+mPoints[mEdges[i][1]*DIM])/2;
+		middley = (mPoints[mEdges[i][0]*DIM+1]+mPoints[mEdges[i][1]*DIM+1])/2;
+		middlez = (mPoints[mEdges[i][0]*DIM+2]+mPoints[mEdges[i][1]*DIM+2])/2;
+		length = euclDistance_3D(mEdges[i][0],mEdges[i][1]);
+		
+		//double length3 = pow(length,3);
+		
+		hbars3.push_back(pow(fh_3D(middlex,middley,middlez),3)); // compute squared value of target distance on edge's middle
+		L.push_back(length);
+		L3.push_back(pow(length,3));
+		
+	}
+	
+	// Compute total edge length and initial target distance	
+	hbars3_sum = sum(hbars3);
+	L3_sum = sum(L3);
+	
+	// Compute total force components
+	for (int i = 0; i < mEdges.size(); i++) {
+		
+		std::vector<double> Fvec(3);
+		std::vector<double> barvec(3);
+		
+		// Compute edge force
+		double L0 = pow(hbars3[i],(double)1/3) * FSCALE * pow(L3_sum/hbars3_sum,(double)1/3); //TODO : check : seems to be too much
+		double F = std::max(L0-L[i],0.);
+		
+		// Get edge unit vector
+		barvec[0] = ( mPoints[mEdges[i][0]*DIM] - mPoints[mEdges[i][1]*DIM] ) / L[i];
+		barvec[1] = ( mPoints[mEdges[i][0]*DIM+1] - mPoints[mEdges[i][1]*DIM+1] ) / L[i];	
+		barvec[2] = ( mPoints[mEdges[i][0]*DIM+2] - mPoints[mEdges[i][1]*DIM+2] ) / L[i];
+		
+		// Project force on edge unit vector
+		Fvec[0] = F * barvec[0];
+		Fvec[1] = F * barvec[1];
+		Fvec[2] = F * barvec[2];
+		
+		// Assign force due to current edge to point indices in Ftot		
+		
+		Ftot[mEdges[i][0]][0] += Fvec[0];
+		Ftot[mEdges[i][0]][1] += Fvec[1];
+		Ftot[mEdges[i][0]][2] += Fvec[2];
+		Ftot[mEdges[i][1]][0] += -Fvec[0];
+		Ftot[mEdges[i][1]][1] += -Fvec[1];
+		Ftot[mEdges[i][1]][2] += -Fvec[2];
+		
+	}
+	
+	// Move points & bring outside points back to boundary
+	std::vector<double> displ_temp(3);
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		displ_temp[0] = DELTAT * Ftot[i][0];
+		displ_temp[1] = DELTAT * Ftot[i][1];
+		displ_temp[2] = DELTAT * Ftot[i][2];
+		
+		mPoints[i*DIM] = mPoints[i*DIM] + displ_temp[0];
+		mPoints[i*DIM+1] = mPoints[i*DIM+1] + displ_temp[1];
+		mPoints[i*DIM+2] = mPoints[i*DIM+2] + displ_temp[2];
+		
+		// Check if point has moved outside
+		double d = mShape_3D->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1], mPoints[i*DIM+2]);
+		
+		if (d > 0) {
+			
+			//Bring it back to boundary
+			double dgradx = ( mShape_3D->fd_compute(mPoints[i*DIM] + deps, mPoints[i*DIM+1], mPoints[i*DIM+2]) - d ) / deps;
+			double dgrady = ( mShape_3D->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1] + deps, mPoints[i*DIM+2]) - d ) / deps;
+			double dgradz = ( mShape_3D->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1], mPoints[i*DIM+2] + deps) - d ) / deps;
+			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
+			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;
+			mPoints[i*DIM+2] = mPoints[i*DIM+2] - d * dgradz;
+			
+		}
+		
+		// Compute displacement relative to previous triangulation (_old) and previous step (_prev)
+		double displ_old = euclDispl_3D(i);
+		double displ_prev = sqrt(pow(displ_temp[0],2) + pow(displ_temp[1],2) + pow(displ_temp[2],2));
+		
+		// For interior point, update max displacement relative to previous step
+		if (d < -GEPS && displ_prev > max_displ_prev) {
+			
+			max_displ_prev = displ_prev;
+			
+		}
+		
+		// For all points, update max displacement relative to previous triangulation
+		if (displ_old > max_displ_old) {
+			
+			max_displ_old = displ_old;
+			
+		}
+		
+	}
+	
+}
+
 
 /** 
  Prepare physical model for next iteration.
@@ -260,5 +399,21 @@ void UniSpring::resetPhysicalModel(){
 	hbars2.clear();
 	L.clear();
 	L2.clear();
+	
+}
+
+void UniSpring::resetPhysicalModel_3D(){
+	
+	max_displ_old = 0;
+	max_displ_prev = 0;
+	std::vector<double> F_temp(3,0); 
+	for (int i=0; i<mNpoints; i++) {
+		
+		Ftot[i]=F_temp;
+		
+	}
+	hbars3.clear();
+	L.clear();
+	L3.clear();
 	
 }

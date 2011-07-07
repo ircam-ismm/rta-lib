@@ -11,7 +11,7 @@ void UniSpring::setupQhull(){
 	rows = new coordT*[mNpoints];
 	ismalloc= False;    // True if qhull should free points in qh_freeqhull() or reallocation
 	flags = new char[250];          // option flags for qhull, see qh_opt.htm
-	outfile = NULL;    // output from qh_produce_output(). use NULL to skip qh_produce_output(). Otherwise use stdout
+	outfile = stdout;    // output from qh_produce_output(). use NULL to skip qh_produce_output(). Otherwise use stdout
 	errfile= stderr;    // error messages from qhull code
 	sprintf (flags, "qhull d Qt Qbb Qc %s", ""); // Options used in Distmesh	
 	
@@ -75,6 +75,8 @@ void UniSpring::print_summary (void) {
 }
 
 
+
+
 /**
  Get delaunay triangulation edges by visiting each facet ridge once.
  Only edges belonging to a facet whose centroid is inside the target region boundaries are kept.
@@ -85,7 +87,7 @@ void UniSpring::getEdgeVector(){
 		//'qh facet_list' contains the convex hull
 				
 		if (!qh_qh){
-			printf ("qh_qh non initialisé");
+			printf ("qh_qh not initialized");
 		}
 		
 		qh visit_id++;
@@ -115,8 +117,8 @@ void UniSpring::getEdgeVector(){
 					
 				}
 				
-				// Compute centroid
-				centroid[0] = (mPoints[Edges_temp[0][0]*DIM] + mPoints[Edges_temp[0][1]*DIM] + mPoints[Edges_temp[1][0]*DIM] + mPoints[Edges_temp[1][1]*DIM] + mPoints[Edges_temp[2][0]*DIM] + mPoints[Edges_temp[2][1]*DIM])/6; //Check
+				// Compute centroid (3 points : divide by 6 because each point is counted twice)
+				centroid[0] = (mPoints[Edges_temp[0][0]*DIM] + mPoints[Edges_temp[0][1]*DIM] + mPoints[Edges_temp[1][0]*DIM] + mPoints[Edges_temp[1][1]*DIM] + mPoints[Edges_temp[2][0]*DIM] + mPoints[Edges_temp[2][1]*DIM])/6;
 				centroid[1] = (mPoints[Edges_temp[0][0]*DIM+1] + mPoints[Edges_temp[0][1]*DIM+1] + mPoints[Edges_temp[1][0]*DIM+1] + mPoints[Edges_temp[1][1]*DIM+1] + mPoints[Edges_temp[2][0]*DIM+1] + mPoints[Edges_temp[2][1]*DIM+1])/6;
 				
 				// if centroid is inside, record vertex indices of current facet				
@@ -151,6 +153,118 @@ void UniSpring::getEdgeVector(){
 		
 }
 
+void UniSpring::getEdgeVector_3D(){
+	
+	if (!exitcode) { // if no error // BAD ACCESS WHEN ENTERING FOR 2nd time
+		//'qh facet_list' contains the convex hull
+				
+		if (!qh_qh){
+			printf ("qh_qh not initialized");
+		}
+		
+		qh visit_id++;
+		
+		FORALLfacets { // in 3D case, facets are tetrahedrons
+			
+			if (!facet->upperdelaunay) {
+				
+				facet->visitid= qh visit_id;
+				qh_makeridges(facet);
+				//std::vector< std::vector<int> > Edges_temp; // Current facet edges
+				std::vector<double> centroid(3,0); // Centroid coordinates // does this init centroid ?
+								
+				// Check if centroid facet is inside
+				FOREACHridge_(facet->ridges) {
+					
+					std::vector<int> edge_temp;
+					
+					FOREACHvertex_(ridge->vertices) {
+						
+						//printf("id : %d ",qh_pointid (vertex->point) ); // obention de l'ID du point
+						edge_temp.push_back(qh_pointid (vertex->point));
+						
+					}
+					
+					//Edges_temp.push_back(edge_temp);
+					
+					// Compute centroid (4 points : divide by 12 because each point is counted three times)
+					centroid[0] += (mPoints[edge_temp[0]*DIM] + mPoints[edge_temp[1]*DIM])/12;
+					centroid[1] += (mPoints[edge_temp[0]*DIM+1] + mPoints[edge_temp[1]*DIM+1])/12;
+					centroid[2] += (mPoints[edge_temp[0]*DIM+2] + mPoints[edge_temp[1]*DIM+2])/12;
+					
+				}
+								
+				// if centroid is inside, record vertex indices of current facet	
+				double centroidDist = mShape_3D->fd_compute(centroid[0],centroid[1],centroid[2]);//TODO remove, debug
+				if (mShape_3D->fd_compute(centroid[0],centroid[1],centroid[2])<-GEPS) {
+					
+					FOREACHridge_(facet->ridges) {
+						
+						std::vector<int> ridge_temp;
+						neighbor= otherfacet_(ridge, facet);
+						
+						if (neighbor->visitid != qh visit_id) { // Check if ridge has already been visited (in neighbor facet)
+							
+							FOREACHvertex_(ridge->vertices) {
+								
+								ridge_temp.push_back(qh_pointid (vertex->point));  
+								
+							}
+							
+							std::vector<int> edge_temp1(2);
+							std::vector<int> edge_temp2(2);
+							std::vector<int> edge_temp3(2);
+							
+							// Could also implement order condition here
+							edge_temp1[0] = ridge_temp[0];
+							edge_temp1[1] = ridge_temp[1];
+							edge_temp2[0] = ridge_temp[0];
+							edge_temp2[1] = ridge_temp[2];
+							edge_temp3[0] = ridge_temp[1];
+							edge_temp3[1] = ridge_temp[2];
+							
+							mEdges.push_back(edge_temp1);
+							mEdges.push_back(edge_temp2);
+							mEdges.push_back(edge_temp3);
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		removeDuplicateEdges(); // Seems to work (uses overloaded operator< and operato==) : reduces mEdges size
+		int mEdgesSize = mEdges.size(); //debug
+		printf("%d",mEdgesSize); // MATLAB : number of delaunay regions 15564. mEdgesSize = 18049. C++ : slightly more regions, same edges
+		
+	}
+	
+}
+
+void UniSpring::removeDuplicateEdges() {
+	
+	std::sort(mEdges.begin(), mEdges.end()); //sort uses operator<, overloaded below
+	mEdges.erase(std::unique(mEdges.begin(), mEdges.end()), mEdges.end()); // std::unique uses std::adjacent_find which in turn uses operator==, overloaded below	
+}
+
+
+bool operator<(std::vector<int> const& v1, std::vector<int> const& v2) {
+	
+	if (v1[0] < v2[0]) return true;
+	else return false;
+	
+}
+
+bool operator==(std::vector<int> const& v1, std::vector<int> const& v2) { // assume that vectors have 2 elements (edge indices)
+	
+	if (v1[0] == v2[0] && v1[1] == v2[1]) return true;
+	else return false;
+	
+}
 
 /**
  Used in UniSpring::retriangulate. Use previously allocate qh_qh pointer.

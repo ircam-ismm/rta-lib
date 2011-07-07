@@ -93,6 +93,25 @@ double Cube::fd_compute (double px, double py, double pz) {
 	
 }
 
+RParallel::RParallel (float llbx, float llby, float llbz, float urtx, float urty, float urtz) {
+	
+	type = shape_3D_cube; 
+	ratio_1 = (urtx-llbx)/(urtz-llbz);
+	ratio_2 = (urty-llby)/(urtz-llbz);
+	scale_factor = (urtz-llbz)/2;
+	shift_scaled_x = llbx;
+	shift_scaled_y = llby;
+	shift_scaled_z = llbz;
+	
+}
+
+double RParallel::fd_compute (double px, double py, double pz) {
+	
+	double mindist = UniSpring::fd_rparallel(px, py, pz, 0, 0, 0, 2*ratio_1, 2*ratio_2, 2);
+	return mindist;
+	
+}
+
 UniSpring::UniSpring() {
 	
 	max_displ_old = 0;
@@ -155,13 +174,13 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
 	}
 	
 	// Init total force vectors
-	std::vector<double> F_temp(2,0); 
+	std::vector<double> F_temp(3,0); 
 	Ftot.resize(mNpoints, F_temp);
 	
 	preUniformize_3D();
 	setupQhull();
 	triangulate();
-	getEdgeVector();
+	getEdgeVector_3D();
 	
 }
 
@@ -232,20 +251,21 @@ void UniSpring::preUniformize_3D(){
 		
 		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i*DIM]);
 		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i*DIM+1]);
-		it_preuni_y = find (mPointsZ.begin(), mPointsZ.end(), mPoints[i*DIM+2]);
+		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), mPoints[i*DIM+2]);
 		
 		int index_x = it_preuni_x - mPointsX.begin();
 		int index_y = it_preuni_y - mPointsY.begin();
 		int index_z = it_preuni_z - mPointsZ.begin();
 		
-		// Scale coordinates // REPRENDRE ICI
-		mPoints[i*DIM] = mShape->ratio + RECT_SCALE * mShape->ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape->ratio;
-		mPoints[i*DIM+1] = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
-		mPoints[i*DIM+1] = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
+		// Scale coordinates
+		mPoints[i*DIM] = mShape_3D->ratio_1 + RECT_SCALE * mShape_3D->ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_1;
+		mPoints[i*DIM+1] = mShape_3D->ratio_2 + RECT_SCALE * mShape_3D->ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_2;
+		mPoints[i*DIM+2] = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
 		
 		// Assign values so that coordinates won't be found again
 		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
 		*it_preuni_y = -1;
+		*it_preuni_z = -1;
 		
 	}	
 	
@@ -253,14 +273,25 @@ void UniSpring::preUniformize_3D(){
 
 
 void UniSpring::get_points_scaled(float *points) {
-	
-	//printf("%f",mShape->scale_factor);
-	double stop;
-		
+			
 	for (int i=0; i<mNpoints; i++) {
 		
 		points[i*DIM] = mPoints[i*DIM] * mShape->scale_factor + mShape->shift_scaled_x;
 		points[i*DIM+1] = mPoints[i*DIM+1] * mShape->scale_factor + mShape->shift_scaled_y;	
+		
+	}
+	
+}
+
+void UniSpring::get_points_scaled_3D(float *points) {
+	
+	double test;
+		
+	for (int i=0; i<mNpoints; i++) {
+		
+		points[i*DIM] = mPoints[i*DIM] * mShape_3D->scale_factor + mShape_3D->shift_scaled_x;
+		points[i*DIM+1] = mPoints[i*DIM+1] * mShape_3D->scale_factor + mShape_3D->shift_scaled_y;
+		points[i*DIM+2] = mPoints[i*DIM+2] * mShape_3D->scale_factor + mShape_3D->shift_scaled_z;	
 		
 	}
 	
@@ -284,6 +315,29 @@ int UniSpring::update() {
 
 	resetPhysicalModel();
 
+	return stop;
+	
+}
+
+int UniSpring::update_3D() {
+	
+	updatePositions_3D();
+		
+	if (max_displ_prev / H0 < dptol) stop = 1;
+	
+	if (stop==0 && max_displ_old / H0 > TTOL) { // Retriangulate
+		
+		mEdges.clear(); // Reset		
+		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(coordT)); // Copy old points positions
+		retriangulate();
+		getEdgeVector_3D();
+		freeQhullMemory(); // Free memory
+		
+	}	
+	
+	
+	resetPhysicalModel_3D();
+	
 	return stop;
 	
 }

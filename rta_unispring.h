@@ -17,11 +17,13 @@ extern "C" {
 #define TTOL 0.1
 #define EPS 2.2204e-16
 #define GEPS 0.001*H0
-#define FSCALE 1.2 // Must be >1 to help points spread accross the whole target region
-#define DELTAT 0.2
+//#define FSCALE 1.2 // Must be >1 to help points spread accross the whole target region. 1.2 is ok for 2D
+//#define FSCALE 0.2 // should be 1.1. But 0.2 gives good results in 3D
+#define FSCALE 1.1 // given by distmesh_3D empirical formula 
+#define DELTAT 0.1 // 0.2 seems ok for 2D, 0.1 better in 3D ? 
 
 // Scale factor for display
-#define RECT_SCALE sqrt(2) // Must be < 1
+#define RECT_SCALE sqrt(2)/2 // Must be < 1. sqrt(2) is ok for 2, 0.2 (or less) is better for 3D ?
 
 namespace UniSpringSpace 
 {
@@ -125,12 +127,14 @@ public:
     /** copy points to given pointer, scaled to dimension given by shape definition
      */
     void get_points_scaled (float *points);
+	void get_points_scaled_3D (float *points);
 	//void get_points_scaled (double *points);
 
     /** run one update step
 	@return stop flag, true if movement under tolerance
      */
     int  update ();
+	int  update_3D ();
 
     void set_tolerance (float tol);
 	
@@ -142,19 +146,26 @@ public:
 
 private:
 	double euclDistance(int i1, int i2);
+	double euclDistance_3D(int i1, int i2);
 	double euclDispl(int i1);
+	double euclDispl_3D(int i1);
 	double fh(double px, double py);
+	double fh_3D(double px, double py, double pz);
 	double sum(std::vector<double> v);
+	void removeDuplicateEdges();
 	void loadData();
 	void preUniformize();
 	void preUniformize_3D();
 	void setupQhull();
 	void triangulate();
 	void updatePositions();
+	void updatePositions_3D();
 	void getEdgeVector();
+	void getEdgeVector_3D();
 	void retriangulate();
 	void freeQhullMemory();
 	void resetPhysicalModel();
+	void resetPhysicalModel_3D();
 	void print_summary();
 	int qh_new_qhull2(int dim, int numpoints, coordT *points, boolT ismalloc,
 					  char *qhull_cmd, FILE *outfile, FILE *errfile);
@@ -184,11 +195,15 @@ private:
 	std::vector<double> mPointsZ;
 	std::vector< std::vector<int> > mEdges; // Edge point indexes
 	int mNpoints; // Number of points
-	std::vector<double> hbars2; // Desired lengths (squared)
+	std::vector<double> hbars2; // Desired lengths (squared) (2D)
 	double hbars2_sum;
-	std::vector<double> L2; // Current lengths (squared)
+	std::vector<double> hbars3; // Desired lengths (cubed) (3D)
+	double hbars3_sum;
+	std::vector<double> L2; // Current lengths (squared) (2D)
 	double L2_sum;
-	std::vector<double> L; // Current lengths (squared)
+	std::vector<double> L3; // Current lengths (cubed) (3D)
+	double L3_sum;
+	std::vector<double> L; // Current lengths
 	std::vector< std::vector<double> > Ftot; // Current total force components
 	std::vector<double> displacements; // Distance traveled during previous iteration
 	double max_displ_old, max_displ_prev; // Maximum displacement (interior points). Old / prev: since last triangulation / previous iteration
@@ -198,4 +213,7 @@ private:
 };
 
 } // end namespace UniSpring
+
+bool operator<(std::vector<int> const& v1, std::vector<int> const& v2);
+bool operator==(std::vector<int> const& v1, std::vector<int> const& v2);
 #endif
