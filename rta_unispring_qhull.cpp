@@ -11,7 +11,7 @@ void UniSpring::setupQhull(){
 	rows = new coordT*[mNpoints];
 	ismalloc= False;    // True if qhull should free points in qh_freeqhull() or reallocation
 	flags = new char[250];          // option flags for qhull, see qh_opt.htm
-	outfile = stdout;    // output from qh_produce_output(). use NULL to skip qh_produce_output(). Otherwise use stdout
+	outfile = NULL;    // output from qh_produce_output(). use NULL to skip qh_produce_output(). Otherwise use stdout
 	errfile= stderr;    // error messages from qhull code
 	sprintf (flags, "qhull d Qt Qbb Qc %s", ""); // Options used in Distmesh	
 	
@@ -188,9 +188,9 @@ void UniSpring::getEdgeVector_3D(){
 					//Edges_temp.push_back(edge_temp);
 					
 					// Compute centroid (4 points : divide by 12 because each point is counted three times)
-					centroid[0] += (mPoints[edge_temp[0]*DIM] + mPoints[edge_temp[1]*DIM])/12;
-					centroid[1] += (mPoints[edge_temp[0]*DIM+1] + mPoints[edge_temp[1]*DIM+1])/12;
-					centroid[2] += (mPoints[edge_temp[0]*DIM+2] + mPoints[edge_temp[1]*DIM+2])/12;
+					centroid[0] += (mPoints[edge_temp[0]*DIM] + mPoints[edge_temp[1]*DIM] + mPoints[edge_temp[2]*DIM])/12;
+					centroid[1] += (mPoints[edge_temp[0]*DIM+1] + mPoints[edge_temp[1]*DIM+1] + mPoints[edge_temp[2]*DIM+1])/12;
+					centroid[2] += (mPoints[edge_temp[0]*DIM+2] + mPoints[edge_temp[1]*DIM+2] + mPoints[edge_temp[2]*DIM+2])/12;
 					
 				}
 								
@@ -238,8 +238,8 @@ void UniSpring::getEdgeVector_3D(){
 		}
 		
 		removeDuplicateEdges(); // Seems to work (uses overloaded operator< and operato==) : reduces mEdges size
-		int mEdgesSize = mEdges.size(); //debug
-		printf("%d",mEdgesSize); // MATLAB : number of delaunay regions 15564. mEdgesSize = 18049. C++ : slightly more regions, same edges
+		//int mEdgesSize = mEdges.size(); //debug
+		//printf("%d",mEdgesSize); // MATLAB : number of delaunay regions 15564. mEdgesSize = 18049. C++ : slightly more regions, same edges
 		
 	}
 	

@@ -69,7 +69,7 @@ Sphere::Sphere (float r, float cx, float cy, float cz) {
 
 double Sphere::fd_compute (double px, double py, double pz) {
 	
-	double mindist = UniSpring::fd_sphere(px, py, pz, 1, 1, 1, 1);
+	double mindist = UniSpring::fd_sphere(px, py, pz, 1, 1, 1, 1); // error with 1,1,1,1, 2,1,1,1 seems ok. why ?
 	return mindist;
 	
 }
@@ -284,14 +284,12 @@ void UniSpring::get_points_scaled(float *points) {
 }
 
 void UniSpring::get_points_scaled_3D(float *points) {
-	
-	double test;
-		
+			
 	for (int i=0; i<mNpoints; i++) {
 		
 		points[i*DIM] = mPoints[i*DIM] * mShape_3D->scale_factor + mShape_3D->shift_scaled_x;
 		points[i*DIM+1] = mPoints[i*DIM+1] * mShape_3D->scale_factor + mShape_3D->shift_scaled_y;
-		points[i*DIM+2] = mPoints[i*DIM+2] * mShape_3D->scale_factor + mShape_3D->shift_scaled_z;	
+		points[i*DIM+2] = mPoints[i*DIM+2] * mShape_3D->scale_factor + mShape_3D->shift_scaled_z;
 		
 	}
 	
