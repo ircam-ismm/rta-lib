@@ -10,20 +10,21 @@ extern "C" {
 #include <numeric>
 #include <vector>
 
-#define RTA_UNISPRING_NDIM 3
+#define RTA_UNISPRING_NDIM 2
 
-// Physical model parameters / TODO change name to match RTA names
+// Physical model parameters / TODO change name to match RTA names. TODO : include elsewhere ? (auto selection 2D/3D)
 #define H0 0.5 // Mean initial distance between points (for scaling)
 #define TTOL 0.1
 #define EPS 2.2204e-16
 #define GEPS 0.001*H0
-//#define FSCALE 1.2 // Must be >1 to help points spread accross the whole target region. 1.2 is ok for 2D
-#define FSCALE 1.1 // given by distmesh_3D empirical formula for 3D
-#define DELTAT 0.1 // 0.2 seems ok for 2D, 0.1 better in 3D ? 
+#define FSCALE 1.2 // Must be >1 to help points spread accross the whole target region. 1.2 is ok for 2D
+//#define FSCALE 1.1 // given by distmesh_3D empirical formula for 3D
+#define DELTAT 0.2 // ok for 2D
+//#define DELTAT 0.1 // 0.1 better in 3D
 
 // Scale factor for display
-#define RECT_SCALE sqrt(2)/2 // Must be < 1. sqrt(2) is ok for 2, too much for 3D (points are pre-uniformized outside the target region). sqrt(2)/2 seems ok
-//#define RECT_SCALE 0.2
+#define RECT_SCALE sqrt(2) //ok for 2D
+//#define RECT_SCALE sqrt(2)/2 // Must be < 1. sqrt(2) is ok for 2, too much for 3D (points are pre-uniformized outside the target region). sqrt(2)/2 seems ok
 
 namespace UniSpringSpace 
 {

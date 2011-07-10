@@ -301,7 +301,7 @@ int UniSpring::update() {
 
 	if (max_displ_prev / H0 < dptol) stop = 1;
 	
-	if (stop==0 && max_displ_old / H0 > TTOL) { // Retriangulate
+	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
 		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(coordT)); // Copy old points positions
@@ -323,7 +323,7 @@ int UniSpring::update_3D() {
 		
 	if (max_displ_prev / H0 < dptol) stop = 1;
 	
-	if (stop==0 && max_displ_old / H0 > TTOL) { // Retriangulate
+	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
 		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(coordT)); // Copy old points positions
@@ -332,7 +332,6 @@ int UniSpring::update_3D() {
 		freeQhullMemory(); // Free memory
 		
 	}	
-	
 	
 	resetPhysicalModel_3D();
 	

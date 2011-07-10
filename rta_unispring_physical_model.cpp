@@ -308,7 +308,7 @@ void UniSpring::updatePositions_3D(){
 		std::vector<double> barvec(3);
 		
 		// Compute edge force
-		double L0 = pow(hbars3[i],(double)1/3) * FSCALE * pow(L3_sum/hbars3_sum,(double)1/3); //TODO : check : seems to be too much
+		double L0 = pow(hbars3[i],(double)1/3) * FSCALE * pow(L3_sum/hbars3_sum,(double)1/3);
 		double F = std::max(L0-L[i],0.);
 		
 		// Get edge unit vector

@@ -98,29 +98,26 @@ void UniSpring::getEdgeVector(){
 				
 				facet->visitid= qh visit_id;
 				qh_makeridges(facet);
-				std::vector< std::vector<int> > Edges_temp; // Current facet edges
-				std::vector<double> centroid(2); // Centroid coordinates
+				std::vector<double> centroid(2,0); // Centroid coordinates
 				
 				// Check if centroid facet is inside
 				FOREACHridge_(facet->ridges) {
 					
-					std::vector<int> edge_temp;
+					std::vector<int> ridge_temp;
 					
 					FOREACHvertex_(ridge->vertices) {
 						
 						//printf("id : %d ",qh_pointid (vertex->point) ); // obention de l'ID du point
-						edge_temp.push_back(qh_pointid (vertex->point));
+						ridge_temp.push_back(qh_pointid (vertex->point));
 						
 					}
-					
-					Edges_temp.push_back(edge_temp);
+										
+					// Compute centroid (3 points : divide by 6 because each point is counted twice)
+					centroid[0] += (mPoints[ridge_temp[0]*DIM] + mPoints[ridge_temp[1]*DIM])/6;
+					centroid[1] += (mPoints[ridge_temp[0]*DIM+1] + mPoints[ridge_temp[1]*DIM+1])/6;
 					
 				}
-				
-				// Compute centroid (3 points : divide by 6 because each point is counted twice)
-				centroid[0] = (mPoints[Edges_temp[0][0]*DIM] + mPoints[Edges_temp[0][1]*DIM] + mPoints[Edges_temp[1][0]*DIM] + mPoints[Edges_temp[1][1]*DIM] + mPoints[Edges_temp[2][0]*DIM] + mPoints[Edges_temp[2][1]*DIM])/6;
-				centroid[1] = (mPoints[Edges_temp[0][0]*DIM+1] + mPoints[Edges_temp[0][1]*DIM+1] + mPoints[Edges_temp[1][0]*DIM+1] + mPoints[Edges_temp[1][1]*DIM+1] + mPoints[Edges_temp[2][0]*DIM+1] + mPoints[Edges_temp[2][1]*DIM+1])/6;
-				
+								
 				// if centroid is inside, record vertex indices of current facet				
 				if (mShape->fd_compute(centroid[0],centroid[1])<-GEPS) {
 					
@@ -149,13 +146,18 @@ void UniSpring::getEdgeVector(){
 			
 		}
 		
+		//removeDuplicateEdges(); // Gives results closer to Matlab (in terms of convergence), but longueur computation (about +5s). Same graphical results
+		//int mEdgesSize = mEdges.size(); //debug
+		//printf("%d\n",mEdgesSize); // MATLAB : number of delaunay regions 15564. mEdgesSize = 18049. C++ : slightly more regions, same edges
+
+		
 	}
 		
 }
 
 void UniSpring::getEdgeVector_3D(){
 	
-	if (!exitcode) { // if no error // BAD ACCESS WHEN ENTERING FOR 2nd time
+	if (!exitcode) { // if no error
 		//'qh facet_list' contains the convex hull
 				
 		if (!qh_qh){
@@ -170,27 +172,24 @@ void UniSpring::getEdgeVector_3D(){
 				
 				facet->visitid= qh visit_id;
 				qh_makeridges(facet);
-				//std::vector< std::vector<int> > Edges_temp; // Current facet edges
-				std::vector<double> centroid(3,0); // Centroid coordinates // does this init centroid ?
+				std::vector<double> centroid(3,0); // Centroid coordinates
 								
 				// Check if centroid facet is inside
 				FOREACHridge_(facet->ridges) {
 					
-					std::vector<int> edge_temp;
+					std::vector<int> ridge_temp;
 					
 					FOREACHvertex_(ridge->vertices) {
 						
 						//printf("id : %d ",qh_pointid (vertex->point) ); // obention de l'ID du point
-						edge_temp.push_back(qh_pointid (vertex->point));
+						ridge_temp.push_back(qh_pointid (vertex->point));
 						
 					}
-					
-					//Edges_temp.push_back(edge_temp);
-					
+										
 					// Compute centroid (4 points : divide by 12 because each point is counted three times)
-					centroid[0] += (mPoints[edge_temp[0]*DIM] + mPoints[edge_temp[1]*DIM] + mPoints[edge_temp[2]*DIM])/12;
-					centroid[1] += (mPoints[edge_temp[0]*DIM+1] + mPoints[edge_temp[1]*DIM+1] + mPoints[edge_temp[2]*DIM+1])/12;
-					centroid[2] += (mPoints[edge_temp[0]*DIM+2] + mPoints[edge_temp[1]*DIM+2] + mPoints[edge_temp[2]*DIM+2])/12;
+					centroid[0] += (mPoints[ridge_temp[0]*DIM] + mPoints[ridge_temp[1]*DIM] + mPoints[ridge_temp[2]*DIM])/12;
+					centroid[1] += (mPoints[ridge_temp[0]*DIM+1] + mPoints[ridge_temp[1]*DIM+1] + mPoints[ridge_temp[2]*DIM+1])/12;
+					centroid[2] += (mPoints[ridge_temp[0]*DIM+2] + mPoints[ridge_temp[1]*DIM+2] + mPoints[ridge_temp[2]*DIM+2])/12;
 					
 				}
 								
