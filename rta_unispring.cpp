@@ -120,7 +120,11 @@ UniSpring::UniSpring() {
 	stop = 0;
 	
 };
-		
+
+
+void UniSpring::reset_points ()  {
+  qh_freeqhull (qh_ALL);
+}
 
 void UniSpring::set_points(int n, float *points, Shape *shape) {
 	

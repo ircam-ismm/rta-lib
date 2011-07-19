@@ -123,7 +123,8 @@ public:
      */
 	void set_points_3D (int n, float *points, Shape_3D *shape);
 	
-	//void set_points (int n, double *points, Shape shape);
+	/* free memory allocated by set_points */
+	void reset_points ();
 
     /** copy points to given pointer, scaled to dimension given by shape definition
      */
@@ -177,8 +178,8 @@ private:
 	coordT **rows;
 	boolT ismalloc;
 	char *flags;
-	FILE *outfile;
-	FILE *errfile;
+	FILE *outfile;	//fixme
+	FILE *errfile;	//fixme
 	int exitcode;
 	facetT *facet;
 	qhT *oldqh;
