@@ -9,6 +9,9 @@ extern "C" {
 #include <limits>
 #include <numeric>
 #include <vector>
+#include "halfedge/HeTriang.h"
+#include "halfedge/HeDart.h"
+#include "halfedge/HeTraits.h"
 
 #define RTA_UNISPRING_NDIM 2
 
@@ -17,6 +20,7 @@ extern "C" {
 #define TTOL 0.1
 #define EPS 2.2204e-16
 #define GEPS 0.001*H0
+#define MAX_EDGE_LENGTH 0.2 // Max length edge allowed in triangulated structure
 #define FSCALE 1.2 // Must be >1 to help points spread accross the whole target region. 1.2 is ok for 2D
 //#define FSCALE 1.1 // given by distmesh_3D empirical formula for 3D
 #define DELTAT 0.2 // ok for 2D
@@ -123,8 +127,7 @@ public:
      */
 	void set_points_3D (int n, float *points, Shape_3D *shape);
 	
-	/* free memory allocated by set_points */
-	void reset_points ();
+	//void set_points (int n, double *points, Shape shape);
 
     /** copy points to given pointer, scaled to dimension given by shape definition
      */
@@ -163,36 +166,20 @@ private:
 	void preUniformize();
 	void preUniformize_3D();
 	void scale();
-	void setupQhull();
-	void triangulate();
 	void updatePositions();
 	void updatePositions_3D();
 	void getEdgeVector();
 	void getEdgeVector_3D();
-	void retriangulate();
-	void freeQhullMemory();
 	void resetPhysicalModel();
 	void resetPhysicalModel_3D();
 	void print_summary();
-	int qh_new_qhull2(int dim, int numpoints, coordT *points, boolT ismalloc,
-					  char *qhull_cmd, FILE *outfile, FILE *errfile);
 
-	// Qhull
-	coordT *mPoints; // Current point coordinates
-	coordT *mPointsOld; // Point coordinates used in last triangulation
-	coordT **rows;
-	boolT ismalloc;
-	char *flags;
-	FILE *outfile;	//fixme
-	FILE *errfile;	//fixme
-	int exitcode;
-	facetT *facet;
-	qhT *oldqh;
-	int curlong, totlong;
-	facetT *neighbor;
-	vertexT *vertex, **vertexp;
-	ridgeT *ridge, **ridgep;
-	mergeT *merge, **mergep;
+	
+	// TTL
+	hed::Triangulation triang;
+	std::vector<hed::Node*> nodes; // vector of pointers to point coordinates data
+	hed::Node *mPoints;
+	hed::Node *mPointsOld;
 	
 	// Physical model
 	Shape *mShape;

@@ -9,8 +9,8 @@ using namespace UniSpringSpace ;
  */
 double UniSpring::euclDistance(int i1, int i2){
 	
-	double diffx = mPoints[i1*DIM] - mPoints[i2*DIM];
-	double diffy = mPoints[i1*DIM+1] - mPoints[i2*DIM+1];
+	double diffx = mPoints[i1].x() - mPoints[i2].x();
+	double diffy = mPoints[i1].y() - mPoints[i2].y();
 	double dist = pow(diffx,2) + pow(diffy,2);
 	
     return sqrt(dist);
@@ -19,9 +19,9 @@ double UniSpring::euclDistance(int i1, int i2){
 
 double UniSpring::euclDistance_3D(int i1, int i2){
 	
-	double diffx = mPoints[i1*DIM] - mPoints[i2*DIM];
-	double diffy = mPoints[i1*DIM+1] - mPoints[i2*DIM+1];
-	double diffz = mPoints[i1*DIM+2] - mPoints[i2*DIM+2];
+	double diffx = mPoints[i1].x() - mPoints[i2].x();
+	double diffy = mPoints[i1].y() - mPoints[i2].y();
+	double diffz = mPoints[i1].z() - mPoints[i2].z();
 	double dist = pow(diffx,2) + pow(diffy,2) + pow(diffz,2);
 	
     return sqrt(dist);
@@ -34,8 +34,8 @@ double UniSpring::euclDistance_3D(int i1, int i2){
  */
 double UniSpring::euclDispl(int i1){
 	
-	double diffx = mPoints[i1*DIM] - mPointsOld[i1*DIM];
-	double diffy = mPoints[i1*DIM+1] - mPointsOld[i1*DIM+1];
+	double diffx = mPoints[i1].x() - mPointsOld[i1].x();
+	double diffy = mPoints[i1].y() - mPointsOld[i1].y();
 	double dist = pow(diffx,2) + pow(diffy,2);
 	
     return sqrt(dist);
@@ -44,9 +44,9 @@ double UniSpring::euclDispl(int i1){
 
 double UniSpring::euclDispl_3D(int i1){
 	
-	double diffx = mPoints[i1*DIM] - mPointsOld[i1*DIM];
-	double diffy = mPoints[i1*DIM+1] - mPointsOld[i1*DIM+1];
-	double diffz = mPoints[i1*DIM+2] - mPointsOld[i1*DIM+2];
+	double diffx = mPoints[i1].x() - mPointsOld[i1].x();
+	double diffy = mPoints[i1].y() - mPointsOld[i1].y();
+	double diffz = mPoints[i1].z() - mPointsOld[i1].z();
 	double dist = pow(diffx,2) + pow(diffy,2) + pow(diffz,2);
 	
     return sqrt(dist);
@@ -182,8 +182,8 @@ void UniSpring::updatePositions(){
 		double middley;
 		double length;
 		
-		middlex = (mPoints[mEdges[i][0]*DIM]+mPoints[mEdges[i][1]*DIM])/2;
-		middley = (mPoints[mEdges[i][0]*DIM+1]+mPoints[mEdges[i][1]*DIM+1])/2;
+		middlex = (mPoints[mEdges[i][0]].x()+mPoints[mEdges[i][1]].x())/2;
+		middley = (mPoints[mEdges[i][0]].y()+mPoints[mEdges[i][1]].y())/2;
 		length = euclDistance(mEdges[i][0],mEdges[i][1]);
 				
 		hbars2.push_back(pow(fh(middlex,middley),2)); // compute squared value of target distance on edge's middle
@@ -207,8 +207,8 @@ void UniSpring::updatePositions(){
 		double F = std::max(L0-L[i],0.);
 		
 		// Get edge unit vector
-		barvec[0] = ( mPoints[mEdges[i][0]*DIM] - mPoints[mEdges[i][1]*DIM] ) / L[i];
-		barvec[1] = ( mPoints[mEdges[i][0]*DIM+1] - mPoints[mEdges[i][1]*DIM+1] ) / L[i];		
+		barvec[0] = ( mPoints[mEdges[i][0]].x() - mPoints[mEdges[i][1]].x() ) / L[i];
+		barvec[1] = ( mPoints[mEdges[i][0]].y() - mPoints[mEdges[i][1]].y() ) / L[i];		
 		
 		// Project force on edge unit vector
 		Fvec[0] = F * barvec[0];
@@ -232,19 +232,19 @@ void UniSpring::updatePositions(){
 		displ_temp[0] = DELTAT * Ftot[i][0];
 		displ_temp[1] = DELTAT * Ftot[i][1];
 		
-		mPoints[i*DIM] = mPoints[i*DIM] + displ_temp[0];
-		mPoints[i*DIM+1] = mPoints[i*DIM+1] + displ_temp[1];
-				
+		mPoints[i].setPosition( mPoints[i].x() + displ_temp[0], mPoints[i].y() + displ_temp[1]);	
+		
 		// Check if point has moved outside
-		double d = mShape->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1]);
+		double d = mShape->fd_compute(mPoints[i].x(), mPoints[i].y());
 		
 		if (d > 0) {
 			
 			//Bring it back to boundary
-			double dgradx = ( mShape->fd_compute(mPoints[i*DIM] + deps, mPoints[i*DIM+1]) - d ) / deps;
-			double dgrady = ( mShape->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1] + deps) - d ) / deps;
-			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
-			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;
+			double dgradx = ( mShape->fd_compute(mPoints[i].x() + deps, mPoints[i].y()) - d ) / deps;
+			double dgrady = ( mShape->fd_compute(mPoints[i].x(), mPoints[i].y() + deps) - d ) / deps;
+			
+			mPoints[i].setPosition( mPoints[i].x() - d * dgradx, mPoints[i].y() - d * dgrady);
+			
 			
 		}
 				
@@ -282,9 +282,9 @@ void UniSpring::updatePositions_3D(){
 		double middlez;
 		double length;
 		
-		middlex = (mPoints[mEdges[i][0]*DIM]+mPoints[mEdges[i][1]*DIM])/2;
-		middley = (mPoints[mEdges[i][0]*DIM+1]+mPoints[mEdges[i][1]*DIM+1])/2;
-		middlez = (mPoints[mEdges[i][0]*DIM+2]+mPoints[mEdges[i][1]*DIM+2])/2;
+		middlex = (mPoints[mEdges[i][0]].x()+mPoints[mEdges[i][1]].x())/2;
+		middley = (mPoints[mEdges[i][0]].y()+mPoints[mEdges[i][1]].y())/2;
+		middlez = (mPoints[mEdges[i][0]].z()+mPoints[mEdges[i][1]].z())/2;
 		length = euclDistance_3D(mEdges[i][0],mEdges[i][1]);
 		
 		//double length3 = pow(length,3);
@@ -310,9 +310,9 @@ void UniSpring::updatePositions_3D(){
 		double F = std::max(L0-L[i],0.);
 		
 		// Get edge unit vector
-		barvec[0] = ( mPoints[mEdges[i][0]*DIM] - mPoints[mEdges[i][1]*DIM] ) / L[i];
-		barvec[1] = ( mPoints[mEdges[i][0]*DIM+1] - mPoints[mEdges[i][1]*DIM+1] ) / L[i];	
-		barvec[2] = ( mPoints[mEdges[i][0]*DIM+2] - mPoints[mEdges[i][1]*DIM+2] ) / L[i];
+		barvec[0] = ( mPoints[mEdges[i][0]].x() - mPoints[mEdges[i][1]].x() ) / L[i];
+		barvec[1] = ( mPoints[mEdges[i][0]].y() - mPoints[mEdges[i][1]].y() ) / L[i];	
+		barvec[2] = ( mPoints[mEdges[i][0]].z() - mPoints[mEdges[i][1]].z() ) / L[i];
 		
 		// Project force on edge unit vector
 		Fvec[0] = F * barvec[0];
@@ -339,23 +339,20 @@ void UniSpring::updatePositions_3D(){
 		displ_temp[1] = DELTAT * Ftot[i][1];
 		displ_temp[2] = DELTAT * Ftot[i][2];
 		
-		mPoints[i*DIM] = mPoints[i*DIM] + displ_temp[0];
-		mPoints[i*DIM+1] = mPoints[i*DIM+1] + displ_temp[1];
-		mPoints[i*DIM+2] = mPoints[i*DIM+2] + displ_temp[2];
+		mPoints[i].setPosition(mPoints[i].x() + displ_temp[0], mPoints[i].y() + displ_temp[1], mPoints[i].z() + displ_temp[2]);
 		
 		// Check if point has moved outside
-		double d = mShape_3D->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1], mPoints[i*DIM+2]);
+		double d = mShape_3D->fd_compute(mPoints[i].x(), mPoints[i].y(), mPoints[i].z());
 		
 		if (d > 0) {
 			
 			//Bring it back to boundary
-			double dgradx = ( mShape_3D->fd_compute(mPoints[i*DIM] + deps, mPoints[i*DIM+1], mPoints[i*DIM+2]) - d ) / deps;
-			double dgrady = ( mShape_3D->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1] + deps, mPoints[i*DIM+2]) - d ) / deps;
-			double dgradz = ( mShape_3D->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1], mPoints[i*DIM+2] + deps) - d ) / deps;
-			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
-			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;
-			mPoints[i*DIM+2] = mPoints[i*DIM+2] - d * dgradz;
+			double dgradx = ( mShape_3D->fd_compute(mPoints[i].x() + deps, mPoints[i].y(), mPoints[i].z()) - d ) / deps;
+			double dgrady = ( mShape_3D->fd_compute(mPoints[i].x(), mPoints[i].y() + deps, mPoints[i].z()) - d ) / deps;
+			double dgradz = ( mShape_3D->fd_compute(mPoints[i].x(), mPoints[i].y(), mPoints[i].z() + deps) - d ) / deps;
 			
+			mPoints[i].setPosition(mPoints[i].x() - d * dgradx, mPoints[i].y() - d * dgrady, mPoints[i].z() - d * dgradz);
+					
 		}
 		
 		// Compute displacement relative to previous triangulation (_old) and previous step (_prev)

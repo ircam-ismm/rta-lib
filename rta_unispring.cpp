@@ -122,7 +122,7 @@ UniSpring::UniSpring() {
 	stop = 0;
 	
 };
-
+		
 // TODO : check if mNpoints is 0. Also check later
 void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
 	
@@ -131,15 +131,21 @@ void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
 	
 	// Copy point data
 	mNpoints = n;
-	mPoints = new coordT[mNpoints*(DIM+1)];	//+1 for convex hull
-	mPointsOld = new coordT[mNpoints*(DIM+1)];
+	//mPoints = new coordT[mNpoints*(DIM+1)];	//+1 for convex hull
+	
+	// Allocate space
+	mPoints = new hed::Node[mNpoints];
+	mPointsOld = new hed::Node[mNpoints];
+	
+
+	//nodes.push_back(&mInputPoints[mNInputPoints]);
+
 	
 	for (int i=0; i<mNpoints; i++) {
 		
-		mPoints[i*DIM] = points[i*DIM];
-		mPoints[i*DIM+1] = points[i*DIM+1];
-		mPointsOld[i*DIM] = points[i*DIM];
-		mPointsOld[i*DIM+1] = points[i*DIM+1];		
+		mPoints[i].setPosition(points[i*DIM],points[i*DIM+1]);
+		mPointsOld[i].setPosition(points[i*DIM],points[i*DIM+1]);
+		nodes.push_back(&mPoints[i]);	
 		
 	}
 	
@@ -147,13 +153,16 @@ void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
 	std::vector<double> F_temp(2,0); 
 	Ftot.resize(mNpoints, F_temp);
 
+	// Scaling, optional pre-uniformisation
 	if (preUni == true) preUniformize();
-	else scale();
+	else scale();	
 	
+	//setupQhull();
+	//triangulate();
 	
+	// Triangulate
+	triang.createDelaunay(nodes.begin(), nodes.end()); //new_end if using unique
 	
-	setupQhull();
-	triangulate();
 	getEdgeVector();
 
 }
@@ -165,17 +174,14 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
 	
 	// Copy point data
 	mNpoints = n;
-	mPoints = new coordT[mNpoints*(DIM+1)];	//+1 for convex hull
-	mPointsOld = new coordT[mNpoints*(DIM+1)];
+	mPoints = (hed::Node*) malloc(sizeof(hed::Node)*mNpoints);
+	mPointsOld = (hed::Node*) malloc(sizeof(hed::Node)*mNpoints);
 	
 	for (int i=0; i<mNpoints; i++) {
 		
-		mPoints[i*DIM] = points[i*DIM];
-		mPoints[i*DIM+1] = points[i*DIM+1];
-		mPoints[i*DIM+2] = points[i*DIM+2];
-		mPointsOld[i*DIM] = points[i*DIM];
-		mPointsOld[i*DIM+1] = points[i*DIM+1];
-		mPointsOld[i*DIM+2] = points[i*DIM+2];		
+		mPoints[i].setPosition(points[i*DIM],points[i*DIM+1],points[i*DIM+2]);
+		mPointsOld[i].setPosition(points[i*DIM],points[i*DIM+1],points[i*DIM+2]);
+		nodes.push_back(&mPoints[i]);
 		
 	}
 	
@@ -184,8 +190,11 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
 	Ftot.resize(mNpoints, F_temp);
 	
 	preUniformize_3D();
-	setupQhull();
-	triangulate();
+	//setupQhull();
+	//triangulate();
+	
+	triang.createDelaunay(nodes.begin(), nodes.end()); //new_end if using unique
+
 	getEdgeVector_3D();
 	
 }
@@ -197,8 +206,8 @@ void UniSpring::preUniformize(){
 		
 	for (int i=0; i<mNpoints; i++) {
 		
-		mPointsX.push_back(mPoints[i*DIM]);
-		mPointsY.push_back(mPoints[i*DIM+1]);
+		mPointsX.push_back(mPoints[i].x());
+		mPointsY.push_back(mPoints[i].y());
 		
 	}
 	
@@ -212,15 +221,18 @@ void UniSpring::preUniformize(){
 	
 	for (int i=0; i<mNpoints; i++) {
 		
-		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i*DIM]);
-		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i*DIM+1]);
+		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i].x());
+		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i].y());
 		
 		int index_x = it_preuni_x - mPointsX.begin();
 		int index_y = it_preuni_y - mPointsY.begin();
 		
 		// Scale coordinates
-		mPoints[i*DIM] = mShape->ratio + RECT_SCALE * mShape->ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape->ratio;
-		mPoints[i*DIM+1] = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
+		
+		double scaledX = mShape->ratio + RECT_SCALE * mShape->ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape->ratio;
+		double scaledY = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
+		
+		mPoints[i].setPosition(scaledX, scaledY);
 		
 		// Assign values so that coordinates won't be found again
 		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
@@ -237,9 +249,9 @@ void UniSpring::preUniformize_3D(){
 	
 	for (int i=0; i<mNpoints; i++) {
 		
-		mPointsX.push_back(mPoints[i*DIM]);
-		mPointsY.push_back(mPoints[i*DIM+1]);
-		mPointsZ.push_back(mPoints[i*DIM+2]);
+		mPointsX.push_back(mPoints[i].x());
+		mPointsY.push_back(mPoints[i].y());
+		mPointsZ.push_back(mPoints[i].z());
 		
 	}
 	
@@ -255,18 +267,21 @@ void UniSpring::preUniformize_3D(){
 	
 	for (int i=0; i<mNpoints; i++) {
 		
-		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i*DIM]);
-		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i*DIM+1]);
-		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), mPoints[i*DIM+2]);
+		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i].x());
+		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i].y());
+		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), mPoints[i].z());
 		
 		int index_x = it_preuni_x - mPointsX.begin();
 		int index_y = it_preuni_y - mPointsY.begin();
 		int index_z = it_preuni_z - mPointsZ.begin();
 		
 		// Scale coordinates
-		mPoints[i*DIM] = mShape_3D->ratio_1 + RECT_SCALE * mShape_3D->ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_1;
-		mPoints[i*DIM+1] = mShape_3D->ratio_2 + RECT_SCALE * mShape_3D->ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_2;
-		mPoints[i*DIM+2] = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
+		
+		double scaledX = mShape_3D->ratio_1 + RECT_SCALE * mShape_3D->ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_1;
+		double scaledY = mShape_3D->ratio_2 + RECT_SCALE * mShape_3D->ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_2;
+		double scaledZ = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
+		
+		mPoints[i].setPosition(scaledX, scaledY, scaledZ);
 		
 		// Assign values so that coordinates won't be found again
 		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
@@ -282,18 +297,18 @@ void UniSpring::preUniformize_3D(){
  */
 void UniSpring::scale(){
 	
-	double minX = mPoints[0];
-	double maxX = mPoints[0];
-	double minY = mPoints[1];
-	double maxY = mPoints[1];
+	double minX = mPoints[0].x();
+	double maxX = mPoints[0].x();
+	double minY = mPoints[0].y();
+	double maxY = mPoints[0].y();
 		
 	// Find min & max
 	for (int i=0; i<mNpoints; i++) {
 		
-		if (mPoints[i*DIM] < minX) minX = mPoints[i*DIM];	
-		if (mPoints[i*DIM] > maxX) maxX = mPoints[i*DIM];
-		if (mPoints[i*DIM+1] < minY) minY = mPoints[i*DIM+1];
-		if (mPoints[i*DIM+1] > maxY) maxY = mPoints[i*DIM+1];
+		if (mPoints[i].x() < minX) minX = mPoints[i].x();	
+		if (mPoints[i].x() > maxX) maxX = mPoints[i].x();
+		if (mPoints[i].y() < minY) minY = mPoints[i].y();
+		if (mPoints[i].y() > maxY) maxY = mPoints[i].y();
 		
 	}
 	
@@ -304,8 +319,11 @@ void UniSpring::scale(){
 	// Scale coordinates
 	for (int i=0; i<mNpoints; i++) {
 		
-		mPoints[i*DIM] = mShape->ratio + RECT_SCALE * mShape->ratio * (mPoints[i*DIM]-minX)/(maxX-minX) - RECT_SCALE/2 * mShape->ratio;
-		mPoints[i*DIM+1] = 1 + RECT_SCALE * (mPoints[i*DIM+1]-minY)/(maxY-minY) - RECT_SCALE/2;
+		double scaledX = mShape->ratio + RECT_SCALE * mShape->ratio * (mPoints[i].x()-minX)/(maxX-minX) - RECT_SCALE/2 * mShape->ratio;
+		double scaledY = 1 + RECT_SCALE * (mPoints[i].y()-minY)/(maxY-minY) - RECT_SCALE/2;
+		
+		mPoints[i].setPosition(scaledX, scaledY);
+		
 		
 	}	
 	
@@ -321,8 +339,8 @@ void UniSpring::get_points_scaled(float *points) {
 			
 	for (int i=0; i<mNpoints; i++) {
 		
-		points[i*DIM] = mPoints[i*DIM] * mShape->scale_factor + mShape->shift_scaled_x;
-		points[i*DIM+1] = mPoints[i*DIM+1] * mShape->scale_factor + mShape->shift_scaled_y;	
+		points[i*DIM] = mPoints[i].x() * mShape->scale_factor + mShape->shift_scaled_x;
+		points[i*DIM+1] = mPoints[i].y() * mShape->scale_factor + mShape->shift_scaled_y;	
 		
 	}
 	
@@ -332,9 +350,9 @@ void UniSpring::get_points_scaled_3D(float *points) {
 			
 	for (int i=0; i<mNpoints; i++) {
 		
-		points[i*DIM] = mPoints[i*DIM] * mShape_3D->scale_factor + mShape_3D->shift_scaled_x;
-		points[i*DIM+1] = mPoints[i*DIM+1] * mShape_3D->scale_factor + mShape_3D->shift_scaled_y;
-		points[i*DIM+2] = mPoints[i*DIM+2] * mShape_3D->scale_factor + mShape_3D->shift_scaled_z;
+		points[i*DIM] = mPoints[i].x() * mShape_3D->scale_factor + mShape_3D->shift_scaled_x;
+		points[i*DIM+1] = mPoints[i].y() * mShape_3D->scale_factor + mShape_3D->shift_scaled_y;
+		points[i*DIM+2] = mPoints[i].z() * mShape_3D->scale_factor + mShape_3D->shift_scaled_z;
 		
 	}
 	
@@ -345,10 +363,10 @@ int UniSpring::update() {
 	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
-		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(coordT)); // Copy old points positions
-		retriangulate();
+		memcpy(mPointsOld,mPoints,mNpoints*sizeof(hed::Node)); // Copy old points positions
+		triang.createDelaunay(nodes.begin(), nodes.end());
 		getEdgeVector();
-		freeQhullMemory(); // Free memory
+		//freeQhullMemory(); // Free memory
 		
 	}	
 	
@@ -366,10 +384,9 @@ int UniSpring::update_3D() {
 	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
-		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(coordT)); // Copy old points positions
-		retriangulate();
+		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(hed::Node)); // Copy old points positions
+		triang.createDelaunay(nodes.begin(), nodes.end());
 		getEdgeVector_3D();
-		freeQhullMemory(); // Free memory
 		
 	}	
 	
