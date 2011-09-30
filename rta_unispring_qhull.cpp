@@ -146,6 +146,7 @@ void UniSpring::getEdgeVector(){
 			
 		}
 		
+		
 		//removeDuplicateEdges(); // Gives results closer to Matlab (in terms of convergence), but longueur computation (about +5s). Same graphical results
 		//int mEdgesSize = mEdges.size(); //debug
 		//printf("%d\n",mEdgesSize); // MATLAB : number of delaunay regions 15564. mEdgesSize = 18049. C++ : slightly more regions, same edges
@@ -202,7 +203,7 @@ void UniSpring::getEdgeVector_3D(){
 						std::vector<int> ridge_temp;
 						neighbor= otherfacet_(ridge, facet);
 						
-						if (neighbor->visitid != qh visit_id) { // Check if ridge has already been visited (in neighbor facet)
+						if (neighbor->visitid != qh visit_id) { // Check if ridge has already been visited (in neighbor facet) //TODO: remove, useless if removing duplicate edges after
 							
 							FOREACHvertex_(ridge->vertices) {
 								

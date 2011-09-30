@@ -185,9 +185,7 @@ void UniSpring::updatePositions(){
 		middlex = (mPoints[mEdges[i][0]*DIM]+mPoints[mEdges[i][1]*DIM])/2;
 		middley = (mPoints[mEdges[i][0]*DIM+1]+mPoints[mEdges[i][1]*DIM+1])/2;
 		length = euclDistance(mEdges[i][0],mEdges[i][1]);
-		
-		double length2 = pow(length,2);
-		
+				
 		hbars2.push_back(pow(fh(middlex,middley),2)); // compute squared value of target distance on edge's middle
 		L.push_back(length);
 		L2.push_back(pow(length,2));
@@ -246,7 +244,7 @@ void UniSpring::updatePositions(){
 			double dgradx = ( mShape->fd_compute(mPoints[i*DIM] + deps, mPoints[i*DIM+1]) - d ) / deps;
 			double dgrady = ( mShape->fd_compute(mPoints[i*DIM], mPoints[i*DIM+1] + deps) - d ) / deps;
 			mPoints[i*DIM] = mPoints[i*DIM] - d * dgradx; 
-			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;			
+			mPoints[i*DIM+1] = mPoints[i*DIM+1] - d * dgrady;
 			
 		}
 				

@@ -1,6 +1,8 @@
 #include "rta_unispring.h"
 #define DIM RTA_UNISPRING_NDIM
 
+#include <iostream>
+
 using namespace UniSpringSpace ;
 
 Disk::Disk (float r, float cx, float cy) { 
@@ -121,12 +123,8 @@ UniSpring::UniSpring() {
 	
 };
 
-
-void UniSpring::reset_points ()  {
-  qh_freeqhull (qh_ALL);
-}
-
-void UniSpring::set_points(int n, float *points, Shape *shape) {
+// TODO : check if mNpoints is 0. Also check later
+void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
 	
 	// Get pointer to Shape. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Disk, Rectangle, Square)
 	mShape = shape;	
@@ -149,7 +147,11 @@ void UniSpring::set_points(int n, float *points, Shape *shape) {
 	std::vector<double> F_temp(2,0); 
 	Ftot.resize(mNpoints, F_temp);
 
-	preUniformize();
+	if (preUni == true) preUniformize();
+	else scale();
+	
+	
+	
 	setupQhull();
 	triangulate();
 	getEdgeVector();
@@ -275,6 +277,45 @@ void UniSpring::preUniformize_3D(){
 	
 }
 
+/** 
+ Scale x-coordinates between mShape->ratio - RECT_SCALE*mShape.ratio/2 and mShape->ratio + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
+ */
+void UniSpring::scale(){
+	
+	double minX = mPoints[0];
+	double maxX = mPoints[0];
+	double minY = mPoints[1];
+	double maxY = mPoints[1];
+		
+	// Find min & max
+	for (int i=0; i<mNpoints; i++) {
+		
+		if (mPoints[i*DIM] < minX) minX = mPoints[i*DIM];	
+		if (mPoints[i*DIM] > maxX) maxX = mPoints[i*DIM];
+		if (mPoints[i*DIM+1] < minY) minY = mPoints[i*DIM+1];
+		if (mPoints[i*DIM+1] > maxY) maxY = mPoints[i*DIM+1];
+		
+	}
+	
+	std::cout << "minX " << minX << " maxX " << maxX << "\n";
+	std::cout << "minY " << minY << " maxY " << maxY << "\n";
+
+	
+	// Scale coordinates
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPoints[i*DIM] = mShape->ratio + RECT_SCALE * mShape->ratio * (mPoints[i*DIM]-minX)/(maxX-minX) - RECT_SCALE/2 * mShape->ratio;
+		mPoints[i*DIM+1] = 1 + RECT_SCALE * (mPoints[i*DIM+1]-minY)/(maxY-minY) - RECT_SCALE/2;
+		
+	}	
+	
+}
+
+/** 
+ Scale x-coordinates between mShape->ratio - RECT_SCALE*mShape.ratio/2 and mShape->ratio + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
+ */
+//void UniSpring::scale_3D(){ // TODO: update for 3D
+
 
 void UniSpring::get_points_scaled(float *points) {
 			
@@ -300,11 +341,7 @@ void UniSpring::get_points_scaled_3D(float *points) {
 }
 
 int UniSpring::update() {
-			
-	updatePositions();
-
-	if (max_displ_prev / H0 < dptol) stop = 1;
-	
+				
 	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
@@ -314,18 +351,17 @@ int UniSpring::update() {
 		freeQhullMemory(); // Free memory
 		
 	}	
-
+	
 	resetPhysicalModel();
+	updatePositions();
+
+	if (max_displ_prev / H0 < dptol) stop = 1;
 
 	return stop;
 	
 }
 
 int UniSpring::update_3D() {
-	
-	updatePositions_3D();
-		
-	if (max_displ_prev / H0 < dptol) stop = 1;
 	
 	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
@@ -338,6 +374,9 @@ int UniSpring::update_3D() {
 	}	
 	
 	resetPhysicalModel_3D();
+	updatePositions_3D();
+	
+	if (max_displ_prev / H0 < dptol) stop = 1;
 	
 	return stop;
 	
@@ -346,5 +385,11 @@ int UniSpring::update_3D() {
 void UniSpring::set_tolerance (float tol) {
 
 	dptol = tol;
+	
+}
+
+std::vector< std::vector<int> > UniSpring::get_edges() {
+	
+	return mEdges;
 	
 }

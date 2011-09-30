@@ -108,12 +108,12 @@ public:
 	UniSpring();
 					  
     /** set points and initialise unispring algorithm:
-	copy points array, pre-uniformise, do first triangulation
+	copy points array, pre-uniformise (if preUni = true), do first triangulation
 	@param n	number of points
 	@param points	pointer to points x, y data
 	@param shape	defines shape
      */
-    void set_points (int n, float *points, Shape *shape);
+    void set_points (int n, float *points, Shape *shape, bool preUni = true);
 	
 	/** set points and initialise unispring algorithm:
 	 copy points array, pre-uniformise, do first triangulation
@@ -131,6 +131,10 @@ public:
     void get_points_scaled (float *points);
 	void get_points_scaled_3D (float *points);
 	//void get_points_scaled (double *points);
+	
+	/** get triangulation edges as vector of pairs of points ids.
+	 */
+	std::vector< std::vector<int> > get_edges();
 
     /** run one update step
 	@return stop flag, true if movement under tolerance
@@ -140,7 +144,7 @@ public:
 
     void set_tolerance (float tol);
 	
-	static double fd_disk(double px, double py, double r, double cx, double cy);
+	static double fd_disk(double px, double py, double r, double cx, double cy); // TODO: redefine as Shape methods
 	static double fd_rect(double px, double py, double llx, double urx, double lly, double ury);
 	static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
 	static double fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz);
@@ -158,6 +162,7 @@ private:
 	void loadData();
 	void preUniformize();
 	void preUniformize_3D();
+	void scale();
 	void setupQhull();
 	void triangulate();
 	void updatePositions();
