@@ -243,7 +243,7 @@ int kdtree_search_knn (kdtree_t *t, rta_real_t* vector, int stride,
 		    t->profile.v2v++;
 #endif
 #if DEBUG_KDTREESEARCH
-		    rta_post("  distance = %f between vector %d ", dxx, i);
+		    rta_post("  distance = %f between vector %d (elem %d, %d) ", dxx, i, t->dataindex[i].base, t->dataindex[i].index);
 		    vec_post(kdtree_get_vector(t, i), 1, t->ndim, " and x ");
 		    vec_post(vector, stride,             t->ndim, "\n");
 #endif

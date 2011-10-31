@@ -110,9 +110,9 @@ static int check_node (kdtree_t *t, int node, int dim)
     rta_real_t min, max;
     int        i;
 
-    if (nstart <= nend)
+    if (nstart < nend)
 	min = max = kdtree_get_element(t, nstart, dim);
-    else
+    else /* size == 1 */
 	return 0;
 
     for (i = nstart + 1; i <= nend; i++) 
@@ -245,12 +245,14 @@ static rta_real_t distV2orthoH (const rta_real_t* vect,
 {
     return DMAP(vect[dim], mean[dim], distfunc[dim]);
 }
+
 static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride, 
 				       rta_real_t* mean, int dim,
 				       rta_bpf_t  *distfunc[]) 
 {
     return DMAP(vect[dim * stride], mean[dim], distfunc[dim]);
 }
+
 static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, 
 					 rta_real_t* mean, const rta_real_t *sigma, int dim,
 					 rta_bpf_t  *distfunc[]) 
@@ -260,8 +262,9 @@ static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride,
 	dim, vect[dim * stride], mean[dim], sigma[dim],
 	sigma[dim] > 0  ?  (vect[dim * stride] - mean[dim]) / sigma[dim]  :  0);
 #endif
-    return sigma[dim] > 0  ?  DMAPW(vect[dim * stride], mean[dim], sigma[dim], distfunc[dim])  
-	                   :  0;
+    return sigma[dim] > 0  
+	?  DMAPW(vect[dim * stride], mean[dim], sigma[dim], distfunc[dim])  
+	:  0;
 }
 
 
@@ -338,6 +341,7 @@ rta_real_t distV2N (kdtree_t* t, const rta_real_t *x, const int node)
 	return 0;
     }
 }
+
 rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, const int node)
 {
 #if KDTREE_PROFILE_BUILD
@@ -358,6 +362,7 @@ rta_real_t distV2N_stride (kdtree_t* t, const rta_real_t *x, int stride, const i
 	return 0;
     }
 }
+
 rta_real_t distV2N_weighted (kdtree_t* t, const rta_real_t *x, int stride, 
 			     const rta_real_t *sigma, const int node)
 {
@@ -467,15 +472,17 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 #endif
 	for (n = nstart; n < nend; n++) 
 	{   /* for all nodes at tree level l */
+	    int startind = t->nodes[n].startind;
+	    int endind   = t->nodes[n].endind;
+
 	    if (decompose_node(t, n, l, use_sigma))
 	    {   /* well-behaved node */
 #if DEBUG_KDTREEBUILD
-		rta_post("Node #%i (%i..%i): mean = ", 
-			 n, t->nodes[n].startind, t->nodes[n].endind); 
+		rta_post("Node #%i (%i..%i): mean = ", n, startind, endind); 
 		row_post(t->mean, n, t->ndim, "\n");
 #endif
-		i = t->nodes[n].startind; 
-		j = t->nodes[n].endind;
+		i = startind; 
+		j = endind;
 		
 		while (i < j) 
 		{ /* sort node vectors by distance to splitplane */
@@ -494,30 +501,38 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 		}
 	    }
 	    else
-	    {   /* degenerate node: all points on splitplane -> halve */
-		int middle = (t->nodes[n].startind + t->nodes[n].endind) >> 1;
-		j = middle;
-		i = middle + 1;
+	    {
+		if (startind == endind)
+		{   /* singleton node: don't split */
+		    j = startind + 1;
+		    i = endind;
+		}
+		else
+		{ /* degenerate node: all points on splitplane -> halve */
+		    int middle = (startind + endind) >> 1;
+		    j = middle;
+		    i = middle + 1;
 #if DEBUG_KDTREEBUILD
-		rta_post("degenerate Node #%i (%i..%i): splitting at %d, %d  mean = ", 
-			 n, t->nodes[n].startind, t->nodes[n].endind, j, i); 
-		row_post(t->mean, n, t->ndim, "\n");
+		    rta_post("degenerate Node #%i (%i..%i): splitting at %d, %d  mean = ", 
+			     n, startind, endind, j, i); 
+		    row_post(t->mean, n, t->ndim, "\n");
 #endif		
+		}
 	    }
 #if DEBUG_KDTREEBUILD > 1
 	    rta_post("  --> decomposition (%i..%i), (%i..%i)\n", 
-		     t->nodes[n].startind, j - 1, i, t->nodes[n].endind); 
+		     startind, j - 1, i, endind); 
 #endif
 
 	    assert(2*n+2 < t->nnodes);
-	    t->nodes[2*n+1].startind = t->nodes[n].startind; // start index of left child of node n
-	    t->nodes[2*n+1].endind   = j - 1;	             // end   index of left child of node n
-	    t->nodes[2*n+1].size     = j - t->nodes[n].startind;
+	    t->nodes[2*n+1].startind = startind; // start index of left child of node n
+	    t->nodes[2*n+1].endind   = j - 1;	 // end   index of left child of node n
+	    t->nodes[2*n+1].size     = j - startind;
 
-	    t->nodes[2*n+2].startind = i;	             // start index of right child of node n
-	    t->nodes[2*n+2].endind   = t->nodes[n].endind;   // end   index of right child of node n
-	    t->nodes[2*n+2].size     = t->nodes[n].endind - i + 1;
-	}
+	    t->nodes[2*n+2].startind = i;	 // start index of right child of node n
+	    t->nodes[2*n+2].endind   = endind;   // end   index of right child of node n
+	    t->nodes[2*n+2].size     = endind - i + 1;
+	}   /* end for nodes n */
     }
 }
 

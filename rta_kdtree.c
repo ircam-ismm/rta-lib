@@ -34,16 +34,21 @@ void kdtree_profile_clear (kdtree_t *t)
 }
 #endif
 
-
+/* debug only, not thread safe! */
 void vec_post (rta_real_t *v, int stride, int n, const char *suffix)
 {
+#   define MAX_VEC_STR 2048
+    static char str[MAX_VEC_STR + 1];
+    int p = 0;
     int i, ii;
 
     for (i = 0, ii = 0; i < n; i++, ii += stride) 
     { 	
-	rta_post("%s%.3f", (ii == 0  ?  "["  :  ", "), v[ii]);
+	p += snprintf(str + p, MAX_VEC_STR, "%s%.3f", (ii == 0  ?  "["  :  ", "), v[ii]);
     }
-    rta_post("]%s", suffix);
+    p += snprintf(str + p, MAX_VEC_STR, "]%s", suffix);
+    str[p] = 0;
+    rta_post(str);
 }
 
 void row_post (rta_real_t *v, int row, int n, const char *suffix)
@@ -96,7 +101,7 @@ void kdtree_raw_display (kdtree_t* t)
 	}
 }
 
-void kdtree_data_display(kdtree_t* t, int print_data) 
+void kdtree_data_display (kdtree_t* t, int print_data) 
 {
 #ifdef WIN32
 	rta_real_t plane[2048];
@@ -133,12 +138,18 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 	    }
 	    else
 		row_post(t->split, n, t->ndim, "");
+
+	    if (print_data > 1)
+	    {
+		rta_post(" mean ");
+		vec_post(t->mean + n * t->ndim, 1, t->ndim, "");
+	    }
 	  }
 	  else
 	    rta_post("  leaf node %d size %d <%d..%d> ",
 		     n, node->size, node->startind, node->endind);
 
-	  if (print_data)
+	  if (print_data > 2)
 	  {
 	    rta_post(" = (");
 	    for (i = node->startind; i <= node->endind; i++) 
@@ -150,6 +161,7 @@ void kdtree_data_display(kdtree_t* t, int print_data)
 	    }
 	    rta_post(")");
 	  }
+
 	  rta_post("\n");
 	} /* end for nodes n */
     } /* end for level l */
