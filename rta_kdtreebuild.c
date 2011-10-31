@@ -503,9 +503,9 @@ void kdtree_build (kdtree_t* t, int use_sigma)
 	    else
 	    {
 		if (startind == endind)
-		{   /* singleton node: don't split */
+		{   /* singleton node: don't split, pass through to left lower (leaf) level node */
 		    j = startind + 1;
-		    i = endind;
+		    i = endind + 1; /* create empty right node */
 		}
 		else
 		{ /* degenerate node: all points on splitplane -> halve */
