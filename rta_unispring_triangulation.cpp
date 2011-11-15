@@ -38,24 +38,6 @@ void UniSpring::retriangulate(){
 }*/
 
 
-/**
- Print a summary of Qhull's output.
- */
-void UniSpring::print_summary (void) {
-	facetT *facet;
-	int k;
-	
-	printf ("\n%d vertices and %d facets with normals:\n",
-			qh num_vertices, qh num_facets);
-	FORALLfacets {
-		for (k=0; k < qh hull_dim; k++)
-			printf ("%6.2g ", facet->normal[k]);
-		printf ("\n");
-	}
-}
-
-
-
 
 /**
  Get delaunay triangulation edges by visiting each facet ridge once.
@@ -172,7 +154,7 @@ void UniSpring::getEdgeVector_3D(){ // TODO: check if it works in 3D
 		
 	}
 	
-	removeDuplicateEdges();
+	//removeDuplicateEdges();
 	
 	
 }

@@ -1,11 +1,6 @@
 #ifndef _RTA_UNISPRING
 #define _RTA_UNISPRING
 
-extern "C" {
-#define qh_QHimport
-#include "qhull_a.h"
-}
-
 #include <limits>
 #include <numeric>
 #include <vector>
@@ -138,6 +133,7 @@ public:
 	/** get triangulation edges as vector of pairs of points ids.
 	 */
 	std::vector< std::vector<int> > get_edges();
+	int get_num_edges() { return mEdges.size(); };
 
     /** run one update step
 	@return stop flag, true if movement under tolerance
@@ -176,10 +172,10 @@ private:
 
 	
 	// TTL
-	hed::Triangulation triang;
+	hed::Triangulation      triang;
 	std::vector<hed::Node*> nodes; // vector of pointers to point coordinates data
-	hed::Node *mPoints;
-	hed::Node *mPointsOld;
+	std::vector<hed::Node>  mPoints;
+	std::vector<hed::Node>  mPointsOld;
 	
 	// Physical model
 	Shape *mShape;

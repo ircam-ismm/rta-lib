@@ -129,24 +129,23 @@ void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
 	// Get pointer to Shape. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Disk, Rectangle, Square)
 	mShape = shape;	
 	
+	triang.cleanAll();
+
 	// Copy point data
 	mNpoints = n;
 	//mPoints = new coordT[mNpoints*(DIM+1)];	//+1 for convex hull
 	
 	// Allocate space
-	mPoints = new hed::Node[mNpoints];
-	mPointsOld = new hed::Node[mNpoints];
+	mPoints.resize(mNpoints);
+	mPointsOld.resize(mNpoints);
 	
-
 	//nodes.push_back(&mInputPoints[mNInputPoints]);
+	nodes.resize(mNpoints);
 
-	
 	for (int i=0; i<mNpoints; i++) {
-		
-		mPoints[i].setPosition(points[i*DIM],points[i*DIM+1]);
-		mPointsOld[i].setPosition(points[i*DIM],points[i*DIM+1]);
-		nodes.push_back(&mPoints[i]);	
-		
+	  mPoints[i].init(i, points[i*DIM], points[i*DIM+1]);
+	  mPointsOld[i].init(i, points[i*DIM], points[i*DIM+1]);
+	  nodes[i] = &mPoints[i];	
 	}
 	
 	// Init total force vectors
@@ -172,17 +171,17 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
 	// Get pointer to Shape_3D. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Cube, Sphere, RParrallel)
 	mShape_3D = shape;	
 	
+	triang.cleanAll();
+
 	// Copy point data
 	mNpoints = n;
-	mPoints = (hed::Node*) malloc(sizeof(hed::Node)*mNpoints);
-	mPointsOld = (hed::Node*) malloc(sizeof(hed::Node)*mNpoints);
+	mPoints.resize(mNpoints);
+	mPointsOld.resize(mNpoints);
 	
 	for (int i=0; i<mNpoints; i++) {
-		
-		mPoints[i].setPosition(points[i*DIM],points[i*DIM+1],points[i*DIM+2]);
-		mPointsOld[i].setPosition(points[i*DIM],points[i*DIM+1],points[i*DIM+2]);
-		nodes.push_back(&mPoints[i]);
-		
+	  mPoints[i].init(i, points[i*DIM],points[i*DIM+1],points[i*DIM+2]);
+	  mPointsOld[i].init(i, points[i*DIM],points[i*DIM+1],points[i*DIM+2]);
+	  nodes[i] = &mPoints[i];	
 	}
 	
 	// Init total force vectors
@@ -203,7 +202,10 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
  Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
  */
 void UniSpring::preUniformize(){
-		
+
+  	mPointsX.clear();
+  	mPointsY.clear();
+
 	for (int i=0; i<mNpoints; i++) {
 		
 		mPointsX.push_back(mPoints[i].x());
@@ -246,6 +248,10 @@ void UniSpring::preUniformize(){
  Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
  */
 void UniSpring::preUniformize_3D(){
+
+	mPointsX.clear();
+  	mPointsY.clear();
+  	mPointsZ.clear();
 	
 	for (int i=0; i<mNpoints; i++) {
 		
@@ -363,7 +369,7 @@ int UniSpring::update() {
 	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
-		memcpy(mPointsOld,mPoints,mNpoints*sizeof(hed::Node)); // Copy old points positions
+		mPointsOld = mPoints; // Copy old points positions
 		triang.createDelaunay(nodes.begin(), nodes.end());
 		getEdgeVector();
 		//freeQhullMemory(); // Free memory
@@ -384,7 +390,7 @@ int UniSpring::update_3D() {
 	if (max_displ_old / H0 > TTOL) { // Retriangulate
 		
 		mEdges.clear(); // Reset		
-		memcpy(mPointsOld,mPoints,mNpoints*(DIM+1)*sizeof(hed::Node)); // Copy old points positions
+		mPointsOld = mPoints; // Copy old points positions
 		triang.createDelaunay(nodes.begin(), nodes.end());
 		getEdgeVector_3D();
 		
