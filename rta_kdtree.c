@@ -9,6 +9,7 @@
 #ifdef WIN32
 #include <malloc.h>
 static double log2(double x){ return log(x)/log(2);}
+#define snprintf sprintf_s
 #else
 #include <alloca.h>
 #endif
