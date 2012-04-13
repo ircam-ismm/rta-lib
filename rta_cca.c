@@ -36,12 +36,10 @@ center_variables(gsl_matrix * X, gsl_matrix * Y)
 	int right_m = Y->size1;
 	int right_n = Y->size2;
 	
-	
 	left_means = gsl_vector_alloc( left_n);
 	gsl_vector_set_zero( left_means);
 	right_means = gsl_vector_alloc( right_n);
 	gsl_vector_set_zero(right_means);
-	
 	
 	if (left_m != 0 && right_m != 0)
 	{
@@ -70,6 +68,8 @@ center_variables(gsl_matrix * X, gsl_matrix * Y)
 	
 	free(left_means);
 	free(right_means);
+  
+  return 0;
 }
 
 
