@@ -222,7 +222,7 @@ rta_svd(rta_real_t * output_U, rta_real_t * S, rta_real_t *  output_V,
         }
         for (i = k; i < m; i++) 
         {
-          A[i*n + k] /= S[k];
+          A[i*n + k] /= S[k]; 
         }
         A[k*n + k] += 1.0;
       }

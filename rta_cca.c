@@ -19,8 +19,6 @@
 #include<math.h>
 #include "rta_cca.h"
 
-
-
 /*
  * Center Variables
  */
@@ -69,7 +67,7 @@ center_variables(gsl_matrix * X, gsl_matrix * Y)
 	free(left_means);
 	free(right_means);
   
-  return 0;
+  return 1;
 }
 
 
@@ -570,4 +568,5 @@ rta_cca(float * left_ptr, int left_m, int left_n,
 	gsl_matrix_free(preA);
 	gsl_matrix_free(preB);
 	
+	return 0;
 }
