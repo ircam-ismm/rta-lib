@@ -124,8 +124,8 @@ UniSpring::UniSpring() {
 };
 		
 // TODO : check if mNpoints is 0. Also check later
-void UniSpring::set_points(int n, int cols, float *points, Shape *shape, bool preUni) {
-	
+void UniSpring::set_points(int n, int cols, float *points, Shape *shape, bool preUni) 
+{
 	// Get pointer to Shape. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Disk, Rectangle, Square)
 	mShape = shape;	
 	
@@ -163,11 +163,10 @@ void UniSpring::set_points(int n, int cols, float *points, Shape *shape, bool pr
 	triang.createDelaunay(nodes.begin(), nodes.end()); //new_end if using unique
 	
 	getEdgeVector();
-
 }
 
-void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
-	
+void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) 
+{
 	// Get pointer to Shape_3D. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Cube, Sphere, RParrallel)
 	mShape_3D = shape;	
 	
@@ -194,8 +193,7 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
 	
 	triang.createDelaunay(nodes.begin(), nodes.end()); //new_end if using unique
 
-	getEdgeVector_3D();
-	
+	getEdgeVector_3D();	
 }
 
 /** 
@@ -364,16 +362,15 @@ void UniSpring::get_points_scaled_3D(float *points) {
 	
 }
 
-int UniSpring::update() {
-				
-	if (max_displ_old / H0 > TTOL) { // Retriangulate
-		
-		mEdges.clear(); // Reset		
-		mPointsOld = mPoints; // Copy old points positions
-		triang.createDelaunay(nodes.begin(), nodes.end());
-		getEdgeVector();
-		//freeQhullMemory(); // Free memory
-		
+int UniSpring::update() 
+{
+	if (max_displ_old / H0 > TTOL) 
+	{ // Retriangulate
+	  mEdges.clear(); // Reset		
+	  mPointsOld = mPoints; // Copy old points positions
+	  triang.createDelaunay(nodes.begin(), nodes.end());
+	  getEdgeVector();
+	  //freeQhullMemory(); // Free memory
 	}	
 	
 	resetPhysicalModel();
@@ -385,15 +382,13 @@ int UniSpring::update() {
 	
 }
 
-int UniSpring::update_3D() {
-	
-	if (max_displ_old / H0 > TTOL) { // Retriangulate
-		
-		mEdges.clear(); // Reset		
-		mPointsOld = mPoints; // Copy old points positions
-		triang.createDelaunay(nodes.begin(), nodes.end());
-		getEdgeVector_3D();
-		
+int UniSpring::update_3D() 
+{
+	if (max_displ_old / H0 > TTOL) 
+	{ // Retriangulate
+	  mPointsOld = mPoints; // Copy old points positions
+	  triang.createDelaunay(nodes.begin(), nodes.end());
+	  getEdgeVector_3D();
 	}	
 	
 	resetPhysicalModel_3D();

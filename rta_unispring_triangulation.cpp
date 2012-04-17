@@ -48,6 +48,8 @@ void UniSpring::getEdgeVector(){
 	const list<hed::Edge*>& leadingEdges = triang.getLeadingEdges();
 	list<hed::Edge*>::const_iterator it2;
 	
+	mEdges.clear(); // Reset		
+
 	// iterate over all triangles
 	for (it2 = leadingEdges.begin(); it2 != leadingEdges.end(); ++it2) {
 		hed::Edge* edge = *it2;
@@ -101,6 +103,8 @@ void UniSpring::getEdgeVector_3D(){ // TODO: check if it works in 3D
 	const list<hed::Edge*>& leadingEdges = triang.getLeadingEdges();
 	list<hed::Edge*>::const_iterator it2;
 	
+	mEdges.clear(); // Reset		
+
 	// iterate over all triangles
 	for (it2 = leadingEdges.begin(); it2 != leadingEdges.end(); ++it2) {
 		hed::Edge* edge = *it2;
