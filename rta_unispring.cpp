@@ -124,7 +124,7 @@ UniSpring::UniSpring() {
 };
 		
 // TODO : check if mNpoints is 0. Also check later
-void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
+void UniSpring::set_points(int n, int cols, float *points, Shape *shape, bool preUni) {
 	
 	// Get pointer to Shape. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Disk, Rectangle, Square)
 	mShape = shape;	
@@ -142,9 +142,9 @@ void UniSpring::set_points(int n, float *points, Shape *shape, bool preUni) {
 	//nodes.push_back(&mInputPoints[mNInputPoints]);
 	nodes.resize(mNpoints);
 
-	for (int i=0; i<mNpoints; i++) {
-	  mPoints[i].init(i, points[i*DIM], points[i*DIM+1]);
-	  mPointsOld[i].init(i, points[i*DIM], points[i*DIM+1]);
+	for (int i = 0; i < mNpoints; i++) {
+	  mPoints[i].init(i, points[i * cols], points[i * cols + 1]);
+	  mPointsOld[i].init(i, points[i * cols], points[i * cols + 1]);
 	  nodes[i] = &mPoints[i];	
 	}
 	

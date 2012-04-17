@@ -112,7 +112,7 @@ public:
 	@param points	pointer to points x, y data
 	@param shape	defines shape
      */
-    void set_points (int n, float *points, Shape *shape, bool preUni = true);
+	void set_points (int n, int cols, float *points, Shape *shape, bool preUni = true);
 	
 	/** set points and initialise unispring algorithm:
 	 copy points array, pre-uniformise, do first triangulation
