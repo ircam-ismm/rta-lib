@@ -21,7 +21,8 @@
 #define DELTAT 0.2 // ok for 2D
 //#define DELTAT 0.1 // 0.1 better in 3D
 
-// Scale factor for display
+// Scale factor
+#define POLYGON_GRID_RES 0.01
 #define RECT_SCALE sqrt(2) //ok for 2D
 //#define RECT_SCALE sqrt(2)/2 // Must be < 1. sqrt(2) is ok for 2, too much for 3D (points are pre-uniformized outside the target region). sqrt(2)/2 seems ok
 
@@ -29,26 +30,31 @@ namespace UniSpringSpace
 {
 	
 	
-typedef enum { shape_disk, shape_square, shape_rect } shape_enum_t; // 2D
+typedef enum { shape_disk, shape_square, shape_rect, shape_poly } shape_enum_t; // 2D
 typedef enum { shape_3D_sphere, shape_3D_cube, shape_3D_rparallel } shape_3D_enum_t; // 3D
 
 class Shape {
 public:
-	virtual double fd_compute (double px, double py) {printf("base");}; // TODO remove printf "base" (for debug: base should'nt be print)
-    shape_enum_t type;
+	virtual double fd_compute (double px, double py) { };
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints) { };
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints) { };
+	shape_enum_t type;
 	float ratio; // width/height (of bounding box)
 	float scale_factor;
 	float shift_scaled_x;
 	float shift_scaled_y;
-
+//private:
+//	virtual bool isInPoly(double px, double py) { };
 };
 
 class Disk : public Shape 
 {
 public:
-		
     Disk (float r = 1, float cx = 1, float cy = 1);
 	virtual double fd_compute (double px, double py);
+	static double fd_disk(double px, double py, double r, double cx, double cy);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
 
 class Square : public Shape 
@@ -56,6 +62,8 @@ class Square : public Shape
 public:
     Square (float s = 1, float llx = 0, float lly = 0);
 	virtual double fd_compute (double px, double py);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
 
 class Rectangle : public Shape
@@ -63,7 +71,35 @@ class Rectangle : public Shape
 public:
     Rectangle (float llx = 0, float lly = 0, float urx = 1, float ury = 1);
 	virtual double fd_compute (double px, double py);
+	static double fd_rect(double px, double py, double llx, double lly, double urx, double ury);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
+	
+class Polygon : public Shape
+{
+public:
+	Polygon ();
+	Polygon (std::vector< std::vector<double> > vertices);
+	virtual double fd_compute (double px, double py);
+	static double fd_poly(double px, double py, std::vector<double> &vx, std::vector<double> &vx, int nVertices);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
+	static bool isInPoly(double px, double py, std::vector<double> vx, std::vector<double> vy);
+	static double isLeft( double P0x, double P0y, double P1x, double P1y, double P2x, double P2y );
+private:
+	void findInscribedCircle (double *inscribedCircleCenterX, double *inscribedCircleCenterY, double *inscribedCircleRadius);
+	void close(); // Check if polygon is closed, close it if necessary
+	std::vector<double> vx; // vertex x-coordinates
+	std::vector<double> vy; // vertex x-coordinates
+	int nVertices;
+	double minVX; // Min/max coordinates of vertices (i.e. bounding box, i.e. interior points), before scaling
+	double maxVX;
+	double minVY;
+	double maxVY;
+		
+};
+	
 	
 class Shape_3D {
 public:
@@ -143,11 +179,11 @@ public:
 
     void set_tolerance (float tol);
 	
-	static double fd_disk(double px, double py, double r, double cx, double cy); // TODO: redefine as Shape methods
-	static double fd_rect(double px, double py, double llx, double urx, double lly, double ury);
+	//static double fd_disk(double px, double py, double r, double cx, double cy); // TODO: redefine as Shape methods
+	//static double fd_rect(double px, double py, double llx, double lly, double urx, double ury);
 	static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
 	static double fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz);
-
+	//static double fd_poly(double px, double py, std::vector<double> vx, std::vector<double> vx);
 
 private:
 	double euclDistance(int i1, int i2);
@@ -161,7 +197,6 @@ private:
 	void loadData();
 	void preUniformize();
 	void preUniformize_3D();
-	void scale();
 	void updatePositions();
 	void updatePositions_3D();
 	void getEdgeVector();
@@ -169,13 +204,14 @@ private:
 	void resetPhysicalModel();
 	void resetPhysicalModel_3D();
 	void print_summary();
-
 	
 	// TTL
 	hed::Triangulation      triang;
 	std::vector<hed::Node*> nodes; // vector of pointers to point coordinates data
 	std::vector<hed::Node>  mPoints;
+	//hed::Node  *mPoints;
 	std::vector<hed::Node>  mPointsOld;
+	//hed::Node * mPointsOld;
 	
 	// Physical model
 	Shape *mShape;

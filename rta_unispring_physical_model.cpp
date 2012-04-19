@@ -70,27 +70,7 @@ double UniSpring::sum(std::vector<double> v){
 	
 }
 
-
-/** 
- Definition of the signed distance function (rectangle)
- */
-double UniSpring::fd_rect(double px, double py, double llx, double lly, double urx, double ury){
-	
-	double mindist = -std::min(std::min(std::min(-lly+py,ury-py),-llx+px),urx-px);
-	return mindist;
-	
-}
-						  
-/** 
- Definition of the signed distance function (disk)
- */
-double UniSpring::fd_disk(double px, double py, double r, double cx, double cy){
-							  
-	double mindist = sqrt(pow(px-cx,2)+pow(py-cy,2)) - r;
-	return mindist;
-																										
-}
-
+						
 /** 
  Definition of the signed distance function (right parallelepiped)
  */
@@ -120,36 +100,6 @@ double UniSpring::fd_sphere(double px, double py, double pz, double r, double cx
 	return mindist;
 	
 }
-
-//UNUSED
-/*
-double UniSpring::fd_compute(double px, double py){
-	
-	if (mShape->type == shape_square) {
-		
-		double mindist = fd_rect(px, py, 0, 2, 0, 2);
-		return mindist;
-		
-	}
-	
-	if (mShape->type == shape_disk) {
-		
-		double mindist = fd_disk(px, py, 1, 1, 1);
-		return mindist;
-		
-	}
-	
-	if (mShape->type == shape_rect) {
-		
-		double mindist = fd_rect(px, py, 0, 0, 2*mShape->ratio, 2);
-		return mindist;
-		
-	}
-
-}
- */
-
-
 
 /** 
  Definition of the desired length function.
