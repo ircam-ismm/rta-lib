@@ -103,7 +103,9 @@ private:
 	
 class Shape_3D {
 public:
-	virtual double fd_compute (double px, double py, double pz) {printf("base");}; // TODO remove printf "base" (for debug)
+	virtual double fd_compute (double px, double py, double pz) { };
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints) { };
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints) { };
 	shape_3D_enum_t type;
 	float ratio_1; // width/depth (of bounding box)
 	float ratio_2; // height/depth (of bounding box)
@@ -119,6 +121,9 @@ class Sphere : public Shape_3D
 public:
 	Sphere (float r = 1, float cx = 1, float cy = 1, float cz = 1);
 	virtual double fd_compute (double px, double py, double pz);
+	static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
 	
 class Cube : public Shape_3D
@@ -126,6 +131,8 @@ class Cube : public Shape_3D
 public:
 	Cube (float s = 1, float llbx = 0, float llby = 0, float llbz = 0);
 	virtual double fd_compute (double px, double py, double pz);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };	
 	
 class RParallel : public Shape_3D 
@@ -134,6 +141,9 @@ public:
 	
 	RParallel (float llbx = 0, float llby = 0, float llbz = 0, float urtx = 1, float urty = 1, float urtz = 1);
 	virtual double fd_compute (double px, double py, double pz);
+	static double fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz);
+	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
+    virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
 
 
@@ -156,7 +166,7 @@ public:
 	 @param points	pointer to points x, y, z data
 	 @param shape_3D	defines 3D shape
      */
-	void set_points_3D (int n, float *points, Shape_3D *shape);
+	void set_points_3D (int n, float *points, Shape_3D *shape, bool preUni = true);
 	
 	//void set_points (int n, double *points, Shape shape);
 
@@ -181,7 +191,7 @@ public:
 	
 	//static double fd_disk(double px, double py, double r, double cx, double cy); // TODO: redefine as Shape methods
 	//static double fd_rect(double px, double py, double llx, double lly, double urx, double ury);
-	static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
+	//static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
 	static double fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz);
 	//static double fd_poly(double px, double py, std::vector<double> vx, std::vector<double> vx);
 
@@ -195,8 +205,6 @@ private:
 	double sum(std::vector<double> v);
 	void removeDuplicateEdges();
 	void loadData();
-	void preUniformize();
-	void preUniformize_3D();
 	void updatePositions();
 	void updatePositions_3D();
 	void getEdgeVector();
@@ -209,9 +217,7 @@ private:
 	hed::Triangulation      triang;
 	std::vector<hed::Node*> nodes; // vector of pointers to point coordinates data
 	std::vector<hed::Node>  mPoints;
-	//hed::Node  *mPoints;
 	std::vector<hed::Node>  mPointsOld;
-	//hed::Node * mPointsOld;
 	
 	// Physical model
 	Shape *mShape;

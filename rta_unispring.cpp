@@ -33,17 +33,22 @@ double Disk::fd_disk(double px, double py, double r, double cx, double cy){
 }
 
 /** 
- Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ Pre-uniformize x-coordinates between mShape.ratio - RECT_SCALE*mShape.ratio/2 and mShape.ratio + RECT_SCALE*mShape.ratio/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
  */
 void Disk::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 	
 	std::vector<double> mPointsX;
 	std::vector<double> mPointsY;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
 	
 	for (int i=0; i<mNpoints; i++) {
 		
 		mPointsX.push_back((*mPoints)[i].x());
 		mPointsY.push_back((*mPoints)[i].y());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
 		
 	}
 	
@@ -70,16 +75,17 @@ void Disk::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 		
 		(*mPoints)[i].setPosition(scaledX, scaledY);
 		
-		// Assign values so that coordinates won't be found again
-		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
-		*it_preuni_y = -1;
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
 		
 	}	
 	
 }
 
 /** 
- Scale x-coordinates between mShape->ratio - RECT_SCALE*mShape.ratio/2 and mShape->ratio + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
+ Scale x-coordinates between ratio - RECT_SCALE*mShape.ratio/2 and ratio + RECT_SCALE*mShape.ratio/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
  */
 void Disk::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
 	
@@ -128,17 +134,22 @@ double Square::fd_compute (double px, double py) {
 }
 
 /** 
- Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ Pre-uniformize x-coordinates between mShape.ratio - RECT_SCALE*mShape.ratio/2 and mShape.ratio + RECT_SCALE*mShape.ratio/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
  */
 void Square::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 	
 	std::vector<double> mPointsX;
 	std::vector<double> mPointsY;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
 	
 	for (int i=0; i<mNpoints; i++) {
 		
 		mPointsX.push_back((*mPoints)[i].x());
 		mPointsY.push_back((*mPoints)[i].y());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
 		
 	}
 	
@@ -165,16 +176,17 @@ void Square::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 		
 		(*mPoints)[i].setPosition(scaledX, scaledY);
 		
-		// Assign values so that coordinates won't be found again
-		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
-		*it_preuni_y = -1;
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
 		
 	}	
 	
 }
 
 /** 
- Scale x-coordinates between mShape->ratio - RECT_SCALE*mShape.ratio/2 and mShape->ratio + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
+ Scale x-coordinates between ratio - RECT_SCALE*mShape.ratio/2 and ratio + RECT_SCALE*mShape.ratio/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
  */
 void Square::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
 	
@@ -233,17 +245,22 @@ double Rectangle::fd_rect(double px, double py, double llx, double lly, double u
 }
 
 /** 
- Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ Pre-uniformize x-coordinates between mShape.ratio - RECT_SCALE*mShape.ratio/2 and mShape.ratio + RECT_SCALE*mShape.ratio/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
  */
 void Rectangle::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 	
 	std::vector<double> mPointsX;
 	std::vector<double> mPointsY;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
 	
 	for (int i=0; i<mNpoints; i++) {
 		
 		mPointsX.push_back((*mPoints)[i].x());
 		mPointsY.push_back((*mPoints)[i].y());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
 		
 	}
 	
@@ -270,9 +287,9 @@ void Rectangle::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 		
 		(*mPoints)[i].setPosition(scaledX, scaledY);
 		
-		// Assign values so that coordinates won't be found again
-		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
-		*it_preuni_y = -1;
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
 		
 	}	
 	
@@ -280,7 +297,8 @@ void Rectangle::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
 
 
 /** 
- Scale x-coordinates between mShape->ratio - RECT_SCALE*mShape.ratio/2 and mShape->ratio + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
+ Scale x-coordinates between ratio - RECT_SCALE*mShape.ratio/2 and ratio + RECT_SCALE*mShape.ratio/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
  */
 void Rectangle::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
 	
@@ -497,11 +515,15 @@ void UniSpringSpace::Polygon::preUniformize(std::vector<hed::Node> *mPoints, int
 	
 	std::vector<double> mPointsX;
 	std::vector<double> mPointsY;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
 	
 	for (int i=0; i<mNpoints; i++) {
 		
 		mPointsX.push_back((*mPoints)[i].x());
 		mPointsY.push_back((*mPoints)[i].y());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
 		
 	}
 	
@@ -516,9 +538,12 @@ void UniSpringSpace::Polygon::preUniformize(std::vector<hed::Node> *mPoints, int
 	
 	for (int i=0; i<mNpoints; i++) {
 		
+		int sizeX_debug = mPointsX.size();
+		int sizeY_debug = mPointsY.size();
+		
 		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), (*mPoints)[i].x());
 		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), (*mPoints)[i].y());
-		int index_x = it_preuni_x - mPointsX.begin();
+		int index_x = it_preuni_x - mPointsX.begin(); // To get the true index, add i which is the number of previously found and erased elements
 		int index_y = it_preuni_y - mPointsY.begin();
 		
 		double scaledX = inscribedCircleCenterX + squareSide * index_x / (mNpoints - 1) - squareSide/2;
@@ -526,10 +551,10 @@ void UniSpringSpace::Polygon::preUniformize(std::vector<hed::Node> *mPoints, int
 		
 		(*mPoints)[i].setPosition(scaledX, scaledY);
 		
-		// Assign values so that coordinates won't be found again
-		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
-		*it_preuni_y = -1;
-		
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
+						
 	}	
 	
 }
@@ -677,10 +702,132 @@ Sphere::Sphere (float r, float cx, float cy, float cz) {
 
 double Sphere::fd_compute (double px, double py, double pz) {
 	
-	double mindist = UniSpring::fd_sphere(px, py, pz, 1, 1, 1, 1); 
+	double mindist = Sphere::fd_sphere(px, py, pz, 1, 1, 1, 1); 
 	return mindist;
 	
 }
+
+/** 
+ Definition of the signed distance function (sphere)
+ */
+double Sphere::fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz){
+	
+	double mindist = sqrt(pow(px-cx,2)+pow(py-cy,2)+pow(pz-cz,2)) - r;
+	return mindist;
+	
+}
+
+
+/** 
+ Pre-uniformize x-coordinates between mShape_3D->ratio1 - RECT_SCALE*mShape_3D.ratio1/2 and 1 + RECT_SCALE*mShape_3D.ratio1/2, 
+ y-coordinates between mShape_3D->ratio2 - RECT_SCALE*mShape_3D.ratio2/2 and 1 + RECT_SCALE*mShape_3D.ratio2/2,
+ z-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2,
+ */
+void Sphere::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints) {
+	
+	std::vector<double> mPointsX;
+	std::vector<double> mPointsY;
+	std::vector<double> mPointsZ;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
+	double maxZ = (*mPoints)[0].z();
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPointsX.push_back((*mPoints)[i].x());
+		mPointsY.push_back((*mPoints)[i].y());
+		mPointsZ.push_back((*mPoints)[i].z());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
+		if ((*mPoints)[i].z() > maxZ) maxZ = (*mPoints)[i].z();
+		
+	}
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPointsX.push_back((*mPoints)[i].x());
+		mPointsY.push_back((*mPoints)[i].y());
+		mPointsZ.push_back((*mPoints)[i].z());
+		
+	}
+	
+	// sort coordinates
+	sort (mPointsX.begin(), mPointsX.end());
+	sort (mPointsY.begin(), mPointsY.end());
+	sort (mPointsZ.begin(), mPointsZ.end());
+	
+	// Pre-uniformize
+	std::vector<double>::iterator it_preuni_x;
+	std::vector<double>::iterator it_preuni_y;
+	std::vector<double>::iterator it_preuni_z;
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), (*mPoints)[i].x());
+		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), (*mPoints)[i].y());
+		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), (*mPoints)[i].z());
+		
+		int index_x = it_preuni_x - mPointsX.begin();
+		int index_y = it_preuni_y - mPointsY.begin();
+		int index_z = it_preuni_z - mPointsZ.begin();
+		
+		// Scale coordinates
+		double scaledX = ratio_1 + RECT_SCALE * ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * ratio_1;
+		double scaledY = ratio_2 + RECT_SCALE * ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * ratio_2;
+		double scaledZ = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
+		
+		(*mPoints)[i].setPosition(scaledX, scaledY, scaledZ);
+		
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
+		*it_preuni_z = maxZ + 1;
+		
+	}	
+	
+}
+
+/** 
+ Scale x-coordinates between ratio1 - RECT_SCALE*ratio1/2 and ratio + RECT_SCALE*mShape_3D.ratio1/2,
+ y-coordinates between ratio2 - RECT_SCALE*mShape_3D.ratio2/2 and 1 + RECT_SCALE*mShape_3D.ratio2/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ Alternative to preUniformise().
+ */
+void Sphere::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
+	
+	double minX = (*mPoints)[0].x();
+	double maxX = (*mPoints)[0].x();
+	double minY = (*mPoints)[0].y();
+	double maxY = (*mPoints)[0].y();
+	double minZ = (*mPoints)[0].z();
+	double maxZ = (*mPoints)[0].z();
+	
+	// Find min & max
+	for (int i=0; i<mNpoints; i++) {
+		
+		if ((*mPoints)[i].x() < minX) minX = (*mPoints)[i].x();	
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() < minY) minY = (*mPoints)[i].y();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
+		if ((*mPoints)[i].z() < minZ) minZ = (*mPoints)[i].z();
+		if ((*mPoints)[i].z() > maxZ) maxZ = (*mPoints)[i].z();
+		
+	}
+	
+	// Scale coordinates
+	for (int i=0; i<mNpoints; i++) {
+		
+		double scaledX = ratio_1 + RECT_SCALE * ratio_1 * ((*mPoints)[i].x()-minX)/(maxX-minX) - RECT_SCALE/2 * ratio_1;
+		double scaledY = ratio_2 + RECT_SCALE * ratio_2 * ((*mPoints)[i].y()-minY)/(maxY-minY) - RECT_SCALE/2 * ratio_2;
+		double scaledZ = 1 + RECT_SCALE * ((*mPoints)[i].z()-minZ)/(maxZ-minZ) - RECT_SCALE/2;
+		
+		(*mPoints)[i].setPosition(scaledX, scaledY, scaledZ);
+		
+	}	
+	
+}
+
+
 
 Cube::Cube (float s, float llbx, float llby, float llbz) {
 	
@@ -696,10 +843,122 @@ Cube::Cube (float s, float llbx, float llby, float llbz) {
 
 double Cube::fd_compute (double px, double py, double pz) {
 	
-	double mindist = UniSpring::fd_rparallel(px, py, pz, 0, 0, 0, 2, 2, 2);
+	double mindist = RParallel::fd_rparallel(px, py, pz, 0, 0, 0, 2, 2, 2);
 	return mindist;
 	
 }
+
+/** 
+ Pre-uniformize x-coordinates between ratio1 - RECT_SCALE*mShape_3D.ratio1/2 and 1 + RECT_SCALE*mShape_3D.ratio1/2, 
+ y-coordinates between ratio2 - RECT_SCALE*mShape_3D.ratio2/2 and 1 + RECT_SCALE*mShape_3D.ratio2/2,
+ z-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2,
+ */
+void Cube::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints) {
+	
+	std::vector<double> mPointsX;
+	std::vector<double> mPointsY;
+	std::vector<double> mPointsZ;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
+	double maxZ = (*mPoints)[0].z();
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPointsX.push_back((*mPoints)[i].x());
+		mPointsY.push_back((*mPoints)[i].y());
+		mPointsZ.push_back((*mPoints)[i].z());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
+		if ((*mPoints)[i].z() > maxZ) maxZ = (*mPoints)[i].z();
+		
+	}
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPointsX.push_back((*mPoints)[i].x());
+		mPointsY.push_back((*mPoints)[i].y());
+		mPointsZ.push_back((*mPoints)[i].z());
+		
+	}
+	
+	// sort coordinates
+	sort (mPointsX.begin(), mPointsX.end());
+	sort (mPointsY.begin(), mPointsY.end());
+	sort (mPointsZ.begin(), mPointsZ.end());
+	
+	// Pre-uniformize
+	std::vector<double>::iterator it_preuni_x;
+	std::vector<double>::iterator it_preuni_y;
+	std::vector<double>::iterator it_preuni_z;
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), (*mPoints)[i].x());
+		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), (*mPoints)[i].y());
+		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), (*mPoints)[i].z());
+		
+		int index_x = it_preuni_x - mPointsX.begin();
+		int index_y = it_preuni_y - mPointsY.begin();
+		int index_z = it_preuni_z - mPointsZ.begin();
+		
+		// Scale coordinates
+		
+		double scaledX = ratio_1 + RECT_SCALE * ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * ratio_1;
+		double scaledY = ratio_2 + RECT_SCALE * ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * ratio_2;
+		double scaledZ = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
+		
+		(*mPoints)[i].setPosition(scaledX, scaledY, scaledZ);
+		
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
+		*it_preuni_z = maxZ + 1;
+		
+	}	
+	
+}
+
+/** 
+ Scale x-coordinates between ratio1 - RECT_SCALE*ratio1/2 and ratio + RECT_SCALE*mShape_3D.ratio1/2,
+ y-coordinates between ratio2 - RECT_SCALE*mShape_3D.ratio2/2 and 1 + RECT_SCALE*mShape_3D.ratio2/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ Alternative to preUniformise().
+ */
+void Cube::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
+	
+	double minX = (*mPoints)[0].x();
+	double maxX = (*mPoints)[0].x();
+	double minY = (*mPoints)[0].y();
+	double maxY = (*mPoints)[0].y();
+	double minZ = (*mPoints)[0].z();
+	double maxZ = (*mPoints)[0].z();
+	
+	// Find min & max
+	for (int i=0; i<mNpoints; i++) {
+		
+		if ((*mPoints)[i].x() < minX) minX = (*mPoints)[i].x();	
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() < minY) minY = (*mPoints)[i].y();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
+		if ((*mPoints)[i].z() < minZ) minZ = (*mPoints)[i].z();
+		if ((*mPoints)[i].z() > maxZ) maxZ = (*mPoints)[i].z();
+		
+	}
+	
+	// Scale coordinates
+	for (int i=0; i<mNpoints; i++) {
+		
+		double scaledX = ratio_1 + RECT_SCALE * ratio_1 * ((*mPoints)[i].x()-minX)/(maxX-minX) - RECT_SCALE/2 * ratio_1;
+		double scaledY = ratio_2 + RECT_SCALE * ratio_2 * ((*mPoints)[i].y()-minY)/(maxY-minY) - RECT_SCALE/2 * ratio_2;
+		double scaledZ = 1 + RECT_SCALE * ((*mPoints)[i].z()-minZ)/(maxZ-minZ) - RECT_SCALE/2;
+		
+		(*mPoints)[i].setPosition(scaledX, scaledY, scaledZ);
+		
+	}	
+	
+}
+
+
 
 RParallel::RParallel (float llbx, float llby, float llbz, float urtx, float urty, float urtz) {
 	
@@ -715,10 +974,141 @@ RParallel::RParallel (float llbx, float llby, float llbz, float urtx, float urty
 
 double RParallel::fd_compute (double px, double py, double pz) {
 	
-	double mindist = UniSpring::fd_rparallel(px, py, pz, 0, 0, 0, 2*ratio_1, 2*ratio_2, 2);
+	double mindist = RParallel::fd_rparallel(px, py, pz, 0, 0, 0, 2*ratio_1, 2*ratio_2, 2);
 	return mindist;
 	
 }
+
+/** 
+ Definition of the signed distance function (right parallelepiped)
+ */
+double RParallel::fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz){
+	
+	double mindist = -std::min(std::min(std::min(std::min(std::min(-llbz+pz,urtz-pz),-llby+py),urty-py),-llbx+px),urtx-px);
+	return mindist;
+	//    The formula used here is not quite correct.  In particular, it is wrong
+	//    for points exterior to the cube whose nearest point on the cube is at a corner.
+	//	
+	//   For DISTMESH_3D's purposes, though, this computation is accurate enough.
+	
+	//d = - min ( min ( min ( min ( min ( -0.0+p(:,3), 1.0-p(:,3) ), ...
+	//							 -0.0+p(:,2) ), ...
+	//					   1.0-p(:,2) ), ...
+	//				 -0.0+p(:,1) ), ...
+	//		   1.0-p(:,1) );
+	
+}
+
+/** 
+ Pre-uniformize x-coordinates between ratio1 - RECT_SCALE*mShape_3D.ratio1/2 and 1 + RECT_SCALE*mShape_3D.ratio1/2, 
+ y-coordinates between ratio2 - RECT_SCALE*mShape_3D.ratio2/2 and 1 + RECT_SCALE*mShape_3D.ratio2/2,
+ z-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2,
+ */
+void RParallel::preUniformize(std::vector<hed::Node> *mPoints, int mNpoints){
+	
+	std::vector<double> mPointsX;
+	std::vector<double> mPointsY;
+	std::vector<double> mPointsZ;
+	double maxX = (*mPoints)[0].x();
+	double maxY = (*mPoints)[0].y();
+	double maxZ = (*mPoints)[0].z();
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPointsX.push_back((*mPoints)[i].x());
+		mPointsY.push_back((*mPoints)[i].y());
+		mPointsZ.push_back((*mPoints)[i].z());
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
+		if ((*mPoints)[i].z() > maxZ) maxZ = (*mPoints)[i].z();
+		
+	}
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		mPointsX.push_back((*mPoints)[i].x());
+		mPointsY.push_back((*mPoints)[i].y());
+		mPointsZ.push_back((*mPoints)[i].z());
+		
+	}
+	
+	// sort coordinates
+	sort (mPointsX.begin(), mPointsX.end());
+	sort (mPointsY.begin(), mPointsY.end());
+	sort (mPointsZ.begin(), mPointsZ.end());
+	
+	// Pre-uniformize
+	std::vector<double>::iterator it_preuni_x;
+	std::vector<double>::iterator it_preuni_y;
+	std::vector<double>::iterator it_preuni_z;
+	
+	for (int i=0; i<mNpoints; i++) {
+		
+		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), (*mPoints)[i].x());
+		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), (*mPoints)[i].y());
+		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), (*mPoints)[i].z());
+		
+		int index_x = it_preuni_x - mPointsX.begin();
+		int index_y = it_preuni_y - mPointsY.begin();
+		int index_z = it_preuni_z - mPointsZ.begin();
+		
+		// Scale coordinates
+		
+		double scaledX = ratio_1 + RECT_SCALE * ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * ratio_1;
+		double scaledY = ratio_2 + RECT_SCALE * ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * ratio_2;
+		double scaledZ = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
+		
+		(*mPoints)[i].setPosition(scaledX, scaledY, scaledZ);
+		
+		// Assign values such as these coordinates won't be found again
+		*it_preuni_x = maxX + 1;
+		*it_preuni_y = maxY + 1;
+		*it_preuni_z = maxZ + 1;
+		
+	}	
+	
+}
+
+/** 
+ Scale x-coordinates between ratio1 - RECT_SCALE*ratio1/2 and ratio + RECT_SCALE*mShape_3D.ratio1/2,
+ y-coordinates between ratio2 - RECT_SCALE*mShape_3D.ratio2/2 and 1 + RECT_SCALE*mShape_3D.ratio2/2,
+ y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
+ Alternative to preUniformise().
+ */
+void RParallel::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
+	
+	double minX = (*mPoints)[0].x();
+	double maxX = (*mPoints)[0].x();
+	double minY = (*mPoints)[0].y();
+	double maxY = (*mPoints)[0].y();
+	double minZ = (*mPoints)[0].z();
+	double maxZ = (*mPoints)[0].z();
+	
+	// Find min & max
+	for (int i=0; i<mNpoints; i++) {
+		
+		if ((*mPoints)[i].x() < minX) minX = (*mPoints)[i].x();	
+		if ((*mPoints)[i].x() > maxX) maxX = (*mPoints)[i].x();
+		if ((*mPoints)[i].y() < minY) minY = (*mPoints)[i].y();
+		if ((*mPoints)[i].y() > maxY) maxY = (*mPoints)[i].y();
+		if ((*mPoints)[i].z() < minZ) minZ = (*mPoints)[i].z();
+		if ((*mPoints)[i].z() > maxZ) maxZ = (*mPoints)[i].z();
+		
+	}
+	
+	// Scale coordinates
+	for (int i=0; i<mNpoints; i++) {
+		
+		double scaledX = ratio_1 + RECT_SCALE * ratio_1 * ((*mPoints)[i].x()-minX)/(maxX-minX) - RECT_SCALE/2 * ratio_1;
+		double scaledY = ratio_2 + RECT_SCALE * ratio_2 * ((*mPoints)[i].y()-minY)/(maxY-minY) - RECT_SCALE/2 * ratio_2;
+		double scaledZ = 1 + RECT_SCALE * ((*mPoints)[i].z()-minZ)/(maxZ-minZ) - RECT_SCALE/2;
+		
+		(*mPoints)[i].setPosition(scaledX, scaledY, scaledZ);
+		
+	}	
+	
+}
+
 
 UniSpring::UniSpring() {
 	
@@ -766,7 +1156,7 @@ void UniSpring::set_points (int n, int cols, float *points, Shape *shape, bool p
 	
 }
 
-void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
+void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape, bool preUni) {
 		
 	// Get pointer to Shape_3D. Use of pointer allows to use preserve the dynamic type of shape, as defined elsewhere (herited classes Cube, Sphere, RParrallel)
 	mShape_3D = shape;	
@@ -788,115 +1178,15 @@ void UniSpring::set_points_3D(int n, float *points, Shape_3D *shape) {
 	std::vector<double> F_temp(3,0); 
 	Ftot.resize(mNpoints, F_temp);
 	
-	preUniformize_3D();
-	//setupQhull();
-	//triangulate();
-	
+	// Scaling, optional pre-uniformisation
+	if (preUni == true) mShape_3D->preUniformize(&mPoints, mNpoints);
+	else mShape_3D->scale(&mPoints, mNpoints);	
+
+	// Triangulate
 	triang.createDelaunay(nodes.begin(), nodes.end()); //new_end if using unique
-	
 	getEdgeVector_3D();
 	
 }
-
-/** 
- Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
- */
-void UniSpring::preUniformize(){
-	
-	for (int i=0; i<mNpoints; i++) {
-		
-		mPointsX.push_back(mPoints[i].x());
-		mPointsY.push_back(mPoints[i].y());
-		
-	}
-	
-	// sort coordinates
-	sort (mPointsX.begin(), mPointsX.end());
-	sort (mPointsY.begin(), mPointsY.end());			
-	
-	// Pre-uniformize
-	std::vector<double>::iterator it_preuni_x;
-	std::vector<double>::iterator it_preuni_y;
-	
-	for (int i=0; i<mNpoints; i++) {
-		
-		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i].x());
-		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i].y());
-		
-		int index_x = it_preuni_x - mPointsX.begin();
-		int index_y = it_preuni_y - mPointsY.begin();
-		
-		// Scale coordinates
-		
-		double scaledX = mShape->ratio + RECT_SCALE * mShape->ratio * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape->ratio;
-		double scaledY = 1 + RECT_SCALE * index_y / (mNpoints - 1) - RECT_SCALE/2;
-		
-		mPoints[i].setPosition(scaledX, scaledY);
-		
-		// Assign values so that coordinates won't be found again
-		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
-		*it_preuni_y = -1;
-		
-	}	
-	
-}
-
-/** 
- Pre-uniformize x-coordinates between 1 - RECT_SCALE*mShape.ratio/2 and 1 + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2.
- */
-void UniSpring::preUniformize_3D(){
-	
-	for (int i=0; i<mNpoints; i++) {
-		
-		mPointsX.push_back(mPoints[i].x());
-		mPointsY.push_back(mPoints[i].y());
-		mPointsZ.push_back(mPoints[i].z());
-		
-	}
-	
-	// sort coordinates
-	sort (mPointsX.begin(), mPointsX.end());
-	sort (mPointsY.begin(), mPointsY.end());
-	sort (mPointsZ.begin(), mPointsZ.end());
-	
-	// Pre-uniformize
-	std::vector<double>::iterator it_preuni_x;
-	std::vector<double>::iterator it_preuni_y;
-	std::vector<double>::iterator it_preuni_z;
-	
-	for (int i=0; i<mNpoints; i++) {
-		
-		it_preuni_x = find (mPointsX.begin(), mPointsX.end(), mPoints[i].x());
-		it_preuni_y = find (mPointsY.begin(), mPointsY.end(), mPoints[i].y());
-		it_preuni_z = find (mPointsZ.begin(), mPointsZ.end(), mPoints[i].z());
-		
-		int index_x = it_preuni_x - mPointsX.begin();
-		int index_y = it_preuni_y - mPointsY.begin();
-		int index_z = it_preuni_z - mPointsZ.begin();
-		
-		// Scale coordinates
-		
-		double scaledX = mShape_3D->ratio_1 + RECT_SCALE * mShape_3D->ratio_1 * index_x / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_1;
-		double scaledY = mShape_3D->ratio_2 + RECT_SCALE * mShape_3D->ratio_2 * index_y / (mNpoints - 1) - RECT_SCALE/2 * mShape_3D->ratio_2;
-		double scaledZ = 1 + RECT_SCALE * index_z / (mNpoints - 1) - RECT_SCALE/2;
-		
-		mPoints[i].setPosition(scaledX, scaledY, scaledZ);
-		
-		// Assign values so that coordinates won't be found again
-		*it_preuni_x = -1; // Find better option... This forces input coordinates to be > 0 (are all descriptor values > 0 ?) // TODO: check this problem
-		*it_preuni_y = -1;
-		*it_preuni_z = -1;
-		
-	}	
-	
-}
-
-
-/** 
- Scale x-coordinates between mShape->ratio - RECT_SCALE*mShape->ratio/2 and mShape->ratio + RECT_SCALE*mShape.ratio/2, y-coordinates between 1 - RECT_SCALE/2 and 1 + RECT_SCALE/2. Alternative to preUniformise().
- */
-//void UniSpring::scale_3D(){ // TODO: update for 3D
-
 
 void UniSpring::get_points_scaled(float *points) {
 	

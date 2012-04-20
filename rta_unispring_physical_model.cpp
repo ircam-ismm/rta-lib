@@ -72,36 +72,6 @@ double UniSpring::sum(std::vector<double> v){
 
 						
 /** 
- Definition of the signed distance function (right parallelepiped)
- */
-double UniSpring::fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz){
-	
-	double mindist = -std::min(std::min(std::min(std::min(std::min(-llbz+pz,urtz-pz),-llby+py),urty-py),-llbx+px),urtx-px);
-	return mindist;
-	//    The formula used here is not quite correct.  In particular, it is wrong
-	//    for points exterior to the cube whose nearest point on the cube is at a corner.
-	//	
-	//   For DISTMESH_3D's purposes, though, this computation is accurate enough.
-	
-	//d = - min ( min ( min ( min ( min ( -0.0+p(:,3), 1.0-p(:,3) ), ...
-	//							 -0.0+p(:,2) ), ...
-	//					   1.0-p(:,2) ), ...
-	//				 -0.0+p(:,1) ), ...
-	//		   1.0-p(:,1) );
-	
-}
-
-/** 
- Definition of the signed distance function (sphere)
- */
-double UniSpring::fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz){
-	
-	double mindist = sqrt(pow(px-cx,2)+pow(py-cy,2)+pow(pz-cz,2)) - r;
-	return mindist;
-	
-}
-
-/** 
  Definition of the desired length function.
  */
 double UniSpring::fh(double px, double py){
