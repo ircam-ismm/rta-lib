@@ -153,7 +153,12 @@ public:
 class UniSpring
 {
 public:
-	UniSpring();
+    UniSpring();	// constructor
+    ~UniSpring()	// destructor
+    {
+	triang.cleanAll();
+	//TODO: clean up all members?
+    }
 					  
     /** set points and initialise unispring algorithm:
 	copy points array, pre-uniformise (if preUni = true), do first triangulation
