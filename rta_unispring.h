@@ -50,7 +50,7 @@ public:
 class Disk : public Shape 
 {
 public:
-    Disk (float r = 1, float cx = 1, float cy = 1);
+    Disk (float r = 0.5, float cx = 0.5, float cy = 0.5);
 	virtual double fd_compute (double px, double py);
 	static double fd_disk(double px, double py, double r, double cx, double cy);
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
@@ -79,6 +79,9 @@ public:
 class Polygon : public Shape
 {
 public:
+    // check validity of point list for polygon constructor: number and unicity of points
+    static bool CheckPolygon(std::vector< std::vector<double> > vertices);
+
 	Polygon ();
 	Polygon (std::vector< std::vector<double> > vertices);
 	virtual double fd_compute (double px, double py);

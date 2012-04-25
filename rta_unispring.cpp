@@ -329,6 +329,33 @@ void Rectangle::scale (std::vector<hed::Node> *mPoints, int mNpoints) {
 	
 }
 
+
+static bool PointEqual (std::vector<double>& a, std::vector<double>& b)
+{
+#   define EPSILON 1e-6
+    return abs(a[0] - b[0]) < EPSILON  &&  abs(a[1] - b[1]) < EPSILON;
+}
+
+
+// check validity of point list for polygon constructor: number and unicity of points
+bool UniSpringSpace::Polygon::CheckPolygon(std::vector< std::vector<double> > vertices)
+{
+    int num = vertices.size();
+    // check number of points for at least a triangle
+    if (num >= 3)
+    {
+	// check unicity of vertices
+	for (int i = 0; i < num; i++)
+	    for (int j = i + 1; j < num; j++)
+		if (PointEqual(vertices[i], vertices[j]))
+		    return false;
+
+	return true;
+    }
+    else
+	return false;
+}
+
 UniSpringSpace::Polygon::Polygon () {
 	
 	vx.clear();
@@ -376,6 +403,8 @@ UniSpringSpace::Polygon::Polygon (std::vector< std::vector<double> > vertices) {
 	vx.clear();
 	vy.clear();
 	
+        //todo: check if (vertices.size() > 0) --> exception
+        
 	minVX = vertices[0][0];
 	maxVX = vertices[0][0];
 	minVY = vertices[0][1];
