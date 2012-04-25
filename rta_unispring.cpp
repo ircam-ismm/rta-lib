@@ -685,7 +685,7 @@ bool UniSpringSpace::Polygon::isInPoly(double px, double py, std::vector<double>
 	int wn = 0;    // the winding number counter
 	
 	// loop through all edges of the polygon
-	for (int i=0; i<vx.size(); i++) {   // edge from V[i] to V[i+1]
+	for (int i=0; i<vx.size()-1; i++) {   // edge from V[i] to V[i+1] // Last vertex is "virtual" (closes the polygon) : ignore it
 		if (vy[i] <= py) {         // start y <= P.y
 			if (vy[i+1] > py)      // an upward crossing
 				if (isLeft( vx[i], vy[i], vx[i+1], vy[i+1], px, py) > 0)  // P left of edge
