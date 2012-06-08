@@ -151,6 +151,10 @@
 
 #endif /* WIN32 */
 
+#ifndef __cplusplus
 #include <complex.h>
+#else
+#include "/usr/include/complex.h"
+#endif
 
 #endif /* _RTA_COMPLEX_H_ */
