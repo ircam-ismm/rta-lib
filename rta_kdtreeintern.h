@@ -15,9 +15,9 @@
 extern "C" {
 #endif
 
-
-#define MAX_FLOAT 0x7FFFFFFF  
-
+#include <float.h>
+#define MAX_FLOAT FLT_MAX
+  
 #define pow2(x)  (1 << (x))
 
 
