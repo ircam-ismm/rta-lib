@@ -45,7 +45,7 @@ void vec_post (rta_real_t *v, int stride, int n, const char *suffix)
 
     for (i = 0, ii = 0; i < n; i++, ii += stride) 
     { 	
-	p += snprintf(str + p, MAX_VEC_STR, "%s%.3f", (ii == 0  ?  "["  :  ", "), v[ii]);
+      p += snprintf(str + p, MAX_VEC_STR, "%s%.3f", (ii == 0  ?  "["  :  ", "), v[ii]);
     }
     p += snprintf(str + p, MAX_VEC_STR, "]%s", suffix);
     str[p] = 0;

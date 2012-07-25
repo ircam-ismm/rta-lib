@@ -147,34 +147,20 @@ inline void rta_set_complex_real(rta_complex_t a, float b)
 
 #else
 
+#ifndef __cplusplus
+#include <complex.h>
+#else
+#include "/usr/include/complex.h"
+#endif
+
 #if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 #undef rta_complex_t
 #define rta_complex_t float complex
+
 inline rta_complex_t rta_make_complex(float real, float imag)
 {
-	return real + imag * I;
+	return (real + imag * I);
 }
-#endif
-
-#if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
-#undef rta_complex_t 
-#define rta_complex_t double complex
-inline rta_complex_t rta_make_complex(double real, double imag)
-{
-	return real + imag * I;
-}
-#endif
-
-#if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
-#undef rta_complex_t
-#define rta_complex_t long double complex
-inline rta_complex_t rta_make_complex(long double real, long double imag)
-{
-	return real + imag * I;
-}
-#endif
-
-#if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 
 #define rta_cabs cabsf
 #define rta_cacos cacosf
@@ -202,6 +188,12 @@ inline rta_complex_t rta_make_complex(long double real, long double imag)
 #endif
 
 #if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
+#undef rta_complex_t 
+#define rta_complex_t double complex
+inline rta_complex_t rta_make_complex(double real, double imag)
+{
+	return real + imag * I;
+}
 
 #define rta_cabs cabs
 #define rta_cacos cacos
@@ -228,8 +220,13 @@ inline rta_complex_t rta_make_complex(long double real, long double imag)
 
 #endif
 
-
 #if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
+#undef rta_complex_t
+#define rta_complex_t long double complex
+inline rta_complex_t rta_make_complex(long double real, long double imag)
+{
+	return real + imag * I;
+}
 
 #define rta_cabs cabsl
 #define rta_cacos cacosl
@@ -254,20 +251,14 @@ inline rta_complex_t rta_make_complex(long double real, long double imag)
 #define rta_ctan ctanl
 #define rta_ctanh ctanhl
 
+#endif
+
 #define rta_add_complex(a, b) ((a)+(b))
 #define rta_sub_complex(a, b) ((a)-(b))
 #define rta_mul_complex(a, b) ((a)*(b))
 #define rta_div_complex(a, b) ((a)/(b))
 #define rta_mul_complex_real(a, b) ((a)*(b))
 #define rta_set_complex_real(a, b) ((a) = (b))
-
-#ifndef __cplusplus
-#include <complex.h>
-#else
-#include "/usr/include/complex.h"
-#endif
-
-#endif
 
 #endif /* WIN32 */
 
