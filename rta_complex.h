@@ -24,23 +24,104 @@
 #define RTA_COMPLEX_TYPE RTA_REAL_TYPE
 #endif
 
+#ifdef WIN32
+
 #if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 #undef rta_complex_t
-#define rta_complex_t float complex
+
+typedef struct complex_
+{
+  float real;
+  float imag;
+} complex;
+
+#define rta_complex_t complex
+
+inline rta_complex_t rta_make_complex(float real, float imag)
+{
+	rta_complex_t z = {real, imag};
+	return z;
+}
 #endif
 
 #if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
 #undef rta_complex_t 
-#define rta_complex_t double complex
+
+typedef struct complex_
+{
+  double real;
+  double imag;
+} complex;
+
+#define rta_complex_t complex
+inline rta_complex_t rta_make_complex(double real, double imag)
+{
+	rta_complex_t z = {real, imag};
+	return z;
+}
 #endif
 
 #if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
 #undef rta_complex_t
-#define rta_complex_t long double complex
+
+typedef struct complex_
+{
+  long double real;
+  long double imag;
+} complex;
+
+#define rta_complex_t complex
+inline rta_complex_t rta_make_complex(long double real, long double imag)
+{
+	rta_complex_t z = {real, imag};
+	return z;
+}
 #endif
 
+#define creal(z) ((z).real)
+#define cimag(z) ((z).imag)
 
-#ifdef WIN32
+inline rta_complex_t rta_add_complex(rta_complex_t a, rta_complex_t b)
+{
+	rta_complex_t z = {a.real + b.real, a.imag + b.imag};
+	return z;
+}
+
+inline rta_complex_t rta_sub_complex(rta_complex_t a, rta_complex_t b)
+{
+	rta_complex_t z = {a.real - b.real, a.imag - b.imag};
+	return z;
+}
+
+inline rta_complex_t rta_mul_complex(rta_complex_t a, rta_complex_t b)
+{
+	rta_complex_t z = {a.real * b.real - a.imag * b.imag, a.imag * b.real + a.real * b.imag};
+	return z;
+}
+
+inline rta_complex_t rta_mul_complex_real(rta_complex_t a, float b)
+{
+	rta_complex_t z = {a.real * b, a.imag * b};
+	return z;
+}
+
+inline rta_complex_t rta_div_complex(rta_complex_t a, rta_complex_t b)
+{
+	rta_complex_t z = {(a.real * b.real + a.imag * b.imag)/(b.real * b.real + b.imag * b.imag), (b.real * a.imag - a.real * b.imag) / (b.real * b.real + b.imag * b.imag)};
+	return z;
+}
+
+inline rta_complex_t rta_conj(rta_complex_t a)
+{
+	rta_complex_t z = {a.real, -a.imag};
+	return z;
+}
+
+inline void rta_set_complex_real(rta_complex_t a, float b)
+{
+	a.real = b;
+	a.imag = 0.0;
+}
 
 #define rta_cabs cabs
 #define rta_cacos cacos
@@ -55,7 +136,6 @@
 #define rta_cexp cexp
 #define rta_cimag cimag
 #define rta_clog clog
-#define rta_conj conj
 #define rta_cpow cpow
 #define rta_cproj cproj
 #define rta_creal creal
@@ -66,6 +146,33 @@
 #define rta_ctanh ctanh
 
 #else
+
+#if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
+#undef rta_complex_t
+#define rta_complex_t float complex
+inline rta_complex_t rta_make_complex(float real, float imag)
+{
+	return real + imag * I;
+}
+#endif
+
+#if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
+#undef rta_complex_t 
+#define rta_complex_t double complex
+inline rta_complex_t rta_make_complex(double real, double imag)
+{
+	return real + imag * I;
+}
+#endif
+
+#if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
+#undef rta_complex_t
+#define rta_complex_t long double complex
+inline rta_complex_t rta_make_complex(long double real, long double imag)
+{
+	return real + imag * I;
+}
+#endif
 
 #if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 
@@ -147,14 +254,21 @@
 #define rta_ctan ctanl
 #define rta_ctanh ctanhl
 
-#endif
-
-#endif /* WIN32 */
+#define rta_add_complex(a, b) ((a)+(b))
+#define rta_sub_complex(a, b) ((a)-(b))
+#define rta_mul_complex(a, b) ((a)*(b))
+#define rta_div_complex(a, b) ((a)/(b))
+#define rta_mul_complex_real(a, b) ((a)*(b))
+#define rta_set_complex_real(a, b) ((a) = (b))
 
 #ifndef __cplusplus
 #include <complex.h>
 #else
 #include "/usr/include/complex.h"
 #endif
+
+#endif
+
+#endif /* WIN32 */
 
 #endif /* _RTA_COMPLEX_H_ */

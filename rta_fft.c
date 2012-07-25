@@ -155,7 +155,8 @@ fft_inplace(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       unsigned int incr = 2 * up;
 	  
@@ -164,13 +165,11 @@ fft_inplace(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_cimag(B) * rta_cimag(W) +
-          rta_creal(B) * rta_creal(W) +
-          (rta_cimag(B) * rta_creal(W) -
-           rta_creal(B) * rta_cimag(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_cimag(B) * rta_cimag(W) + rta_creal(B) * rta_creal(W),
+						  rta_cimag(B) * rta_creal(W) - rta_creal(B) * rta_cimag(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A , C);
+        buf[n] = rta_sub_complex(A , C);
       }
     }
   }  
@@ -200,7 +199,8 @@ fft_inplace_stride(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       int incr = 2 * up * b_stride;
 	  
@@ -209,13 +209,11 @@ fft_inplace_stride(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_cimag(B) * rta_cimag(W) +
-          rta_creal(B) * rta_creal(W) +
-          (rta_cimag(B) * rta_creal(W) -
-           rta_creal(B) * rta_cimag(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_cimag(B) * rta_cimag(W) + rta_creal(B) * rta_creal(W),
+                                           rta_cimag(B) * rta_creal(W) - rta_creal(B) * rta_cimag(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -237,7 +235,8 @@ fft_inplace_oversampled_coefficients(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=2*down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       unsigned int incr = 2 * up;
 	  
@@ -246,13 +245,11 @@ fft_inplace_oversampled_coefficients(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_cimag(B) * rta_cimag(W) +
-          rta_creal(B) * rta_creal(W) +
-          (rta_cimag(B) * rta_creal(W) -
-           rta_creal(B) * rta_cimag(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_cimag(B) * rta_cimag(W) + rta_creal(B) * rta_creal(W),
+										    rta_cimag(B) * rta_creal(W) - rta_creal(B) * rta_cimag(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -274,7 +271,8 @@ fft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=2*down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       int incr = 2 * up * b_stride;
 	  
@@ -283,13 +281,11 @@ fft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_cimag(B) * rta_cimag(W) +
-          rta_creal(B) * rta_creal(W) +
-          (rta_cimag(B) * rta_creal(W) -
-           rta_creal(B) * rta_cimag(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_cimag(B) * rta_cimag(W) + rta_creal(B) * rta_creal(W),
+                                           rta_cimag(B) * rta_creal(W) - rta_creal(B) * rta_cimag(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -309,7 +305,8 @@ ifft_inplace(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       unsigned int incr = 2 * up;
 	  
@@ -318,13 +315,11 @@ ifft_inplace(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_creal(B) * rta_creal(W) -
-          rta_cimag(B) * rta_cimag(W) +
-          (rta_creal(B) * rta_cimag(W) +
-           rta_cimag(B) * rta_creal(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_creal(B) * rta_creal(W) - rta_cimag(B) * rta_cimag(W),
+									       rta_creal(B) * rta_cimag(W) + rta_cimag(B) * rta_creal(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -345,7 +340,8 @@ ifft_inplace_stride(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       int incr = 2 * up * b_stride;
 	  
@@ -354,13 +350,11 @@ ifft_inplace_stride(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_creal(B) * rta_creal(W) -
-          rta_cimag(B) * rta_cimag(W) +
-          (rta_creal(B) * rta_cimag(W) +
-           rta_cimag(B) * rta_creal(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_creal(B) * rta_creal(W) - rta_cimag(B) * rta_cimag(W),
+										   rta_creal(B) * rta_cimag(W) + rta_cimag(B) * rta_creal(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -381,7 +375,8 @@ ifft_inplace_oversampled_coefficients(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=2*down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       unsigned int incr = 2 * up;
 	  
@@ -390,13 +385,11 @@ ifft_inplace_oversampled_coefficients(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_creal(B) * rta_creal(W) -
-          rta_cimag(B) * rta_cimag(W) +
-          (rta_creal(B) * rta_cimag(W) +
-           rta_cimag(B) * rta_creal(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_creal(B) * rta_creal(W) - rta_cimag(B) * rta_cimag(W),
+										   rta_creal(B) * rta_cimag(W) + rta_cimag(B) * rta_creal(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -417,7 +410,8 @@ ifft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
   {
     for(j=0, k=0; j<up; j++, k+=2*down)
     {
-      rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+      //rta_complex_t W = coef_real[k] + coef_imag[k] *I;
+	  rta_complex_t W = rta_make_complex(coef_real[k], coef_imag[k]);
 
       int incr = 2 * up * b_stride;
 	  
@@ -426,13 +420,11 @@ ifft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
         rta_complex_t A = buf[m];
         rta_complex_t B = buf[n];
 
-        rta_complex_t C = rta_creal(B) * rta_creal(W) -
-          rta_cimag(B) * rta_cimag(W) +
-          (rta_creal(B) * rta_cimag(W) +
-           rta_cimag(B) * rta_creal(W)) * I;
+        rta_complex_t C = rta_make_complex(rta_creal(B) * rta_creal(W) - rta_cimag(B) * rta_cimag(W),
+										   rta_creal(B) * rta_cimag(W) + rta_cimag(B) * rta_creal(W));
                             
-        buf[m] = A + C;
-        buf[n] = A - C;
+        buf[m] = rta_add_complex(A, C);
+        buf[n] = rta_sub_complex(A, C);
       }
     }
   }  
@@ -479,8 +471,7 @@ shuffle_after_real_fft_inplace(rta_complex_t * buf,
   int idx, xdi;
   
   /* nyquist point coded in imaginary part first point  */
-  buf[0] = rta_creal(buf[0]) + rta_cimag(buf[0]) +
-    (rta_creal(buf[0]) - rta_cimag(buf[0])) * I;
+  buf[0] = rta_make_complex(rta_creal(buf[0]) + rta_cimag(buf[0]), rta_creal(buf[0]) - rta_cimag(buf[0]));
     
   
   for(idx=1, xdi=size-1; idx<size/2; idx++, xdi--)
@@ -497,8 +488,8 @@ shuffle_after_real_fft_inplace(rta_complex_t * buf,
     /* imaginary of x2[idx] * exp(-j*PI*i/size) */
     rta_real_t x2Ej_imag = x2_imag * coef_real[idx] - x2_real * coef_imag[idx];
     
-    buf[idx] = x1_real + x2Ej_real + (x1_imag + x2Ej_imag) * I;
-    buf[xdi] = x1_real - x2Ej_real + (x2Ej_imag - x1_imag) * I;
+    buf[idx] = rta_make_complex(x1_real + x2Ej_real, x1_imag + x2Ej_imag);
+    buf[xdi] = rta_make_complex(x1_real - x2Ej_real, x2Ej_imag - x1_imag);
   }
   
   buf[idx] = rta_conj(buf[idx]);
@@ -516,8 +507,7 @@ shuffle_after_real_fft_inplace_stride(rta_complex_t * buf,
   int idx_s, xdi_s; /* indexes * b_stride */
 
   /* nyquist point coded in imaginary part first point  */
-  buf[0] = rta_creal(buf[0]) + rta_cimag(buf[0]) +
-    (rta_creal(buf[0]) - rta_cimag(buf[0])) * I;
+  buf[0] = rta_make_complex(rta_creal(buf[0]) + rta_cimag(buf[0]), rta_creal(buf[0]) - rta_cimag(buf[0]));
     
   for(idx=1, idx_s=b_stride, xdi_s=(size-1)*b_stride;
       idx<size/2;
@@ -535,8 +525,8 @@ shuffle_after_real_fft_inplace_stride(rta_complex_t * buf,
     /* imaginary of x2[idx] * exp(-j*PI*i/size) */
     rta_real_t x2Ej_imag = x2_imag * coef_real[idx] - x2_real * coef_imag[idx];
     
-    buf[idx_s] = x1_real + x2Ej_real + (x1_imag + x2Ej_imag) * I;
-    buf[xdi_s] = x1_real - x2Ej_real + (x2Ej_imag - x1_imag) * I;
+    buf[idx_s] = rta_make_complex(x1_real + x2Ej_real, x1_imag + x2Ej_imag);
+    buf[xdi_s] = rta_make_complex(x1_real - x2Ej_real, x2Ej_imag - x1_imag);
   }
   
   buf[idx_s] = rta_conj(buf[idx_s]);
@@ -553,8 +543,7 @@ shuffle_before_real_inverse_fft_inplace(rta_complex_t * buf,
   int idx, xdi;
   
   /* nyquist point coded in imaginary part of the first point */
-  buf[0] = rta_creal(buf[0]) + rta_cimag(buf[0]) +
-    (rta_creal(buf[0]) - rta_cimag(buf[0])) * I;
+  buf[0] = rta_make_complex(rta_creal(buf[0]) + rta_cimag(buf[0]), rta_creal(buf[0]) - rta_cimag(buf[0]));
 
   for(idx=1, xdi=size-1; idx<size/2; idx++, xdi--)
   {
@@ -573,11 +562,11 @@ shuffle_before_real_inverse_fft_inplace(rta_complex_t * buf,
     /* imaginary of x2 */
     rta_real_t x2_imag = x2Ej_real * coef_imag[idx] + x2Ej_imag * coef_real[idx];
 
-    buf[idx] = x1_real - x2_imag + (x1_imag + x2_real) * I;
-    buf[xdi] = x1_real + x2_imag + (x2_real - x1_imag) * I;
+    buf[idx] = rta_make_complex(x1_real - x2_imag, x1_imag + x2_real);
+    buf[xdi] = rta_make_complex(x1_real + x2_imag, x2_real - x1_imag);
 
   }
-  buf[idx] = 2 * rta_conj(buf[idx]);
+  buf[idx] = rta_mul_complex_real(rta_conj(buf[idx]), 2);
   return;
 }
 
@@ -592,8 +581,7 @@ shuffle_before_real_inverse_fft_inplace_stride(rta_complex_t * buf,
   int idx_s, xdi_s; /* indexes * b_stride */
 
   /* nyquist point coded in imaginary part of the first point */
-  buf[0] = rta_creal(buf[0]) + rta_cimag(buf[0]) +
-    (rta_creal(buf[0]) - rta_cimag(buf[0])) * I;
+  buf[0] = rta_make_complex(rta_creal(buf[0]) + rta_cimag(buf[0]), rta_creal(buf[0]) - rta_cimag(buf[0]));
 
   for(idx=1, idx_s=b_stride, xdi_s=(size-1)*b_stride;
       idx<size/2;
@@ -614,11 +602,11 @@ shuffle_before_real_inverse_fft_inplace_stride(rta_complex_t * buf,
     /* imaginary of x2 */
     rta_real_t x2_imag = x2Ej_real * coef_imag[idx] + x2Ej_imag * coef_real[idx];
 
-    buf[idx_s] = x1_real - x2_imag + (x1_imag + x2_real) * I;
-    buf[xdi_s] = x1_real + x2_imag + (x2_real - x1_imag) * I;
+    buf[idx_s] = rta_make_complex(x1_real - x2_imag, x1_imag + x2_real);
+    buf[xdi_s] = rta_make_complex(x1_real + x2_imag, x2_real - x1_imag);
 
   }
-  buf[idx_s] = 2 * rta_conj(buf[idx_s]);
+  buf[idx_s] = rta_mul_complex_real(rta_conj(buf[idx_s]), 2);
   return;
 }
 
@@ -727,7 +715,7 @@ fill_complex_scale_zero_pad(rta_complex_t * output, const unsigned int output_si
   {
     for(i=0; i<used_input_size; i++)
     {
-      output[i] = input[i] * scale;
+      output[i] = rta_mul_complex_real(input[i], scale);
     }
   }
   else
@@ -741,7 +729,7 @@ fill_complex_scale_zero_pad(rta_complex_t * output, const unsigned int output_si
   /* zero padding */
   for(; i<output_size; i++)
   {
-    output[i] = 0.0;    
+    rta_set_complex_real(output[i], 0.0);    
   }
   return;
 }
@@ -768,7 +756,7 @@ fill_complex_scale_zero_pad_stride(
   {
     for(i=0, o=0; i<used_input_size*i_stride; i+=i_stride, o+=o_stride)
     {
-      output[o] = input[i] * scale;
+      output[o] = rta_mul_complex_real(input[i], scale);
     }
   }
   else
@@ -782,7 +770,7 @@ fill_complex_scale_zero_pad_stride(
   /* zero padding */
   for(; o<output_size*o_stride; o+=o_stride)
   {
-    output[o] = 0.0;    
+    rta_set_complex_real(output[o], 0.0);    
   }
   return;
 }
@@ -810,21 +798,21 @@ fill_complex_from_real_scale_zero_pad(
   {
     for(i=0; i<used_input_size; i++)
     {
-      output[i] = input[i] * scale;
+      rta_set_complex_real(output[i], input[i] * scale);
     }
   }
   else
   {
     for(i=0; i<input_size; i++)
     {
-      output[i] = input[i];
+      rta_set_complex_real(output[i], input[i]);
     }    
   }
   
   /* zero padding */
   for(; i<output_size; i++)
   {
-    output[i] = 0.0;    
+    rta_set_complex_real(output[i], 0.0);    
   }
   return;
 }
@@ -851,21 +839,21 @@ fill_complex_from_real_scale_zero_pad_stride(
   {
     for(i=0, o=0; i<used_input_size*i_stride; i+=i_stride, o+=o_stride)
     {
-      output[o] = input[i] * scale;
+      rta_set_complex_real(output[o], input[i] * scale);
     }
   }
   else
   {
     for(i=0, o=0; i<used_input_size*i_stride; i+=i_stride, o+=o_stride)
     {
-      output[o] = input[i];
+      rta_set_complex_real(output[o], input[i]);
     }    
   }
   
   /* zero padding */
   for(; o<output_size*o_stride; o+=o_stride)
   {
-    output[o] = 0.0;    
+    rta_set_complex_real(output[o], 0.0);    
   }
   return;
 }
@@ -968,7 +956,7 @@ scale_complex_zero_pad_in_place(rta_complex_t * buf, const unsigned int output_s
   {
     for(i=0; i<used_input_size; i++)
     {
-      buf[i] *= scale;
+      buf[i] = rta_mul_complex_real(buf[i], scale);
     }
   }
   else
@@ -979,7 +967,7 @@ scale_complex_zero_pad_in_place(rta_complex_t * buf, const unsigned int output_s
   /* zero padding */
   for(; i<output_size; i++)
   {
-    buf[i] = 0.0;    
+    rta_set_complex_real(buf[i], 0.0);    
   }
   return;
 }
@@ -1006,7 +994,7 @@ scale_complex_zero_pad_in_place_stride(
   {
     for(i=0; i<used_input_size*b_stride; i+=b_stride)
     {
-      buf[i] *= scale;
+      buf[i] = rta_mul_complex_real(buf[i], scale);
     }
   }
   else
@@ -1017,7 +1005,7 @@ scale_complex_zero_pad_in_place_stride(
   /* zero padding */
   for(; i<output_size*b_stride; i+=b_stride)
   {
-    buf[i] = 0.0;    
+    rta_set_complex_real(buf[i], 0.0);    
   }
   return;
 }
@@ -1364,7 +1352,7 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
 
       }
       *(fft_setup->nyquist) = rta_cimag(complex_output[0]);
-      complex_output[0] = rta_creal(complex_output[0]);
+      rta_set_complex_real(complex_output[0], rta_creal(complex_output[0]));
     }
     break;
 
