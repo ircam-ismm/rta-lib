@@ -2,6 +2,7 @@
 #include "rta_kdtree.h"
 #include "rta_kdtreeintern.h"
 #include <stdlib.h>
+#include <strings.h>
 #include <math.h>
 #include <assert.h>
 
