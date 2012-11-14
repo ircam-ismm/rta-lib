@@ -16,7 +16,7 @@ rta_mean_variance(rta_real_t * mean, rta_real_t * variance,
                   rta_real_t * input, const unsigned int i_size)
 
 {
-  int i;
+  unsigned int i;
   
   rta_real_t mean_x2  = 0.; /* mean(x^2) */
   rta_real_t mean2; /* mean^2 */
@@ -53,7 +53,7 @@ rta_mean_variance_stride(rta_real_t * mean, rta_real_t * variance,
                          const unsigned int i_size)
 
 {
-  int i;
+  unsigned int i;
   
   rta_real_t mean_x2  = 0.; /* mean(x^2) */
   rta_real_t mean2; /* mean^2 */
@@ -88,7 +88,7 @@ rta_mean_variance_unbiased(rta_real_t * mean, rta_real_t * variance,
                            rta_real_t * input, const unsigned int i_size)
 
 {
-  int i;
+  unsigned int i;
   
   rta_real_t mean_x2  = 0.; /* mean(x^2) */
   rta_real_t mean2; /* mean^2 */
@@ -133,7 +133,7 @@ rta_mean_variance_unbiased_stride(rta_real_t * mean, rta_real_t * variance,
                                   const unsigned int i_size)
 
 {
-  int i;
+  unsigned int i;
   
   rta_real_t mean_x2  = 0.; /* mean(x^2) */
   rta_real_t mean2; /* mean^2 */
@@ -175,7 +175,7 @@ rta_mean_variance_unbiased_stride(rta_real_t * mean, rta_real_t * variance,
 rta_real_t rta_mean(rta_real_t * input, const unsigned int i_size)
 {
   rta_real_t mean = 0.;
-  int i;
+  unsigned int i;
 
   for(i = 0; i<i_size; i++)
   {
@@ -191,7 +191,7 @@ rta_real_t rta_mean_stride(rta_real_t * input, const int i_stride,
                            const unsigned int i_size)
 {
   rta_real_t mean = 0.;
-  int i;
+  unsigned int i;
 
   for(i = 0; i<i_size*i_stride; i+=i_stride)
   {
@@ -207,7 +207,7 @@ rta_real_t rta_variance(rta_real_t * input, const unsigned int i_size,
                         rta_real_t mean)
 {
   rta_real_t variance = 0.;
-  int i;
+  unsigned int i;
 
   for(i=0; i<i_size; i++)
   {
@@ -225,7 +225,7 @@ rta_real_t rta_variance_stride(rta_real_t * input, const int i_stride,
                                rta_real_t mean)
 {
   rta_real_t variance = 0.;
-  int i;
+  unsigned int i;
 
   for(i=0; i<i_size*i_stride; i+=i_stride)
   {
@@ -243,7 +243,7 @@ rta_variance_unbiased(rta_real_t * input, const unsigned int i_size,
                       rta_real_t mean)
 {
   rta_real_t variance = 0.;
-  int i;
+  unsigned int i;
 
   for(i=0; i<i_size; i++)
   {
@@ -264,7 +264,7 @@ rta_variance_unbiased_stride(rta_real_t * input, const int i_stride,
                              const unsigned int i_size, rta_real_t mean)
 {
   rta_real_t variance = 0.;
-  int i;
+  unsigned int i;
 
   for(i=0; i<i_size*i_stride; i+=i_stride)
   {
