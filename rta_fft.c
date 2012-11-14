@@ -68,12 +68,12 @@ bitreversal_oversampled_inplace_stride(rta_complex_t * buf,
                                        const unsigned int * bitrev,
                                        const unsigned int size)
 {
-  int idx;
+  unsigned int idx;
   rta_complex_t z;
 
   for(idx=0; idx<size; idx++)
   {
-    int xdi = bitrev[2 * idx];
+    unsigned int xdi = bitrev[2 * idx];
 
     if(xdi > idx)
     {
@@ -115,12 +115,12 @@ bitreversal_inplace_stride(rta_complex_t * buf,
                            const unsigned int * bitrev,
                            const unsigned int size)
 {
-  int idx;
+  unsigned int idx;
   rta_complex_t z;
 
   for(idx=0; idx<size; idx++)
   {
-    int xdi = bitrev[idx];
+    unsigned int xdi = bitrev[idx];
     if(xdi > idx)
     {
       int idx_tmp = idx * b_stride;
