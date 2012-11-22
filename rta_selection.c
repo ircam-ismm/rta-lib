@@ -28,8 +28,7 @@ static inline void rta_swap(rta_real_t * a, rta_real_t * b)
 }
 
 /* quicksort-like */
-rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size, 
-                         const rta_real_t real_selection)
+rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size, const rta_real_t real_selection)
 {
   /* low and high inner bounds */
   unsigned int l, h; 
@@ -39,12 +38,12 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
   unsigned int mid;
   unsigned int high = i_size - 1; 
   
-  unsigned int selection = (unsigned int) rta_floor(real_selection);
+  rta_real_t selection_floor = rta_floor(real_selection);
+  unsigned int selection = (unsigned int) selection_floor;
 
   /* s_extension can be 1 in order to sort next index too,
      to get real indexes selection */
-  unsigned int s_extension = (unsigned int) rta_ceil(real_selection) -
-    selection;
+  unsigned int s_extension = (unsigned int) rta_ceil(real_selection) - selection;
 
   while(high > low + 1)
   {
@@ -138,7 +137,7 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
     }
     else
     {
-      rta_real_t ratio = real_selection - selection;
+      rta_real_t ratio = real_selection - selection_floor;
       ret = ratio * input[selection] + (1. - ratio) * input[selection + 1];
     }
 
@@ -146,9 +145,7 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
   }
 }
 
-rta_real_t rta_selection_stride(
-  rta_real_t * input, const int i_stride, const unsigned int i_size,
-  const rta_real_t real_selection)
+rta_real_t rta_selection_stride(rta_real_t * input, const int i_stride, const unsigned int i_size, const rta_real_t real_selection)
 {
   /* low and high inner bounds */
   int l, h; 
@@ -158,13 +155,12 @@ rta_real_t rta_selection_stride(
   int mid;
   int high = (i_size - 1) * i_stride; 
   
-  int selection = 
-    ( (int) rta_floor(real_selection) ) * i_stride;
+  rta_real_t selection_floor = rta_floor(real_selection);
+  int selection = ( (int) selection_floor ) * i_stride;
 
   /* s_extension can be 1 in order to sort next index too,
      to get real indexes selection */
-  int s_extension = 
-    ( (int) rta_ceil(real_selection) ) * i_stride - selection;
+  int s_extension = ( (int) rta_ceil(real_selection) ) * i_stride - selection;
 
   while(high > low + i_stride)
   {
@@ -259,9 +255,8 @@ rta_real_t rta_selection_stride(
     }
     else
     {
-      rta_real_t ratio = real_selection - selection;
-      ret = ratio * input[selection] + 
-        (1. - ratio) * input[selection + i_stride];
+      rta_real_t ratio = real_selection - selection_floor;
+      ret = ratio * input[selection] + (1. - ratio) * input[selection + i_stride];
     }
 
     return ret;
