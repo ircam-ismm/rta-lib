@@ -1353,8 +1353,9 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
       }
       *(fft_setup->nyquist) = rta_cimag(complex_output[0]);
       rta_set_complex_real(complex_output[0], rta_creal(complex_output[0]));
+
+      break;
     }
-    break;
 
     case rta_fft_complex_to_real_1d:
     {
@@ -1434,8 +1435,9 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
           complex_output, fft_setup->o_stride,
           fft_setup->cos, fft_setup->sin, spectrum_size);        
       }
+
+      break;
     }
-    break;
 
     case rta_fft_complex_1d:
     {
@@ -1491,8 +1493,9 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
         fft_inplace_stride(complex_output, fft_setup->o_stride,
                            fft_setup->cos, fft_setup->sin, fft_setup->fft_size);
       }
+
+      break;
     }
-    break;
 
     case rta_fft_complex_inverse_1d:
     {
@@ -1550,11 +1553,11 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
         ifft_inplace_stride(complex_output, fft_setup->o_stride, 
                             fft_setup->cos, fft_setup->sin, fft_setup->fft_size);
       }
+      
+      break;
     }
-    break;
-
+      
     default:
-      break;    
+      break;
   }
-  return;
 }
