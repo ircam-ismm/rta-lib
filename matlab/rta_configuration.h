@@ -49,10 +49,10 @@
 
 /* shared pointers */
 #undef RTA_MEX_PTR_TYPE
-#define RTA_MEX_PTR_TYPE mxUINT32_CLASS
+#define RTA_MEX_PTR_TYPE mxUINT64_CLASS
 
 #undef rta_ptr_t
-#define rta_ptr_t unsigned long
+#define rta_ptr_t unsigned long long
 
 /* _WIN32 is always defined by Microsoft compiler */
 #if defined(_WIN32)
