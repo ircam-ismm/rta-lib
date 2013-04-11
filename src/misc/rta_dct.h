@@ -110,11 +110,17 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
  * 
  */
 void rta_dct(rta_real_t * dct, const rta_real_t * input_vector,
-            const rta_real_t * weights_matrix,
-            const unsigned int input_size,
-            const unsigned int dct_order);
-
-/** 
+             const rta_real_t * weights_matrix,
+             const unsigned int input_size,
+             const unsigned int dct_order);
+  
+void rta_dct_scaled(rta_real_t * dct, const rta_real_t * input_vector,
+                    const rta_real_t * weights_matrix,
+                    const unsigned int input_size,
+                    const unsigned int dct_order,
+                    rta_real_t scale);
+  
+  /** 
  * 
  * Perform a discrete cosine transform as
  * 'dct' = 'weights_matrix'*'input_vector'
@@ -136,11 +142,18 @@ void rta_dct(rta_real_t * dct, const rta_real_t * input_vector,
  *
  */
 void rta_dct_stride(rta_real_t * dct, const int d_stride,
-                  const rta_real_t * input_vector, const int i_stride,
-                  const rta_real_t * weights_matrix, const int w_stride,
-                  const unsigned int input_size,
-                  const unsigned int dct_order);
-
+                    const rta_real_t * input_vector, const int i_stride,
+                    const rta_real_t * weights_matrix, const int w_stride,
+                    const unsigned int input_size,
+                    const unsigned int dct_order);
+  
+void rta_dct_stride_scaled(rta_real_t * dct, const int d_stride,
+                           const rta_real_t * input_vector, const int i_stride,
+                           const rta_real_t * weights_matrix, const int w_stride,
+                           const unsigned int input_size,
+                           const unsigned int dct_order,
+                           rta_real_t scale);
+  
 #ifdef __cplusplus
 }
 #endif

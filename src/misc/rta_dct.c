@@ -17,13 +17,13 @@
 #include "rta_math.h"
 
 int rta_dct_weights(rta_real_t * weights_matrix, 
-                  const unsigned int input_size,
-                  const unsigned int dct_order,
-                  const rta_dct_t dct_t)
+                    const unsigned int input_size,
+                    const unsigned int dct_order,
+                    const rta_dct_t dct_t)
 {
   int i,j;
   int ret = 1; /* return value */
-
+  
   /* This is the orthogonal one, the one you want */
   if(dct_t == rta_dct_slaney || dct_t == rta_dct_htk)
   {
@@ -32,11 +32,11 @@ int rta_dct_weights(rta_real_t * weights_matrix,
       for(j=0; j<input_size; j++)
       {
         weights_matrix[i*input_size+j] = 
-          rta_cos(i*((j+1)*2.-1.)/(2.*input_size)*M_PI) *
-          rta_sqrt(2./input_size);
+        rta_cos(i*((j+1)*2.-1.)/(2.*input_size)*M_PI) *
+        rta_sqrt(2./input_size);
       }
     }
-
+    
     /* Make it unitary (but not for HTK) */
     if(dct_t == rta_dct_slaney)
     {
@@ -47,7 +47,7 @@ int rta_dct_weights(rta_real_t * weights_matrix,
       }
     }
   }
-    
+  
   /*
    * type 1 (PLPDCT) with implicit repeating of first, last bins
    * Deep in the heart of the rasta/feacalc code, there is the logic 
@@ -67,9 +67,9 @@ int rta_dct_weights(rta_real_t * weights_matrix,
       for(j=0; j<input_size; j++)
       {
         weights_matrix[i*input_size+j] = 
-          rta_cos(i*(j+1.)/(input_size+1.)*M_PI) * 2.;
+        rta_cos(i*(j+1.)/(input_size+1.)*M_PI) * 2.;
       }
-
+      
       /* Add in edge points at ends (includes fixup scale) */
       weights_matrix[i*input_size] += 1.;
       if(i&1)		/* odd */
@@ -81,13 +81,13 @@ int rta_dct_weights(rta_real_t * weights_matrix,
         weights_matrix[(i+1)*input_size-1] += 1.;
       }
     }
-
+    
     for(i=0; i<dct_order*input_size; i++)
     {
       weights_matrix[i] /= 2.*(input_size+1.);
     }
   }
-
+  
   /* dpwe type 1 - same as old spec2cep that expanded & used fft */
   else if(dct_t == rta_dct_plp)
   {
@@ -96,8 +96,8 @@ int rta_dct_weights(rta_real_t * weights_matrix,
       for(j=0; j<input_size; j++)
       {
         weights_matrix[i*input_size+j] = 
-          rta_cos(i*j/(input_size-1.)*M_PI) / (input_size-1.);
-							
+        rta_cos(i*j/(input_size-1.)*M_PI) / (input_size-1.);
+        
       }
       /* Fixup 'non-repeated' points */
       weights_matrix[i*input_size] *= 0.5;
@@ -108,18 +108,18 @@ int rta_dct_weights(rta_real_t * weights_matrix,
   {
     ret = 0;
   }
-
+  
   return ret;
 }
 
 int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
-                        const unsigned int input_size,
-                        const unsigned int dct_order,
-                        const rta_dct_t dct_t)
+                           const unsigned int input_size,
+                           const unsigned int dct_order,
+                           const rta_dct_t dct_t)
 {
   int i,j;
   int ret = 1; /* return value */
-
+  
   /* This is the orthogonal one, the one you want */
   if(dct_t == rta_dct_slaney || dct_t == rta_dct_htk)
   {
@@ -128,11 +128,11 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
       for(j=0; j<input_size; j++)
       {
         weights_matrix[(i*input_size+j)*w_stride] = 
-          rta_cos(i*((j+1)*2.-1.)/(2.*input_size)*M_PI) *
-          rta_sqrt(2./input_size);
+        rta_cos(i*((j+1)*2.-1.)/(2.*input_size)*M_PI) *
+        rta_sqrt(2./input_size);
       }
     }
-
+    
     /* Make it unitary (but not for HTK) */
     if(dct_t == rta_dct_slaney)
     {
@@ -143,7 +143,7 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
       }
     }
   }
-    
+  
   /*
    * type 1 (PLPDCT) with implicit repeating of first, last bins
    * Deep in the heart of the rasta/feacalc code, there is the logic 
@@ -163,9 +163,9 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
       for(j=0; j<input_size; j++)
       {
         weights_matrix[(i*input_size+j)*w_stride] = 
-          rta_cos(i*(j+1.)/(input_size+1.)*M_PI) * 2.;
+        rta_cos(i*(j+1.)/(input_size+1.)*M_PI) * 2.;
       }
-
+      
       /* Add in edge points at ends (includes fixup scale) */
       weights_matrix[i*input_size*w_stride] += 1.;
       if(i&1)		/* odd */
@@ -177,13 +177,13 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
         weights_matrix[((i+1)*input_size-1)*w_stride] += 1.;
       }
     }
-
+    
     for(i=0; i<dct_order*input_size; i++)
     {
       weights_matrix[i*w_stride] /= 2.*(input_size+1.);
     }
   }
-
+  
   /* dpwe type 1 - same as old spec2cep that expanded & used fft */
   else if(dct_t == rta_dct_plp)
   {
@@ -192,8 +192,8 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
       for(j=0; j<input_size; j++)
       {
         weights_matrix[(i*input_size+j)*w_stride] = 
-          rta_cos(i*j/(input_size-1.)*M_PI) / (input_size-1.);
-							
+        rta_cos(i*j/(input_size-1.)*M_PI) / (input_size-1.);
+        
       }
       /* Fixup 'non-repeated' points */
       weights_matrix[i*input_size*w_stride] *= 0.5;
@@ -204,18 +204,18 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
   {
     ret = 0;
   }
-
+  
   return ret;
 }
 
 /* Calculate dct from spectral samples */
 void rta_dct(rta_real_t * dct, const rta_real_t * input_vector,
-            const rta_real_t * weights_matrix,
-            const unsigned int input_size,
-            const unsigned int dct_order)
+             const rta_real_t * weights_matrix,
+             const unsigned int input_size,
+             const unsigned int dct_order)
 {
   unsigned int i,j;
-
+  
   for(i=0; i<dct_order; i++)
   {
     dct[i] = 0.;
@@ -224,28 +224,71 @@ void rta_dct(rta_real_t * dct, const rta_real_t * input_vector,
       dct[i] += weights_matrix[i*input_size+j] * input_vector[j];
     }
   }
+  
+  return;
+}
 
+void rta_dct_scaled(rta_real_t * dct, const rta_real_t * input_vector,
+                    const rta_real_t * weights_matrix,
+                    const unsigned int input_size,
+                    const unsigned int dct_order,
+                    rta_real_t scale)
+{
+  unsigned int i,j;
+  
+  for(i=0; i<dct_order; i++)
+  {
+    dct[i] = 0.;
+    for(j=0; j<input_size; j++)
+    {
+      dct[i] += weights_matrix[i*input_size+j] * input_vector[j] * scale;
+    }
+  }
+  
   return;
 }
 
 /* Calculate dct from spectral samples */
 void rta_dct_stride(rta_real_t * dct, const int d_stride,
-                  const rta_real_t * input_vector, const int i_stride,
-                  const rta_real_t * weights_matrix, const int w_stride,
-                  const unsigned int input_size,
-                  const unsigned int dct_order)
+                    const rta_real_t * input_vector, const int i_stride,
+                    const rta_real_t * weights_matrix, const int w_stride,
+                    const unsigned int input_size,
+                    const unsigned int dct_order)
 {
   unsigned int i,j;
-
+  
   for(i=0; i<dct_order; i++)
   {
     dct[i*d_stride] = 0.;
     for(j=0; j<input_size; j++)
     {
       dct[i*d_stride] += weights_matrix[(i*input_size+j)*w_stride] *
-        input_vector[j*i_stride];
+      input_vector[j*i_stride];
     }
   }
+  
+  return;
+}
 
+/* Calculate dct from spectral samples */
+void rta_dct_stride_scaled(rta_real_t * dct, const int d_stride,
+                           const rta_real_t * input_vector, const int i_stride,
+                           const rta_real_t * weights_matrix, const int w_stride,
+                           const unsigned int input_size,
+                           const unsigned int dct_order,
+                           rta_real_t scale)
+{
+  unsigned int i,j;
+  
+  for(i=0; i<dct_order; i++)
+  {
+    dct[i*d_stride] = 0.;
+    for(j=0; j<input_size; j++)
+    {
+      dct[i*d_stride] += weights_matrix[(i*input_size+j)*w_stride] *
+      input_vector[j*i_stride] * scale;
+    }
+  }
+  
   return;
 }
