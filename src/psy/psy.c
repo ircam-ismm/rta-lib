@@ -1,6 +1,6 @@
 /**
  *
- * @file psyana.c
+ * @file psy.c
  * @author Norbert.Schnell@ircam.fr
  * 
  * @brief yin-based PSOLA analysis
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <float.h>
 
-#include "psyana.h"
+#include "psy.h"
 
 #ifndef WIN_VERSION
 

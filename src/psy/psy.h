@@ -1,6 +1,6 @@
 /**
  *
- * @file psyana.h
+ * @file psy.h
  * @author Norbert.Schnell@ircam.fr
  * 
  * @brief yin-based PSOLA analysis
