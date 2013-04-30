@@ -12,7 +12,7 @@
 #include "rta_int.h"
 
 
-int 
+unsigned int 
 rta_ilog2(unsigned int n)
 {
   unsigned int log2 = 0;

@@ -28,7 +28,7 @@ struct rta_fft_setup
   void * input;
   int i_stride;
   unsigned int input_size;
-  int log2_size;
+  unsigned int log2_size;
   rta_fft_t fft_type;
   rta_real_t * nyquist;    /**< last coefficient for real transforms */
   rta_real_t * scale;
@@ -192,8 +192,8 @@ fft_inplace_stride(rta_complex_t * buf,
                    const rta_real_t * coef_imag,
                    const unsigned int size)
 {
-  int m, n;
-  int j, k, up, down;
+  unsigned int m, n;
+  unsigned int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -264,8 +264,8 @@ fft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
                                             const rta_real_t * coef_imag,
                                             const unsigned int size)
 {
-  int m, n;
-  int j, k, up, down;
+  unsigned int m, n;
+  unsigned int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -333,8 +333,8 @@ ifft_inplace_stride(rta_complex_t * buf,
                     const rta_real_t * coef_imag,
                     const unsigned int size)
 {
-  int m, n;
-  int j, k, up, down;
+  unsigned int m, n;
+  unsigned int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -403,8 +403,8 @@ ifft_inplace_oversampled_coefficients_stride(rta_complex_t * buf,
                                              const rta_real_t * coef_imag,
                                              const unsigned int size)
 {
-  int m, n;
-  int j, k, up, down;
+  unsigned int m, n;
+  unsigned int j, k, up, down;
 
   for(up=1, down=size>>1; up<size; up<<=1, down>>=1)
   {
@@ -658,7 +658,7 @@ fill_real_scale_zero_pad_stride(
   rta_real_t * input, const int i_stride, const unsigned int input_size,
   const rta_real_t scale)
 {
-  int o, i;
+  unsigned int o, i;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -740,7 +740,7 @@ fill_complex_scale_zero_pad_stride(
   rta_complex_t * input, const int i_stride, const unsigned int input_size,
   const rta_real_t scale)
 {
-  int i, o;
+  unsigned int i, o;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -823,7 +823,7 @@ fill_complex_from_real_scale_zero_pad_stride(
   rta_real_t * input, const int i_stride, const unsigned int input_size,
   const rta_real_t scale)
 {
-  int i, o;
+  unsigned int i, o;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -902,7 +902,7 @@ scale_real_zero_pad_in_place_stride(
   const unsigned int input_size,
   const rta_real_t scale)
 {
-  int i;
+  unsigned int i;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -978,7 +978,7 @@ scale_complex_zero_pad_in_place_stride(
   const unsigned int input_size,
   const rta_real_t scale)
 {
-  int i;
+  unsigned int i;
   unsigned int used_input_size;
   
   if(input_size > output_size)
@@ -1030,7 +1030,7 @@ tables_new(rta_fft_setup_t * fft_setup)
     /* sine function from 0 to 2pi, inclusive (plus 1/4 for cosine) */
     /* step = 5/4 * 2 pi / (5/4 * size) = 2 * pi / size */
     const rta_real_t step = 2. * M_PI / fft_setup->fft_size;
-    int i;
+    unsigned int i;
     for(i=0; i<=fft_setup->fft_size * 5/4; i++)
     {
       fft_setup->sin[i] = rta_sin(i*step);

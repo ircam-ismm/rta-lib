@@ -25,7 +25,7 @@ extern "C" {
  * 
  * @return log2('n') or 0 if 'n' == 0
  */
-int rta_ilog2(unsigned int n);
+unsigned int rta_ilog2(unsigned int n);
 
 /** 
  * Integer version of the maximum
