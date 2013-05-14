@@ -1,6 +1,8 @@
 CC		= mex
 CFLAGS		= 
-RTA_ROOT	= ..
+RTA_ROOT	= ../src
+RTA_MISC	= $(RTA_ROOT)/misc
+RTA_COMMON	= $(RTA_ROOT)/common
 #MEXEXT		= mexmaci
 #MEXEXT		= mexglx
 #MEXEXT		= mexa64
@@ -38,10 +40,13 @@ all: rta_bands_weights \
 
 
 rta_%_mex.o: rta_%_mex.c
-	$(CC) $(CFLAGS) -c -I. -I$(RTA_ROOT) $<
+	$(CC) $(CFLAGS) -c -I. -I$(RTA_MISC) -I$(RTA_COMMON) $<
 
-rta_%.o: $(RTA_ROOT)/rta_%.c $(RTA_ROOT)/rta_%.h 
-	$(CC) $(CFLAGS) -c -I. -I$(RTA_ROOT) $<
+rta_%.o: $(RTA_MISC)/rta_%.c $(RTA_MISC)/rta_%.h 
+	$(CC) $(CFLAGS) -c -I. -I$(RTA_MISC) -I$(RTA_COMMON) $<
+
+rta_%.o: $(RTA_COMMON)/rta_%.c $(RTA_COMMON)/rta_%.h 
+	$(CC) $(CFLAGS) -c -I. -I$(RTA_MISC) -I$(RTA_COMMON) $<
 
 
 rta_bands_weights: rta_bands.o rta_mel.o rta_bands_weights_mex.o
