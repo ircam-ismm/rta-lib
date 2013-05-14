@@ -253,6 +253,32 @@ void rta_fft_execute(void * output, void * input, const unsigned int input_size,
                      rta_fft_setup_t * fft_setup);
 
 
+/** 
+ * Compute an FFT according to an FFT setup. It is possible to use
+ * different 'input' and 'output' arguments as those used to
+ * plan the setup, but they must use exactly the same size and stride.
+ * 
+ * \see rta_fft_setup_new
+ * \see rta_fft_real_setup_new
+ * \see rta_fft_setup_new_stride
+ * \see rta_fft_real_setup_new_stride
+ *
+ * @param output can be an array of rta_real_t or rta_complex_t,
+ * depending on 'fft_type'. 
+ * @param input can be an array of rta_real_t or rta_complex_t,
+ * depending on 'fft_type'. 
+ * @param input_size is used to perform zero padding, not to resize
+ * 'input' after a planned setup.
+ * @param fft_setup is a pointer to a private structure, which may
+ * depend on the actual FFT implementation.
+ * @param nyquist is the address of the real transform value at the
+ * Nyquist frequency (for direct and inverse real transforms).
+ */
+void 
+rta_fft_real_execute(void * output, void * input, const unsigned int input_size,
+                     rta_fft_setup_t * fft_setup,
+                     rta_real_t * nyquist);
+
 #ifdef __cplusplus
 }
 #endif

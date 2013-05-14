@@ -1549,7 +1549,6 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
       {
         bitreversal_inplace_stride(complex_output, fft_setup->o_stride,
                                    fft_setup->bitrev, fft_setup->fft_size);
-
         ifft_inplace_stride(complex_output, fft_setup->o_stride, 
                             fft_setup->cos, fft_setup->sin, fft_setup->fft_size);
       }
@@ -1560,4 +1559,15 @@ rta_fft_execute(void * output, void * input, const unsigned int input_size,
     default:
       break;
   }
+  return;
+}
+
+inline void 
+rta_fft_real_execute(void * output, void * input, const unsigned int input_size,
+                     rta_fft_setup_t * fft_setup,
+                     rta_real_t * nyquist)
+{
+  fft_setup->nyquist = nyquist;
+  rta_fft_execute(output, input, input_size, fft_setup);
+  return;    
 }
