@@ -2,10 +2,13 @@
 #include "rta_kdtree.h"
 #include "rta_kdtreeintern.h"
 #include <stdlib.h>
-#include <strings.h>
 #include <math.h>
 #include <assert.h>
 
+
+#ifndef WIN32
+#include <strings.h>
+#endif
 
 #ifdef DEBUG
 #define DEBUG_KDTREEBUILD 0

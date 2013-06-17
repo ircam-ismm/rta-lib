@@ -5,7 +5,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <strings.h>
 #include <math.h>
 
 #ifdef WIN32
@@ -14,6 +13,7 @@ static double log2(double x){ return log(x)/log(2);}
 #define snprintf sprintf_s
 #else
 #include <alloca.h>
+#include <strings.h>
 #endif
 
 #include "rta_kdtree.h"
