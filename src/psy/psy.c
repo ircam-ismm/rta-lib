@@ -18,8 +18,8 @@
 
 #ifndef WIN_VERSION
 
-#include "vDSP.h"
-#define yinAutocorr(i, c, n, m) conv((i), 1, (i), 1, (c), 1, (n), (m));
+#include "Accelerate.h"
+#define yinAutocorr(i, c, n, m) vDSP_conv((i), 1, (i), 1, (c), 1, (n), (m));
 
 #else
 
