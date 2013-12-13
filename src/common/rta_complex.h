@@ -29,13 +29,14 @@
 #if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 #undef rta_complex_t
 
-typedef struct complex_
+typedef struct floatcomplex_
 {
   float real;
   float imag;
-} complex;
+} floatcomplex;
 
-#define rta_complex_t complex
+#define rta_complex_t floatcomplex
+#define inline 
 
 static inline rta_complex_t rta_make_complex(float real, float imag)
 {

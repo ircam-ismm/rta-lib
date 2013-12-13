@@ -18,6 +18,9 @@
 extern "C" {
 #endif
 
+#ifdef WIN32
+#define inline
+#endif
 /** 
  * Integer version of the log2 function (rounded down)
  * 
