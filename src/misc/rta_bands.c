@@ -335,7 +335,7 @@ void rta_spectrum_to_bands_square_abs(
     {
       bands[i] += weights_matrix[i*spectrum_size+j] * rta_sqrt(spectrum[j]);
     }
-    bands[i] = pow(bands[i], 2);
+    bands[i] = rta_pow(bands[i], 2);
   }
 
   return;
