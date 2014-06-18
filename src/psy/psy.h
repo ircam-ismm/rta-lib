@@ -5,7 +5,7 @@
  * 
  * @brief yin-based PSOLA analysis
  * 
- * Copyright (C) 2009-2011 by IMTR IRCAM – Centre Pompidou, Paris, France.
+ * Copyright (C) 2009-2014 by IRCAM – Centre Pompidou, Paris, France.
  * All rights reserved.
  * 
  */
