@@ -17,6 +17,10 @@
 
 #include "rta_math.h" /* rta_floor, rta_ceil */
 
+#ifdef WIN32
+#define inline
+#endif
+
 static inline void rta_swap(rta_real_t * a, rta_real_t * b)
 {
   register rta_real_t tmp = *b;

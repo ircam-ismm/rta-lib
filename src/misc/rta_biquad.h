@@ -36,6 +36,10 @@
 extern "C" {
 #endif
 
+#ifdef WIN32
+#define inline
+#endif
+
 /** 
  * Biquad coefficients for a low-pass filter.
  * H(s) = 1 / (s^2 + s/q + 1)

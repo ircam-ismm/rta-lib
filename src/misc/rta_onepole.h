@@ -21,6 +21,10 @@
 extern "C" {
 #endif
 
+#ifdef WIN32
+#define inline
+#endif
+
 /** 
  * One-pole low-pass filter computed as:
  * y(n) = f0 * x(n) - (f0 - 1) * y(n-1)
