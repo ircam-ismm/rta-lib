@@ -241,8 +241,11 @@ void kdtree_data_display (kdtree_t* t, int print_data);
 /** set all counters in kdtree_t#profile to zero */
 void kdtree_profile_clear (kdtree_t *t);
 
-void kdtree_set_decomposition(kdtree_t *t, kdtree_dmode_t mode, void *param);
+/** set decomposition mode */
+void kdtree_set_decomposition (kdtree_t *t, kdtree_dmode_t mode, void *param);
 
+/** set pivot mode */
+void kdtree_set_pivot (kdtree_t *t, kdtree_mmode_t mode);
 
 /** initialise tree structure */
 void kdtree_init (kdtree_t *self);
