@@ -17,7 +17,7 @@
 
 /* specific implementations */
 #if defined(RTA_USE_VECLIB)
-#include <veclib/vDSP.h>
+#include <vDSP.h>
 #endif
 
 /* Fast, unbiased by nature, recommended if (c_size / filter_size > 20) */
