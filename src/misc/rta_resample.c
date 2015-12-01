@@ -8,7 +8,9 @@
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  */
+
 #include "rta_resample.h"
+#include "rta_util.h"	// for idefix
 
 /* contract: factor > 0; */
 /*           o_size >= i_size / factor */
@@ -238,3 +240,97 @@ void rta_downsample_int_remove_stride(
 
   return;
 }
+
+
+
+int rta_resample_cubic (rta_real_t * out_values,
+			const rta_real_t * in_values,
+			const unsigned int i_size,
+			const unsigned int i_channels,
+			const double factor)
+{
+  if (factor == 1.0)
+  { /* copy through */
+    memcpy(out_values, in_values, i_size * i_channels * sizeof(rta_real_t));
+  }
+  else if (in_values != out_values)
+  {
+    int m = i_size;
+    int n = i_channels;
+	
+    /* limit resampling range here? */
+    if (m > 3)
+    {
+      double inv = 1.0 / factor;
+      int out_m = (int) floor((double) (m - 1) * inv) + 1;
+      int out_head_m  = (int) ceil(inv);
+      int out_tailm2_m = (int) floor((double) (m - 2) * inv);
+      rta_idefix_t idefix;
+      rta_idefix_t incr;
+      int i, j;
+	  
+      rta_idefix_set_float(&incr, factor);
+	  
+      for (j = 0; j < n; j++)
+      {
+	rta_idefix_set_zero(&idefix);
+		
+	/* copy first points without interpolation */
+	for (i = j; i < out_head_m * n; i += n)
+	{
+	  int   onset = rta_idefix_get_index(idefix);
+	  float frac  = rta_idefix_get_frac(idefix);
+	  float left  = in_values[j + onset * n];
+	  float right = in_values[j + onset * n + n];
+
+	  //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
+	  out_values[i] = left + (right - left) * frac;
+	  rta_idefix_incr(&idefix, incr);
+	}
+		
+	for (; i < out_tailm2_m * n; i += n)
+	{
+	  rta_cubic_idefix_interpolate_stride(in_values + j, idefix, n, out_values + i);
+	  rta_idefix_incr(&idefix, incr);
+	}
+		
+	/*
+	  for(; i<out_tailm1_m*n; i+=n)
+	  {
+	  rta_cubic_coefs_t *ft = rta_cubic_table + rta_cubic_get_table_index_from_idefix(idefix);
+	  int onset = rta_idefix_get_index(idefix);
+
+	  out_values[i] = rta_cubic_calc_stride_tailm2(in_values + j + onset * n, ft, n);
+	  rta_idefix_incr(&idefix, incr);
+	  }
+	*/
+	
+	for (; i < out_m * n; i += n)
+	{
+	  int   onset = rta_idefix_get_index(idefix);
+	  float frac  = rta_idefix_get_frac(idefix);
+	  float left  = in_values[j + onset * n];
+	  float right = in_values[j + onset * n + n];
+	  
+	  //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
+	  out_values[i] = left + (right - left) * frac;
+	  rta_idefix_incr(&idefix, incr);
+	}
+      }
+    }
+    else
+      return 0;
+  }
+  else
+    return 0;	// can't run in-place
+
+  return 1;
+}
+
+  
+/** EMACS **
+ * Local variables:
+ * mode: c
+ * c-basic-offset:2
+ * End:
+ */
