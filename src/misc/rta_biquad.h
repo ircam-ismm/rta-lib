@@ -477,7 +477,7 @@ void rta_biquad_coefs_stride(
  *
  * @return the output sample y
  */
-inline rta_real_t rta_biquad_df1(const rta_real_t x,
+extern inline rta_real_t rta_biquad_df1(const rta_real_t x,
                                  const rta_real_t * b, const rta_real_t * a,
                                  rta_real_t * states);
 
@@ -510,7 +510,7 @@ inline rta_real_t rta_biquad_df1(const rta_real_t x,
  *
  * @return the output sample y
  */
-inline rta_real_t rta_biquad_df2t(const rta_real_t x,
+extern inline rta_real_t rta_biquad_df2t(const rta_real_t x,
                                   const rta_real_t * b, const rta_real_t * a,
                                   rta_real_t * states);
 
@@ -544,7 +544,7 @@ inline rta_real_t rta_biquad_df2t(const rta_real_t x,
  *
  * @return the output sample y
  */
-inline rta_real_t rta_biquad_df1_stride(
+extern inline rta_real_t rta_biquad_df1_stride(
   const rta_real_t x,
   const rta_real_t * b, const int a_stride,
   const rta_real_t * a, const int b_stride,
@@ -583,7 +583,7 @@ inline rta_real_t rta_biquad_df1_stride(
  *
  * @return the output sample y
  */
-inline rta_real_t rta_biquad_df2t_stride(
+extern inline rta_real_t rta_biquad_df2t_stride(
   const rta_real_t x,
   const rta_real_t * b, const int b_stride,
   const rta_real_t * a, const int a_stride,
