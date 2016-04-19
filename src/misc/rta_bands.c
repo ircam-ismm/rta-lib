@@ -191,7 +191,7 @@ int rta_spectrum_to_mel_bands_weights_stride(
                                       (max_mel - min_mel));
     }
   
-    for(i=0; i<filters_number + 2; i++)
+    for(i=0; i<filters_number + 2; i++) //FIXME: shouldn't be filters_number + 1, since i+1 is used in body?
     {
       scaled_filter_freq[i] = filter_freq[i+1] +
         scale_width * (filter_freq[i] - filter_freq[i+1]);
