@@ -1067,15 +1067,9 @@ tables_new(rta_fft_setup_t * fft_setup)
       ret = 1; /* setup complete */
     }
     else /* bitrev failed */
-    {
       rta_free(fft_setup->sin);
-      rta_free(fft_setup);
-    }
   }
-  else /* sin failed */
-  {
-    rta_free(fft_setup);
-  }
+  /* else: sin failed */
   
   return ret;
 }
