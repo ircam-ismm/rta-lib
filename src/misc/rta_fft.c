@@ -638,7 +638,7 @@ fill_real_scale_zero_pad(rta_real_t * output, const unsigned int output_size,
   }
   else
   {
-    for(i=0; i<input_size; i++)
+    for (i = 0; i < used_input_size; i++)
     {
       output[i] = input[i];
     }    
@@ -803,7 +803,7 @@ fill_complex_from_real_scale_zero_pad(
   }
   else
   {
-    for(i=0; i<input_size; i++)
+    for (i = 0; i < used_input_size; i++)
     {
       rta_set_complex_real(output[i], input[i]);
     }    
