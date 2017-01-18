@@ -160,7 +160,12 @@ static inline void rta_set_complex_real(rta_complex_t a, float b)
 
 static inline rta_complex_t rta_make_complex(float real, float imag)
 {
-	return (real + imag * I);
+#if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL) \
+     && defined __clang__
+  return CMPLX(real, imag);
+#else // old gcc way of creating a complex number
+  return (real + imag * I);
+#endif
 }
 
 #define rta_cabs cabsf
