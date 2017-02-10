@@ -35,7 +35,7 @@ typedef enum { shape_3D_sphere, shape_3D_cube, shape_3D_rparallel } shape_3D_enu
 
 class Shape {
 public:
-	virtual double fd_compute (double px, double py) { };
+	virtual double fd_compute(double px, double py) { return 0.0; };
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints) { };
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints) { };
 	shape_enum_t type;
@@ -85,7 +85,7 @@ public:
 	Polygon ();
 	Polygon (std::vector< std::vector<double> > vertices);
 	virtual double fd_compute (double px, double py);
-	static double fd_poly(double px, double py, std::vector<double> &vx, std::vector<double> &vx, int nVertices);
+	static double fd_poly(double px, double py, std::vector<double> &vx, std::vector<double> &vy, int nVertices);
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 	static bool isInPoly(double px, double py, std::vector<double> vx, std::vector<double> vy);
@@ -106,7 +106,7 @@ private:
 	
 class Shape_3D {
 public:
-	virtual double fd_compute (double px, double py, double pz) { };
+	virtual double fd_compute(double px, double py, double pz) { return 0.0; };
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints) { };
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints) { };
 	shape_3D_enum_t type;
