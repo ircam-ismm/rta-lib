@@ -16,7 +16,8 @@
 
 #include "psy.h"
 
-#ifndef WIN_VERSION
+#if defined(__APPLE__) && defined(__MACH__) && \
+(RTA_REAL_TYPE == RTA_FLOAT_TYPE || RTA_REAL_TYPE == RTA_DOUBLE_TYPE)
 
 #include "Accelerate.h"
 #define yinAutocorr(i, c, n, m) vDSP_conv((i), 1, (i), 1, (c), 1, (n), (m));
