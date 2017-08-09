@@ -36,12 +36,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #ifndef _RTA_H_
 #define _RTA_H_ 1
 
 /** rta_configuration.h must be user-defined. */
-
 //#include "rta_configuration_console.h"
 #include "rta_configuration.h"
 

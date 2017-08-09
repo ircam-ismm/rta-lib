@@ -36,14 +36,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #ifndef _RTA_CONFIGURATION_H_
 #define _RTA_CONFIGURATION_H_ 1
 
-
 #include "rta_stdio.h"
 #include "rta_stdlib.h"
-
 
 /** redefine console printing */
 #undef rta_post
