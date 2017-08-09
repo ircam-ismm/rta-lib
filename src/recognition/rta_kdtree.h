@@ -1,47 +1,72 @@
 /**
-@file	rta_kdtree.h
-@author	Diemo Schwarz
-@date	29.9.2008
-@version	1.0 
-
-@brief	k-dimensional search tree
-
-Efficient multidimensional binary search tree with logarithmic time
-complexity: From about 80-100 points, the number of comparisions
-doesn't rise any more perceptibly.
-
-
-Dimensions can be weighted while building the tree, and while
-searching. The weight is 1 / sigma, just as in
-mnm.mahalanobis. Sigma = 0 means: ignore this dimension.
-
-Call sequence for builing and using the tree:
-
-- 1. initialise tree structure with kdtree_init()
-
-- 2. set parameters like decomposition mode kdtree_t#dmode and mean
-  mode kdtree_t#mmode, tree height adaptation kdtree_t#givenheight
-
-- 3. set data vector with kdtree_set_data(), this returns the number
-  of nodes the tree will build
-
-- 4. initialise nodes, possibly providing memory allocated according
-  the number of nodes returned above, with kdtree_init_nodes()
-
-- 5. optionally set weights for building with kdtree_set_sigma()
-
-- 6. build the tree with kdtree_build()
-
-- 7. then you can query the tree with kdtree_search_knn().
-
-Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * @file rta_kdtree.h
+ * @author Diemo Schwarz
+ * @date 29.9.2008
+ * @version  1.0 
+ *
+ * @brief  k-dimensional search tree
+ *
+ * Efficient multidimensional binary search tree with logarithmic time
+ * complexity: From about 80-100 points, the number of comparisions
+ * doesn't rise any more perceptibly.
+ * 
+ * 
+ * Dimensions can be weighted while building the tree, and while
+ * searching. The weight is 1 / sigma, just as in
+ * mnm.mahalanobis. Sigma = 0 means: ignore this dimension.
+ * 
+ * Call sequence for builing and using the tree:
+ * 
+ * - 1. initialise tree structure with kdtree_init()
+ * 
+ * - 2. set parameters like decomposition mode kdtree_t#dmode and mean
+ * mode kdtree_t#mmode, tree height adaptation kdtree_t#givenheight
+ * 
+ * - 3. set data vector with kdtree_set_data(), this returns the number
+ *   of nodes the tree will build
+ * 
+ * - 4. initialise nodes, possibly providing memory allocated according
+ *   the number of nodes returned above, with kdtree_init_nodes()
+ * 
+ * - 5. optionally set weights for building with kdtree_set_sigma()
+ * 
+ * - 6. build the tree with kdtree_build()
+ * 
+ * - 7. then you can query the tree with kdtree_search_knn().
+ * 
+ * @copyright
+ * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
+ * All rights reserved.
+ * 
+ * License (BSD 3-clause)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-/* build doc with:
-   cd distlib; make doc
-*/
-
+// build doc with:
+// cd distlib; make doc
 
 #ifndef _RTA_KDTREE_H_
 #define _RTA_KDTREE_H_
