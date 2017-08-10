@@ -9,13 +9,13 @@ but `rta_configuration_console.h` could be included instead.
 
 #### build the doc
 
-`~/rta$ cd doc`  
-`~/rta/doc$ doxygen Doxyfile`
+`~/rta-lib$ cd doc`  
+`~/rta-lib/doc$ doxygen Doxyfile`
 
 then open in your favourite browser
 
-`~/rta/doc$ cd html`  
-`~/rta/doc/html$ open index.html`
+`~/rta-lib/doc$ cd html`  
+`~/rta-lib/doc/html$ open index.html`
 
 #### license
 
