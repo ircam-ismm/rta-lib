@@ -20,6 +20,6 @@ then open in your favourite browser
 #### license
 
 All the files in RTA are released under the BSD 3-clause license, except
-`statistics/rta_cca.h` and `statistics/rta_cca.c` which depend on the
-GNU Scientific Library (gsl), and are therefore released under the same GPL v3
+`statistics/rta_cca.h` and `statistics/rta_cca.c` which depend on the GSL
+(GNU Scientific Library), and are therefore released under the same GPL v3
 license.
