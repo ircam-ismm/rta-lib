@@ -7,7 +7,7 @@ to override its default values.
 The default configuration file is `rta_configuration.h`,
 but `rta_configuration_console.h` could be included instead.  
 
-#### build the doc
+#### build the docs
 
 `~/rta$ cd docs`
 `~/rta/docs$ doxygen Doxyfile`
