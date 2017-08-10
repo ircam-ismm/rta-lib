@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 	
-#include "mnm.h"
+// #include "mnm.h"
 		
 	/*
 	 * Compute Canonical Correlation Analysis between X and Y

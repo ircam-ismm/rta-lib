@@ -25,5 +25,3 @@ GNU Scientific Library (gsl), and are therefore released under the same GPL v3
 license.  
 `signal/psy.h`, `signal/psy.c`, `signal/rta_yin.h` and `signal/rta_yin.c` are all
 BSD 3-clause, but there is a running patent on their commercial use.
-<!-- for more information, contact Frederic Rousseau ? -->
-<!-- or offer a multi-licensing option ? -->
