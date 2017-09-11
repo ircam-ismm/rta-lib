@@ -1,4 +1,4 @@
-/*
+/**
  * @file rta_cca.h
  * @author Baptiste Caramiaux
  * @date 08/10/08
@@ -22,7 +22,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef _RTA_CCA_H_
@@ -32,9 +32,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
+
 // #include "mnm.h"
-		
+
 	/*
 	 * Compute Canonical Correlation Analysis between X and Y
 	 *		i.e. X.A and Y.B are maximally correlated with
@@ -55,17 +55,17 @@ extern "C" {
 	 *
 	 *		column (X.A)_:,j is correlated to (Y.B)_:,j with a maximal correlation
 	 *		coefficient C_j
-	 *		
+	 *
 	 *  @self -> cca structure
 	 */
 	int
 	rta_cca(float * left_ptr, int left_m, int left_n,
 			float * right_ptr, int right_m, int right_n,
 			float * output_A, float * output_B, float * output_C, ftmext_t * self);
-	
-	
-	
-	
+
+
+
+
 #ifdef __cplusplus
 }
 #endif
