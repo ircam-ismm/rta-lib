@@ -301,9 +301,9 @@ result is without unit.
 <!-- {std^4 \sum_i input(i)} $$ -->
 
 Note that the kurtosis is often defined as the fourth cumulant divided
-by the square root of the variance, which gives $kurtosis =
-<!-- \frac{m_4}{std^4} - 3$. -->
-This function does not include the <!-- ``$- 3$'' term -->.
+by the square root of the variance, which gives
+<!-- $kurtosis = \frac{m_4}{std^4} - 3$. -->
+This function does not include the <!-- ``$- 3$'' --> term.
 
 
 <!-- section 5 -->
