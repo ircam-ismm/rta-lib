@@ -1,8 +1,8 @@
 /**
- * @file   rta_configuration.h
+ * @file   rta_configuration_console.h
  * @author Diemo Schwarz
  * @date   8.12.2009
- * 
+ *
  * @brief  console configuration for the rta library
  *
  * @copyright

@@ -1,0 +1,8 @@
+\form#0:\[ d_j = \sum_{j=0}^{ndim} \left( \frac{data_j - x_j}{\sigma} \right)^2 \]
+\form#1:$C(i) = \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
+\form#2:$C(i) = \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
+\form#3:$C(i) = \frac{1}{max\_filter\_size-i} \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
+\form#4:$C(i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
+\form#5:$(i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
+\form#6:$C(i) = scale \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
+\form#7:$normalization = \frac{1}{2 \left(\sum\limits_{\theta=1}^{\theta=filter_size} \theta^2 \right)}$

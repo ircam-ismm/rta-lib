@@ -1,5 +1,5 @@
 /**
- * @file rta_configuration.h
+ * @file rta_configuration_basic.h
  * @author Norbert Schnell
  *
  * @brief Custom configuration for the rta library
