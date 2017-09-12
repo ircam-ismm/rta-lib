@@ -1,6 +1,6 @@
 # rta-lib overview {#mainpage}
 
-# /!\ WORK IN PROGRESS /!\
+# WORK IN PROGRESS !!!
 
 # Table of Contents
 
