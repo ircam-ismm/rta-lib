@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "rta-lib", "index.html", [
+    [ "rta-lib overview", "index.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -36,9 +37,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"rta__complex_8h.html#a422f51595007e6e9ffab01520af6d26d",
-"rta__kdtree_8h.html#afa33a7283acbc1b7a1edc948f5075ca0",
-"rta__svd_8h.html#a7c2edfcdd1f7d07299b39cbdf6f5cb3a"
+"rta__bpf_8h_source.html",
+"rta__kdtree_8h.html#a89e9c6fe3dd067123a8416f5850d1aea",
+"rta__resample_8h.html#aeee87a0622049303f38761bb98c6a306",
+"structrta__bpf__point.html#a00b122a19510b9e269547258a189b5fc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

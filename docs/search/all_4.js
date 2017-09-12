@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['d1',['D1',['../struct__rta__msdr.html#a5999671caa9e4b2fbfdf750f91a2d755',1,'_rta_msdr']]],
+  ['d2',['D2',['../struct__rta__msdr.html#aeb316e0a5427124695b36edb16fcd009',1,'_rta_msdr']]],
+  ['data',['data',['../struct__kdtree__struct.html#aaee0b5f0c63fcd27db4c91eecc59d415',1,'_kdtree_struct']]],
+  ['dataindex',['dataindex',['../struct__kdtree__struct.html#a6f6e1b09dd50c87e26256e1ee72527a3',1,'_kdtree_struct']]],
+  ['deltat',['DELTAT',['../rta__unispring_8h.html#a001001f1d8cd45b389678b6bbd94e511',1,'rta_unispring.h']]],
+  ['dfun',['dfun',['../struct__kdtree__struct.html#a6444a61ed4c12be1417f04bd34a40831',1,'_kdtree_struct']]],
+  ['disk',['Disk',['../classUniSpringSpace_1_1Disk.html',1,'UniSpringSpace::Disk'],['../classUniSpringSpace_1_1Disk.html#a8efef351845cfa4923a785410e405984',1,'UniSpringSpace::Disk::Disk()']]],
+  ['dist',['dist',['../struct__kdtree__stack__elem__struct.html#a6ddc7cafbb97911eb7bdc8f4dc797d9b',1,'_kdtree_stack_elem_struct']]],
+  ['distv2n',['distV2N',['../rta__kdtreeintern_8h.html#a01f721aea469e32a7f6815ad8112bc79',1,'rta_kdtreeintern.h']]],
+  ['distv2n_5fstride',['distV2N_stride',['../rta__kdtreeintern_8h.html#a6d70b595ebbe6c985d0141154f23aaaa',1,'rta_kdtreeintern.h']]],
+  ['distv2n_5fweighted',['distV2N_weighted',['../rta__kdtreeintern_8h.html#a9e3ce8709f27c7a530f7c678eca27439',1,'rta_kdtreeintern.h']]],
+  ['dmap',['DMAP',['../rta__kdtree_8h.html#a01befd7a8d52877be415de0a2269a238',1,'rta_kdtree.h']]],
+  ['dmapw',['DMAPW',['../rta__kdtree_8h.html#ad79ba0a185c3008ad5bec866a8033694',1,'rta_kdtree.h']]],
+  ['dmode',['dmode',['../struct__kdtree__struct.html#a920a82b00fe13b6e171a669afec569f7',1,'_kdtree_struct']]],
+  ['dmode_5fhyperplane',['dmode_hyperplane',['../rta__kdtree_8h.html#abad3a9bcea2449988c5a387b690f4751a86a8504b487bb529c14970c4aa2b4be2',1,'rta_kdtree.h']]],
+  ['dmode_5forthogonal',['dmode_orthogonal',['../rta__kdtree_8h.html#abad3a9bcea2449988c5a387b690f4751aca2b7d3d96091dab4d509664e425c54b',1,'rta_kdtree.h']]],
+  ['dmode_5fpca',['dmode_pca',['../rta__kdtree_8h.html#abad3a9bcea2449988c5a387b690f4751a17fb098fe2ebe8780b0f4e0a1b9e45d4',1,'rta_kdtree.h']]],
+  ['downsampling',['downSampling',['../structPsyAnaSt.html#ae7110d455727af85ccb9caa38eb70092',1,'PsyAnaSt']]],
+  ['downsamplingexp',['downSamplingExp',['../structPsyAnaSt.html#ad6f0e3bd3580349d73a22d206b06ba35',1,'PsyAnaSt']]],
+  ['downsamplingratio',['downSamplingRatio',['../structPsyAnaSt.html#a44c35fc31b17cfc2eba5ae25b4e22f8e',1,'PsyAnaSt']]],
+  ['downsamplingscaling',['downSamplingScaling',['../structPsyAnaSt.html#a77b3aa7dc4fd25a9e0ac025da44c5d66',1,'PsyAnaSt']]]
+];

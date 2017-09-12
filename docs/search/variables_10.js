@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['sampleperiod',['samplePeriod',['../structPsyAnaSt.html#acdc45f537e9d28aec622975658e4114f',1,'PsyAnaSt']]],
+  ['samplerate',['sampleRate',['../structPsyAnaSt.html#a4dd86b5806a7d3acfc4259c77c97b9a8',1,'PsyAnaSt']]],
+  ['scale_5ffactor',['scale_factor',['../classUniSpringSpace_1_1Shape.html#a8d6e14ed19a7a5a8b6a7ca374b402a79',1,'UniSpringSpace::Shape::scale_factor()'],['../classUniSpringSpace_1_1Shape__3D.html#a2b33b5950a1c47d6953ce7824c058a7b',1,'UniSpringSpace::Shape_3D::scale_factor()']]],
+  ['searches',['searches',['../struct__kdtree__profile__struct.html#af203f40ffbbb6f80ebca93c207d9d6a6',1,'_kdtree_profile_struct']]],
+  ['shift_5fscaled_5fx',['shift_scaled_x',['../classUniSpringSpace_1_1Shape.html#a44ef7b3e07ebf4488aa122ea37d97cf7',1,'UniSpringSpace::Shape::shift_scaled_x()'],['../classUniSpringSpace_1_1Shape__3D.html#ad8ca039ddb7d65ba6140721f76b7d435',1,'UniSpringSpace::Shape_3D::shift_scaled_x()']]],
+  ['shift_5fscaled_5fy',['shift_scaled_y',['../classUniSpringSpace_1_1Shape.html#a32be31efc7dfcb7ba2be190688933098',1,'UniSpringSpace::Shape::shift_scaled_y()'],['../classUniSpringSpace_1_1Shape__3D.html#ac1762886256714d2843b4db0b948c008',1,'UniSpringSpace::Shape_3D::shift_scaled_y()']]],
+  ['shift_5fscaled_5fz',['shift_scaled_z',['../classUniSpringSpace_1_1Shape__3D.html#a6228fe4549f6034b07ee0729dab72e83',1,'UniSpringSpace::Shape_3D']]],
+  ['sigma',['sigma',['../struct__kdtree__struct.html#a5a8434dde00ac9a42ded69dc0b1402af',1,'_kdtree_struct']]],
+  ['sigma_5findnz',['sigma_indnz',['../struct__kdtree__struct.html#aa84ee9a18e520a3f80ba828b05460367',1,'_kdtree_struct']]],
+  ['sigma_5fnnz',['sigma_nnz',['../struct__kdtree__struct.html#a90066809c371cba6a5a6887a7d688dd8',1,'_kdtree_struct']]],
+  ['size',['size',['../struct__kdtree__stack__struct.html#adc19071f276caf1ffa34dba3d38172fa',1,'_kdtree_stack_struct::size()'],['../struct__kdtree__node__struct.html#ae800d607de55c2590fd1dfd87235c1d0',1,'_kdtree_node_struct::size()'],['../struct__rta__bpf.html#aaa0abc15d29bd53b7d24a666385c88ac',1,'_rta_bpf::size()']]],
+  ['slope',['slope',['../structrta__bpf__point.html#a18e877f57a13ef35bc8b0faf985461fc',1,'rta_bpf_point']]],
+  ['sort',['sort',['../struct__kdtree__struct.html#a99c10567952a6b9a75c656238e0407c8',1,'_kdtree_struct']]],
+  ['speed',['speed',['../struct__rta__msdr.html#a339cfa8f8ca8ddd6ff89683b19646c3e',1,'_rta_msdr']]],
+  ['speedlim',['speedlim',['../struct__rta__msdr.html#a37bdee397286ddef70cfbb5713c9c70d',1,'_rta_msdr']]],
+  ['split',['split',['../struct__kdtree__struct.html#aba11b8169d4a8002aa3247bcd85d20a0',1,'_kdtree_struct']]],
+  ['splitdim',['splitdim',['../struct__kdtree__node__struct.html#af0dec3c9a5f6bac0b2216771925cf13e',1,'_kdtree_node_struct']]],
+  ['splitnorm',['splitnorm',['../struct__kdtree__node__struct.html#a12407c9f75282dc7885f7c600c6708f8',1,'_kdtree_node_struct']]],
+  ['stack',['stack',['../struct__kdtree__struct.html#a63f394700b48af82341590efd4b57699',1,'_kdtree_struct']]],
+  ['startind',['startind',['../struct__kdtree__node__struct.html#af3601b4148f24d3ae77efd9640e03b99',1,'_kdtree_node_struct']]],
+  ['stress',['stress',['../struct__rta__msdr.html#a2c86fd1bbf65ba4d52a5086eb44cd988',1,'_rta_msdr']]]
+];
