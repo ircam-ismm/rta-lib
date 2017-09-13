@@ -6,3 +6,4 @@
 \form#5:$(i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
 \form#6:$C(i) = scale \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$
 \form#7:$normalization = \frac{1}{2 \left(\sum\limits_{\theta=1}^{\theta=filter_size} \theta^2 \right)}$
+\form#8:$periodicity = 1 - \sqrt{absolute\_minimum}$

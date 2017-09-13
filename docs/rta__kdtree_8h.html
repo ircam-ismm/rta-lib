@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -1247,7 +1253,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Perform search in kd-tree structure <code>t</code>.</p>
 <p>Return the <code>k</code> nearest neighbours in multi-dimensional data using the search tree <code>t</code>. The output vector <code>d</code> contains the squared distances to the <code>r</code> closest data vectors in <a class="el" href="struct__kdtree__struct.html#aaee0b5f0c63fcd27db4c91eecc59d415">kdtree_t::data</a> according to the formula </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ d_j = \sum_{j=0}^{ndim} \left( \frac{data_j - x_j}{\sigma} \right)^2 \]" src="form_0.png"/>
+\[ d_j = \sum_{j=0}^{ndim} \left( \frac{data_j - x_j}{\sigma} \right)^2 \]
 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

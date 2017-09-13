@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -239,7 +245,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Generate a factor to multiply the delta with, in order to normalize the 'delta' values against the 'filter_size'. The delta is then the slope of the linear regression. Note that it is equivalent to multiply the 'weights_vector' values (but it is less precise, as errors in weights are added).</p>
-<p><img class="formulaInl" alt="$normalization = \frac{1}{2 \left(\sum\limits_{\theta=1}^{\theta=filter_size} \theta^2 \right)}$" src="form_7.png"/></p>
+<p>\(normalization = \frac{1}{2 \left(\sum\limits_{\theta=1}^{\theta=filter_size} \theta^2 \right)}\)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filter_size</td><td>is the number of points to evaluate the delta</td></tr>

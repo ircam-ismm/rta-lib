@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -188,7 +194,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_1.png"/></p>
+<p>\(C(i) = \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is unbiased by nature but misses some information, specially for the first coefficients. It should be negligible if 'filter_size' is much greater than 'c_size', like ('filter_size' / 'c_size' &gt; 20).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -265,7 +271,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_1.png"/></p>
+<p>\(C(i) = \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is unbiased by nature but misses some information, specially for the first coefficients. It should be negligible if 'filter_size' is much greater than 'c_size', like ('filter_size' / 'c_size' &gt; 20).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -327,7 +333,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_2.png"/></p>
+<p>\(C(i) = \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is biased but uses all the information available for each coefficient.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -404,7 +410,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_2.png"/></p>
+<p>\(C(i) = \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is biased but uses all the information available for each coefficient.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -466,7 +472,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = \frac{1}{max\_filter\_size-i} \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_3.png"/></p>
+<p>\(C(i) = \frac{1}{max\_filter\_size-i} \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is unbiased as it normalizes each coefficient by its actual filter size.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -543,7 +549,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = \frac{1}{max\_filter\_size-i} \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_3.png"/></p>
+<p>\(C(i) = \frac{1}{max\_filter\_size-i} \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is unbiased as it normalizes each coefficient by its actual filter size.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -669,7 +675,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_4.png"/></p>
+<p>\(C(i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is unbiased by nature but misses some information, specially for the first coefficients. It should be negligible if 'filter_size' is much greater than 'c_size', like ('filter_size' / 'c_size' &gt; 20).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -753,7 +759,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$(i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_5.png"/></p>
+<p>\((i) = scale \sum_{f=0}^{filter\_size-1} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is unbiased by nature but misses some information, specially for the first coefficients. It should be negligible if 'filter_size' is much greater than 'c_size', like ('filter_size' / 'c_size' &gt; 20).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -822,7 +828,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = scale \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_6.png"/></p>
+<p>\(C(i) = scale \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is biased but uses all the information available for each coefficient.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -906,7 +912,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Compute correlation between 'input_vector_a' and 'input_vector_b' into 'correlation'. If 'input_vector_a' == 'input_vector_b', it computes auto-correlation. This function can run in place if 'correlation' == 'input_vector_a' or 'correlation' == 'input_vector_b'.</p>
-<p><img class="formulaInl" alt="$C(i) = scale \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}$" src="form_6.png"/></p>
+<p>\(C(i) = scale \sum_{f=0}^{max\_filter\_size-i} A(f+i) \cdot B(f), i=\{0,c\_size-1\}\)</p>
 <p>This function is biased but uses all the information available for each coefficient.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
