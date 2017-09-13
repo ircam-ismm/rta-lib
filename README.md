@@ -23,4 +23,4 @@ license.
 
 then open in your favourite browser
 
-`~/rta-lib$ open ../../docs/index.html`
+`~/rta-lib$ open docs/index.html`
