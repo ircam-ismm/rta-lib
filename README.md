@@ -20,11 +20,12 @@ All the files in RTA are released under the BSD 3-clause license, except
 license.
 
 #### rebuild the doc
-
-`~/rta-lib$ cd build/doxygen`<br />
-`~/rta-lib/build/doxygen$ doxygen rta.doxygen`
-
+```
+~/rta-lib$ cd build/doxygen
+~/rta-lib/build/doxygen$ doxygen rta.doxygen
+```
 then open in your favourite browser
-
-`~/rta-lib/build/doxygen$ cd ../../docs`<br />
-`~/rta-lib/docs$ open index.html`
+```
+~/rta-lib/build/doxygen$ cd ../../docs
+~/rta-lib/docs$ open index.html
+```
