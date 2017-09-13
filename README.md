@@ -1,8 +1,6 @@
 # RTA library
 
-#### documentation
-
-[ircam-rnd.github.io/rta-lib/](https://ircam-rnd.github.io/rta-lib/)
+#### documentation: [ircam-rnd.github.io/rta-lib/](https://ircam-rnd.github.io/rta-lib/)
 
 #### configure
 
