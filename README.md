@@ -19,8 +19,12 @@ license.
 
 #### rebuild the doc
 
-`~/rta-lib$ doxygen build/doxygen/rta.doxygen`
-
+```
+~/rta-lib$ cd build/doxygen
+~/rta-lib/build/doxygen$ doxygen rta.doxygen
+```
 then open in your favourite browser
-
-`~/rta-lib$ open docs/index.html`
+```
+~/rta-lib/build/doxygen$ cd ../../docs
+~/rta-lib open index.html
+```
