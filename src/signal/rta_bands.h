@@ -2,16 +2,17 @@
  * @file   rta_bands.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Fri Jun 15 15:29:25 2007
- * 
+ * @ingroup rta_signal
+ *
  * @brief  Spectrum bands integrations (HTK and Auditory Toolbox styles)
- * 
+ *
  * Based on Rastamat by Dan Ellis.
  * @see http://www.ee.columbia.edu/~dpwe/resources/matlab/rastamat
  *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +56,7 @@ typedef enum
     rta_bands_bark = 1,
     rta_bands_mel = 2,
     rta_bands_htk_mel = 3,
-    rta_bands_feacalc_mel = 4    
+    rta_bands_feacalc_mel = 4
 }  rta_bands_t;
 
 /**  Integrate FFT bins into Mel bins, in abs or abs^2 domains */
@@ -68,7 +69,7 @@ typedef enum
 
 /* from fft2melmx.m */
 
-/** 
+/**
  * Generate a matrix of weights 'weights_matrix' to combine a power
  * spectrum into mel bands.
  * As this matrix is rather sparse, generate also a bounds matrix
@@ -92,7 +93,7 @@ typedef enum
  * @param sample_rate of the signal corresponding to the power spectrum
  * @param filters_number number of output mel bands
  * @param min_freq in Hz.
- * default is 0, but 133.33 is a common standard (to skip LF). 
+ * default is 0, but 133.33 is a common standard (to skip LF).
  * @param max_freq in Hertz
  * @param scale_width frequencies are scale by this factor (generally
  * 1., which means no scale)
@@ -100,8 +101,8 @@ typedef enum
  * @param mel_to_hz function used for conversion (inverse of hz_to_mel)
  * @param mel_type slaney_mel is scaled to be approx constant E per
  * channel, not HTK. Integration windows peak at 1 for HTK, not sum to
- * 1 (as for Slaney) 
- * 
+ * 1 (as for Slaney)
+ *
  * @return 1 on success 0 on fail
  */
 int rta_spectrum_to_mel_bands_weights(
@@ -112,8 +113,8 @@ int rta_spectrum_to_mel_bands_weights(
     const rta_hz_to_mel_function hz_to_mel,
     const rta_mel_to_hz_function mel_to_hz,
     const rta_mel_t mel_type);
- 
-/** 
+
+/**
  * Generate a matrix of weights 'weights_matrix' to combine a power
  * spectrum into mel bands.
  * As this matrix is rather sparse, generate also a bounds matrix
@@ -139,7 +140,7 @@ int rta_spectrum_to_mel_bands_weights(
  * @param sample_rate of the signal corresponding to the power spectrum
  * @param filters_number number of output mel bands
  * @param min_freq in Hertz.
- * default is 0, but 133.33 is a common standard (to skip LF). 
+ * default is 0, but 133.33 is a common standard (to skip LF).
  * @param max_freq in Hertz
  * @param scale_width frequencies are scale by this factor (generally
  * 1., which means no scale)
@@ -147,8 +148,8 @@ int rta_spectrum_to_mel_bands_weights(
  * @param mel_to_hz function used for conversion (inverse of hz_to_mel)
  * @param mel_type slaney_mel is scaled to be approx constant E per
  * channel, not HTK. Integration windows peak at 1 for HTK, not sum to
- * 1 (as for Slaney) 
- * 
+ * 1 (as for Slaney)
+ *
  * @return 1 on success 0 on fail
  */
 int rta_spectrum_to_mel_bands_weights_stride(
@@ -160,7 +161,7 @@ int rta_spectrum_to_mel_bands_weights_stride(
   const rta_hz_to_mel_function hz_to_mel,
   const rta_mel_to_hz_function mel_to_hz,
   const rta_mel_t mel_type);
-   
+
 /*from audspec.m */
 
 /**
@@ -179,14 +180,14 @@ typedef void (*rta_spectrum_to_bands_function)
  */
 typedef void (*rta_spectrum_to_bands_stride_function)
 (rta_real_t *, const int, const rta_real_t *, const int, const rta_real_t *, const int,
- const unsigned int *, const int, 
+ const unsigned int *, const int,
  const unsigned int, const unsigned int);
 
 
-/** 
+/**
  * Integrate amplitude spectrum into bands, in abs domain
  * 'bands' = 'weights_matrix'*'spectrum'
- * 
+ *
  * @param bands size is 'filters_number'
  * @param spectrum size is 'spectrum_size'
  * @param weights_matrix size is 'filters_number'*'spectrum_size'
@@ -201,10 +202,10 @@ void rta_spectrum_to_bands_abs(
   const rta_real_t * weights_matrix, const unsigned int * weights_bounds,
   const unsigned int spectrum_size, const unsigned int filters_number);
 
-/** 
+/**
  * Integrate amplitude spectrum into bands, in abs domain
  * 'bands' = 'weights_matrix'*'spectrum'
- * 
+ *
  * @param bands size is 'filters_number'
  * @param b_stride is 'bands' stride
  * @param spectrum size is 'spectrum_size'
@@ -225,10 +226,10 @@ void rta_spectrum_to_bands_abs_stride(
   const unsigned int * weights_bounds, const int wb_stride,
   const unsigned int spectrum_size, const unsigned int filters_number);
 
-/** 
+/**
  * Integrate power spectrum into bands, in abs^2 domain
  * 'bands' = ('weights_matrix'*sqrt('spectrum')).^2
- * 
+ *
  * @param bands size is 'filters_number'
  * @param spectrum size is 'spectrum_size'
  * @param weights_matrix size is 'filters_number'*'spectrum_size'
@@ -236,17 +237,17 @@ void rta_spectrum_to_bands_abs_stride(
  * @param spectrum_size points number of the power spectrum (which is
  * the complex square module of the FFT, so 'spectrum_size' is ('fft_size'/2.)+1.)
  * @param filters_number number of output bands
- * 
+ *
  */
 void rta_spectrum_to_bands_square_abs(
   rta_real_t * bands, const rta_real_t * spectrum,
   const rta_real_t * weights_matrix, const unsigned int * weights_bounds,
   const unsigned int spectrum_size, const unsigned int filters_number);
 
-/** 
+/**
  * Integrate power spectrum into bands, in abs^2 domain
  * 'bands' = ('weights_matrix'*sqrt('spectrum')).^2
- * 
+ *
  * @param bands size is 'filters_number'
  * @param b_stride is 'bands' stride
  * @param spectrum size is 'spectrum_size'
@@ -258,7 +259,7 @@ void rta_spectrum_to_bands_square_abs(
  * @param spectrum_size points number of the power spectrum (which is
  * the complex square module of the FFT, so 'spectrum_size' is ('fft_size'/2.)+1.)
  * @param filters_number number of output bands
- * 
+ *
  */
 void rta_spectrum_to_bands_square_abs_stride(
   rta_real_t * bands, const int b_stride,

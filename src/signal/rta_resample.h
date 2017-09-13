@@ -2,13 +2,14 @@
  * @file   rta_resample.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Mon Aug 27 12:25:16 2007
- * 
+ * @ingroup rta_signal
+ *
  * @brief  Resampling utilities
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,12 +47,12 @@
 extern "C" {
 #endif
 
-/** 
+/**
  * Downsample 'input' to 'output', by an integer factor, out of
  * place. The 'output' samples are simple means of 'input' over
- * 'factor' samples. The calculation can be in place if 
+ * 'factor' samples. The calculation can be in place if
  * 'input' == 'output' .
- * 
+ *
  * @param output size must be >= i_size / 'factor'
  * @param input size is 'i_size'
  * @param i_size is 'input' size
@@ -62,12 +63,12 @@ rta_downsample_int_mean(rta_real_t * output,
 			const rta_real_t * input, const unsigned int i_size,
 			const unsigned int factor);
 
-/** 
+/**
  * Downsample 'input' to 'output', by an integer factor, out of
  * place. The 'output' samples are simple means of 'input' over
- * 'factor' samples. The calculation can be in place if 
+ * 'factor' samples. The calculation can be in place if
  * 'input' == 'output' and 'i_stride' == 'o_stride'.
- * 
+ *
  * @param output size must be >= i_size / 'factor'
  * @param o_stride is 'output' stride
  * @param input size is 'i_size'
@@ -75,19 +76,19 @@ rta_downsample_int_mean(rta_real_t * output,
  * @param i_size is 'input' size
  * @param factor must be > 0
  */
-void 
+void
 rta_downsample_int_mean_stride(
   rta_real_t * output, const int o_stride,
   const rta_real_t * input, const int i_stride,
   const unsigned int i_size,
   const unsigned int factor);
 
-/** 
+/**
  * Downsample 'input' to 'output', by an integer factor, out of
  * place. The 'output' samples are 'input' values kept every
- * 'factor' samples. The calculation can be in place if 
+ * 'factor' samples. The calculation can be in place if
  * 'input' == 'output'.
- * 
+ *
  * @param output size must be >= i_size / 'factor'
  * @param input size is 'i_size'
  * @param i_size is 'input' size
@@ -99,12 +100,12 @@ rta_downsample_int_remove(rta_real_t * output,
 			  const unsigned int i_size,
 			  const unsigned int factor);
 
-/** 
+/**
  * Downsample 'input' to 'output', by an integer factor, out of
  * place. The 'output' samples are 'input' values kept every
- * 'factor' samples. The calculation can be in place if 
+ * 'factor' samples. The calculation can be in place if
  * 'input' == 'output' and 'i_stride' == 'o_stride'.
- * 
+ *
  * @param output size must be >= i_size / 'factor'
  * @param o_stride is 'output' stride
  * @param input size is 'i_size'
@@ -121,10 +122,10 @@ rta_downsample_int_remove_stride(
 
 
 
-/** 
+/**
  * Cubic resampling of interleaved 'input' to 'output' by a factor, out of
- * place. 
- * 
+ * place.
+ *
  * @param output size must be >= i_size / 'factor'
  * @param input	 size 'i_size' * 'i_channels'
  * @param i_size is 'input' number of sample frames
@@ -138,7 +139,7 @@ rta_resample_cubic (rta_real_t	      *output,
 		    const unsigned int i_size,
 		    const unsigned int i_channels,
 		    const double       factor);
-    
+
 #ifdef __cplusplus
 }
 #endif

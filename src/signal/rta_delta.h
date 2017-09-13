@@ -2,16 +2,17 @@
  * @file   rta_delta.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Fri Jun 15 15:29:25 2007
- * 
+ * @ingroup rta_signal
+ *
  * @brief  Delta (derivative for a sequence at a fixed sampling rate)
- * 
+ *
  * Simple linear slope. Each column (a scalar value during time) is
  * filtered separately.
  *
  * @copyright
  * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
- * All rights reserved. 
- * 
+ * All rights reserved.
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,8 +50,8 @@ extern "C" {
 #endif
 
 /* from deltas.m */
-/** 
- * 
+/**
+ *
  * Generate a vector of weights 'weights_vector' to calculate the
  * delta (derivative) of a sequence of regularly sampled values. Use
  * a 'filter_size'-points window. to calculate delta using a simple
@@ -62,19 +63,19 @@ extern "C" {
  *
  * 'filter_size' == 7 is a common value to calculate the delta-mfcc
  * and 'filter_size' == 5  is a common value for delta-delta-mfcc.
- * 
+ *
  * Note for HTK 'DELTAWINDOW' (same for 'ACCWINDOW'):
- * 'filter_size' == ('DELTAWINDOW' * 2) + 1 
+ * 'filter_size' == ('DELTAWINDOW' * 2) + 1
  *
  * @param weights_vector size is 'filter_size'
  * @param filter_size must be odd and stricly positive.
- * 
+ *
  * @return 1 on success 0 on fail
  */
 int rta_delta_weights(rta_real_t * weights_vector, const unsigned int filter_size);
 
-/** 
- * 
+/**
+ *
  * Generate a vector of weights 'weights_vector' to calculate the
  * delta (derivatives) of a sequence of regularly sampled values. Use
  * a 'filter_size'-points window. to calculate delta using a simple
@@ -86,20 +87,20 @@ int rta_delta_weights(rta_real_t * weights_vector, const unsigned int filter_siz
  *
  * 'filter_size' == 7 is a common value to calculate the delta-mfcc
  * and 'filter_size' == 5  is a common value for delta-delta-mfcc.
- * 
+ *
  * Note for HTK 'DELTAWINDOW' (same for 'ACCWINDOW'):
- * 'filter_size' == ('DELTAWINDOW' * 2) + 1 
+ * 'filter_size' == ('DELTAWINDOW' * 2) + 1
  *
  * @param weights_vector size is 'filter_size'
  * @param w_stride is 'weights_vector' stride
  * @param filter_size must be odd and stricly positive.
- * 
+ *
  * @return 1 on success 0 on fail
  */
 int rta_delta_weights_stride(rta_real_t * weights_vector, const int w_stride,
                           const unsigned int filter_size);
 
-/** 
+/**
  * Generate a factor to multiply the delta with, in order to normalize
  * the 'delta' values against the 'filter_size'. The delta is then the
  * slope of the linear regression. Note that it is equivalent to
@@ -107,17 +108,17 @@ int rta_delta_weights_stride(rta_real_t * weights_vector, const int w_stride,
  * errors in weights are added).
  *
  * \f$normalization = \frac{1}{2 \left(\sum\limits_{\theta=1}^{\theta=filter_size} \theta^2 \right)}\f$
- * 
+ *
  * @param filter_size is the number of points to evaluate the delta
- * 
+ *
  * @return normalization factor to multiply the delta with
  */
 rta_real_t rta_delta_normalization_factor(const unsigned int filter_size);
 
-/** 
+/**
  * Calculate the delta of 'input_vector' as
  * 'delta' = 'input_vector' * 'weights_vector'
- * 
+ *
  * To calculate 'delta' over a ring buffer of 'input_vector', replicate
  * the 'weights_vector' at the end (which memory size is now
  * 2*'filter_size') and use (weights_vector + filter_size - 1 -
@@ -132,10 +133,10 @@ void rta_delta(rta_real_t * delta, const rta_real_t * input_vector,
               const rta_real_t * weights_vector,
               const unsigned int filter_size);
 
-/** 
+/**
  * Calculate the delta of 'input_vector' as
  * 'delta' = 'input_vector' * 'weights_vector'
- * 
+ *
  * To calculate 'delta' over a ring buffer of 'input_vector', replicate
  * the 'weights_vector' at the end (which memory size is now
  * 2*'filter_size') and use (weights_vector + filter_size - 1 -
@@ -148,16 +149,16 @@ void rta_delta(rta_real_t * delta, const rta_real_t * input_vector,
  * @param w_stride is 'weights_vector' stride
  * @param filter_size is the number of points to evaluate the delta
  */
-void rta_delta_stride(rta_real_t * delta, 
+void rta_delta_stride(rta_real_t * delta,
                     const rta_real_t * input_vector, const int i_stride,
                     const rta_real_t * weights_vector, const int w_stride,
                     const unsigned int filter_size);
 
 
-/** 
+/**
  * Calculate the deltas of 'input_matrix' as
  * 'delta' = 'input_matrix' * 'weights_vector'
- * 
+ *
  * To calculate 'delta' over a ring buffer of rows 'input_matrix',
  * replicate the 'weights_vector' at the end (which memory size is now
  * 2*'filter_size') and use (weights_vector + filter_size - 1 -
@@ -169,16 +170,16 @@ void rta_delta_stride(rta_real_t * delta,
  * @param input_size is the 'input_matrix' rows number and 'delta' size
  * @param weights_vector size is 'filter_size'
  * @param filter_size is 'input_matrix' columns number, which is the
- * number of points to evaluate the deltas 
+ * number of points to evaluate the deltas
  */
 void rta_delta_vector(rta_real_t * delta,
                     const rta_real_t * input_matrix, const unsigned int input_size,
                     const rta_real_t * weights_vector, const unsigned int filter_size);
 
-/** 
+/**
  * Calculate the deltas of 'input_matrix' as
  * 'delta' = 'input_matrix' * 'weights_vector'
- * 
+ *
  * To calculate 'delta' over a ring buffer of rows 'input_matrix',
  * replicate the 'weights_vector' at the end (which memory size is now
  * 2*'filter_size') and use (weights_vector + filter_size - 1 -
@@ -193,10 +194,10 @@ void rta_delta_vector(rta_real_t * delta,
  * @param weights_vector size is 'filter_size'
  * @param w_stride is 'weights_vector' stride
  * @param filter_size is 'input_matrix' columns number, which is the
- * number of points to evaluate the deltas 
+ * number of points to evaluate the deltas
  */
 void rta_delta_vector_stride(rta_real_t * delta, const int d_stride,
-                          const rta_real_t * input_matrix, const int i_stride, 
+                          const rta_real_t * input_matrix, const int i_stride,
                           const unsigned int input_size,
                           const rta_real_t * weights_vector, const int w_stride,
                           const unsigned int filter_size);

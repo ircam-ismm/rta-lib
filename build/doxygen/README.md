@@ -1,4 +1,4 @@
-# rta-lib overview {#mainpage}
+# rta overview {#mainpage}
 
 # Table of Contents
 
@@ -52,13 +52,12 @@ Every allocation must be done before anything else, outside of the functions
 themselves except mentioned otherwise.
 
 Some descriptors can be computed by several functions, and the results
-may slightly differ for several reasons: the functions do not rely
-on the same algorithms and the signals used for the computation may
-differ (due to windowing, filtering, etc.). The auto-correlation from
-_yin_ and from the _LPC_ are not the same and there is a
-lot of ways to get the energy: from _yin_, as the sum of the
-squares of the samples, from _LPC_, or as the first
-_MFCC_ coefficient.
+may slightly differ for several reasons: the functions can rely on different
+algorithms and the signals used for the computation may differ
+(due to windowing, filtering, etc.).
+The auto-correlation from _yin_ and from the _LPC_ are not the same and there
+is a lot of ways to get the energy: from _yin_, as the sum of the squares of the
+samples, from _LPC_, or as the first _MFCC_ coefficient.
 
 
 <!-- section 2 -->
@@ -168,11 +167,11 @@ frequencies while raising the high frequencies, thus amplifying the contrast.
 
 If the samples vector-size is known, it is possible to pre-calculate
 the weights that will be used to apply a given function.
-- the function `rta_window_hamming_weights` computes a _Hamming_ window
-- the function `rta_window_hann_weights` computes a _von Hann_ window.
 
-These (or any weights vector) can be applied with the `rta_window_apply`
-function. <br />
+- the `rta_window_hamming_weights` function computes a _Hamming_ window
+- the `rta_window_hann_weights` function computes a _von Hann_ window
+- the `rta_window_apply` function can apply these weights (or any weights vector)
+
 The functions post-fixed with `_in_place` change the input samples
 vector values directly.
 
@@ -180,7 +179,7 @@ If the samples vector-size is not known in advance, one can still
 apply the window using the `rta_window_rounded_apply` function.
 There is no interpolation, then. The weights vector indexes are simply scaled
 and rounded: this is efficient but the rounding error may be unacceptable if the
-size of the weights vector is too small comparing with the samples vector size.
+size of the weights vector is too small compared with the samples vector size.
 It is also possible to compute and apply a window on the fly, with the functions
 `rta_window_hann_apply` and `rta_window_hamming_apply`.
 
@@ -214,7 +213,7 @@ power spectrum is the square of the magnitude of the complex spectrum.
 
 Before computing a real _Fourier_ transform, a new real _Fourier_ transform
 setup must be allocated and filled with the `rta_fft_real_setup_new` function,
-with the type `real_to_complex_1d`.
+with the type `rta_fft_real_to_complex_1d`.
 It will be released by the function `rta_fft_setup_delete`.
 The function `rta_fft_execute` applies the _Fourier_ transform to a samples
 vector.
@@ -329,8 +328,7 @@ with the respective suffix `_htk` or `_slaney`.
 
 The power spectrum is integrated into several bands, according again
 to _HTK_ or the _Auditory Toolbox_.
-The integration
-window peak is 1 for _HTK_, while the sum of any channel is 1
+The integration window peak is 1 for _HTK_, while the sum of any channel is 1
 for the _Auditory Toolbox_.
 
 In order to reproduce the results of one of these tools, one must obviously
@@ -458,7 +456,7 @@ and it ends as:
 Any function within _RTA_ uses the `rta_real_t` type.
 
 `rta_real_t` is determined at compilation time by a
-`#define` (not a `typedef`) in `rta_types.h` to
+`\#define` (not a `typedef`) in `rta_types.h` to
 ensure a strict `float` or `double` replacement. (As a
 such, `rta_real_t` can be used with `typedef` and
 `sizeof` expression.) The functions from the standard header
@@ -486,7 +484,7 @@ Note that the latter is untested. The default is to use the same type as
 <a name="memory_allocation"></a>
 ## 6.5 Memory allocation
 
-The arrays of real values are not allocated within the \rta\ library,
+The arrays of real values are not allocated within the _RTA_ library,
 as they are manipulable outside of the library. They must be allocated
 beforehand, as no memory allocation is done during a function's call
 (except for the followings).

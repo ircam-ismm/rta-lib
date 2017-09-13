@@ -1,7 +1,8 @@
-/** 
+/**
  * @file   rta_biquad.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Fri Aug 29 12:38:46 2008
+ * @ingroup rta_signal
  *
  * @brief  Biquad filter and coefficients calculations.
  *
@@ -67,7 +68,7 @@ extern "C" {
 #define inline
 #endif
 
-/** 
+/**
  * Biquad coefficients for a low-pass filter.
  * H(s) = 1 / (s^2 + s/q + 1)
  *
@@ -82,7 +83,7 @@ extern "C" {
 void rta_biquad_lowpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a low-pass filter.
  * H(s) = 1 / (s^2 + s/q + 1)
  *
@@ -101,7 +102,7 @@ void rta_biquad_lowpass_coefs_stride(
   rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a high-pass filter.
  * H(s) = s^2 / (s^2 + s/q + 1)
  *
@@ -116,7 +117,7 @@ void rta_biquad_lowpass_coefs_stride(
 void rta_biquad_highpass_coefs(rta_real_t * b, rta_real_t * a,
                                const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a high-pass filter.
  * H(s) = s^2 / (s^2 + s/q + 1)
  *
@@ -135,7 +136,7 @@ void rta_biquad_highpass_coefs_stride(
   rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a band-pass filter with constant skirt. The
  * peak gain is 'q'.
  * H(s) = s / (s^2 + s/q + 1)
@@ -152,7 +153,7 @@ void rta_biquad_bandpass_constant_skirt_coefs(rta_real_t * b, rta_real_t * a,
                                               const rta_real_t f0,
                                               const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a band-pass filter with constant skirt. The
  * peak gain is 'q'.
  * H(s) = s / (s^2 + s/q + 1)
@@ -173,7 +174,7 @@ void rta_biquad_bandpass_constant_skirt_coefs_stride(
   const rta_real_t f0,
   const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a band-pass filter with constant 0 dB peak.
  * H(s) = (s/q) / (s^2 + s/q + 1)
  *
@@ -189,7 +190,7 @@ void rta_biquad_bandpass_constant_peak_coefs(rta_real_t * b, rta_real_t * a,
                                              const rta_real_t f0,
                                              const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a band-pass filter with constant 0 dB peak.
  * H(s) = (s/q) / (s^2 + s/q + 1)
  *
@@ -209,7 +210,7 @@ void rta_biquad_bandpass_constant_peak_coefs_stride(
   const rta_real_t f0,
   const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a notch filter.
  * H(s) = (s^2 + 1) / (s^2 + s/q + 1)
  *
@@ -224,7 +225,7 @@ void rta_biquad_bandpass_constant_peak_coefs_stride(
 void rta_biquad_notch_coefs(rta_real_t * b, rta_real_t * a,
                             const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for a notch filter.
  * H(s) = (s^2 + 1) / (s^2 + s/q + 1)
  *
@@ -243,7 +244,7 @@ void rta_biquad_notch_coefs_stride(
   rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for an all-pass filter.
  * H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *
@@ -258,7 +259,7 @@ void rta_biquad_notch_coefs_stride(
 void rta_biquad_allpass_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for an all-pass filter.
  * H(s) = (s^2 - s/q + 1) / (s^2 + s/q + 1)
  *
@@ -277,7 +278,7 @@ void rta_biquad_allpass_coefs_stride(
   rta_real_t * a, const int a_stride,
   const rta_real_t f0, const rta_real_t q);
 
-/** 
+/**
  * Biquad coefficients for an peaking filter.
  * H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
  * g = sqrt('gain'),
@@ -295,7 +296,7 @@ void rta_biquad_peaking_coefs(rta_real_t * b, rta_real_t * a,
                               const rta_real_t f0, const rta_real_t q,
                               const rta_real_t gain);
 
-/** 
+/**
  * Biquad coefficients for an peaking filter.
  * H(s) = (s^2 + s*(g/q) + 1) / (s^2 + s/(g*q) + 1),
  * g = sqrt('gain'),
@@ -317,7 +318,7 @@ void rta_biquad_peaking_coefs_stride(
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
 
-/** 
+/**
  * Biquad coefficients for an low-shelf filter.
  * H(s) = g * (s^2 + (sqrt(g)/q)*s + g)/(g*s^2 + (sqrt(g)/q)*s + 1)
  * g = sqrt('gain'),
@@ -335,7 +336,7 @@ void rta_biquad_lowshelf_coefs(rta_real_t * b, rta_real_t * a,
                                const rta_real_t f0, const rta_real_t q,
                                const rta_real_t gain);
 
-/** 
+/**
  * Biquad coefficients for an low-shelf filter.
  * H(s) = g * (s^2 + (sqrt(g)/q)*s + g)/(g*s^2 + (sqrt(g)/q)*s + 1)
  * g = sqrt('gain'),
@@ -357,7 +358,7 @@ void rta_biquad_lowshelf_coefs_stride(
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
 
-/** 
+/**
  * Biquad coefficients for an high-shelf filter.
  * H(s) = g * (g*s^2 + (sqrt(g)/q)*s + 1)/(s^2 + (sqrt(g)/q)*s + g)
  * g = sqrt('gain'),
@@ -375,7 +376,7 @@ void rta_biquad_highshelf_coefs(rta_real_t * b, rta_real_t * a,
                                 const rta_real_t f0, const rta_real_t q,
                                 const rta_real_t gain);
 
-/** 
+/**
  * Biquad coefficients for an high-shelf filter.
  * H(s) = g * (g*s^2 + (sqrt(g)/q)*s + 1)/(s^2 + (sqrt(g)/q)*s + g)
  * g = sqrt('gain'),
@@ -397,7 +398,7 @@ void rta_biquad_highshelf_coefs_stride(
   const rta_real_t f0, const rta_real_t q,
   const rta_real_t gain);
 
-/** 
+/**
  * Helper function calling the proper biquad coefficients calculation
  * function, depending on the filter type.
  *
@@ -435,7 +436,7 @@ void rta_biquad_coefs(rta_real_t * b, rta_real_t * a,
                       const rta_real_t gain);
 
 
-/** 
+/**
  * Helper function calling the proper biquad coefficients calculation
  * function, depending on the filter type.
  *
@@ -477,7 +478,7 @@ void rta_biquad_coefs_stride(
   const rta_real_t gain);
 
 
-/** 
+/**
  * Biquad computation, using a direct form I.
  *
  * <pre>
@@ -489,7 +490,7 @@ void rta_biquad_coefs_stride(
  *         |           /       \             |
  *         V   b2     /         \       -a2  V
  *       [x-2]--->---/           \-----<---[y-2]
- * 
+ *
  * </pre>
  *
  * @param x is an input sample
@@ -508,7 +509,7 @@ extern inline rta_real_t rta_biquad_df1(const rta_real_t x,
                                  const rta_real_t * b, const rta_real_t * a,
                                  rta_real_t * states);
 
-/** 
+/**
  * Biquad computation, using a transposed direct form II.
  *
  * <pre>
@@ -541,7 +542,7 @@ extern inline rta_real_t rta_biquad_df2t(const rta_real_t x,
                                   const rta_real_t * b, const rta_real_t * a,
                                   rta_real_t * states);
 
-/** 
+/**
  * Biquad computation, using a direct form I.
  *
  * <pre>
@@ -553,7 +554,7 @@ extern inline rta_real_t rta_biquad_df2t(const rta_real_t x,
  *         |           /       \             |
  *         V   b2     /         \       -a2  V
  *       [x-2]--->---/           \-----<---[y-2]
- * 
+ *
  * </pre>
  *
  * @param x is an input sample
@@ -577,7 +578,7 @@ extern inline rta_real_t rta_biquad_df1_stride(
   const rta_real_t * a, const int b_stride,
   rta_real_t * states, const int s_stride);
 
-/** 
+/**
  * Biquad computation, using a transposed direct form II.
  *
  * <pre>
@@ -616,7 +617,7 @@ extern inline rta_real_t rta_biquad_df2t_stride(
   const rta_real_t * a, const int a_stride,
   rta_real_t * states, const int s_stride);
 
-/** 
+/**
  * Biquad computation on a vector of samples, using a direct form I.
  *
  * \see rta_biquad_df1
@@ -638,7 +639,7 @@ void rta_biquad_df1_vector(rta_real_t * y,
                            const rta_real_t * b, const rta_real_t * a,
                            rta_real_t * states);
 
-/** 
+/**
  * Biquad computation on a vector of samples, using a transposed
  * direct form II.
  *
@@ -661,7 +662,7 @@ void rta_biquad_df2t_vector(rta_real_t * y,
                             const rta_real_t * b, const rta_real_t * a,
                             rta_real_t * states);
 
-/** 
+/**
  * Biquad computation on a vector of samples, using a direct form I.
  *
  * \see rta_biquad_df1
@@ -690,7 +691,7 @@ void rta_biquad_df1_vector_stride(
   const rta_real_t * a, const int a_stride,
   rta_real_t * states, const int s_stride);
 
-/** 
+/**
  * Biquad computation on a vector of samples, using a transposed
  * direct form II.
  *

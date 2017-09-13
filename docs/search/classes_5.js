@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['shape',['Shape',['../classUniSpringSpace_1_1Shape.html',1,'UniSpringSpace']]],
-  ['shape_5f3d',['Shape_3D',['../classUniSpringSpace_1_1Shape__3D.html',1,'UniSpringSpace']]],
-  ['sphere',['Sphere',['../classUniSpringSpace_1_1Sphere.html',1,'UniSpringSpace']]],
-  ['square',['Square',['../classUniSpringSpace_1_1Square.html',1,'UniSpringSpace']]]
+  ['shape',['Shape',['../class_uni_spring_space_1_1_shape.html',1,'UniSpringSpace']]],
+  ['shape_5f3d',['Shape_3D',['../class_uni_spring_space_1_1_shape__3_d.html',1,'UniSpringSpace']]],
+  ['sphere',['Sphere',['../class_uni_spring_space_1_1_sphere.html',1,'UniSpringSpace']]],
+  ['square',['Square',['../class_uni_spring_space_1_1_square.html',1,'UniSpringSpace']]]
 ];

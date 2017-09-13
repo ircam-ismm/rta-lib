@@ -13,5 +13,6 @@ var searchData=
   ['rta_5fspectrum_5fto_5fbands_5ffunction',['rta_spectrum_to_bands_function',['../rta__bands_8h.html#aa13d774e7e633a00e45e92dde7a38204',1,'rta_bands.h']]],
   ['rta_5fspectrum_5fto_5fbands_5fstride_5ffunction',['rta_spectrum_to_bands_stride_function',['../rta__bands_8h.html#a351bfc20082aa1bd44a6db21673ab337',1,'rta_bands.h']]],
   ['rta_5fsvd_5fsetup_5ft',['rta_svd_setup_t',['../rta__svd_8h.html#a05952fbe665f09411b58b4791863763f',1,'rta_svd.h']]],
+  ['rta_5fyin_5fmins_5ft',['rta_yin_mins_t',['../rta__yin_8c.html#aaef610ff1c2a435470d009c5c8df54e6',1,'rta_yin.c']]],
   ['rta_5fyin_5fsetup_5ft',['rta_yin_setup_t',['../rta__yin_8h.html#a95734d90eefaefe8c5d9835dfe8cf516',1,'rta_yin.h']]]
 ];

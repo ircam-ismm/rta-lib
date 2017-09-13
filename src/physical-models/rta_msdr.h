@@ -1,5 +1,5 @@
 /**
- * @file rta_mdsr.h
+ * @file rta_msdr.h
  * @author Norbert Schnell
  *
  * @brief Mass Spring Damper Repulsion model
@@ -7,7 +7,7 @@
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,7 @@ typedef struct _rta_msdr {
 
 
 /*
- *  links 
+ *  links
  */
 
 int rta_msdr_add_link (rta_msdr_t *sys, int m1, int m2, float len, int cat,

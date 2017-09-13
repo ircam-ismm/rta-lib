@@ -2,16 +2,16 @@
  * @file   rta_float.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
- * 
- * @brief  rta_real_t type wrapper for <float.h>
+ *
+ * @brief Type wrapper for <float.h>
  *
  * Default is RTA_REAL_FLOAT. Define your RTA_REAL_TYPE (into
  * rta_configuration.h) to override these.
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

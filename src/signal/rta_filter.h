@@ -2,13 +2,14 @@
  * @file   rta_filter.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Fri Aug 29 12:38:46 2008
- * 
+ * @ingroup rta_signal
+ *
  * @brief  Filter types
- * 
+ *
  * @copyright
  * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
- * All rights reserved. 
- * 
+ * All rights reserved.
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

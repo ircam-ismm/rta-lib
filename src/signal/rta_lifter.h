@@ -2,16 +2,17 @@
  * @file   rta_lifter.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Fri Jun 15 15:29:25 2007
- * 
+ * @ingroup rta_signal
+ *
  * @brief  Cepstral liftering (HTK and Auditory Toolbox styles)
- * 
+ *
  * Based on Rastamat by Dan Ellis.
  * @see http://www.ee.columbia.edu/~dpwe/resources/matlab/rastamat
  *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +37,7 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef _RTA_LIFTER_H_
@@ -62,14 +63,14 @@ typedef enum
 
 
 /* from lifter.m */
-/** 
+/**
  * Generate a vector of weights 'weights_vector' to lifter a cepstrum
  * (usually to boost high coefficients). First coefficient is unchanged.
- * 
+ *
  * 'factor' = exponent of x i^n liftering in exponential type
  * (Auditory toolbox like)
  * 'factor' = length of sin-curve liftering in sinusoidal mode (HTK style)
- * 
+ *
  * @param weights_vector size is 'cepstrum_order'
  * @param cepstrum_order number of input and output cepstrum coefficients
  * @param liftering_factor
@@ -78,15 +79,15 @@ typedef enum
  *    'lifter_t' == sinusoidal_lifter:
  *         'liftering_factor' must be >0.
  *         1. is neutral, 22. is usual
- * @param lifter_t 
- *    'lifter_t' == exponential_lifter: Auditory Toolbox like 
+ * @param lifter_t
+ *    'lifter_t' == exponential_lifter: Auditory Toolbox like
  *    'lifter_t' == sinusoidal_lifter: HTK like
- * @param lifter_m 
+ * @param lifter_m
  *    'lifter_m' == rta_lifter_mode_normal: standard calculation, the one you
  * want to
  *    'lifter_m' == rta_lifter_mode_inverse: inverse calculation, to undo a
  * liftering.
- * 
+ *
  * @return 1 on success 0 on fail
  */
 int rta_lifter_weights(rta_real_t * weights_vector,
@@ -96,14 +97,14 @@ int rta_lifter_weights(rta_real_t * weights_vector,
                        const rta_lifter_mode_t lifter_m);
 
 
-/** 
+/**
  * Generate a vector of weights 'weights_vector' to lifter a cepstrum
  * (usually to boost high coefficients). First coefficient is unchanged.
- * 
+ *
  * 'factor' = exponent of x i^n liftering in exponential type
  * (Auditory toolbox like)
  * 'factor' = length of sin-curve liftering in sinusoidal mode (HTK style)
- * 
+ *
  * @param weights_vector size is 'cepstrum_order'
  * @param w_stride is 'weights_vector' stride
  * @param cepstrum_order number of input and output cepstrum coefficients
@@ -113,15 +114,15 @@ int rta_lifter_weights(rta_real_t * weights_vector,
  *    'lifter_t' == sinusoidal_lifter:
  *         'liftering_factor' must be >0.
  *         1. is neutral, 22. is usual
- * @param lifter_t 
- *    'lifter_t' == exponential_lifter: Auditory Toolbox like 
+ * @param lifter_t
+ *    'lifter_t' == exponential_lifter: Auditory Toolbox like
  *    'lifter_t' == sinusoidal_lifter: HTK like
- * @param lifter_m 
+ * @param lifter_m
  *    'lifter_m' == rta_lifter_mode_normal: standard calculation, the one you
  * want to
  *    'lifter_m' == rta_lifter_mode_inverse: inverse calculation, to undo a
  * liftering.
- * 
+ *
  * @return 1 on success 0 on fail
  */
 int rta_lifter_weights_stride(
@@ -131,42 +132,42 @@ int rta_lifter_weights_stride(
   const rta_lifter_t lifter_t, const rta_lifter_mode_t lifter_m);
 
 
-/** 
+/**
  * Apply lifter to 'cepstrum' as
  * 'out_cepstrum' = 'in_cepstrum'*'weights_vector'
- * 
+ *
  * This can be in place calculation if 'out_cepstrum' == 'in_cepstrum'
- * 
+ *
  * @param out_cepstrum size is 'cepstrum_order'
  * @param in_cepstrum size is 'cepstrum_order'
  * @param weights_vector size is 'cepstrum_order'
  * @param cepstrum_order number of input and output cepstrum coefficients
  */
 void rta_lifter_cepstrum(rta_real_t * out_cepstrum, rta_real_t * in_cepstrum,
-                         const rta_real_t * weights_vector, 
+                         const rta_real_t * weights_vector,
                          const unsigned int cepstrum_order);
 
-/** 
+/**
  * Apply lifter to 'cepstrum' as
  * 'cepstrum' = 'cepstrum'*'weights_vector'
- * 
+ *
  * This is in place calculation.
- * 
+ *
  * @param cepstrum size is 'cepstrum_order'
  * @param weights_vector size is 'cepstrum_order'
  * @param cepstrum_order number of input and output cepstrum coefficients
  */
 void rta_lifter_cepstrum_in_place(
-  rta_real_t * cepstrum, const rta_real_t * weights_vector, 
+  rta_real_t * cepstrum, const rta_real_t * weights_vector,
   const unsigned int cepstrum_order);
 
-/** 
+/**
  * Apply lifter to 'cepstrum' as
  * 'cepstrum' = 'cepstrum'*'weights_vector'
- * 
+ *
  * This can be in place calculation if 'out_cepstrum' == 'in_cepstrum'
  * and 'i_stride' == 'o_stride'.
- * 
+ *
  * @param out_cepstrum size is 'cepstrum_order'
  * @param o_stride is 'out_cepstrum' stride
  * @param in_cepstrum size is 'cepstrum_order'
@@ -174,7 +175,7 @@ void rta_lifter_cepstrum_in_place(
  * @param weights_vector size is 'cepstrum_order'
  * @param w_stride is 'weights_vector' stride
  * @param cepstrum_order number of input and output cepstrum coefficients
- * 
+ *
  */
 void rta_lifter_cepstrum_stride(
   rta_real_t * out_cepstrum, const int o_stride,

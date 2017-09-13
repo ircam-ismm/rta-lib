@@ -1,27 +1,16 @@
 var NAVTREE =
 [
-  [ "rta-lib", "index.html", [
-    [ "rta-lib overview", "index.html", null ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
-      [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ],
-        [ "Enumerator", "namespacemembers_eval.html", null ]
-      ] ]
-    ] ],
-    [ "Data Structures", "annotated.html", [
-      [ "Data Structures", "annotated.html", "annotated_dup" ],
-      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
-      [ "Data Fields", "functions.html", [
-        [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
-      ] ]
-    ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
-      [ "Globals", "globals.html", [
+  [ "rta", "index.html", [
+    [ "rta overview", "index.html", null ],
+    [ "Modules", "modules.html", "modules" ],
+    [ "Signal", "group__rta__signal.html", null ],
+    [ "Statistics", "group__rta__statistics.html", null ],
+    [ "Recognition", "group__rta__recognition.html", null ],
+    [ "Physical models", "group__rta__physical__models.html", null ],
+    [ "Util", "group__rta__util.html", null ],
+    [ "Reference", null, [
+      [ "Files", "files.html", "files" ],
+      [ "Index", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", "globals_func" ],
         [ "Variables", "globals_vars.html", null ],
@@ -36,11 +25,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"rta__bpf_8h_source.html",
-"rta__kdtree_8h.html#a89e9c6fe3dd067123a8416f5850d1aea",
-"rta__resample_8h.html#aeee87a0622049303f38761bb98c6a306",
-"structrta__bpf__point.html#a00b122a19510b9e269547258a189b5fc"
+"dir_1d72ffbc5162bc672934200098d42af3.html",
+"rta__complex_8h.html#a932a66f19911130e5c8e11379be3639f",
+"rta__kdtree_8c.html#a387b43e9b2e0a5d48f2c102d694faa0a",
+"rta__math_8h.html#acf3cc9786543709025508c9314420597",
+"rta__preemphasis_8c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

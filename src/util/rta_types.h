@@ -2,15 +2,15 @@
  * @file   rta_types.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
- * 
- * @brief  rta_real_t type warper for float, double or long double
+ *
+ * @brief  Type wrapper for float, double or long double
  *
  * Default is RTA_REAL_FLOAT. Define your RTA_REAL_TYPE to override these.
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

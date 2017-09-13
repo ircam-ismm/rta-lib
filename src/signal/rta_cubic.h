@@ -1,6 +1,9 @@
 /**
  * @file   rta_cubic.h
  * @author Norbert.Schnell@ircam.fr
+ * @ingroup rta_signal
+ *
+ * @brief Cubic interpolation
  *
  * @copyright
  * Copyright (C) 1994, 1995, 1998, 1999, 2007 by IRCAM-Centre Georges Pompidou, Paris, France.

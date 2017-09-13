@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unispringspace',['UniSpringSpace',['../namespaceUniSpringSpace.html',1,'']]]
+  ['unispringspace',['UniSpringSpace',['../namespace_uni_spring_space.html',1,'']]]
 ];

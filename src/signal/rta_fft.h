@@ -2,16 +2,17 @@
  * @file   rta_fft.h
  * @author Jean-Philippe Lambert
  * @date   Thu Sep 12 18:10:41 2007
- * 
+ * @ingroup rta_signal
+ *
  * @brief  Fast Fourier Transform
- * 
+ *
  * Based on FTM (based on FTS) FFT routines.
  * @see http://ftm.ircam.fr
  *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,7 +62,7 @@ typedef enum
 typedef struct rta_fft_setup rta_fft_setup_t;
 
 
-/** 
+/**
  * Allocate and initialize an FFT setup for real to complex or complex
  * to real transform, according to the planned processes.
  *
@@ -74,11 +75,11 @@ typedef struct rta_fft_setup rta_fft_setup_t;
  * data must be written as real (static cast).
  *
  * For an out of place transform, 'input' and 'output' must not
- * overlap. 
- * 
+ * overlap.
+ *
  * \see rta_fft_setup_delete
- * 
- * @param fft_setup is an address of a pointer to a private structure, 
+ *
+ * @param fft_setup is an address of a pointer to a private structure,
  * which may depend on the actual FFT implementation. This function
  * allocates 'fft_setup' and fills it.
  * @param fft_type may be real_to_complex_1d or complex_to_real_1d
@@ -87,17 +88,17 @@ typedef struct rta_fft_setup rta_fft_setup_t;
  * then inverse FFT. It does not need to be constant and may change
  * after the setup.
  * @param input can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param input_size must be <= 'fft_size'
  * @param output can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param fft_size must be >= 'input_size'
  * @param nyquist is the last coefficient for real transforms
- * 
+ *
  * @return 1 on success 0 on fail. If it fails, nothing should be done
  * with 'fft_setup' (even a delete).
  */
@@ -108,7 +109,7 @@ rta_fft_real_setup_new(rta_fft_setup_t ** fft_setup,
                        void * output, const unsigned int fft_size,
                        rta_real_t * nyquist);
 
-/** 
+/**
  * Allocate and initialize an FFT setup for real to complex or complex
  * to real transform, according to the planned processes.
  *
@@ -122,10 +123,10 @@ rta_fft_real_setup_new(rta_fft_setup_t ** fft_setup,
  *
  * For an out of place transform, 'input' and 'output' must not
  * overlap and 'i_stride' and 'o_stride' must be equal.
- * 
+ *
  * \see rta_fft_setup_delete
- * 
- * @param fft_setup is an address of a pointer to a private structure, 
+ *
+ * @param fft_setup is an address of a pointer to a private structure,
  * which may depend on the actual FFT implementation. This function
  * allocates 'fft_setup' and fills it.
  * @param fft_type may be real_to_complex_1d or complex_to_real_1d
@@ -134,19 +135,19 @@ rta_fft_real_setup_new(rta_fft_setup_t ** fft_setup,
  * then inverse FFT. It does not need to be constant and may change
  * after the setup.
  * @param input can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param i_stride is 'input' stride
  * @param input_size must be <= 'fft_size'
  * @param output can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param o_stride is 'output' stride
  * @param fft_size must be >= 'input_size'
  * @param nyquist is the last coefficient for real transforms
- * 
+ *
  * @return 1 on success 0 on fail. If it fails, nothing should be done
  * with 'fft_setup' (even a delete).
  */
@@ -158,7 +159,7 @@ rta_fft_real_setup_new_stride(
   void * output, const int o_stride, const unsigned int fft_size,
   rta_real_t * nyquist);
 
-/** 
+/**
  * Allocate and initialize an FFT setup for complex transform, direct
  * or inverse, according to the planned processes.
  *
@@ -172,28 +173,28 @@ rta_fft_real_setup_new_stride(
  * contiguous, imaginary one being zero).
  *
  * For an out of place transform, 'input' and 'output' must not
- * overlap. 
- * 
+ * overlap.
+ *
  * \see rta_fft_setup_delete
- * 
- * @param fft_setup is an address of a pointer to a private structure, 
+ *
+ * @param fft_setup is an address of a pointer to a private structure,
  * which may depend on the actual FFT implementation. This function
  * allocates 'fft_setup' and fills it.
  * @param fft_type may be rta_fft_complex_1d or
- * rta_fft_complex_inverse_1d 
+ * rta_fft_complex_inverse_1d
  * @param scale is usually used for inverse FFT as 1/'fft_size' in
  * order to obtain the identity transform when calculating FFT and
  * then inverse FFT. It does not need to be constant and may change
  * after the setup.
- * @param input is an array of rta_complex_t. 
+ * @param input is an array of rta_complex_t.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param input_size must be <= 'fft_size'
- * @param output is an array of rta_complex_t. 
+ * @param output is an array of rta_complex_t.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param fft_size must be >= 'input_size'
- * 
+ *
  * @return 1 on success 0 on fail. If it fails, nothing should be done
  * with 'fft_setup' (even a delete).
  */
@@ -202,7 +203,7 @@ rta_fft_setup_new(rta_fft_setup_t ** fft_setup,
                   rta_fft_t fft_type, rta_real_t * scale,
                   rta_complex_t * input, const unsigned int input_size,
                   rta_complex_t * output, const unsigned int fft_size);
-/** 
+/**
  * Allocate and initialize an FFT setup for complex transform, direct
  * or inverse, according to the planned processes.
  *
@@ -215,30 +216,30 @@ rta_fft_setup_new(rta_fft_setup_t ** fft_setup,
  * imaginary values must be contiguous no matter the strides).
  *
  * For an out of place transform, 'input' and 'output' must not
- * overlap. 
- * 
+ * overlap.
+ *
  * \see rta_fft_setup_delete
- * 
- * @param fft_setup is an address of a pointer to a private structure, 
+ *
+ * @param fft_setup is an address of a pointer to a private structure,
  * which may depend on the actual FFT implementation. This function
  * allocates 'fft_setup' and fills it.
  * @param fft_type may be rta_fft_complex_1d or
- * crta_fft_complex_inverse_1d 
+ * crta_fft_complex_inverse_1d
  * @param scale is usually used for inverse FFT as 1/'fft_size' in
  * order to obtain the identity transform when calculating FFT and
  * then inverse FFT. It does not need to be constant and may change
  * after the setup.
- * @param input is an array of rta_complex_t.  
+ * @param input is an array of rta_complex_t.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param i_stride is 'input' stride
  * @param input_size must be <= 'fft_size'
- * @param output is an array of rta_complex_t. 
+ * @param output is an array of rta_complex_t.
  * It may be used to determine a proper setup (FFTW) and its content
  * may be affected.
  * @param o_stride is 'output' stride
  * @param fft_size must be >= 'input_size'
- * 
+ *
  * @return 1 on success 0 on fail. If it fails, nothing should be done
  * with 'fft_setup' (even a delete).
  */
@@ -249,29 +250,29 @@ rta_fft_setup_new_stride(
   rta_complex_t * input, const int i_stride, const unsigned int input_size,
   rta_complex_t * output, const int o_stride, const unsigned int fft_size);
 
-/** 
+/**
  * Deallocate any (sucessfully) allocated FFT setup.
- * 
+ *
  * \see rta_fft_setup_new
- * 
+ *
  * @param fft_setup is a pointer to the memory wich will be released.
  */
 void rta_fft_setup_delete(rta_fft_setup_t * fft_setup);
 
-/** 
+/**
  * Compute an FFT according to an FFT setup. It is possible to use
  * different 'input' and 'output' arguments as those used to
  * plan the setup, but they must use exactly the same size and stride.
- * 
+ *
  * \see rta_fft_setup_new
  * \see rta_fft_real_setup_new
  * \see rta_fft_setup_new_stride
  * \see rta_fft_real_setup_new_stride
  *
  * @param output can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * @param input can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * @param input_size is used to perform zero padding, not to resize
  * 'input' after a planned setup.
  * @param fft_setup is a pointer to a private structure, which may
@@ -281,20 +282,20 @@ void rta_fft_execute(void * output, void * input, const unsigned int input_size,
                      rta_fft_setup_t * fft_setup);
 
 
-/** 
+/**
  * Compute an FFT according to an FFT setup. It is possible to use
  * different 'input' and 'output' arguments as those used to
  * plan the setup, but they must use exactly the same size and stride.
- * 
+ *
  * \see rta_fft_setup_new
  * \see rta_fft_real_setup_new
  * \see rta_fft_setup_new_stride
  * \see rta_fft_real_setup_new_stride
  *
  * @param output can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * @param input can be an array of rta_real_t or rta_complex_t,
- * depending on 'fft_type'. 
+ * depending on 'fft_type'.
  * @param input_size is used to perform zero padding, not to resize
  * 'input' after a planned setup.
  * @param fft_setup is a pointer to a private structure, which may
@@ -302,7 +303,7 @@ void rta_fft_execute(void * output, void * input, const unsigned int input_size,
  * @param nyquist is the address of the real transform value at the
  * Nyquist frequency (for direct and inverse real transforms).
  */
-void 
+void
 rta_fft_real_execute(void * output, void * input, const unsigned int input_size,
                      rta_fft_setup_t * fft_setup,
                      rta_real_t * nyquist);

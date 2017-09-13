@@ -3,6 +3,8 @@
  * @author Baptiste Caramiaux
  * @date 08/10/08
  *
+ * @brief Canonical Correlation Analysis
+ *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.

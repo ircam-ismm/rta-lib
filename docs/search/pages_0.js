@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rta_2dlib_20overview',['rta-lib overview',['../index.html',1,'']]]
+  ['rta_20overview',['rta overview',['../index.html',1,'']]]
 ];

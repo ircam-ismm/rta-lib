@@ -1,11 +1,13 @@
 /**
- * @file rta_cubic.h
+ * @file rta_cubic.c
  * @author Norbert.Schnell@ircam.fr
+ *
+ * @brief Cubic interpolation
  *
  * @copyright
  * Copyright (C) 1994, 1995, 1998, 1999, 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
- * All rights reserved. 
- * 
+ * All rights reserved.
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

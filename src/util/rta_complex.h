@@ -2,19 +2,18 @@
  * @file   rta_complex.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
- * 
- * @brief  rta_complex_t type warper for float, double or long double
- * complex.
+ *
+ * @brief type wrapper for float, double or long double complex numbers.
  *
  * Default is the same as RTA_REAL_TYPE. Define your RTA_COMPLEX_TYPE to
  * override these.
  * @see rta_configuration.h
  * @see rta_real.h
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +63,7 @@ typedef struct floatcomplex_
 } floatcomplex;
 
 #define rta_complex_t floatcomplex
-#define inline 
+#define inline
 
 static inline rta_complex_t rta_make_complex(float real, float imag)
 {
@@ -74,7 +73,7 @@ static inline rta_complex_t rta_make_complex(float real, float imag)
 #endif
 
 #if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
-#undef rta_complex_t 
+#undef rta_complex_t
 
 typedef struct complex_
 {
@@ -222,7 +221,7 @@ static inline rta_complex_t rta_make_complex(float real, float imag)
 #endif
 
 #if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
-#undef rta_complex_t 
+#undef rta_complex_t
 #define rta_complex_t double complex
 static inline rta_complex_t rta_make_complex(double real, double imag)
 {

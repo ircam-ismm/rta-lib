@@ -1,0 +1,34 @@
+/**
+ * @defgroup rta_physical_models Physical models
+ *
+ * @brief Physical models are built on top of a set of C++ classes
+ * and implement a variety of Mass Spring Damper systems.
+ * They are defined inside the <code>UniSpringSpace</code> namespace.
+ */
+
+/**
+ * @defgroup rta_recognition Recognition
+ *
+ * @brief Recognition functions implement a set of algorithms useful for
+ * classification tasks.
+ */
+
+/**
+ * @defgroup rta_signal Signal
+ *
+ * @brief Signal functions implement most state-of-the-art DSP algorithms such
+ * as onepole filter, biquad filter, correlation, windowing operations, etc.
+ */
+
+/**
+ * @defgroup rta_statistics Statistics
+ *
+ * @brief Statistics functions provide all the basic statistical computations
+ * like mean, variance, 1st to 4th order moments, and more.
+ */
+
+/**
+ * @defgroup rta_util Utils
+ *
+ * @brief Util functions is a set of utilities used across the entire rta library.
+ */
