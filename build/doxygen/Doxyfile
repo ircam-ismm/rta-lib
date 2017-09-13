@@ -665,7 +665,7 @@ HTML_OUTPUT            = ../../docs
 
 HTML_FILE_EXTENSION    = .html
 
-HTML_EXTRA_FILES       = ./rta_dataflow.pdf
+HTML_EXTRA_FILES       = ./rta_dataflow.jpg
 
 USE_MATHJAX            = YES
 

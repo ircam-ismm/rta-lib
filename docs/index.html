@@ -89,8 +89,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">rta-lib overview </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>WORK IN PROGRESS !!!</h1>
-<h1>Table of Contents</h1>
+<div class="textblock"><h1>Table of Contents</h1>
 <ul>
 <li>1 <a href="#generalities">Generalities</a></li>
 <li>2 <a href="#configuration">Library configuration</a></li>
@@ -141,7 +140,16 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>Instead of using the <code>malloc</code>, <code>realloc</code> and <code>free</code> functions from the <code>stdlib.h</code>, one can respectively define <code>rta_malloc</code>, <code>rta_realloc</code> and <code>rta_free</code>. (see <a href="#memory_allocation">6.5</a>)</p>
 <p>The floating-point precision can be simple, double or long double, according to the definition of <code>RTA_REAL_TYPE</code> to respectively <code>RTA_FLOAT_TYPE</code>, <code>RTA_DOUBLE_TYPE</code> or <code>RTA_LONG_DOUBLE_TYPE</code>. The constants in <code><a class="el" href="rta__float_8h.html" title="rta_real_t type wrapper for &lt;float.h&gt; ">rta_float.h</a></code> are then redefined according to the proper type from <code>float.h</code>. The same applies to the functions in <code><a class="el" href="rta__math_8h.html" title="Mathematical functions, &lt;math.h&gt; for rta_real_t type. ">rta_math.h</a></code> from <code>math.h</code>. (see <a href="#real_types">6.4</a>)</p>
 <p>Note that the long double precision is not supported when using Apple's VecLib by setting <code>RTA_USE_VECLIB</code> to 1.</p>
-<p><a class="anchor" id="descr_vector_samples"></a> </p><h1>3 Descriptors based on a vector of samples</h1>
+<div align="center" style="margin:30px;"> <table style="border:0; background-color:rgba(255,255,255,1);">
+<tr>
+<td><div class="image">
+<img src="rta_dataflow.jpg" width="600px" style="max-width:100%;"/>
+</div>
+  </td></tr>
+<tr>
+<td align="center"><em>Sound descriptors data-flow</em>  </td></tr>
+</table>
+</div><p><a class="anchor" id="descr_vector_samples"></a> </p><h1>3 Descriptors based on a vector of samples</h1>
 <p>The vector of samples is characterised by its sample-rate and its size. Moreover, to use sizes larger than those provided by the sound card (e.g. for <em>Fourier</em> transforms), the hop-size gives the number of samples between two consecutive vectors that overlap if the hop-size is smaller than the vector-size.</p>
 <p><a class="anchor" id="resampling"></a> </p><h2>3.1 Re-sampling</h2>
 <p>Down-sampling a signal is interesting to lower the further computations, especially for the computational-intensive algorithms, like <em>yin</em>. It can help to concentrate on a range of the spectrum where the information is pertinent for the analysis: the <em>LPC</em> (which is linear, as its name suggests it) finds poles and zeros to fit the whole spectrum; to keep the results under 5 kHz, we simply use a sample-rate of 11 kHz. If the original signal sample-rate is 44 kHz, we can use the function <code>rta_downsample_int_mean</code> with a factor of 4. This function implies a low-pass filtering. The function <code>rta_downsample_int_remove</code> can produce aliasing if the original signal contains information above half of the resulting sample-rate. Note that the resulting samples vector-size is smaller, according to the given factor.</p>
@@ -154,13 +162,18 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p><a class="anchor" id="gain_integer_float"></a> </p><h2>3.3 Gain and integer-float conversion</h2>
 <p>The samples are generally coded by floating-points number over 32 bits, within the range [-1.0, 1.0]. To convert them into 16 bits signed integers (which is the format used by some systems, like <em>HTK</em>), one can apply a simple gain of \(2^{15}\) by multiplying every sample.</p>
 <p><a class="anchor" id="pre_emphasis"></a> </p><h2>3.4 Pre-emphasis</h2>
-<p>The pre-emphasis is a simple first-order difference between the current sample and the previous one (weighted by a factor): \(s(n) = s(n) - f \times s(n-1)\)</p>
-<p>It is often used for voice analysis with a factor of 0.97 as it reduces the low frequencies while raising the high frequencies, thus amplifying the contrast.</p>
+<p>The pre-emphasis is a simple first-order difference between the current sample and the previous one (weighted by a factor): \(s(n) = s(n) - f \times s(n-1)\) <br />
+ It is often used for voice analysis with a factor of 0.97 as it reduces the low frequencies while raising the high frequencies, thus amplifying the contrast.</p>
 <p><a class="anchor" id="windowing"></a> </p><h2>3.5 Windowing</h2>
-<p>If the samples vector-size is known, it is possible to pre-calculate the weights that will be used to apply a given function. The function <code>rta_window_hamming_weights</code> computes a <em>Hamming</em> window while the function <code>rta_window_hann_weights</code> computes a <em>von Hann</em> window. These (or any weights vector) can be applied with the <code>rta_window_apply</code> function. The functions post-fixed with <code>_in_place</code> change the input samples vector values directly.</p>
+<p>If the samples vector-size is known, it is possible to pre-calculate the weights that will be used to apply a given function.</p><ul>
+<li>the function <code>rta_window_hamming_weights</code> computes a <em>Hamming</em> window</li>
+<li>the function <code>rta_window_hann_weights</code> computes a <em>von Hann</em> window.</li>
+</ul>
+<p>These (or any weights vector) can be applied with the <code>rta_window_apply</code> function. <br />
+ The functions post-fixed with <code>_in_place</code> change the input samples vector values directly.</p>
 <p>If the samples vector-size is not known in advance, one can still apply the window using the <code>rta_window_rounded_apply</code> function. There is no interpolation, then. The weights vector indexes are simply scaled and rounded: this is efficient but the rounding error may be unacceptable if the size of the weights vector is too small comparing with the samples vector size. It is also possible to compute and apply a window on the fly, with the functions <code>rta_window_hann_apply</code> and <code>rta_window_hamming_apply</code>.</p>
 <p><a class="anchor" id="lpc"></a> </p><h2>3.6 Linear predictive coefficients (LPC)</h2>
-<p>The <code>rta\_lpc</code> function calculates the linear predictive coefficients (<em>LPC</em>) for a samples vector, using an auto-correlation and a <em>Levinson-Durbin</em> decomposition. Note that the <em>LPC</em> order is one value less than the <em>LPC</em> size.</p>
+<p>The <code>rta_lpc</code> function calculates the linear predictive coefficients (<em>LPC</em>) for a samples vector, using an auto-correlation and a <em>Levinson-Durbin</em> decomposition. Note that the <em>LPC</em> order is one value less than the <em>LPC</em> size.</p>
 <p>The first <em>LPC</em> coefficient is always 1 and is often replaced (e.g. in <em>HTK</em>) by the prediction error, which gives the energy of the samples vector. If the <em>LPC</em> is computed on overlapping samples vectors, they are often windowed in order for the coefficients to evolve smoothly from frame to frame, and the energy is then reduced (by a constant factor depending on the window).</p>
 <p><a class="anchor" id="descr_power_spectrum"></a> </p><h1>4 Descriptors based on the power spectrum</h1>
 <p>Some descriptors are based on the power spectrum of a samples vector. The samples vector is first windowed. Then a real <em>Fourier</em> transform is applied, giving a complex spectrum. The power spectrum is the square of the magnitude of the complex spectrum.</p>
@@ -195,7 +208,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 \[m_{4std} = kurtosis = \frac {\sum_i (i - centroid )^4 \times input(i)} {std^4 \sum_i input(i)} \]
 </p>
 <p>Note that the kurtosis is often defined as the fourth cumulant divided by the square root of the variance, which gives: </p><p class="formulaDsp">
-\[kurtosis = \frac {m_4} {std^4) - 3\]
+\[kurtosis = \frac {m_4} {std^4} - 3\]
 </p>
 <p> This function does not include the <code>"-3"</code> term.</p>
 <p><a class="anchor" id="descr_mel_bands"></a> </p><h1>5 Descriptors based on the mel bands</h1>
@@ -218,16 +231,18 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>Applying the <em>delta</em> computation again gives the <em>delta-delta</em> values, <em>adding a new delay of half of the delta-delta filter-size</em>.</p>
 <p><a class="anchor" id="style_guide"></a> </p><h1>6 Style guide</h1>
 <p><a class="anchor" id="prefix"></a> </p><h2>6.1 Prefix</h2>
-<p>Any file, structure, function, type definition, enumeration (enumerator and elements) and pre-compiler definition is prefixed with <code>rta_</code>, <code>RTA_</code>, <code>_rta_</code> or <code>_RTA_</code>. There are two exceptions to this, to respect the common usage:</p><ul>
-<li><code>NULL</code> is defined in <code><a class="el" href="rta__stdlib_8h.html" title="Default defines for the rta library. ">rta_stdlib.h</a></code>;</li>
-<li>mathematical constants in <code><a class="el" href="rta__math_8h.html" title="Mathematical functions, &lt;math.h&gt; for rta_real_t type. ">rta_math.h</a></code> are prefixed with <code>M_</code>.</li>
+<p>Any file, structure, function, type definition, enumeration (enumerator and elements) and pre-compiler definition is prefixed with <br />
+ <code>rta_</code>, <code>RTA_</code>, <code>_rta_</code> or <code>_RTA_</code>. There are two exceptions to this, to respect the common usage:</p><ul>
+<li><code>NULL</code> is defined in <code><a class="el" href="rta__stdlib_8h.html" title="Default defines for the rta library. ">rta_stdlib.h</a></code></li>
+<li>mathematical constants in <code><a class="el" href="rta__math_8h.html" title="Mathematical functions, &lt;math.h&gt; for rta_real_t type. ">rta_math.h</a></code> are prefixed with <code>M_</code></li>
 </ul>
 <p><a class="anchor" id="declarations_definition"></a> </p><h2>6.2 Declarations and definitions</h2>
 <p>A minimum number of <code>#define</code> statements is used, to minimise the global effects:</p><ul>
-<li>the <code>const</code> keyword is used for values fixed at compilation time;</li>
-<li>the <code>inline</code> keyword is used for in-lined functions. Moreover, the <code>static</code> keyword can be used to limit the definitions to a particular file.</li>
+<li>the <code>const</code> keyword is used for values fixed at compilation time</li>
+<li>the <code>inline</code> keyword is used for in-lined functions</li>
 </ul>
-<p>The pre-compiler definitions are used to provide transparent wrappers for types (see <a href="#real_types">6.4</a>), functions (see <a href="#memory_allocation">6.5</a>) or to prevent multiple inclusions of files (see <a href="#headers">6.3</a>).</p>
+<p>Moreover, the <code>static</code> keyword can be used to limit the definitions to a particular file. <br />
+ The pre-compiler definitions are used to provide transparent wrappers for types (see <a href="#real_types">6.4</a>), functions (see <a href="#memory_allocation">6.5</a>) or to prevent multiple inclusions of files (see <a href="#headers">6.3</a>).</p>
 <p><a class="anchor" id="headers"></a> </p><h2>6.3 Headers</h2>
 <p>Any header prevents multiple inclusions, includes the <code><a class="el" href="rta_8h.html" title="Base header file for rta library. ">rta.h</a></code> header and allows a C++ inclusion. For a file named <code>rta_filename.h</code>, the content begins as: </p><div class="fragment"><div class="line">#ifndef _RTA_FILENAME_H_</div><div class="line">#define _RTA_FILENAME_H_ 1</div><div class="line"></div><div class="line">#include &quot;rta.h&quot;</div><div class="line"></div><div class="line">#ifdef __cplusplus</div><div class="line">extern &quot;C&quot; {</div><div class="line">#endif</div></div><!-- fragment --><p>and it ends as: </p><div class="fragment"><div class="line">#ifdef __cplusplus</div><div class="line">}</div><div class="line">#endif</div><div class="line"></div><div class="line">#endif /* _RTA_FILENAME_H_ */</div></div><!-- fragment --><p> <a class="anchor" id="real_types"></a> </p><h2>6.4 Real types</h2>
 <p>Any function within <em>RTA</em> uses the <code>rta_real_t</code> type.</p>
@@ -238,8 +253,8 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>The arrays of real values are not allocated within the \ library, as they are manipulable outside of the library. They must be allocated beforehand, as no memory allocation is done during a function's call (except for the followings).</p>
 <p>Specific structures are private: they are defined into the <code>*.c</code> files, without the <code>_t</code> suffix. As an example, there is a public declaration of <code>rta_fft_setup_t</code> in <code><a class="el" href="rta__fft_8h.html" title="Fast Fourier Transform. ">rta_fft.h</a></code>: </p><div class="fragment"><div class="line">typedef struct rta_fft_setup rta_fft_setup_t;</div></div><!-- fragment --><p> And in <code>rta_fft.c</code>, there is a private definition of <code>rta_fft_setup</code>, which may depend on the actual implementation.</p>
 <p>Two functions are provided for any private structure:</p><ul>
-<li>a <code>_setup_new</code> post-fixed function to allocate the structure by using the <code>rta_malloc</code> function;</li>
-<li>a <code>_setup_delete</code> post-fixed function to release the structure by using the <code>rta_free</code> function.</li>
+<li>a function post-fixed with <code>_setup_new</code> to allocate the structure by using the <code>rta_malloc</code> function</li>
+<li>a function post-fixed with <code>_setup_delete</code> to release the structure by using the <code>rta_free</code> function</li>
 </ul>
 <p>Any function dealing with memory within <em>RTA</em> uses the functions from <code><a class="el" href="rta__stdlib_8h.html" title="Default defines for the rta library. ">rta_stdlib.h</a></code>. <code>rta_malloc</code>, <code>rta_realloc</code> and <code>rta_free</code> are pre-compiler definitions that can be provided by the user's <code>rta_configuration.h</code>. They must follow the declarations of respectively <code>malloc</code>, <code>realloc</code> and <code>free</code> from the standard <code>stdlib.h</code>, which they are bound to if no user definition is given. </p>
 </div></div><!-- contents -->

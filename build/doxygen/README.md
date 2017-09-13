@@ -1,7 +1,5 @@
 # rta-lib overview {#mainpage}
 
-# WORK IN PROGRESS !!!
-
 # Table of Contents
 
 - 1 [Generalities](#generalities)
@@ -88,6 +86,16 @@ Note that the long double precision is not supported when using Apple's VecLib
 by setting `RTA_USE_VECLIB` to 1.
 
 <!-- INCLUDE FIGURE DATAFLOW -->
+<div align="center" style="margin:30px;">
+<table style="border:0; background-color:rgba(255,255,255,1);">
+  <tr><td>
+    <img src="rta_dataflow.jpg" width="600px" style="max-width:100%;"/>
+  </td></tr>
+  <tr><td align="center">
+    _Sound descriptors data-flow_
+  </td></tr>
+</table>
+</div>
 
 <!-- section 3 -->
 <a name="descr_vector_samples"></a>
@@ -151,7 +159,7 @@ the format used by some systems, like _HTK_), one can apply a simple gain of
 
 The pre-emphasis is a simple first-order difference between the current sample
 and the previous one (weighted by a factor): \f$s(n) = s(n) - f \times s(n-1)\f$
-
+<br />
 It is often used for voice analysis with a factor of 0.97 as it reduces the low
 frequencies while raising the high frequencies, thus amplifying the contrast.
 
@@ -159,27 +167,27 @@ frequencies while raising the high frequencies, thus amplifying the contrast.
 ## 3.5 Windowing
 
 If the samples vector-size is known, it is possible to pre-calculate
-the weights that will be used to apply a given function. The function
-`rta_window_hamming_weights` computes a _Hamming_
-window while the function `rta_window_hann_weights` computes
-a _von Hann_ window. These (or any weights vector) can be
-applied with the `rta_window_apply` function.
+the weights that will be used to apply a given function.
+- the function `rta_window_hamming_weights` computes a _Hamming_ window
+- the function `rta_window_hann_weights` computes a _von Hann_ window.
+
+These (or any weights vector) can be applied with the `rta_window_apply`
+function. <br />
 The functions post-fixed with `_in_place` change the input samples
 vector values directly.
 
 If the samples vector-size is not known in advance, one can still
-apply the window using the `rta_window_rounded_apply`
-function. There is no interpolation, then. The weights vector indexes
-are simply scaled and rounded: this is efficient but the rounding
-error may be unacceptable if the size of the weights vector is too
-small comparing with the samples vector size. It is also possible to
-compute and apply a window on the fly, with the functions
+apply the window using the `rta_window_rounded_apply` function.
+There is no interpolation, then. The weights vector indexes are simply scaled
+and rounded: this is efficient but the rounding error may be unacceptable if the
+size of the weights vector is too small comparing with the samples vector size.
+It is also possible to compute and apply a window on the fly, with the functions
 `rta_window_hann_apply` and `rta_window_hamming_apply`.
 
 <a name="lpc"></a>
 ## 3.6 Linear predictive coefficients (LPC)
 
-The `rta\_lpc` function calculates the linear predictive
+The `rta_lpc` function calculates the linear predictive
 coefficients (_LPC_) for a samples vector, using an auto-correlation
 and a _Levinson-Durbin_ decomposition. Note that the _LPC_
 order is one value less than the _LPC_ size.
@@ -204,13 +212,12 @@ power spectrum is the square of the magnitude of the complex spectrum.
 <a name="real_fourier_transform"></a>
 ## 4.1 Real Fourier transform
 
-Before computing a real _Fourier_ transform, a new real
-_Fourier_ transform setup must be allocated and filled with the
-`rta_fft_real_setup_new` function, with the type
-`real_to_complex_1d`. It will be released by the
-function `rta_fft_setup_delete`. The function
-`rta_fft_execute` applies the _Fourier_ transform
-to a samples vector.
+Before computing a real _Fourier_ transform, a new real _Fourier_ transform
+setup must be allocated and filled with the `rta_fft_real_setup_new` function,
+with the type `real_to_complex_1d`.
+It will be released by the function `rta_fft_setup_delete`.
+The function `rta_fft_execute` applies the _Fourier_ transform to a samples
+vector.
 
 The transform size must be a power of 2. If the transform size is
 bigger than the actual samples vector, it is then padded with zeros.
@@ -307,7 +314,7 @@ result is without unit.
 
 Note that the kurtosis is often defined as the fourth cumulant divided
 by the square root of the variance, which gives:
-\f[kurtosis = \frac {m_4} {std^4) - 3\f]
+\f[kurtosis = \frac {m_4} {std^4} - 3\f]
 This function does not include the `"-3"` term.
 
 
@@ -401,26 +408,24 @@ _adding a new delay of half of the delta-delta filter-size_.
 ## 6.1 Prefix
 
 Any file, structure, function, type definition, enumeration
-(enumerator and elements) and pre-compiler definition is prefixed with
+(enumerator and elements) and pre-compiler definition is prefixed with <br />
 `rta_`, `RTA_`, `_rta_` or `_RTA_`.
-There are two exceptions to this, to respect the common
-usage:
-- `NULL` is defined in `rta_stdlib.h`;
-- mathematical constants in `rta_math.h` are prefixed with `M_`.
+There are two exceptions to this, to respect the common usage:
+- `NULL` is defined in `rta_stdlib.h`
+- mathematical constants in `rta_math.h` are prefixed with `M_`
 
 <a name="declarations_definition"></a>
 ## 6.2 Declarations and definitions
 
 A minimum number of `#define` statements is used, to minimise the global effects:
-- the `const` keyword is used for values fixed at compilation time;
-- the `inline` keyword is used for in-lined functions.
-Moreover, the `static` keyword can be used to limit the definitions to a
-particular file.
+- the `const` keyword is used for values fixed at compilation time
+- the `inline` keyword is used for in-lined functions
 
-The pre-compiler definitions are used to provide transparent
-wrappers for types (see [6.4](#real_types)),
-functions (see [6.5](#memory_allocation)) or to prevent multiple inclusions of
-files (see [6.3](#headers)).
+Moreover, the `static` keyword can be used to limit the definitions to a
+particular file. <br />
+The pre-compiler definitions are used to provide transparent wrappers for types
+(see [6.4](#real_types)), functions (see [6.5](#memory_allocation)) or to
+prevent multiple inclusions of files (see [6.3](#headers)).
 
 <a name="headers"></a>
 ## 6.3 Headers
@@ -498,10 +503,10 @@ And in `rta_fft.c`, there is a private definition of
 implementation.
 
 Two functions are provided for any private structure:
-- a `_setup_new` post-fixed function to allocate the   structure by using the
-`rta_malloc` function;
-- a `_setup_delete` post-fixed function to release the structure by using the
-`rta_free` function.
+- a function post-fixed with `_setup_new` to allocate the structure by using the
+`rta_malloc` function
+- a function post-fixed with `_setup_delete` to release the structure by using
+the `rta_free` function
 
 Any function dealing with memory within _RTA_ uses the functions from
 `rta_stdlib.h`. `rta_malloc`, `rta_realloc` and `rta_free` are pre-compiler
