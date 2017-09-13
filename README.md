@@ -1,5 +1,9 @@
 # RTA library
 
+#### documentation
+
+[ircam-rnd.github.io/rta-lib/](https://ircam-rnd.github.io/rta-lib/)
+
 #### configure
 
 In the `include` folder, `rta.h` includes a configuration header file
