@@ -22,7 +22,7 @@ license.
 #### rebuild the doc
 
 `~/rta-lib$ cd build/doxygen`<br />
-`~/rta-lib/build/doxygen$ doxygen Doxyfile`
+`~/rta-lib/build/doxygen$ doxygen rta.doxygen`
 
 then open in your favourite browser
 
