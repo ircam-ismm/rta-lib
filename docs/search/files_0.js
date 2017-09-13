@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
   ['rta_2eh',['rta.h',['../rta_8h.html',1,'']]],
   ['rta_5fbands_2ec',['rta_bands.c',['../rta__bands_8c.html',1,'']]],
   ['rta_5fbands_2eh',['rta_bands.h',['../rta__bands_8h.html',1,'']]],
@@ -25,7 +24,6 @@ var searchData=
   ['rta_5ffft_2eh',['rta_fft.h',['../rta__fft_8h.html',1,'']]],
   ['rta_5ffilter_2eh',['rta_filter.h',['../rta__filter_8h.html',1,'']]],
   ['rta_5ffloat_2eh',['rta_float.h',['../rta__float_8h.html',1,'']]],
-  ['rta_5fgroups_2edox',['rta_groups.dox',['../rta__groups_8dox.html',1,'']]],
   ['rta_5fint_2ec',['rta_int.c',['../rta__int_8c.html',1,'']]],
   ['rta_5fint_2eh',['rta_int.h',['../rta__int_8h.html',1,'']]],
   ['rta_5fkdtree_2ec',['rta_kdtree.c',['../rta__kdtree_8c.html',1,'']]],

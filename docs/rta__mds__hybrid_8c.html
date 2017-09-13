@@ -102,13 +102,17 @@ $(document).ready(function(){initNavTree('rta__mds__hybrid_8c.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a2b1fd2d28c6a7d4a3f7027cc1b6466f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mds__hybrid_8c.html#a2b1fd2d28c6a7d4a3f7027cc1b6466f3">NDIM</a>&#160;&#160;&#160;<a class="el" href="rta__mds__hybrid_8h.html#a2214a0c5c9df7038f1bfaae744033cb8">RTA_MDS_NDIM</a></td></tr>
+<tr class="memitem:a2b1fd2d28c6a7d4a3f7027cc1b6466f3"><td class="memItemLeft" align="right" valign="top"><a id="a2b1fd2d28c6a7d4a3f7027cc1b6466f3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NDIM</b>&#160;&#160;&#160;<a class="el" href="rta__mds__hybrid_8h.html#a2214a0c5c9df7038f1bfaae744033cb8">RTA_MDS_NDIM</a></td></tr>
 <tr class="separator:a2b1fd2d28c6a7d4a3f7027cc1b6466f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a270e608fda1ec26e3a64fd349e8bb15e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mds__hybrid_8c.html#a270e608fda1ec26e3a64fd349e8bb15e">ROWIND</a>(i)&#160;&#160;&#160;((i) * <a class="el" href="rta__msdr_8c.html#a2b1fd2d28c6a7d4a3f7027cc1b6466f3">NDIM</a> * sizeof(float))</td></tr>
+<tr class="memitem:a270e608fda1ec26e3a64fd349e8bb15e"><td class="memItemLeft" align="right" valign="top"><a id="a270e608fda1ec26e3a64fd349e8bb15e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ROWIND</b>(i)&#160;&#160;&#160;((i) * NDIM * sizeof(float))</td></tr>
 <tr class="separator:a270e608fda1ec26e3a64fd349e8bb15e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ebf6899d6c1c8b7b9d09be872c05aae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mds__hybrid_8c.html#a6ebf6899d6c1c8b7b9d09be872c05aae">EPS</a>&#160;&#160;&#160;1e-9</td></tr>
+<tr class="memitem:a6ebf6899d6c1c8b7b9d09be872c05aae"><td class="memItemLeft" align="right" valign="top"><a id="a6ebf6899d6c1c8b7b9d09be872c05aae"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EPS</b>&#160;&#160;&#160;1e-9</td></tr>
 <tr class="separator:a6ebf6899d6c1c8b7b9d09be872c05aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b5dee9c1a31c2d1a9c19c6c7b4d60fa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mds__hybrid_8c.html#a7b5dee9c1a31c2d1a9c19c6c7b4d60fa">vect_alloc</a>(n)&#160;&#160;&#160;((float *) <a class="el" href="rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495">rta_malloc</a>((n) * sizeof(float)))</td></tr>
+<tr class="memitem:a7b5dee9c1a31c2d1a9c19c6c7b4d60fa"><td class="memItemLeft" align="right" valign="top"><a id="a7b5dee9c1a31c2d1a9c19c6c7b4d60fa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>vect_alloc</b>(n)&#160;&#160;&#160;((float *) <a class="el" href="rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495">rta_malloc</a>((n) * sizeof(float)))</td></tr>
 <tr class="separator:a7b5dee9c1a31c2d1a9c19c6c7b4d60fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -130,85 +134,12 @@ Macros</h2></td></tr>
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
 
 <p class="definition">Definition in file <a class="el" href="rta__mds__hybrid_8c_source.html">rta_mds_hybrid.c</a>.</p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a6ebf6899d6c1c8b7b9d09be872c05aae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ebf6899d6c1c8b7b9d09be872c05aae">&#9670;&nbsp;</a></span>EPS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EPS&#160;&#160;&#160;1e-9</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__mds__hybrid_8c_source.html#l00054">54</a> of file <a class="el" href="rta__mds__hybrid_8c_source.html">rta_mds_hybrid.c</a>.</p>
-
-</div>
-</div>
-<a id="a2b1fd2d28c6a7d4a3f7027cc1b6466f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b1fd2d28c6a7d4a3f7027cc1b6466f3">&#9670;&nbsp;</a></span>NDIM</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define NDIM&#160;&#160;&#160;<a class="el" href="rta__mds__hybrid_8h.html#a2214a0c5c9df7038f1bfaae744033cb8">RTA_MDS_NDIM</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__mds__hybrid_8c_source.html#l00048">48</a> of file <a class="el" href="rta__mds__hybrid_8c_source.html">rta_mds_hybrid.c</a>.</p>
-
-</div>
-</div>
-<a id="a270e608fda1ec26e3a64fd349e8bb15e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a270e608fda1ec26e3a64fd349e8bb15e">&#9670;&nbsp;</a></span>ROWIND</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ROWIND</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">i</td><td>)</td>
-          <td>&#160;&#160;&#160;((i) * <a class="el" href="rta__msdr_8c.html#a2b1fd2d28c6a7d4a3f7027cc1b6466f3">NDIM</a> * sizeof(float))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__mds__hybrid_8c_source.html#l00051">51</a> of file <a class="el" href="rta__mds__hybrid_8c_source.html">rta_mds_hybrid.c</a>.</p>
-
-</div>
-</div>
-<a id="a7b5dee9c1a31c2d1a9c19c6c7b4d60fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b5dee9c1a31c2d1a9c19c6c7b4d60fa">&#9670;&nbsp;</a></span>vect_alloc</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define vect_alloc</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">n</td><td>)</td>
-          <td>&#160;&#160;&#160;((float *) <a class="el" href="rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495">rta_malloc</a>((n) * sizeof(float)))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__mds__hybrid_8c_source.html#l00081">81</a> of file <a class="el" href="rta__mds__hybrid_8c_source.html">rta_mds_hybrid.c</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 19:57:50 for rta by
+Generated on Wed Sep 13 2017 23:28:11 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

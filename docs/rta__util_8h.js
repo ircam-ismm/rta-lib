@@ -1,9 +1,6 @@
 var rta__util_8h =
 [
-    [ "rta_idefix", "rta__util_8h.html#structrta__idefix", [
-      [ "frac", "rta__util_8h.html#aa035eda2be6ca6fa68c83eb5b6556ef8", null ],
-      [ "index", "rta__util_8h.html#acc6497a219f51a88dddc1cbcbbd456f5", null ]
-    ] ],
+    [ "rta_idefix", "structrta__idefix.html", "structrta__idefix" ],
     [ "rta_idefix_add", "rta__util_8h.html#a961ae09771efdc0988ab59aaf29682b1", null ],
     [ "rta_idefix_eq", "rta__util_8h.html#a9f5f676a4a4623e85cab2c85f5083e68", null ],
     [ "RTA_IDEFIX_FRAC_BITS", "rta__util_8h.html#ae4d2c69b0538ba94ed5a0e709dcec4d1", null ],

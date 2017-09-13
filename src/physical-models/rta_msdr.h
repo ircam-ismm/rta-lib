@@ -1,6 +1,7 @@
 /**
  * @file rta_msdr.h
  * @author Norbert Schnell
+ * @ingroup rta_physical_models
  *
  * @brief Mass Spring Damper Repulsion model
  *

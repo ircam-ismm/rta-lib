@@ -1,9 +1,10 @@
 /**
  * @file rta_mds_hybrid.h
  * @author Norbert Schnell
+ * @ingroup rta_physical_models
  *
- * @brief Hybrid multi-dimensional scaling (Chalmers, Ross, Morrison algorithm) 
- *  
+ * @brief Hybrid multi-dimensional scaling (Chalmers, Ross, Morrison algorithm)
+ *
  * Based on a mass-string-damper model (rta_msdr_t),
  * pre-place a random sample of points,
  * then run iterations until stress < threshold or maxiter reached:
@@ -14,7 +15,7 @@
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

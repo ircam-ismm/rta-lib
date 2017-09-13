@@ -2,16 +2,16 @@
  * @file   rta_lifter.c
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Fri Jun 15 15:29:25 2007
- * 
+ *
  * @brief  Cepstral liftering (HTK and Auditory Toolbox styles)
- * 
+ *
  * Based on Rastamat by Dan Ellis.
  * @see http://www.ee.columbia.edu/~dpwe/resources/matlab/rastamat
  *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,7 +79,7 @@ int rta_lifter_weights(rta_real_t * weights_vector, const unsigned int cepstrum_
       weights_vector[i] = 1./weights_vector[i];
     }
   }
-    
+
   return ret;
 }
 
@@ -121,13 +121,13 @@ int rta_lifter_weights_stride(rta_real_t * weights_vector, const int w_stride,
       weights_vector[i] = 1./weights_vector[i];
     }
   }
-    
+
   return ret;
 }
 
 
 void rta_lifter_cepstrum(rta_real_t * out_cepstrum, rta_real_t * in_cepstrum,
-                       const rta_real_t * weights_vector, 
+                       const rta_real_t * weights_vector,
                        const unsigned int cepstrum_order)
 {
   int i;
@@ -138,7 +138,7 @@ void rta_lifter_cepstrum(rta_real_t * out_cepstrum, rta_real_t * in_cepstrum,
   return;
 }
 
-void rta_lifter_cepstrum_in_place(rta_real_t * cepstrum, const rta_real_t * weights_vector, 
+void rta_lifter_cepstrum_in_place(rta_real_t * cepstrum, const rta_real_t * weights_vector,
                               const unsigned int cepstrum_order)
 {
   int i;

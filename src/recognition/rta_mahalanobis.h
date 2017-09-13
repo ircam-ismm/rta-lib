@@ -2,14 +2,15 @@
  * @file rta_mahalanobis.h
  * @author Diemo Schwarz
  * @date 31.3.2008
- * @version  2.0 
+ * @version  2.0
+ * @ingroup rta_recognition
  *
  * @brief  Mahalanobis distance calculation
  *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,7 +58,7 @@ int rta_find_nz (int n, rta_real_t *vec, int stride, int *indnz);
  * out = sum((in - mu) .^ 2 ./ sigma)
  *
  * with
- * 
+ *
  * in    (M, N)
  * mu    (C, N)
  * sigma (C, N) or sigma(1, N)
@@ -70,9 +71,9 @@ int rta_find_nz (int n, rta_real_t *vec, int stride, int *indnz);
  */
 
 int rta_mahalanobis(int M, int N, int C,
-		    rta_real_t *inptr,    int instride,    int inskip, 
-		    rta_real_t *muptr,    int mustride,    int muskip, 
-		    rta_real_t *sigmaptr, int sigmastride, int sigmaskip, 
+		    rta_real_t *inptr,    int instride,    int inskip,
+		    rta_real_t *muptr,    int mustride,    int muskip,
+		    rta_real_t *sigmaptr, int sigmastride, int sigmaskip,
 		    rta_real_t *outptr,   int outstride,   int outskip);
 
 
@@ -81,7 +82,7 @@ int rta_mahalanobis(int M, int N, int C,
  * out = sum((in - mu) .^ 2 ./ sigma)
  *
  * with
- * 
+ *
  * in    (M, N)
  * mu    (C, N)
  * sigma (C, N) or sigma(1, N)
@@ -94,9 +95,9 @@ int rta_mahalanobis(int M, int N, int C,
  */
 
 int rta_mahalanobis_nz(int M, int N, int C,
-		       rta_real_t *inptr,    int instride,    int inskip, 
-		       rta_real_t *muptr,    int mustride,    int muskip, 
-		       rta_real_t *sigmaptr, int sigmastride, int sigmaskip, 
+		       rta_real_t *inptr,    int instride,    int inskip,
+		       rta_real_t *muptr,    int mustride,    int muskip,
+		       rta_real_t *sigmaptr, int sigmastride, int sigmaskip,
 		       rta_real_t *outptr,   int outstride,   int outskip,
 		       int nnz, int *sigma_indnz, rta_bpf_t *distfuncs[]);
 

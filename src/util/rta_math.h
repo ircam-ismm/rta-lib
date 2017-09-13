@@ -2,13 +2,14 @@
  * @file   rta_math.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
- * 
+ * @ingroup rta_util
+ *
  * @brief  Mathematical functions, <math.h> for rta_real_t type
  *
  * @copyright
  * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +43,7 @@
 #include "rta.h"
 
 
-#ifdef WIN32 
+#ifdef WIN32
 /* TODO: check every windows functions against C99 */
 /*       float and double functions differenciation */
 

@@ -2,16 +2,17 @@
  * @file   rta_selection.h
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Wed Aug 27 22:12:15 2008
- * 
+ * @ingroup rta_statistics
+ *
  * @brief  RTA selection (median, quartile, etc.)
- * 
+ *
  * Quick selection, qsort-like, with array selection (for median of a
  * vector of even size among others).
  *
  * @copyright
  * Copyright (C) 2007 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,12 +49,12 @@
 extern "C" {
 #endif
 
-/** 
+/**
  * Quick selection of an index, as if the input was sorted. If the
  * given index is not an integer, the weighted mean of the two
  * adjacent indexes is returned. The median is then:
  * median = rta_selection('input', 'i_size', 'i_size' * 0.5);
- * 
+ *
  * This function operates in place and the input will be modified.
  *
  * The algorithm is similar to quick sort but not every element is
@@ -65,7 +66,7 @@ extern "C" {
  * @param i_size is the size of 'input'
  * @param selection must be bewteen 0 and i_size (note that a simple
  * search is faster at finding the minimal or maximal element of a list).
- * 
+ *
  * @return the value of:
  *   'input'['selection'] if floor(selection) == selection, else
  *   the weighted mean of 'input'[floor('selection')] and
@@ -73,15 +74,15 @@ extern "C" {
  *   between 'selection' and floor('selection'), and between
  *   'selection' and floor('selection') + 1.
  */
-rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size, 
+rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
                          const rta_real_t selection);
 
-/** 
+/**
  * Quick selection of an index, as if the input was sorted. If the
  * given index is not an integer, the weighted mean of the two
  * adjacent indexes is returned. The median is then:
  * median = rta_selection('input', 'i_size', 'i_size' * 0.5);
- * 
+ *
  * This function operates in place and the input will be modified.
  *
  * The algorithm is similar to quick sort but not every element is
@@ -94,7 +95,7 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
  * @param i_size is the size of 'input'
  * @param selection must be bewteen 0 and i_size (note that a simple
  * search is faster at finding the minimal or maximal element of a list).
- * 
+ *
  * @return the value of:
  *   'input'['selection'] if floor(selection) == selection, else
  *   the weighted mean of 'input'[floor('selection')] and
@@ -102,9 +103,9 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
  *   between 'selection' and floor('selection'), and between
  *   'selection' and floor('selection') + 1.
  */
-rta_real_t rta_selection_stride(rta_real_t * input, 
+rta_real_t rta_selection_stride(rta_real_t * input,
                                 const int i_stride,
-                                const unsigned int i_size, 
+                                const unsigned int i_size,
                                 const rta_real_t selection);
 
 

@@ -1,14 +1,6 @@
 var searchData=
 [
-  ['rta_5fallpass',['rta_allpass',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a6979d03e2b40a117012ab7a2e2762c25',1,'rta_filter.h']]],
-  ['rta_5fbandpass_5fconstant_5fpeak',['rta_bandpass_constant_peak',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a29f20ae33dfe4b4c3dc1e333a5e043f3',1,'rta_filter.h']]],
-  ['rta_5fbandpass_5fconstant_5fskirt',['rta_bandpass_constant_skirt',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a2435234c91ec88ed8a3d5e3c96df856f',1,'rta_filter.h']]],
   ['rta_5fbands_5fabs_5fintegration',['rta_bands_abs_integration',['../rta__bands_8h.html#ab773b38a630c462bf7ec5517b2757d05a719c9685aa237d8e2f2df98e5fa601c7',1,'rta_bands.h']]],
-  ['rta_5fbands_5fbark',['rta_bands_bark',['../rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3a48a6e017d3674fc5d449fb716933873e',1,'rta_bands.h']]],
-  ['rta_5fbands_5ffeacalc_5fmel',['rta_bands_feacalc_mel',['../rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3a62994fe8d8fc6247f65766c23141d8a3',1,'rta_bands.h']]],
-  ['rta_5fbands_5fhtk_5fmel',['rta_bands_htk_mel',['../rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3ac7ce8998c42b6a0d9596a56c931cd9ee',1,'rta_bands.h']]],
-  ['rta_5fbands_5fmel',['rta_bands_mel',['../rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3af5cd4e9adec7795631a368f07b3d4676',1,'rta_bands.h']]],
-  ['rta_5fbands_5fsquare_5fabs_5fintegration',['rta_bands_square_abs_integration',['../rta__bands_8h.html#ab773b38a630c462bf7ec5517b2757d05a7df18240828d63807dbea956e5dd87c6',1,'rta_bands.h']]],
   ['rta_5fbands_5fsum',['rta_bands_sum',['../rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3a574619912be6b7bad1301ce6fb6a0019',1,'rta_bands.h']]],
   ['rta_5fdct_5ffeacalc',['rta_dct_feacalc',['../rta__dct_8h.html#aa66febd25426382f5cf7b826385a233aa8d63d5a883db4d36b60704c93a43baee',1,'rta_dct.h']]],
   ['rta_5fdct_5fhtk',['rta_dct_htk',['../rta__dct_8h.html#aa66febd25426382f5cf7b826385a233aa2230eabe554540ba1e50715f6bc0bddf',1,'rta_dct.h']]],
@@ -18,18 +10,12 @@ var searchData=
   ['rta_5ffft_5fcomplex_5finverse_5f1d',['rta_fft_complex_inverse_1d',['../rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59ab935f67d72c9d695767acd255700b2d6',1,'rta_fft.h']]],
   ['rta_5ffft_5fcomplex_5fto_5freal_5f1d',['rta_fft_complex_to_real_1d',['../rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59a42244f769ec87c77567d5b99e226076c',1,'rta_fft.h']]],
   ['rta_5ffft_5freal_5fto_5fcomplex_5f1d',['rta_fft_real_to_complex_1d',['../rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59a54bd195db46b59e18cd0b65fc48bf524',1,'rta_fft.h']]],
-  ['rta_5fhighpass',['rta_highpass',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22ae43df2ae75205be5e2904a761c2004b6',1,'rta_filter.h']]],
-  ['rta_5fhighshelf',['rta_highshelf',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22abe9d143028da65e237f64b9c551d423c',1,'rta_filter.h']]],
   ['rta_5flifter_5fexponential',['rta_lifter_exponential',['../rta__lifter_8h.html#a92a41009274f9b2b14eb43c30defb752a6bfbb407875a63b8700078a36f8dfdec',1,'rta_lifter.h']]],
   ['rta_5flifter_5fmode_5finverse',['rta_lifter_mode_inverse',['../rta__lifter_8h.html#aa459c7c2e81e7fbe735307f3259fc098ad1a3b1fd2fb63652c7a566b56aa75989',1,'rta_lifter.h']]],
   ['rta_5flifter_5fmode_5fnormal',['rta_lifter_mode_normal',['../rta__lifter_8h.html#aa459c7c2e81e7fbe735307f3259fc098ae36f9b5ca3f8d4fdaa66afe840deb9c5',1,'rta_lifter.h']]],
   ['rta_5flifter_5fsinusoidal',['rta_lifter_sinusoidal',['../rta__lifter_8h.html#a92a41009274f9b2b14eb43c30defb752a0c113b88610ebb9f9f52e918166c4ef3',1,'rta_lifter.h']]],
-  ['rta_5flowpass',['rta_lowpass',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a86c03724d10aae6b82a741c05f4f25dc',1,'rta_filter.h']]],
-  ['rta_5flowshelf',['rta_lowshelf',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a5eccaf50d71ddc2db30beac3ace987fb',1,'rta_filter.h']]],
   ['rta_5fmel_5fhtk',['rta_mel_htk',['../rta__mel_8h.html#a74d03f2392be7f163ffed91adc5f1dafa047d4ae0d78d025c3ff76eb41166c760',1,'rta_mel.h']]],
   ['rta_5fmel_5fslaney',['rta_mel_slaney',['../rta__mel_8h.html#a74d03f2392be7f163ffed91adc5f1dafa0344aede617d2ce0980a1ec6f8eba039',1,'rta_mel.h']]],
-  ['rta_5fnotch',['rta_notch',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a8cf2dc0dedf0bd766b32537f184904ac',1,'rta_filter.h']]],
-  ['rta_5fpeaking',['rta_peaking',['../rta__filter_8h.html#a4e1675e12ffe03e615c9a76897a74f22a3518d34eebd5d170e9b74279bd0f2808',1,'rta_filter.h']]],
   ['rta_5fsvd_5fin_5fplace',['rta_svd_in_place',['../rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6afde3f0fd013c900a55cc99575b827a25',1,'rta_svd.h']]],
   ['rta_5fsvd_5fout_5fof_5fplace',['rta_svd_out_of_place',['../rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6a35bcae5206449052e570e9277ab632ec',1,'rta_svd.h']]]
 ];

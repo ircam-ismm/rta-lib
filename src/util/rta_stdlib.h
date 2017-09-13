@@ -2,16 +2,17 @@
  * @file   rta_stdlib.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
- * 
+ * @ingroup rta_util
+ *
  * @brief  Default defines for the rta library
  *
  * Define your own to override these.
  * @see rta_configuration.h
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

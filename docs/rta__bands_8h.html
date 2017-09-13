@@ -105,41 +105,41 @@ $(document).ready(function(){initNavTree('rta__bands_8h.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aa13d774e7e633a00e45e92dde7a38204"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#aa13d774e7e633a00e45e92dde7a38204">rta_spectrum_to_bands_function</a>) (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const unsigned int *, const unsigned int, const unsigned int)</td></tr>
+<tr class="memitem:aa13d774e7e633a00e45e92dde7a38204"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#aa13d774e7e633a00e45e92dde7a38204">rta_spectrum_to_bands_function</a>) (rta_real_t *, const rta_real_t *, const rta_real_t *, const unsigned int *, const unsigned int, const unsigned int)</td></tr>
 <tr class="separator:aa13d774e7e633a00e45e92dde7a38204"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a351bfc20082aa1bd44a6db21673ab337"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a351bfc20082aa1bd44a6db21673ab337">rta_spectrum_to_bands_stride_function</a>) (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const int, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const int, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const int, const unsigned int *, const int, const unsigned int, const unsigned int)</td></tr>
+<tr class="memitem:a351bfc20082aa1bd44a6db21673ab337"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a351bfc20082aa1bd44a6db21673ab337">rta_spectrum_to_bands_stride_function</a>) (rta_real_t *, const int, const rta_real_t *, const int, const rta_real_t *, const int, const unsigned int *, const int, const unsigned int, const unsigned int)</td></tr>
 <tr class="separator:a351bfc20082aa1bd44a6db21673ab337"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a6fcf6403324600403fd2d3d4f7b2cdb3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3">rta_bands_t</a> { <br />
 &#160;&#160;<a class="el" href="rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3a574619912be6b7bad1301ce6fb6a0019">rta_bands_sum</a> = 0, 
-<a class="el" href="rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3a48a6e017d3674fc5d449fb716933873e">rta_bands_bark</a> = 1, 
-<a class="el" href="rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3af5cd4e9adec7795631a368f07b3d4676">rta_bands_mel</a> = 2, 
-<a class="el" href="rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3ac7ce8998c42b6a0d9596a56c931cd9ee">rta_bands_htk_mel</a> = 3, 
+<b>rta_bands_bark</b> = 1, 
+<b>rta_bands_mel</b> = 2, 
+<b>rta_bands_htk_mel</b> = 3, 
 <br />
-&#160;&#160;<a class="el" href="rta__bands_8h.html#a6fcf6403324600403fd2d3d4f7b2cdb3a62994fe8d8fc6247f65766c23141d8a3">rta_bands_feacalc_mel</a> = 4
+&#160;&#160;<b>rta_bands_feacalc_mel</b> = 4
 <br />
  }</td></tr>
 <tr class="separator:a6fcf6403324600403fd2d3d4f7b2cdb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab773b38a630c462bf7ec5517b2757d05"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#ab773b38a630c462bf7ec5517b2757d05">rta_integration_t</a> { <a class="el" href="rta__bands_8h.html#ab773b38a630c462bf7ec5517b2757d05a719c9685aa237d8e2f2df98e5fa601c7">rta_bands_abs_integration</a> = 0, 
-<a class="el" href="rta__bands_8h.html#ab773b38a630c462bf7ec5517b2757d05a7df18240828d63807dbea956e5dd87c6">rta_bands_square_abs_integration</a> = 1
+<b>rta_bands_square_abs_integration</b> = 1
  }</td></tr>
 <tr class="separator:ab773b38a630c462bf7ec5517b2757d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a26afaf8bc2fdc5c290d8485e1fd9a931"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a26afaf8bc2fdc5c290d8485e1fd9a931">rta_spectrum_to_mel_bands_weights</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *weights_matrix, unsigned int *weights_bounds, const unsigned int spectrum_size, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> sample_rate, const unsigned int filters_number, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> min_freq, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> max_freq, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> scale_width, const <a class="el" href="rta__mel_8h.html#ae8e862f60582149e32e2d0fcc10cb81a">rta_hz_to_mel_function</a> hz_to_mel, const <a class="el" href="rta__mel_8h.html#aa524c77478efdf8b1dedc6fe30fad854">rta_mel_to_hz_function</a> mel_to_hz, const <a class="el" href="rta__mel_8h.html#a74d03f2392be7f163ffed91adc5f1daf">rta_mel_t</a> mel_type)</td></tr>
+<tr class="memitem:a26afaf8bc2fdc5c290d8485e1fd9a931"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a26afaf8bc2fdc5c290d8485e1fd9a931">rta_spectrum_to_mel_bands_weights</a> (rta_real_t *weights_matrix, unsigned int *weights_bounds, const unsigned int spectrum_size, const rta_real_t sample_rate, const unsigned int filters_number, const rta_real_t min_freq, const rta_real_t max_freq, const rta_real_t scale_width, const <a class="el" href="rta__mel_8h.html#ae8e862f60582149e32e2d0fcc10cb81a">rta_hz_to_mel_function</a> hz_to_mel, const <a class="el" href="rta__mel_8h.html#aa524c77478efdf8b1dedc6fe30fad854">rta_mel_to_hz_function</a> mel_to_hz, const <a class="el" href="rta__mel_8h.html#a74d03f2392be7f163ffed91adc5f1daf">rta_mel_t</a> mel_type)</td></tr>
 <tr class="separator:a26afaf8bc2fdc5c290d8485e1fd9a931"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3c2266b1c5bb5f93bf95a008134ea18"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#ae3c2266b1c5bb5f93bf95a008134ea18">rta_spectrum_to_mel_bands_weights_stride</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *weights_matrix, const int wm_stride, unsigned int *weights_bounds, const int wb_stride, const unsigned int spectrum_size, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> sample_rate, const unsigned int filters_number, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> min_freq, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> max_freq, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> scale_width, const <a class="el" href="rta__mel_8h.html#ae8e862f60582149e32e2d0fcc10cb81a">rta_hz_to_mel_function</a> hz_to_mel, const <a class="el" href="rta__mel_8h.html#aa524c77478efdf8b1dedc6fe30fad854">rta_mel_to_hz_function</a> mel_to_hz, const <a class="el" href="rta__mel_8h.html#a74d03f2392be7f163ffed91adc5f1daf">rta_mel_t</a> mel_type)</td></tr>
+<tr class="memitem:ae3c2266b1c5bb5f93bf95a008134ea18"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#ae3c2266b1c5bb5f93bf95a008134ea18">rta_spectrum_to_mel_bands_weights_stride</a> (rta_real_t *weights_matrix, const int wm_stride, unsigned int *weights_bounds, const int wb_stride, const unsigned int spectrum_size, const rta_real_t sample_rate, const unsigned int filters_number, const rta_real_t min_freq, const rta_real_t max_freq, const rta_real_t scale_width, const <a class="el" href="rta__mel_8h.html#ae8e862f60582149e32e2d0fcc10cb81a">rta_hz_to_mel_function</a> hz_to_mel, const <a class="el" href="rta__mel_8h.html#aa524c77478efdf8b1dedc6fe30fad854">rta_mel_to_hz_function</a> mel_to_hz, const <a class="el" href="rta__mel_8h.html#a74d03f2392be7f163ffed91adc5f1daf">rta_mel_t</a> mel_type)</td></tr>
 <tr class="separator:ae3c2266b1c5bb5f93bf95a008134ea18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab184c5c4122a19b0e9c2a281776f59de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#ab184c5c4122a19b0e9c2a281776f59de">rta_spectrum_to_bands_abs</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *bands, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *spectrum, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *weights_matrix, const unsigned int *weights_bounds, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
+<tr class="memitem:ab184c5c4122a19b0e9c2a281776f59de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#ab184c5c4122a19b0e9c2a281776f59de">rta_spectrum_to_bands_abs</a> (rta_real_t *bands, const rta_real_t *spectrum, const rta_real_t *weights_matrix, const unsigned int *weights_bounds, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
 <tr class="separator:ab184c5c4122a19b0e9c2a281776f59de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d3ab3e1b7b38f7ab2089d56c80d9f46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a5d3ab3e1b7b38f7ab2089d56c80d9f46">rta_spectrum_to_bands_abs_stride</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *bands, const int b_stride, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *spectrum, const int s_stride, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *weights_matrix, const int wm_stride, const unsigned int *weights_bounds, const int wb_stride, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
+<tr class="memitem:a5d3ab3e1b7b38f7ab2089d56c80d9f46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a5d3ab3e1b7b38f7ab2089d56c80d9f46">rta_spectrum_to_bands_abs_stride</a> (rta_real_t *bands, const int b_stride, const rta_real_t *spectrum, const int s_stride, const rta_real_t *weights_matrix, const int wm_stride, const unsigned int *weights_bounds, const int wb_stride, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
 <tr class="separator:a5d3ab3e1b7b38f7ab2089d56c80d9f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa87c5152862b7107114801a4b86b852b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#aa87c5152862b7107114801a4b86b852b">rta_spectrum_to_bands_square_abs</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *bands, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *spectrum, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *weights_matrix, const unsigned int *weights_bounds, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
+<tr class="memitem:aa87c5152862b7107114801a4b86b852b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#aa87c5152862b7107114801a4b86b852b">rta_spectrum_to_bands_square_abs</a> (rta_real_t *bands, const rta_real_t *spectrum, const rta_real_t *weights_matrix, const unsigned int *weights_bounds, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
 <tr class="separator:aa87c5152862b7107114801a4b86b852b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a759d1ada1056021465f9f3110a435f8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a759d1ada1056021465f9f3110a435f8c">rta_spectrum_to_bands_square_abs_stride</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *bands, const int b_stride, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *spectrum, const int s_stride, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *weights_matrix, const int wm_stride, const unsigned int *weights_bounds, const int wb_stride, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
+<tr class="memitem:a759d1ada1056021465f9f3110a435f8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bands_8h.html#a759d1ada1056021465f9f3110a435f8c">rta_spectrum_to_bands_square_abs_stride</a> (rta_real_t *bands, const int b_stride, const rta_real_t *spectrum, const int s_stride, const rta_real_t *weights_matrix, const int wm_stride, const unsigned int *weights_bounds, const int wb_stride, const unsigned int spectrum_size, const unsigned int filters_number)</td></tr>
 <tr class="separator:a759d1ada1056021465f9f3110a435f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -166,7 +166,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* rta_spectrum_to_bands_function) (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const unsigned int *, const unsigned int, const unsigned int)</td>
+          <td class="memname">typedef void(* rta_spectrum_to_bands_function) (rta_real_t *, const rta_real_t *, const rta_real_t *, const unsigned int *, const unsigned int, const unsigned int)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -185,7 +185,7 @@ rta_spectrum_to_bands_square_abs </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* rta_spectrum_to_bands_stride_function) (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const int, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const int, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *, const int, const unsigned int *, const int, const unsigned int, const unsigned int)</td>
+          <td class="memname">typedef void(* rta_spectrum_to_bands_stride_function) (rta_real_t *, const int, const rta_real_t *, const int, const rta_real_t *, const int, const unsigned int *, const int, const unsigned int, const unsigned int)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -213,10 +213,6 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6fcf6403324600403fd2d3d4f7b2cdb3a574619912be6b7bad1301ce6fb6a0019"></a>rta_bands_sum&#160;</td><td class="fielddoc"><p>simple sum between specified bins </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6fcf6403324600403fd2d3d4f7b2cdb3a48a6e017d3674fc5d449fb716933873e"></a>rta_bands_bark&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6fcf6403324600403fd2d3d4f7b2cdb3af5cd4e9adec7795631a368f07b3d4676"></a>rta_bands_mel&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6fcf6403324600403fd2d3d4f7b2cdb3ac7ce8998c42b6a0d9596a56c931cd9ee"></a>rta_bands_htk_mel&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6fcf6403324600403fd2d3d4f7b2cdb3a62994fe8d8fc6247f65766c23141d8a3"></a>rta_bands_feacalc_mel&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="rta__bands_8h_source.html#l00053">53</a> of file <a class="el" href="rta__bands_8h_source.html">rta_bands.h</a>.</p>
@@ -238,7 +234,6 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab773b38a630c462bf7ec5517b2757d05a719c9685aa237d8e2f2df98e5fa601c7"></a>rta_bands_abs_integration&#160;</td><td class="fielddoc"><p>sumpower = 0 (cf. Dan Ellis) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ab773b38a630c462bf7ec5517b2757d05a7df18240828d63807dbea956e5dd87c6"></a>rta_bands_square_abs_integration&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="rta__bands_8h_source.html#l00063">63</a> of file <a class="el" href="rta__bands_8h_source.html">rta_bands.h</a>.</p>
@@ -255,19 +250,19 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="memname">void rta_spectrum_to_bands_abs </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>bands</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>spectrum</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>weights_matrix</em>, </td>
         </tr>
         <tr>
@@ -321,7 +316,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="memname">void rta_spectrum_to_bands_abs_stride </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>bands</em>, </td>
         </tr>
         <tr>
@@ -333,7 +328,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>spectrum</em>, </td>
         </tr>
         <tr>
@@ -345,7 +340,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>weights_matrix</em>, </td>
         </tr>
         <tr>
@@ -415,19 +410,19 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="memname">void rta_spectrum_to_bands_square_abs </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>bands</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>spectrum</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>weights_matrix</em>, </td>
         </tr>
         <tr>
@@ -481,7 +476,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="memname">void rta_spectrum_to_bands_square_abs_stride </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>bands</em>, </td>
         </tr>
         <tr>
@@ -493,7 +488,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>spectrum</em>, </td>
         </tr>
         <tr>
@@ -505,7 +500,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">const rta_real_t *&#160;</td>
           <td class="paramname"><em>weights_matrix</em>, </td>
         </tr>
         <tr>
@@ -575,7 +570,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="memname">int rta_spectrum_to_mel_bands_weights </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>weights_matrix</em>, </td>
         </tr>
         <tr>
@@ -593,7 +588,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>sample_rate</em>, </td>
         </tr>
         <tr>
@@ -605,19 +600,19 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>min_freq</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>max_freq</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>scale_width</em>, </td>
         </tr>
         <tr>
@@ -679,7 +674,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="memname">int rta_spectrum_to_mel_bands_weights_stride </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>weights_matrix</em>, </td>
         </tr>
         <tr>
@@ -709,7 +704,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>sample_rate</em>, </td>
         </tr>
         <tr>
@@ -721,19 +716,19 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>min_freq</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>max_freq</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>scale_width</em>, </td>
         </tr>
         <tr>
@@ -793,7 +788,7 @@ rta_spectrum_to_bands_square_abs_stride </dd></dl>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 19:57:50 for rta by
+Generated on Wed Sep 13 2017 23:28:12 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

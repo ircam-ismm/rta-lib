@@ -1,59 +1,11 @@
 var rta__kdtree_8h =
 [
-    [ "_kdtree_stack_elem_struct", "rta__kdtree_8h.html#struct__kdtree__stack__elem__struct", [
-      [ "dist", "rta__kdtree_8h.html#a6ddc7cafbb97911eb7bdc8f4dc797d9b", null ],
-      [ "node", "rta__kdtree_8h.html#a98ef19af9931f28a0a856366c5c7bdeb", null ]
-    ] ],
-    [ "_kdtree_stack_struct", "rta__kdtree_8h.html#struct__kdtree__stack__struct", [
-      [ "alloc", "rta__kdtree_8h.html#af0e5ba36c869c98583d8bdca25fbf5a1", null ],
-      [ "buffer", "rta__kdtree_8h.html#a0330466ed69a0e16dc1f5109c5b32dbc", null ],
-      [ "size", "rta__kdtree_8h.html#adc19071f276caf1ffa34dba3d38172fa", null ]
-    ] ],
-    [ "_kdtree_node_struct", "rta__kdtree_8h.html#struct__kdtree__node__struct", [
-      [ "endind", "rta__kdtree_8h.html#a5f4db376e6f0b85142bdea17a9ee21d1", null ],
-      [ "size", "rta__kdtree_8h.html#ae800d607de55c2590fd1dfd87235c1d0", null ],
-      [ "splitdim", "rta__kdtree_8h.html#af0dec3c9a5f6bac0b2216771925cf13e", null ],
-      [ "splitnorm", "rta__kdtree_8h.html#a12407c9f75282dc7885f7c600c6708f8", null ],
-      [ "startind", "rta__kdtree_8h.html#af3601b4148f24d3ae77efd9640e03b99", null ]
-    ] ],
-    [ "_kdtree_profile_struct", "rta__kdtree_8h.html#struct__kdtree__profile__struct", [
-      [ "hyperp", "rta__kdtree_8h.html#a6213125ba2d1d8163b91079fc2e8f3b9", null ],
-      [ "maxstack", "rta__kdtree_8h.html#a352a6b9367c7823ad1a76ea2b56b751d", null ],
-      [ "mean", "rta__kdtree_8h.html#aad03ae219be29f4d5f533567c447f2b5", null ],
-      [ "neighbours", "rta__kdtree_8h.html#ac92f7c5a2bdd8ce8cb7fc699aef25c57", null ],
-      [ "searches", "rta__kdtree_8h.html#af203f40ffbbb6f80ebca93c207d9d6a6", null ],
-      [ "v2n", "rta__kdtree_8h.html#aedb69325a0951a2b974282c12a208f2a", null ],
-      [ "v2v", "rta__kdtree_8h.html#af34015905a443cedde889729f5f27110", null ]
-    ] ],
-    [ "_kdtree_object_struct", "rta__kdtree_8h.html#struct__kdtree__object__struct", [
-      [ "base", "rta__kdtree_8h.html#a47990867cc1921027b914e18d0ebfb27", null ],
-      [ "index", "rta__kdtree_8h.html#a665718eed1d285b01743229d3633723d", null ]
-    ] ],
-    [ "_kdtree_struct", "rta__kdtree_8h.html#struct__kdtree__struct", [
-      [ "data", "rta__kdtree_8h.html#aaee0b5f0c63fcd27db4c91eecc59d415", null ],
-      [ "dataindex", "rta__kdtree_8h.html#a6f6e1b09dd50c87e26256e1ee72527a3", null ],
-      [ "dfun", "rta__kdtree_8h.html#a6444a61ed4c12be1417f04bd34a40831", null ],
-      [ "dmode", "rta__kdtree_8h.html#a920a82b00fe13b6e171a669afec569f7", null ],
-      [ "givenheight", "rta__kdtree_8h.html#ad7678c32be475acc1186ada795e68116", null ],
-      [ "height", "rta__kdtree_8h.html#ac7945bcb868660aebed52c5227ea00de", null ],
-      [ "maxheight", "rta__kdtree_8h.html#aea36fe38f8119a81844e650e560aa85f", null ],
-      [ "mean", "rta__kdtree_8h.html#a1b665dac0b0aab8a2057cbfb16f33cd4", null ],
-      [ "mmode", "rta__kdtree_8h.html#a1de397ba679380fb7ef245c9f92064b7", null ],
-      [ "nblocks", "rta__kdtree_8h.html#a159ec64f01f8b6a8893fa1389bd9f1e4", null ],
-      [ "ndata", "rta__kdtree_8h.html#a3646734728ea3a13d83aae67bf642819", null ],
-      [ "ndatatot", "rta__kdtree_8h.html#a71d7c2dba7d4b6b21416bfdbe37f9b64", null ],
-      [ "ndim", "rta__kdtree_8h.html#aa8482336f9666273f6647734519da979", null ],
-      [ "ninner", "rta__kdtree_8h.html#a9be49cebeb4eae03c9d08bcbadfefb41", null ],
-      [ "nnodes", "rta__kdtree_8h.html#a3df307a4ddf48b91a67abe3cbbc13608", null ],
-      [ "nodes", "rta__kdtree_8h.html#ad19da25a065955a5b4ac7a69da54994c", null ],
-      [ "profile", "rta__kdtree_8h.html#adc26ce2956249d8eabff93066c735a3b", null ],
-      [ "sigma", "rta__kdtree_8h.html#a5a8434dde00ac9a42ded69dc0b1402af", null ],
-      [ "sigma_indnz", "rta__kdtree_8h.html#aa84ee9a18e520a3f80ba828b05460367", null ],
-      [ "sigma_nnz", "rta__kdtree_8h.html#a90066809c371cba6a5a6887a7d688dd8", null ],
-      [ "sort", "rta__kdtree_8h.html#a99c10567952a6b9a75c656238e0407c8", null ],
-      [ "split", "rta__kdtree_8h.html#aba11b8169d4a8002aa3247bcd85d20a0", null ],
-      [ "stack", "rta__kdtree_8h.html#a63f394700b48af82341590efd4b57699", null ]
-    ] ],
+    [ "_kdtree_stack_elem_struct", "struct__kdtree__stack__elem__struct.html", "struct__kdtree__stack__elem__struct" ],
+    [ "_kdtree_stack_struct", "struct__kdtree__stack__struct.html", "struct__kdtree__stack__struct" ],
+    [ "_kdtree_node_struct", "struct__kdtree__node__struct.html", "struct__kdtree__node__struct" ],
+    [ "_kdtree_profile_struct", "struct__kdtree__profile__struct.html", "struct__kdtree__profile__struct" ],
+    [ "_kdtree_object_struct", "struct__kdtree__object__struct.html", "struct__kdtree__object__struct" ],
+    [ "_kdtree_struct", "struct__kdtree__struct.html", "struct__kdtree__struct" ],
     [ "DMAP", "rta__kdtree_8h.html#a01befd7a8d52877be415de0a2269a238", null ],
     [ "DMAPW", "rta__kdtree_8h.html#ad79ba0a185c3008ad5bec866a8033694", null ],
     [ "kdtree_get_element", "rta__kdtree_8h.html#afdc0116ae9cacedf5dbeeadd85bd2dbe", null ],

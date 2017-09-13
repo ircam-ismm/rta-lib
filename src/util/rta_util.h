@@ -2,13 +2,14 @@
  * @file   rta_util.h
  * @author Diemo Schwarz
  * @date   1.12.2009
- * 
+ * @ingroup rta_util
+ *
  * @brief  file with common support functions
  *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +56,7 @@ void rta_choose_k_from_n (int k, int n, int *sample);
 int rta_find_int (int x, int num, int *arr);
 
 
-    
+
 /*********************************************************************************
  *
  *  idefix
@@ -100,7 +101,7 @@ typedef struct rta_idefix
 #define rta_idefix_eq(x, c) (((x).index == (c).index) && ((x).frac == (c).frac))
 #define rta_idefix_is_zero(x) (((x).index == 0) && ((x).frac == 0))
 
-    
+
 #ifdef __cplusplus
 }
 #endif

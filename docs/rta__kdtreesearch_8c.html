@@ -103,36 +103,47 @@ $(document).ready(function(){initNavTree('rta__kdtreesearch_8c.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a01f163fd9bf993082005097edd9fb7a7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a01f163fd9bf993082005097edd9fb7a7">DEBUG_KDTREESEARCH</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:a01f163fd9bf993082005097edd9fb7a7"><td class="memItemLeft" align="right" valign="top"><a id="a01f163fd9bf993082005097edd9fb7a7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_KDTREESEARCH</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a01f163fd9bf993082005097edd9fb7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06be39258f20364f5b8d1c69dc8dac41"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a06be39258f20364f5b8d1c69dc8dac41">stack_clear</a>(s)&#160;&#160;&#160;((s)-&gt;size = 0)</td></tr>
+<tr class="memitem:a06be39258f20364f5b8d1c69dc8dac41"><td class="memItemLeft" align="right" valign="top"><a id="a06be39258f20364f5b8d1c69dc8dac41"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>stack_clear</b>(s)&#160;&#160;&#160;((s)-&gt;size = 0)</td></tr>
 <tr class="separator:a06be39258f20364f5b8d1c69dc8dac41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab208d11748309f9425aae104238661f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#ab208d11748309f9425aae104238661f8">stack_push</a>(s,  n,  d)</td></tr>
+<tr class="memitem:ab208d11748309f9425aae104238661f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>stack_push</b>(s,  n,  d)</td></tr>
 <tr class="separator:ab208d11748309f9425aae104238661f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a0cf5594a8c61fbb606af0f3181580c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a3a0cf5594a8c61fbb606af0f3181580c">stack_pop_safe</a>(s,  elem)&#160;&#160;&#160;(((s)-&gt;size &gt; 0) ? (elem = s-&gt;buffer[--((s)-&gt;size)]) : 0)</td></tr>
+<tr class="memitem:a3a0cf5594a8c61fbb606af0f3181580c"><td class="memItemLeft" align="right" valign="top"><a id="a3a0cf5594a8c61fbb606af0f3181580c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>stack_pop_safe</b>(s,  elem)&#160;&#160;&#160;(((s)-&gt;size &gt; 0) ? (elem = s-&gt;buffer[--((s)-&gt;size)]) : 0)</td></tr>
 <tr class="separator:a3a0cf5594a8c61fbb606af0f3181580c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb7dec8055186020fe1253a12ce52d63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#aeb7dec8055186020fe1253a12ce52d63">stack_pop</a>(s,  elem)&#160;&#160;&#160;(*elem = s-&gt;buffer[--((s)-&gt;size)])</td></tr>
+<tr class="memitem:aeb7dec8055186020fe1253a12ce52d63"><td class="memItemLeft" align="right" valign="top"><a id="aeb7dec8055186020fe1253a12ce52d63"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>stack_pop</b>(s,  elem)&#160;&#160;&#160;(*elem = s-&gt;buffer[--((s)-&gt;size)])</td></tr>
 <tr class="separator:aeb7dec8055186020fe1253a12ce52d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaee1dfd8a08c60dd1ab7da5f34b642f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#afaee1dfd8a08c60dd1ab7da5f34b642f">stack_empty</a>(s)&#160;&#160;&#160;((s)-&gt;size == 0)</td></tr>
+<tr class="memitem:afaee1dfd8a08c60dd1ab7da5f34b642f"><td class="memItemLeft" align="right" valign="top"><a id="afaee1dfd8a08c60dd1ab7da5f34b642f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>stack_empty</b>(s)&#160;&#160;&#160;((s)-&gt;size == 0)</td></tr>
 <tr class="separator:afaee1dfd8a08c60dd1ab7da5f34b642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f">MAX</a>(a,  b)&#160;&#160;&#160;((a) &gt; (b) ? (a) : (b))</td></tr>
+<tr class="memitem:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memItemLeft" align="right" valign="top"><a id="afa99ec4acc4ecb2dc3c2d05da15d0e3f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX</b>(a,  b)&#160;&#160;&#160;((a) &gt; (b) ? (a) : (b))</td></tr>
 <tr class="separator:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a50a553cb22bf60b8c3a976bdb558be36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a50a553cb22bf60b8c3a976bdb558be36">kdtree_stack_init</a> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *s, int size)</td></tr>
+<tr class="memitem:a50a553cb22bf60b8c3a976bdb558be36"><td class="memItemLeft" align="right" valign="top"><a id="a50a553cb22bf60b8c3a976bdb558be36"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_stack_init</b> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *s, int size)</td></tr>
 <tr class="separator:a50a553cb22bf60b8c3a976bdb558be36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf082c37cbacccc9a1ed8f4ae726a797"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#adf082c37cbacccc9a1ed8f4ae726a797">kdtree_stack_free</a> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *s)</td></tr>
+<tr class="memitem:adf082c37cbacccc9a1ed8f4ae726a797"><td class="memItemLeft" align="right" valign="top"><a id="adf082c37cbacccc9a1ed8f4ae726a797"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_stack_free</b> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *s)</td></tr>
 <tr class="separator:adf082c37cbacccc9a1ed8f4ae726a797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3ec2c2cc49ddd9b8d959e17a6d056b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#ae3ec2c2cc49ddd9b8d959e17a6d056b8">kdtree_stack_grow</a> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *stack, int alloc)</td></tr>
+<tr class="memitem:ae3ec2c2cc49ddd9b8d959e17a6d056b8"><td class="memItemLeft" align="right" valign="top"><a id="ae3ec2c2cc49ddd9b8d959e17a6d056b8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_stack_grow</b> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *stack, int alloc)</td></tr>
 <tr class="separator:ae3ec2c2cc49ddd9b8d959e17a6d056b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10caf548a3c0135504a51e82e76779af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a10caf548a3c0135504a51e82e76779af">rta_euclidean_distance</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *v1, int stride1, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *v2, int dim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
+<tr class="memitem:a10caf548a3c0135504a51e82e76779af"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a10caf548a3c0135504a51e82e76779af">rta_euclidean_distance</a> (rta_real_t *v1, int stride1, rta_real_t *v2, int dim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
 <tr class="separator:a10caf548a3c0135504a51e82e76779af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77238f706fbad395ce60fc8aa888d1c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a77238f706fbad395ce60fc8aa888d1c8">rta_weighted_euclidean_distance</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *v1, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *v2, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *sigma, int ndim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
+<tr class="memitem:a77238f706fbad395ce60fc8aa888d1c8"><td class="memItemLeft" align="right" valign="top"><a id="a77238f706fbad395ce60fc8aa888d1c8"></a>
+rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_euclidean_distance</b> (rta_real_t *v1, rta_real_t *v2, rta_real_t *sigma, int ndim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
 <tr class="separator:a77238f706fbad395ce60fc8aa888d1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26e1b38505641efb8001f081162a6653"><td class="memItemLeft" align="right" valign="top"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a26e1b38505641efb8001f081162a6653">rta_weighted_euclidean_distance_stride</a> (<a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *v1, int stride1, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *v2, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *sigma, int ndim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
+<tr class="memitem:a26e1b38505641efb8001f081162a6653"><td class="memItemLeft" align="right" valign="top"><a id="a26e1b38505641efb8001f081162a6653"></a>
+rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_euclidean_distance_stride</b> (rta_real_t *v1, int stride1, rta_real_t *v2, rta_real_t *sigma, int ndim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
 <tr class="separator:a26e1b38505641efb8001f081162a6653"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a698129cb350c5342d753fcabb1612dcd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a698129cb350c5342d753fcabb1612dcd">kdtree_search_knn</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *vector, int stride, int k, const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> r, int use_sigma, <a class="el" href="rta__kdtree_8h.html#ab3c322922ba418bd1384f72e01e71c86">kdtree_object_t</a> *indx, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *dist)</td></tr>
+<tr class="memitem:a698129cb350c5342d753fcabb1612dcd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a698129cb350c5342d753fcabb1612dcd">kdtree_search_knn</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, rta_real_t *vector, int stride, int k, const rta_real_t r, int use_sigma, <a class="el" href="rta__kdtree_8h.html#ab3c322922ba418bd1384f72e01e71c86">kdtree_object_t</a> *indx, rta_real_t *dist)</td></tr>
 <tr class="separator:a698129cb350c5342d753fcabb1612dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -149,152 +160,6 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a01f163fd9bf993082005097edd9fb7a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01f163fd9bf993082005097edd9fb7a7">&#9670;&nbsp;</a></span>DEBUG_KDTREESEARCH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DEBUG_KDTREESEARCH&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00045">45</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="afa99ec4acc4ecb2dc3c2d05da15d0e3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa99ec4acc4ecb2dc3c2d05da15d0e3f">&#9670;&nbsp;</a></span>MAX</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MAX</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">a, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">b&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;((a) &gt; (b) ? (a) : (b))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00112">112</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="a06be39258f20364f5b8d1c69dc8dac41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06be39258f20364f5b8d1c69dc8dac41">&#9670;&nbsp;</a></span>stack_clear</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define stack_clear</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">s</td><td>)</td>
-          <td>&#160;&#160;&#160;((s)-&gt;size = 0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00059">59</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="afaee1dfd8a08c60dd1ab7da5f34b642f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afaee1dfd8a08c60dd1ab7da5f34b642f">&#9670;&nbsp;</a></span>stack_empty</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define stack_empty</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">s</td><td>)</td>
-          <td>&#160;&#160;&#160;((s)-&gt;size == 0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00090">90</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="aeb7dec8055186020fe1253a12ce52d63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb7dec8055186020fe1253a12ce52d63">&#9670;&nbsp;</a></span>stack_pop</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define stack_pop</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">s, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">elem&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(*elem = s-&gt;buffer[--((s)-&gt;size)])</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00088">88</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="a3a0cf5594a8c61fbb606af0f3181580c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a0cf5594a8c61fbb606af0f3181580c">&#9670;&nbsp;</a></span>stack_pop_safe</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define stack_pop_safe</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">s, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">elem&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(((s)-&gt;size &gt; 0) ? (elem = s-&gt;buffer[--((s)-&gt;size)]) : 0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00086">86</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
 <a id="ab208d11748309f9425aae104238661f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab208d11748309f9425aae104238661f8">&#9670;&nbsp;</a></span>stack_push</h2>
 
@@ -347,7 +212,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
@@ -365,7 +230,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a>&#160;</td>
+          <td class="paramtype">const rta_real_t&#160;</td>
           <td class="paramname"><em>r</em>, </td>
         </tr>
         <tr>
@@ -383,7 +248,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>d</em>&#160;</td>
         </tr>
         <tr>
@@ -416,86 +281,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adf082c37cbacccc9a1ed8f4ae726a797"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf082c37cbacccc9a1ed8f4ae726a797">&#9670;&nbsp;</a></span>kdtree_stack_free()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kdtree_stack_free </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00061">61</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="ae3ec2c2cc49ddd9b8d959e17a6d056b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3ec2c2cc49ddd9b8d959e17a6d056b8">&#9670;&nbsp;</a></span>kdtree_stack_grow()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kdtree_stack_grow </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *&#160;</td>
-          <td class="paramname"><em>stack</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>alloc</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00076">76</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="a50a553cb22bf60b8c3a976bdb558be36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50a553cb22bf60b8c3a976bdb558be36">&#9670;&nbsp;</a></span>kdtree_stack_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kdtree_stack_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00052">52</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
 <a id="a10caf548a3c0135504a51e82e76779af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10caf548a3c0135504a51e82e76779af">&#9670;&nbsp;</a></span>rta_euclidean_distance()</h2>
 
@@ -503,9 +288,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> rta_euclidean_distance </td>
+          <td class="memname">rta_real_t rta_euclidean_distance </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>v1</em>, </td>
         </tr>
         <tr>
@@ -517,7 +302,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>v2</em>, </td>
         </tr>
         <tr>
@@ -545,114 +330,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a77238f706fbad395ce60fc8aa888d1c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77238f706fbad395ce60fc8aa888d1c8">&#9670;&nbsp;</a></span>rta_weighted_euclidean_distance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> rta_weighted_euclidean_distance </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>v1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>v2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>sigma</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ndim</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *&#160;</td>
-          <td class="paramname"><em>distfunc</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00156">156</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
-<a id="a26e1b38505641efb8001f081162a6653"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26e1b38505641efb8001f081162a6653">&#9670;&nbsp;</a></span>rta_weighted_euclidean_distance_stride()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> rta_weighted_euclidean_distance_stride </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>v1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>stride1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>v2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>sigma</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ndim</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *&#160;</td>
-          <td class="paramname"><em>distfunc</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00185">185</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 19:57:50 for rta by
+Generated on Wed Sep 13 2017 23:28:11 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

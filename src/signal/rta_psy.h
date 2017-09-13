@@ -39,9 +39,9 @@
 #ifndef _RTA_PSY_H_
 #define _RTA_PSY_H_ 1
 
-#define psyAna_malloc malloc
-#define psyAna_realloc realloc
-#define psyAna_free free
+#define rta_psy_malloc malloc
+#define rta_psy_realloc realloc
+#define rta_psy_free free
 
 #define MAX_DOWN_SAMPLING_EXP 3
 #define MAX_DOWN_SAMPLING (1 << MAX_DOWN_SAMPLING_EXP)
@@ -58,16 +58,16 @@ typedef struct CandidateSt
   int forwardIndex;
   double backward;
   int backwardIndex;
-} CandidateT;
+} rta_psy_candidate;
 
 typedef struct TrackingStateSt
 {
-  CandidateT candidates[MAX_CANDIDATES];
+  rta_psy_candidate candidates[MAX_CANDIDATES];
   int numCandidates;
   double time;
   double energy;
   double ac1;
-} TrackingStateT;
+} rta_psy_tracking_state;
 
 typedef struct PsyAnaSt
 {
@@ -97,7 +97,7 @@ typedef struct PsyAnaSt
   double yinThreshold; /* yin normalized difference threshold (default 0.1024) */
   double noiseThreshold; /* yin normalized difference threshold (default 0.3025) */
 
-  TrackingStateT trackingStates[NUM_TRACKING_STATES];
+  rta_psy_tracking_state trackingStates[NUM_TRACKING_STATES];
   int trackingIndex;
 
   double lastPeriod; /* latest period */
@@ -114,14 +114,14 @@ typedef struct PsyAnaSt
   void *receiver;
   int (*callback)(void *obj, double time, double freq, double energy, double ac1, double voiced);
   int numOutput;
-} PsyAnaT;
+} rta_psy_ana;
 
-void psyAna_init(PsyAnaT *self);
-void psyAna_deinit(PsyAnaT *self);
-void psyAna_reset(PsyAnaT *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp);
-void psyAna_setCallback(PsyAnaT *self, void *receiver, int (*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced));
-void psyAna_setThresholds(PsyAnaT *self, double yinThreshold, double noiseThreshold);
-int psyAna_calculateInputVector(PsyAnaT *self, float *in, int vectorSize, int vectorStride);
-void psyAna_finalize(PsyAnaT *self);
+void rta_psy_init(rta_psy_ana *self);
+void rta_psy_deinit(rta_psy_ana *self);
+void rta_psy_reset(rta_psy_ana *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp);
+void rta_psy_set_callback(rta_psy_ana *self, void *receiver, int (*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced));
+void rta_psy_set_thresholds(rta_psy_ana *self, double yinThreshold, double noiseThreshold);
+int rta_psy_calculate_input_vector(rta_psy_ana *self, float *in, int vectorSize, int vectorStride);
+void rta_psy_finalize(rta_psy_ana *self);
 
 #endif  /* _RTA_PSY_H_ */

@@ -1,50 +1,9 @@
 var rta__msdr_8h =
 [
-    [ "_rta_msdr_limits", "rta__msdr_8h.html#struct__rta__msdr__limits", [
-      [ "max", "rta__msdr_8h.html#a295d2653b248b3d299037c1a68433f91", null ],
-      [ "min", "rta__msdr_8h.html#aa7ff3535e2bd8bec45a540fb6e7ad2af", null ],
-      [ "unlimited", "rta__msdr_8h.html#ab3fb8b94b0ff9f4bb5e0a138bf1ae7c7", null ]
-    ] ],
-    [ "_rta_msdr_mass", "rta__msdr_8h.html#struct__rta__msdr__mass", [
-      [ "links", "rta__msdr_8h.html#ae1d9b2a96801f8015e6fa5166ad50ebd", null ],
-      [ "maxdist", "rta__msdr_8h.html#a6dd7b5fc3d149a05dabbe8c2521f23c6", null ],
-      [ "nlinks", "rta__msdr_8h.html#aef4ca7d3de26ed562e25eccc3d51ba15", null ]
-    ] ],
-    [ "_rta_msdr_link", "rta__msdr_8h.html#struct__rta__msdr__link", [
-      [ "cat", "rta__msdr_8h.html#a79433f20f91da8a175c42ad501b158eb", null ],
-      [ "ind1", "rta__msdr_8h.html#a5f968fda3c4730e06023aa7dcae6fb3b", null ],
-      [ "ind2", "rta__msdr_8h.html#a796da81c0fbe8751dc94ecbdc580cc02", null ],
-      [ "m1", "rta__msdr_8h.html#a87208d3fa8450bdb80bbe1b05fa30948", null ],
-      [ "m2", "rta__msdr_8h.html#a0ff53e3e2e5ce73bd6897390fc11d4a3", null ]
-    ] ],
-    [ "_rta_msdr", "rta__msdr_8h.html#struct__rta__msdr", [
-      [ "D1", "rta__msdr_8h.html#a5999671caa9e4b2fbfdf750f91a2d755", null ],
-      [ "D2", "rta__msdr_8h.html#aeb316e0a5427124695b36edb16fcd009", null ],
-      [ "force", "rta__msdr_8h.html#a468aa8a5868165b033282d9fe88c0686", null ],
-      [ "forceabs", "rta__msdr_8h.html#a1b0dba3caf7d655213314567dcd408e7", null ],
-      [ "invmass", "rta__msdr_8h.html#a06820b729b77be135d806acb2a5f1692", null ],
-      [ "K1", "rta__msdr_8h.html#aa42b441eaad16a17964bb88e70bc0ba9", null ],
-      [ "l0", "rta__msdr_8h.html#a505e83bdff51deffe186939cf623d686", null ],
-      [ "lcurr", "rta__msdr_8h.html#a07cb02b9717c1fe42c32b80ecd1b3d31", null ],
-      [ "linklistalloc", "rta__msdr_8h.html#ada5e2eea82eb910637ad71c948bd55d3", null ],
-      [ "links", "rta__msdr_8h.html#aaf41294172db841087ccc66118322678", null ],
-      [ "linksalloc", "rta__msdr_8h.html#a0bcb24b557e58675ce9aacb4f0a23aaa", null ],
-      [ "lprev", "rta__msdr_8h.html#aa918a625e9bc4995d5dbd6ed5e969e0f", null ],
-      [ "massalloc", "rta__msdr_8h.html#a187cc7b635686f8d0550d4cfc46558f8", null ],
-      [ "masses", "rta__msdr_8h.html#affe871a224b42133ff2bdbedcbd1ff4f", null ],
-      [ "nactive", "rta__msdr_8h.html#ac357d5de239da76275522ec8a5806c4e", null ],
-      [ "nlinks", "rta__msdr_8h.html#a344c067c1495f5ccbad97028712f8224", null ],
-      [ "nmasses", "rta__msdr_8h.html#af0f1b7f5a4c5b670f71e8b30bcec1caa", null ],
-      [ "outforce", "rta__msdr_8h.html#a6b0f9fe6153d600c5b03a0cad528749d", null ],
-      [ "pos", "rta__msdr_8h.html#ac3f6106c58678e6c01878a33312abbcf", null ],
-      [ "pos2", "rta__msdr_8h.html#abdca7b08fb48c8a7485f3a163c3f99e1", null ],
-      [ "poslim", "rta__msdr_8h.html#a56027057ac7f88805662a9b298c9fa70", null ],
-      [ "Rf", "rta__msdr_8h.html#a54de083f5d0468d510be64f525446ae4", null ],
-      [ "Rt", "rta__msdr_8h.html#af5653be5ff7c014eac7db1290f535885", null ],
-      [ "speed", "rta__msdr_8h.html#a339cfa8f8ca8ddd6ff89683b19646c3e", null ],
-      [ "speedlim", "rta__msdr_8h.html#a37bdee397286ddef70cfbb5713c9c70d", null ],
-      [ "stress", "rta__msdr_8h.html#a2c86fd1bbf65ba4d52a5086eb44cd988", null ]
-    ] ],
+    [ "_rta_msdr_limits", "struct__rta__msdr__limits.html", "struct__rta__msdr__limits" ],
+    [ "_rta_msdr_mass", "struct__rta__msdr__mass.html", "struct__rta__msdr__mass" ],
+    [ "_rta_msdr_link", "struct__rta__msdr__link.html", "struct__rta__msdr__link" ],
+    [ "_rta_msdr", "struct__rta__msdr.html", "struct__rta__msdr" ],
     [ "RTA_MSDR_MAXCAT", "rta__msdr_8h.html#a8062714a39df2c9b9c138e8cd92fa41f", null ],
     [ "RTA_MSDR_NDIM", "rta__msdr_8h.html#a91dc871b69c5792877411439e879fca8", null ],
     [ "RTA_MSDR_NDIM_STR", "rta__msdr_8h.html#a7daedd0aa412a3e651b07af28a8738b8", null ],

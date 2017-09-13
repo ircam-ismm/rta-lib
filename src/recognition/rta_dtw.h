@@ -2,13 +2,14 @@
  * @file rta_dtw.h
  * @author Baptiste Caramiaux
  * @date 08/10/08
- *  
+ * @ingroup rta_recognition
+ *
  * @brief Compute a Dynamic Time Warping
  *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +45,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
+
 // #include "mnm.h"
-	
-	
+
+
 	/*
 	 * Compute temporal alignment between two signals
 	 *
@@ -61,19 +62,19 @@ extern "C" {
 	 *
 	 *  @output_p -> first signal indices for alignment
 	 *  @output_q -> second signal indices for alignment
-	 *		p[i] is the sample index of the first signal corresponding 
+	 *		p[i] is the sample index of the first signal corresponding
 	 *		to the sample index q[i] of the second signal
-	 *		
+	 *
 	 *  @length -> new signal length
 	 */
 	int
 	rta_dtw(float * left_ptr, int left_m, int left_n, float * right_ptr, int right_m, int right_n,
 			float * output_p, float * output_q, float * output_A, float * output_B, float * output_SM, int * length);
-	
-	
-	
-	
-	
+
+
+
+
+
 #ifdef __cplusplus
 }
 #endif

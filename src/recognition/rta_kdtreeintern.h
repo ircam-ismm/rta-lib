@@ -2,14 +2,15 @@
  * @file rta_kdtreeintern.h
  * @author Diemo Schwarz
  * @date 30.10.2008
- * @version 1.0 
+ * @version 1.0
+ * @ingroup rta_recognition
  *
  * @brief  private definitions and declarations for k-dimensional search tree
  *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +47,7 @@ extern "C" {
 
 #include <float.h>
 #define MAX_FLOAT FLT_MAX
-  
+
 #define pow2(x)  (1 << (x))
 
 

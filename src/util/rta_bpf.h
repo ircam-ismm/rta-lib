@@ -1,13 +1,14 @@
 /**
  * @file   rta_bpf.h
  * @author Norbert Schnell
- * 
+ * @ingroup rta_util
+ *
  * @brief  Break-point function utilities.
  *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +45,7 @@
 extern "C" {
 #endif
 
-/** 
+/**
  * Break-point function (or time-tagged values).
  *
  * For the moment read only, since construction is done by binary-compatible bpf_t from FTM
@@ -58,7 +59,7 @@ typedef struct rta_bpf_point
   double slope; /**< slope to next value */
 } rta_bpf_point_t;
 
-/** the break-point function itself 
+/** the break-point function itself
  *
  * ATTENTION: must be binary-compatible with FTM struct bpfunc in ftmlib/classes/bpf.c!!!
  */

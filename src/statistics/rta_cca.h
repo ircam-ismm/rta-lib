@@ -2,6 +2,7 @@
  * @file rta_cca.h
  * @author Baptiste Caramiaux
  * @date 08/10/08
+ * @ingroup rta_statistics
  *
  * @brief Canonical Correlation Analysis
  *

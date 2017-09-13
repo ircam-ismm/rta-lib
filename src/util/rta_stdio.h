@@ -2,16 +2,17 @@
  * @file   rta_stdio.h
  * @author Diemo Schwarz
  * @date   30.10.2008
- * 
+ * @ingroup rta_util
+ *
  * @brief  Default defines for the rta library
  *
  * Define your own to override these.
  * @see rta_configuration.h
- * 
+ *
  * @copyright
  * Copyright (C) 2008 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without

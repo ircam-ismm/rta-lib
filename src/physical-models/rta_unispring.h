@@ -1,11 +1,12 @@
 /**
  * @file rta_unispring.h
  * @author Riccardo Borghesi
+ * @ingroup rta_physical_models
  *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,10 +62,10 @@
 #define RECT_SCALE sqrt(2) //ok for 2D
 //#define RECT_SCALE sqrt(2)/2 // Must be < 1. sqrt(2) is ok for 2, too much for 3D (points are pre-uniformized outside the target region). sqrt(2)/2 seems ok
 
-namespace UniSpringSpace 
+namespace UniSpringSpace
 {
-	
-	
+
+
 typedef enum { shape_disk, shape_square, shape_rect, shape_poly } shape_enum_t; // 2D
 typedef enum { shape_3D_sphere, shape_3D_cube, shape_3D_rparallel } shape_3D_enum_t; // 3D
 
@@ -82,7 +83,7 @@ public:
 //	virtual bool isInPoly(double px, double py) { };
 };
 
-class Disk : public Shape 
+class Disk : public Shape
 {
 public:
     Disk (float r = 0.5, float cx = 0.5, float cy = 0.5);
@@ -92,7 +93,7 @@ public:
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
 
-class Square : public Shape 
+class Square : public Shape
 {
 public:
     Square (float s = 1, float llx = 0, float lly = 0);
@@ -110,7 +111,7 @@ public:
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
-	
+
 class Polygon : public Shape
 {
 public:
@@ -135,10 +136,10 @@ private:
 	double maxVX;
 	double minVY;
 	double maxVY;
-		
+
 };
-	
-	
+
+
 class Shape_3D {
 public:
 	virtual double fd_compute(double px, double py, double pz) { return 0.0; };
@@ -151,10 +152,10 @@ public:
 	float shift_scaled_x;
 	float shift_scaled_y;
 	float shift_scaled_z;
-		
+
 };
-		
-class Sphere : public Shape_3D 
+
+class Sphere : public Shape_3D
 {
 public:
 	Sphere (float r = 1, float cx = 1, float cy = 1, float cz = 1);
@@ -163,7 +164,7 @@ public:
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
 };
-	
+
 class Cube : public Shape_3D
 {
 public:
@@ -171,12 +172,12 @@ public:
 	virtual double fd_compute (double px, double py, double pz);
 	virtual void preUniformize(std::vector<hed::Node> *mPoints, int mNpoints);
     virtual void scale (std::vector<hed::Node> *mPoints, int mNpoints);
-};	
-	
-class RParallel : public Shape_3D 
+};
+
+class RParallel : public Shape_3D
 {
 public:
-	
+
 	RParallel (float llbx = 0, float llby = 0, float llbz = 0, float urtx = 1, float urty = 1, float urtz = 1);
 	virtual double fd_compute (double px, double py, double pz);
 	static double fd_rparallel(double px, double py, double pz, double llbx, double llby, double llbz, double urtx, double urty, double urtz);
@@ -194,7 +195,7 @@ public:
 	triang.cleanAll();
 	//TODO: clean up all members?
     }
-					  
+
     /** set points and initialise unispring algorithm:
 	copy points array, pre-uniformise (if preUni = true), do first triangulation
 	@param n	number of points
@@ -202,7 +203,7 @@ public:
 	@param shape	defines shape
      */
 	void set_points (int n, int cols, float *points, Shape *shape, bool preUni = true);
-	
+
 	/** set points and initialise unispring algorithm:
 	 copy points array, pre-uniformise, do first triangulation
 	 @param n	number of points
@@ -210,7 +211,7 @@ public:
 	 @param shape_3D	defines 3D shape
      */
 	void set_points_3D (int n, float *points, Shape_3D *shape, bool preUni = true);
-	
+
 	//void set_points (int n, double *points, Shape shape);
 
     /** copy points to given pointer, scaled to dimension given by shape definition
@@ -218,7 +219,7 @@ public:
     void get_points_scaled (float *points);
 	void get_points_scaled_3D (float *points);
 	//void get_points_scaled (double *points);
-	
+
 	/** get triangulation edges as vector of pairs of points ids.
 	 */
 	std::vector< std::vector<int> > get_edges();
@@ -231,7 +232,7 @@ public:
 	int  update_3D ();
 
     void set_tolerance (float tol);
-	
+
 	//static double fd_disk(double px, double py, double r, double cx, double cy); // TODO: redefine as Shape methods
 	//static double fd_rect(double px, double py, double llx, double lly, double urx, double ury);
 	//static double fd_sphere(double px, double py, double pz, double r, double cx, double cy, double cz);
@@ -255,13 +256,13 @@ private:
 	void resetPhysicalModel();
 	void resetPhysicalModel_3D();
 	void print_summary();
-	
+
 	// TTL
 	hed::Triangulation      triang;
 	std::vector<hed::Node*> nodes; // vector of pointers to point coordinates data
 	std::vector<hed::Node>  mPoints;
 	std::vector<hed::Node>  mPointsOld;
-	
+
 	// Physical model
 	Shape *mShape;
 	Shape_3D *mShape_3D;
@@ -283,7 +284,7 @@ private:
 	std::vector<double> displacements; // Distance traveled during previous iteration
 	double max_displ_old, max_displ_prev; // Maximum displacement (interior points). Old / prev: since last triangulation / previous iteration
 	double dptol; // Stop criterion
-	int stop;    
+	int stop;
 
 };
 

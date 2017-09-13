@@ -5,10 +5,10 @@ var rta__psy_8c =
     [ "periodToMidiCent", "rta__psy_8c.html#ac2e5f08dfcb8af00ae46de7f6f0739d4", null ],
     [ "REF_FREQ", "rta__psy_8c.html#a186ca385724bf04ccf18c041f18ce330", null ],
     [ "REF_PITCH", "rta__psy_8c.html#ae5163f96fd2c796738b9bf4136f53f26", null ],
-    [ "psyAna_calculateInputVector", "rta__psy_8c.html#a376ff366012c632816d1823acb48ccac", null ],
-    [ "psyAna_deinit", "rta__psy_8c.html#a3c646b67bf4f1fb3299cc3b6e4687402", null ],
-    [ "psyAna_init", "rta__psy_8c.html#af8b9185ad553bcfe825ff2ac4e6114cc", null ],
-    [ "psyAna_reset", "rta__psy_8c.html#a71a5f6b383a4f86cb224c6ba04faba40", null ],
-    [ "psyAna_setCallback", "rta__psy_8c.html#aa56b4a80f4ce5ab8bc9c379d42dc9118", null ],
-    [ "psyAna_setThresholds", "rta__psy_8c.html#a5debc78f09b73153b2372f39a73c7320", null ]
+    [ "rta_psy_calculate_input_vector", "rta__psy_8c.html#ac1626dedc25954a9580df479436f757a", null ],
+    [ "rta_psy_deinit", "rta__psy_8c.html#ae167807daf657fcc8e79e1e5ad661e3b", null ],
+    [ "rta_psy_init", "rta__psy_8c.html#ae151460f9b92fe69c6076723273cb833", null ],
+    [ "rta_psy_reset", "rta__psy_8c.html#a568abfaa1165dbcddbbdc20a1f3ebe97", null ],
+    [ "rta_psy_set_callback", "rta__psy_8c.html#a4f0829f9071a493a19e963353599f004", null ],
+    [ "rta_psy_set_thresholds", "rta__psy_8c.html#a0ca6fc914723e635a2a35399cb4750d8", null ]
 ];

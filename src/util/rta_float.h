@@ -2,6 +2,7 @@
  * @file   rta_float.h
  * @author Jean-Philippe Lambert
  * @date   Mon Sep 10 11:05:09 2007
+ * @ingroup rta_util
  *
  * @brief Type wrapper for <float.h>
  *

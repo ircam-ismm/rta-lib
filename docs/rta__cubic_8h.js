@@ -1,11 +1,6 @@
 var rta__cubic_8h =
 [
-    [ "rta_cubic_coefs_t", "rta__cubic_8h.html#structrta__cubic__coefs__t", [
-      [ "p0", "rta__cubic_8h.html#a896132e790f154d14296e3563c189bb1", null ],
-      [ "p1", "rta__cubic_8h.html#a54554f7b6600b82c47ee13921af63a92", null ],
-      [ "p2", "rta__cubic_8h.html#a1f9b07be2b0d3b1cc5144d79ed287560", null ],
-      [ "pm1", "rta__cubic_8h.html#a6184c32ca638f4c2e626c97913118215", null ]
-    ] ],
+    [ "rta_cubic_coefs_t", "structrta__cubic__coefs__t.html", "structrta__cubic__coefs__t" ],
     [ "rta_cubic_calc", "rta__cubic_8h.html#a67002f6bc04a0e1ad72b0506559301b2", null ],
     [ "rta_cubic_calc_head", "rta__cubic_8h.html#ae5f3c94534296bc69f69bc690d9df533", null ],
     [ "rta_cubic_calc_stride", "rta__cubic_8h.html#a5ec9f5e7a02e07c749ab74cb007f63cb", null ],

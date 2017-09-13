@@ -104,11 +104,12 @@ $(document).ready(function(){initNavTree('rta__mahalanobis_8c.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aeba8e4d41d921bdf98a0f058017134a4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#aeba8e4d41d921bdf98a0f058017134a4">rta_find_nz</a> (int n, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *vec, int stride, int *indnz)</td></tr>
+<tr class="memitem:aeba8e4d41d921bdf98a0f058017134a4"><td class="memItemLeft" align="right" valign="top"><a id="aeba8e4d41d921bdf98a0f058017134a4"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_find_nz</b> (int n, rta_real_t *vec, int stride, int *indnz)</td></tr>
 <tr class="separator:aeba8e4d41d921bdf98a0f058017134a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77b2fedf97cd0b7efd304d550c05e435"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a77b2fedf97cd0b7efd304d550c05e435">rta_mahalanobis</a> (int M, int N, int C, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *inptr, int instride, int inskip, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *muptr, int mustride, int muskip, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *sigmaptr, int sigmastride, int sigmaskip, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *outptr, int outstride, int outskip)</td></tr>
+<tr class="memitem:a77b2fedf97cd0b7efd304d550c05e435"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a77b2fedf97cd0b7efd304d550c05e435">rta_mahalanobis</a> (int M, int N, int C, rta_real_t *inptr, int instride, int inskip, rta_real_t *muptr, int mustride, int muskip, rta_real_t *sigmaptr, int sigmastride, int sigmaskip, rta_real_t *outptr, int outstride, int outskip)</td></tr>
 <tr class="separator:a77b2fedf97cd0b7efd304d550c05e435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53b58109b6191b4938748a77f661ccdd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a53b58109b6191b4938748a77f661ccdd">rta_mahalanobis_nz</a> (int M, int N, int C, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *inptr, int instride, int inskip, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *muptr, int mustride, int muskip, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *sigmaptr, int sigmastride, int sigmaskip, <a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *outptr, int outstride, int outskip, int nnz, int *sigma_indnz, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfuncs[])</td></tr>
+<tr class="memitem:a53b58109b6191b4938748a77f661ccdd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a53b58109b6191b4938748a77f661ccdd">rta_mahalanobis_nz</a> (int M, int N, int C, rta_real_t *inptr, int instride, int inskip, rta_real_t *muptr, int mustride, int muskip, rta_real_t *sigmaptr, int sigmastride, int sigmaskip, rta_real_t *outptr, int outstride, int outskip, int nnz, int *sigma_indnz, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfuncs[])</td></tr>
 <tr class="separator:a53b58109b6191b4938748a77f661ccdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -126,48 +127,6 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="rta__mahalanobis_8c_source.html">rta_mahalanobis.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="aeba8e4d41d921bdf98a0f058017134a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeba8e4d41d921bdf98a0f058017134a4">&#9670;&nbsp;</a></span>rta_find_nz()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int rta_find_nz </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
-          <td class="paramname"><em>vec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>stride</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>indnz</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rta__mahalanobis_8c_source.html#l00049">49</a> of file <a class="el" href="rta__mahalanobis_8c_source.html">rta_mahalanobis.c</a>.</p>
-
-</div>
-</div>
 <a id="a77b2fedf97cd0b7efd304d550c05e435"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77b2fedf97cd0b7efd304d550c05e435">&#9670;&nbsp;</a></span>rta_mahalanobis()</h2>
 
@@ -195,7 +154,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>inptr</em>, </td>
         </tr>
         <tr>
@@ -213,7 +172,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>muptr</em>, </td>
         </tr>
         <tr>
@@ -231,7 +190,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>sigmaptr</em>, </td>
         </tr>
         <tr>
@@ -249,7 +208,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>outptr</em>, </td>
         </tr>
         <tr>
@@ -316,7 +275,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>inptr</em>, </td>
         </tr>
         <tr>
@@ -334,7 +293,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>muptr</em>, </td>
         </tr>
         <tr>
@@ -352,7 +311,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>sigmaptr</em>, </td>
         </tr>
         <tr>
@@ -370,7 +329,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__types_8h.html#aaf3b8391e07e4129a704e1b47b02d8f4">rta_real_t</a> *&#160;</td>
+          <td class="paramtype">rta_real_t *&#160;</td>
           <td class="paramname"><em>outptr</em>, </td>
         </tr>
         <tr>
@@ -434,7 +393,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 19:57:50 for rta by
+Generated on Wed Sep 13 2017 23:28:11 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

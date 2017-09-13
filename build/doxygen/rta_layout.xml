@@ -30,9 +30,11 @@
       <tab type="user" url="@ref rta_util" visible="yes" title="Util"/>
     </tab>
 
+    <!-- <tab type="user" visible="yes" url="@ref rta_signal" title="Reference" intro=""> -->
     <tab type="files" visible="yes" title="Reference" intro="">
       <tab type="filelist" visible="yes" title="Files" intro=""/>
       <tab type="globals" visible="yes" title="Index" intro=""/>
+      <tab type="index" visible="yes" title="Index" intro=""/>
     </tab>
 
     <!-- <tab type="examples" visible="no" title="" intro=""/> -->
