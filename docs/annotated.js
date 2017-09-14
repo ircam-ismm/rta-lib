@@ -27,9 +27,9 @@ var annotated =
     [ "rta_msdr_link_t", "structrta__msdr__link__t.html", "structrta__msdr__link__t" ],
     [ "rta_msdr_mass_t", "structrta__msdr__mass__t.html", "structrta__msdr__mass__t" ],
     [ "rta_msdr_t", "structrta__msdr__t.html", "structrta__msdr__t" ],
-    [ "rta_psy_ana", "structrta__psy__ana.html", "structrta__psy__ana" ],
-    [ "rta_psy_candidate", "structrta__psy__candidate.html", "structrta__psy__candidate" ],
-    [ "rta_psy_tracking_state", "structrta__psy__tracking__state.html", "structrta__psy__tracking__state" ],
+    [ "rta_psy_ana_t", "structrta__psy__ana__t.html", "structrta__psy__ana__t" ],
+    [ "rta_psy_candidate_t", "structrta__psy__candidate__t.html", "structrta__psy__candidate__t" ],
+    [ "rta_psy_tracking_state_t", "structrta__psy__tracking__state__t.html", "structrta__psy__tracking__state__t" ],
     [ "rta_svd_setup_t", "structrta__svd__setup.html", "structrta__svd__setup" ],
     [ "rta_yin_mins_t", "structrta__yin__mins.html", "structrta__yin__mins" ],
     [ "rta_yin_setup_t", "structrta__yin__setup.html", "structrta__yin__setup" ]

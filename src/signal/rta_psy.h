@@ -58,16 +58,16 @@ typedef struct CandidateSt
   int forwardIndex;
   double backward;
   int backwardIndex;
-} rta_psy_candidate;
+} rta_psy_candidate_t;
 
 typedef struct TrackingStateSt
 {
-  rta_psy_candidate candidates[MAX_CANDIDATES];
+  rta_psy_candidate_t candidates[MAX_CANDIDATES];
   int numCandidates;
   double time;
   double energy;
   double ac1;
-} rta_psy_tracking_state;
+} rta_psy_tracking_state_t;
 
 typedef struct PsyAnaSt
 {
@@ -97,7 +97,7 @@ typedef struct PsyAnaSt
   double yinThreshold; /* yin normalized difference threshold (default 0.1024) */
   double noiseThreshold; /* yin normalized difference threshold (default 0.3025) */
 
-  rta_psy_tracking_state trackingStates[NUM_TRACKING_STATES];
+  rta_psy_tracking_state_t trackingStates[NUM_TRACKING_STATES];
   int trackingIndex;
 
   double lastPeriod; /* latest period */
@@ -114,14 +114,14 @@ typedef struct PsyAnaSt
   void *receiver;
   int (*callback)(void *obj, double time, double freq, double energy, double ac1, double voiced);
   int numOutput;
-} rta_psy_ana;
+} rta_psy_ana_t;
 
-void rta_psy_init(rta_psy_ana *self);
-void rta_psy_deinit(rta_psy_ana *self);
-void rta_psy_reset(rta_psy_ana *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp);
-void rta_psy_set_callback(rta_psy_ana *self, void *receiver, int (*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced));
-void rta_psy_set_thresholds(rta_psy_ana *self, double yinThreshold, double noiseThreshold);
-int rta_psy_calculate_input_vector(rta_psy_ana *self, float *in, int vectorSize, int vectorStride);
-void rta_psy_finalize(rta_psy_ana *self);
+void rta_psy_init(rta_psy_ana_t *self);
+void rta_psy_deinit(rta_psy_ana_t *self);
+void rta_psy_reset(rta_psy_ana_t *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp);
+void rta_psy_set_callback(rta_psy_ana_t *self, void *receiver, int (*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced));
+void rta_psy_set_thresholds(rta_psy_ana_t *self, double yinThreshold, double noiseThreshold);
+int rta_psy_calculate_input_vector(rta_psy_ana_t *self, float *in, int vectorSize, int vectorStride);
+void rta_psy_finalize(rta_psy_ana_t *self);
 
 #endif  /* _RTA_PSY_H_ */

@@ -78,7 +78,7 @@ yinAutocorr(float *in, float *corr, int n, int m)
 #define MAX_LAG_HIGH 128
 
 static int
-estimateCandidates(float *input, float *corrBuffer, double maxPeriod, double minPeriod, double noiseThreshold, rta_psy_candidate *candidates)
+estimateCandidates(float *input, float *corrBuffer, double maxPeriod, double minPeriod, double noiseThreshold, rta_psy_candidate_t *candidates)
 {
   int numCandidates = 1;
   int nCorr = (int)ceil(maxPeriod);
@@ -162,9 +162,9 @@ estimateCandidates(float *input, float *corrBuffer, double maxPeriod, double min
 }
 
 static void
-traceBackAndForth(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int trackingIndex, rta_psy_candidate *candidate, int candidateIndex)
+traceBackAndForth(rta_psy_ana_t *self, rta_psy_tracking_state_t *trackingStates, int trackingIndex, rta_psy_candidate_t *candidate, int candidateIndex)
 {
-  rta_psy_tracking_state *backwardState = trackingStates + (trackingIndex + NUM_TRACKING_STATES - 1) % NUM_TRACKING_STATES;
+  rta_psy_tracking_state_t *backwardState = trackingStates + (trackingIndex + NUM_TRACKING_STATES - 1) % NUM_TRACKING_STATES;
   double nearestDiff = DBL_MAX;
   int backwardIndex = 0;
   int i;
@@ -190,7 +190,7 @@ traceBackAndForth(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int
 
   if(nearestDiff <= self->pitchDiffTolerance)
   {
-    rta_psy_candidate *backwardCandidate = backwardState->candidates + backwardIndex;
+    rta_psy_candidate_t *backwardCandidate = backwardState->candidates + backwardIndex;
 
     candidate->backwardIndex = backwardIndex;
     backwardCandidate->forwardIndex = candidateIndex;
@@ -206,9 +206,9 @@ traceBackAndForth(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int
 }
 
 static int
-getBestCandidate(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int trackingIndex)
+getBestCandidate(rta_psy_ana_t *self, rta_psy_tracking_state_t *trackingStates, int trackingIndex)
 {
-  rta_psy_tracking_state *state = trackingStates + trackingIndex;
+  rta_psy_tracking_state_t *state = trackingStates + trackingIndex;
   double yinThreshold = self->yinThreshold;
   int i;
 
@@ -216,14 +216,14 @@ getBestCandidate(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int 
 
   for(i = 1; i < state->numCandidates; i++)
   {
-    rta_psy_candidate *candidate = state->candidates + i;
+    rta_psy_candidate_t *candidate = state->candidates + i;
     double normDiff = candidate->normDiff;
 
     /* finish backward tracking */
     if(candidate->forwardIndex > 0)
     {
-      rta_psy_tracking_state *forwardState = trackingStates + (trackingIndex + NUM_TRACKING_STATES + 1) % NUM_TRACKING_STATES;
-      rta_psy_candidate *forwardCandidate = forwardState->candidates + candidate->forwardIndex;
+      rta_psy_tracking_state_t *forwardState = trackingStates + (trackingIndex + NUM_TRACKING_STATES + 1) % NUM_TRACKING_STATES;
+      rta_psy_candidate_t *forwardCandidate = forwardState->candidates + candidate->forwardIndex;
 
       candidate->backward += 1.0 * forwardCandidate->backward;
       candidate->backward *= 0.5;
@@ -244,9 +244,9 @@ getBestCandidate(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int 
 }
 
 static double
-estimateAndTraceCandidates(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int trackingIndex, double time)
+estimateAndTraceCandidates(rta_psy_ana_t *self, rta_psy_tracking_state_t *trackingStates, int trackingIndex, double time)
 {
-  rta_psy_tracking_state *state = trackingStates + trackingIndex;
+  rta_psy_tracking_state_t *state = trackingStates + trackingIndex;
   double yinThreshold = self->yinThreshold;
   double norm = 1.0 / ceil(self->maxPeriod);
   int yinIndex = 0;
@@ -266,7 +266,7 @@ estimateAndTraceCandidates(rta_psy_ana *self, rta_psy_tracking_state *trackingSt
   /* get yin index */
   for(i = 1; i < state->numCandidates; i++)
   {
-    rta_psy_candidate *candidate = state->candidates + i;
+    rta_psy_candidate_t *candidate = state->candidates + i;
     double normDiff = candidate->normDiff;
 
     /* init tracing */
@@ -297,16 +297,16 @@ estimateAndTraceCandidates(rta_psy_ana *self, rta_psy_tracking_state *trackingSt
 }
 
 static int
-reportState(rta_psy_ana *self, rta_psy_tracking_state *trackingStates, int trackingIndex)
+reportState(rta_psy_ana_t *self, rta_psy_tracking_state_t *trackingStates, int trackingIndex)
 {
-  rta_psy_tracking_state *state = trackingStates + trackingIndex;
+  rta_psy_tracking_state_t *state = trackingStates + trackingIndex;
   double reportTime, reportFreq;
   int cont = 1;
 
   if(state->time >= 0.0)
   {
     int candidateIndex = getBestCandidate(self, trackingStates, trackingIndex);
-    rta_psy_candidate *reportCandidate = state->candidates + candidateIndex;
+    rta_psy_candidate_t *reportCandidate = state->candidates + candidateIndex;
     double period, voiced;
 
     if(reportCandidate->normDiff < self->noiseThreshold)
@@ -336,7 +336,7 @@ dummyCallback(void *receiver, double time, double freq, double energy, double ac
 }
 
 void
-rta_psy_init(rta_psy_ana *self)
+rta_psy_init(rta_psy_ana_t *self)
 {
   /* input buffers */
   self->inputBuffer = NULL;
@@ -385,7 +385,7 @@ rta_psy_init(rta_psy_ana *self)
 }
 
 void
-rta_psy_deinit(rta_psy_ana *self)
+rta_psy_deinit(rta_psy_ana_t *self)
 {
   if(self->inputBuffer != NULL)
     psyAna_free(self->inputBuffer);
@@ -395,7 +395,7 @@ rta_psy_deinit(rta_psy_ana *self)
 }
 
 void
-rta_psy_reset(rta_psy_ana *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp)
+rta_psy_reset(rta_psy_ana_t *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp)
 {
   double minMinPeriod = 2.0;
   double maxMaxPeriod = 10000.0;
@@ -474,14 +474,14 @@ rta_psy_reset(rta_psy_ana *self, double minFreq, double maxFreq, double sampleRa
 }
 
 void
-rta_psy_set_callback(rta_psy_ana *self, void *receiver, int (*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced))
+rta_psy_set_callback(rta_psy_ana_t *self, void *receiver, int (*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced))
 {
   self->receiver = receiver;
   self->callback = callback;
 }
 
 void
-rta_psy_set_thresholds(rta_psy_ana *self, double yinThreshold, double noiseThreshold)
+rta_psy_set_thresholds(rta_psy_ana_t *self, double yinThreshold, double noiseThreshold)
 {
   if(yinThreshold < 0.0)
     yinThreshold = 0.0;
@@ -503,7 +503,7 @@ rta_psy_set_thresholds(rta_psy_ana *self, double yinThreshold, double noiseThres
 }
 
 int
-rta_psy_calculate_input_vector(rta_psy_ana *self, float *in, int vectorSize, int vectorStride)
+rta_psy_calculate_input_vector(rta_psy_ana_t *self, float *in, int vectorSize, int vectorStride)
 {
   int downVectorSize = vectorSize >> self->downSamplingExp;
   float *inputBuffer = self->inputBuffer + self->inputFill;
