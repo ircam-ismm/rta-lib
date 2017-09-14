@@ -22,6 +22,7 @@
     </tab>
     -->
 
+    <!--
     <tab type="modules" visible="yes" title="Modules" intro="">
       <tab type="user" url="@ref rta_signal" visible="yes" title="Signal"/>
       <tab type="user" url="@ref rta_statistics" visible="yes" title="Statistics"/>
@@ -29,13 +30,15 @@
       <tab type="user" url="@ref rta_physical_models" visible="yes" title="Physical models"/>
       <tab type="user" url="@ref rta_util" visible="yes" title="Util"/>
     </tab>
+    -->
 
-    <!-- <tab type="user" visible="yes" url="@ref rta_signal" title="Reference" intro=""> -->
-    <tab type="files" visible="yes" title="Reference" intro="">
-      <tab type="filelist" visible="yes" title="Files" intro=""/>
+    <tab type="user" visible="yes" url="#" title="Reference" intro="">
+    <!-- <tab type="files" visible="yes" title="Reference" intro=""> -->
       <tab type="globals" visible="$ALPHABETICAL_INDEX" title="Index" intro=""/>
       <tab type="classlist" visible="$ALPHABETICAL_INDEX" title="Classes and Structs"/>
     </tab>
+
+    <tab type="filelist" visible="yes" title="Files" intro="">
 
     <!-- <tab type="examples" visible="no" title="" intro=""/> -->
 

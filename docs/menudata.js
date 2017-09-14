@@ -1,13 +1,6 @@
 var menudata={children:[
 {text:"Overview",url:"index.html"},
-{text:"Modules",url:"modules.html",children:[
-{text:"Signal",url:"group__rta__signal.html"},
-{text:"Statistics",url:"group__rta__statistics.html"},
-{text:"Recognition",url:"group__rta__recognition.html"},
-{text:"Physical models",url:"group__rta__physical__models.html"},
-{text:"Util",url:"group__rta__util.html"}]},
-{text:"Reference",url:"files.html",children:[
-{text:"Files",url:"files.html"},
+{text:"Reference",url:"#",children:[
 {text:"Index",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
 {text:"b",url:"globals.html#index_b"},
@@ -50,4 +43,5 @@ var menudata={children:[
 {text:"Enumerations",url:"globals_enum.html"},
 {text:"Enumerator",url:"globals_eval.html"},
 {text:"Macros",url:"globals_defs.html"}]},
-{text:"Classes and Structs",url:"annotated.html"}]}]}
+{text:"Classes and Structs",url:"annotated.html"}]},
+{text:"Files",url:"files.html"}]}
