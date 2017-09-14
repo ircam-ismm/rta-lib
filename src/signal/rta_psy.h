@@ -43,11 +43,11 @@
 #define rta_psy_realloc realloc
 #define rta_psy_free free
 
-#define MAX_DOWN_SAMPLING_EXP 3
-#define MAX_DOWN_SAMPLING (1 << MAX_DOWN_SAMPLING_EXP)
+#define RTA_PSY_MAX_DOWN_SAMPLING_EXP 3
+#define RTA_PSY_MAX_DOWN_SAMPLING (1 << RTA_PSY_MAX_DOWN_SAMPLING_EXP)
 
-#define MAX_CANDIDATES 64
-#define NUM_TRACKING_STATES 3
+#define RTA_PSY_MAX_CANDIDATES 64
+#define RTA_PSY_NUM_TRACKING_STATES 3
 
 typedef struct CandidateSt
 {
@@ -62,7 +62,7 @@ typedef struct CandidateSt
 
 typedef struct TrackingStateSt
 {
-  rta_psy_candidate_t candidates[MAX_CANDIDATES];
+  rta_psy_candidate_t candidates[RTA_PSY_MAX_CANDIDATES];
   int numCandidates;
   double time;
   double energy;
@@ -97,7 +97,7 @@ typedef struct PsyAnaSt
   double yinThreshold; /* yin normalized difference threshold (default 0.1024) */
   double noiseThreshold; /* yin normalized difference threshold (default 0.3025) */
 
-  rta_psy_tracking_state_t trackingStates[NUM_TRACKING_STATES];
+  rta_psy_tracking_state_t trackingStates[RTA_PSY_NUM_TRACKING_STATES];
   int trackingIndex;
 
   double lastPeriod; /* latest period */

@@ -153,7 +153,7 @@ estimateCandidates(float *input, float *corrBuffer, double maxPeriod, double min
         }
       }
 
-      if(numCandidates >= MAX_CANDIDATES)
+      if(numCandidates >= RTA_PSY_MAX_CANDIDATES)
         break;
     }
   }
@@ -164,7 +164,7 @@ estimateCandidates(float *input, float *corrBuffer, double maxPeriod, double min
 static void
 traceBackAndForth(rta_psy_ana_t *self, rta_psy_tracking_state_t *trackingStates, int trackingIndex, rta_psy_candidate_t *candidate, int candidateIndex)
 {
-  rta_psy_tracking_state_t *backwardState = trackingStates + (trackingIndex + NUM_TRACKING_STATES - 1) % NUM_TRACKING_STATES;
+  rta_psy_tracking_state_t *backwardState = trackingStates + (trackingIndex + RTA_PSY_NUM_TRACKING_STATES - 1) % RTA_PSY_NUM_TRACKING_STATES;
   double nearestDiff = DBL_MAX;
   int backwardIndex = 0;
   int i;
@@ -222,7 +222,7 @@ getBestCandidate(rta_psy_ana_t *self, rta_psy_tracking_state_t *trackingStates, 
     /* finish backward tracking */
     if(candidate->forwardIndex > 0)
     {
-      rta_psy_tracking_state_t *forwardState = trackingStates + (trackingIndex + NUM_TRACKING_STATES + 1) % NUM_TRACKING_STATES;
+      rta_psy_tracking_state_t *forwardState = trackingStates + (trackingIndex + RTA_PSY_NUM_TRACKING_STATES + 1) % RTA_PSY_NUM_TRACKING_STATES;
       rta_psy_candidate_t *forwardCandidate = forwardState->candidates + candidate->forwardIndex;
 
       candidate->backward += 1.0 * forwardCandidate->backward;
@@ -455,7 +455,7 @@ rta_psy_reset(rta_psy_ana_t *self, double minFreq, double maxFreq, double sample
   self->inputFill = 0;
   self->outputTime = 0.0;
 
-  for(i = 0; i < NUM_TRACKING_STATES; i++)
+  for(i = 0; i < RTA_PSY_NUM_TRACKING_STATES; i++)
   {
     self->trackingStates[i].numCandidates = 0;
     self->trackingStates[i].time = -DBL_MAX;
@@ -568,7 +568,7 @@ rta_psy_calculate_input_vector(rta_psy_ana_t *self, float *in, int vectorSize, i
     int shift;
 
     /* advance tracking index */
-    self->trackingIndex = (self->trackingIndex + 1) % NUM_TRACKING_STATES;
+    self->trackingIndex = (self->trackingIndex + 1) % RTA_PSY_NUM_TRACKING_STATES;
 
     if(reportState(self, self->trackingStates, self->trackingIndex) == 0)
       return 0;
