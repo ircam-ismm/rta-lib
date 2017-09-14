@@ -80,43 +80,43 @@ extern "C" {
 #endif
 
 
-#define KDTREE_PROFILE_BUILD  1
-#define KDTREE_PROFILE_SEARCH 1
-#define KDTREE_PROFILE	       (KDTREE_PROFILE_BUILD || KDTREE_PROFILE_SEARCH)
+#define RTA_KDTREE_PROFILE_BUILD  1
+#define RTA_KDTREE_PROFILE_SEARCH 1
+#define RTA_KDTREE_PROFILE (RTA_KDTREE_PROFILE_BUILD || RTA_KDTREE_PROFILE_SEARCH)
 
 
-#define USE_DISTFUNC 1
-#define KDTREE_MAX_DISTFUNC 256
+#define RTA_USE_DISTFUNC 1
+#define RTA_KDTREE_MAX_DISTFUNC 256
 
 
-#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
-#  define DMAPW(x, y, s, dfun) ((dfun)  ?  rta_bpf_get_interpolated(dfun, ((x) - (y))) / (s)  :  ((x) - (y)) / (s))
+#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#  define RTA_DMAPW(x, y, s, dfun) ((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) / (s) : ((x) - (y)) / (s))
 #else
-#  define DMAPW(x, y, s, dfun) ((x) - (y)) / (s))
-#endif /* USE_DISTFUNC */
+#  define RTA_DMAPW(x, y, s, dfun) ((x) - (y)) / (s)
+#endif /* RTA_USE_DISTFUNC */
 
-#if USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
-#  define DMAP(x, y, dfun) ((dfun)  ?  rta_bpf_get_interpolated(dfun, ((x) - (y)))  :  ((x) - (y)))
+#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#  define RTA_DMAP(x, y, dfun) ((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) : ((x) - (y)))
 #else
-#  define DMAP(x, y, dfun) ((x) - (y))
-#endif /* USE_DISTFUNC */
+#  define RTA_DMAP(x, y, dfun) ((x) - (y))
+#endif /* RTA_USE_DISTFUNC */
 
 
 
 /** stack element for search algorithm */
 typedef struct _kdtree_stack_elem_struct
 {
-    int   node;
-    rta_real_t dist;
-} kdtree_stack_elem_t;
+  int node;
+  rta_real_t dist;
+} rta_kdtree_stack_elem_t;
 
 /** optimised stack for search algorithm */
 typedef struct _kdtree_stack_struct
 {
-    int size;
-    int alloc;
-    kdtree_stack_elem_t *buffer;
-} kdtree_stack_t;
+  int size;
+  int alloc;
+  rta_kdtree_stack_elem_t *buffer;
+} rta_kdtree_stack_t;
 
 
 /** decomposition mode
@@ -128,10 +128,10 @@ typedef struct _kdtree_stack_struct
  */
 typedef enum
 {
-    dmode_orthogonal, 	/**< optimised othogonal to axes */
-    dmode_hyperplane, 	/**< hyperplane orthogonal to axes */
-    dmode_pca	      	/**< hyperplane along principal components */
-} kdtree_dmode_t;
+  dmode_orthogonal,   /**< optimised othogonal to axes */
+  dmode_hyperplane,   /**< hyperplane orthogonal to axes */
+  dmode_pca         /**< hyperplane along principal components */
+} rta_kdtree_dmode_t;
 
 /** pivot calculation mode
  *
@@ -139,83 +139,83 @@ typedef enum
  */
 typedef enum
 {
-    mmode_mean,		/**< mean of values / distances to splitplane */
-    mmode_middle,	/**< middle between min/max */
-    mmode_median	/**< true median (guarantees equal number of points left
-			   and right and thus a well-balanced and optimal tree) */
-} kdtree_mmode_t;
+  mmode_mean,   /**< mean of values / distances to splitplane */
+  mmode_middle, /**< middle between min/max */
+  mmode_median  /**< true median (guarantees equal number of points left
+                   and right and thus a well-balanced and optimal tree) */
+} rta_kdtree_mmode_t;
 
 
 /** one node of the kd-tree */
 typedef struct _kdtree_node_struct
 {
-    int startind;	/**< index of first vector in node in dataindex array */
-    int endind;		/**< index of last vector in node in dataindex array */
-    int size;		/**< number of vectors in node */
-    int splitdim;	/**< for dmode othogonal, dimension along which node is split*/
+  int startind; /**< index of first vector in node in dataindex array */
+  int endind;   /**< index of last vector in node in dataindex array */
+  int size;   /**< number of vectors in node */
+  int splitdim; /**< for dmode othogonal, dimension along which node is split*/
 
-    rta_real_t  splitnorm;	/**< spatial length of split vector */
-} kdtree_node_t;
+  rta_real_t  splitnorm;  /**< spatial length of split vector */
+} rta_kdtree_node_t;
 
 typedef struct _kdtree_profile_struct
 {
-    int v2v;	  /**< vector to vector distances */
-    int v2n;	  /**< vector to node distances */
-    int mean;	  /**< mean vector calculations */
-    int hyperp;    /**< split plane calculations */
-    int searches;	  /**< searches performed */
-    int neighbours;	  /**< neighbours found */
-    int maxstack;	  /**< highest stack size */
-} kdtree_profile_t;
+  int v2v;    /**< vector to vector distances */
+  int v2n;    /**< vector to node distances */
+  int mean;   /**< mean vector calculations */
+  int hyperp;    /**< split plane calculations */
+  int searches;   /**< searches performed */
+  int neighbours;   /**< neighbours found */
+  int maxstack;   /**< highest stack size */
+} rta_kdtree_profile_t;
 
 /** struct holding a block index and an element index (matrix row) */
 typedef struct _kdtree_object_struct
 {
-    int base;	  /**< number of block (in data array) */
-    int index;	  /**< row vector index inside block */
-} kdtree_object_t;
+  int base;   /**< number of block (in data array) */
+  int index;    /**< row vector index inside block */
+} rta_kdtree_object_t;
 
 /** k-dimensional search tree data structure */
 typedef struct _kdtree_struct
 {
-    kdtree_dmode_t dmode; /**< decomposition mode */
-    kdtree_mmode_t mmode; /**< pivot calculation mode */
+  rta_kdtree_dmode_t dmode; /**< decomposition mode */
+  rta_kdtree_mmode_t mmode; /**< pivot calculation mode */
 
-    int     ndim;	  /**< Dimension of vectors */
-    int     ndatatot;	  /**< Number of total vectors */
-    int     nblocks;	  /**< Number of blocks of data */
-    int     *ndata;	  /**< Number of vectors per block*/
-    rta_real_t **data;	  /**< nblocks pointers to data matrices (ndata, ndim) */
-    kdtree_object_t *dataindex;	  /**< data vector indirection array (ndata):
-			     original index of data vector at tree array position  */
+  int     ndim;   /**< Dimension of vectors */
+  int     ndatatot;   /**< Number of total vectors */
+  int     nblocks;    /**< Number of blocks of data */
+  int     *ndata;   /**< Number of vectors per block*/
+  rta_real_t **data;    /**< nblocks pointers to data matrices (ndata, ndim) */
+  rta_kdtree_object_t *dataindex;   /**< data vector indirection array (ndata):
+           original index of data vector at tree array position  */
 
-    rta_real_t *sigma;	  /**< 1/weight, 0 == inf */
-    int     sigma_nnz;    /**< number of non-zero sigma */
-    int    *sigma_indnz;  /**< non-zero sigma lines */
-    rta_bpf_t *dfun[KDTREE_MAX_DISTFUNC];	/* distance transfer functions */
+  rta_real_t *sigma;    /**< 1/weight, 0 == inf */
+  int     sigma_nnz;    /**< number of non-zero sigma */
+  int    *sigma_indnz;  /**< non-zero sigma lines */
+  rta_bpf_t *dfun[RTA_KDTREE_MAX_DISTFUNC]; /* distance transfer functions */
 
-    int     height;	  /**< Height of the kdtree */
-    int     maxheight;	  /**< Maximal height of the kdtree */
-    int     givenheight;  /**< Height given by user, gives tree height
-			     if positive, subtract from maxheight if negative */
-    int     nnodes; 	  /**< Number of nodes (must be a power of 2) */
-    int     ninner; 	  /**< Number of inner nodes (=index of first leaf node)*/
-    kdtree_node_t *nodes; /**< nodes (nnodes) */
-    rta_real_t *mean;	  /**< mean vectors in nnodes rows (todo: median), always present */
-    rta_real_t *split;	  /**< hyperplanes A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0,
-			     in nnodes rows or NULL in dmode_orthogonal */
+  int     height;   /**< Height of the kdtree */
+  int     maxheight;    /**< Maximal height of the kdtree */
+  int     givenheight;  /**< Height given by user, gives tree height
+         if positive, subtract from maxheight if negative */
+  int     nnodes;     /**< Number of nodes (must be a power of 2) */
+  int     ninner;     /**< Number of inner nodes (=index of first leaf node)*/
+  rta_kdtree_node_t *nodes; /**< nodes (nnodes) */
+  rta_real_t *mean;   /**< mean vectors in nnodes rows (todo: median), always present */
+  rta_real_t *split;    /**< hyperplanes A1*X1 + A2*X2 +...+ An*Xn + An+1 = 0,
+         in nnodes rows or NULL in dmode_orthogonal */
 
-    int	    sort;	  /**< sort search result by distance */
-    kdtree_stack_t stack;
+  int     sort;   /**< sort search result by distance */
+  rta_kdtree_stack_t stack;
 
     /** profiling data: count internal operations */
-	kdtree_profile_t profile;
+  rta_kdtree_profile_t profile;
 
-} kdtree_t;
+} rta_kdtree_t;
 
 
-extern const char *kdtree_dmodestr[];
-extern const char *kdtree_mmodestr[];
+extern const char *rta_kdtree_dmodestr[];
+extern const char *rta_kdtree_mmodestr[];
 
 
 /** get data element via indirection order array
@@ -224,15 +224,15 @@ extern const char *kdtree_mmodestr[];
  * index \p i, that is mapped to the original row ordering by the
  * indirection array kdtree_t#dataindex.
  *
- * @param t	kd-tree structure
- * @param i	ordered row index (0 <= i < kdtree_t#ndata)
- * @param j	column index      (0 <= j < kdtree_t#ndim)
- * @return	data element at row \p i, column \p j
+ * @param t kd-tree structure
+ * @param i ordered row index (0 <= i < kdtree_t#ndata)
+ * @param j column index      (0 <= j < kdtree_t#ndim)
+ * @return  data element at row \p i, column \p j
  */
 #if DOXYGEN_FUNCTIONS
-rta_real_t kdtree_get_element(kdtree_t *t, int i, int j);
+rta_real_t rta_kdtree_get_element(rta_kdtree_t *t, int i, int j);
 #else
-#define    kdtree_get_element(t, i, j)  ((t)->data[(t)->dataindex[i].base][(t)->dataindex[i].index * (t)->ndim + (j)])
+#define    rta_kdtree_get_element(t, i, j) ((t)->data[(t)->dataindex[i].base][(t)->dataindex[i].index * (t)->ndim + (j)])
 #endif
 
 /** get data vector via indirection order array
@@ -242,61 +242,63 @@ rta_real_t kdtree_get_element(kdtree_t *t, int i, int j);
  * the original row ordering by the indirection array
  * kdtree_t#dataindex.
  *
- * @param t	kd-tree structure
- * @param i	ordered row index (0 <= i < kdtree_t#ndata)
- * @return	pointer to data row \p i
+ * @param t kd-tree structure
+ * @param i ordered row index (0 <= i < kdtree_t#ndata)
+ * @return  pointer to data row \p i
  */
 #if DOXYGEN_FUNCTIONS
-rta_real_t *kdtree_get_vector(kdtree_t *t, int i);
+rta_real_t *rta_kdtree_get_vector(rta_kdtree_t *t, int i);
 #else
-#define     kdtree_get_vector(t, i)     ((t)->data[(t)->dataindex[i].base] + (t)->dataindex[i].index * (t)->ndim)
+#define rta_kdtree_get_vector(t, i) ((t)->data[(t)->dataindex[i].base] + (t)->dataindex[i].index * (t)->ndim)
 #endif
 
-/* @param k	number of data block */
-#define kdtree_get_row_ptr(t, k, i)    ((t)->data[k] + (i) * (t)->ndim)
+/* @param k number of data block */
+#define rta_kdtree_get_row_ptr(t, k, i) ((t)->data[k] + (i) * (t)->ndim)
 // old: #define kdtree_get_row_ptr(t, i)        kdtree_get_row_ptr2(t, 0, i)
 
 /** print only tree info to console */
-void kdtree_info_display (kdtree_t* t);
+void rta_kdtree_info_display (rta_kdtree_t* t);
+
 /** print tree raw unsorted data to console */
-void kdtree_raw_display  (kdtree_t* t);
+void rta_kdtree_raw_display  (rta_kdtree_t* t);
+
 /** print tree data to console
     \p print_data = 1 or 2 controls verbosity */
-void kdtree_data_display (kdtree_t* t, int print_data);
+void rta_kdtree_data_display (rta_kdtree_t* t, int print_data);
 
 /** set all counters in kdtree_t#profile to zero */
-void kdtree_profile_clear (kdtree_t *t);
+void rta_kdtree_profile_clear (rta_kdtree_t *t);
 
 /** set decomposition mode */
-void kdtree_set_decomposition (kdtree_t *t, kdtree_dmode_t mode, void *param);
+void rta_kdtree_set_decomposition (rta_kdtree_t *t, rta_kdtree_dmode_t mode, void *param);
 
 /** set pivot mode */
-void kdtree_set_pivot (kdtree_t *t, kdtree_mmode_t mode);
+void rta_kdtree_set_pivot (rta_kdtree_t *t, rta_kdtree_mmode_t mode);
 
 /** initialise tree structure */
-void kdtree_init (kdtree_t *self);
+void rta_kdtree_init (rta_kdtree_t *self);
 
 /** free auto-allocated tree memory
 
     Call this ONLY when you gave the required node memory pointers as NULL.
 */
-void kdtree_free (kdtree_t *self);
+void rta_kdtree_free (rta_kdtree_t *self);
 
 /** set new data vector and size
 
-    @param self		kd-tree structure
-    @param nblocks	number of data matrices to index
-    @param data		pointer to an array(\p nblocks) of pointers to \p m * \p n real values of data to be searched
-    @param index	if not NULL, must point to space for \p m int values with row indices to use (1..mdata), otherwise the library will auto-allocate
-    @param m		pointer to an array(\p nblocks) of the numbers of data vectors (rows) in each data matrix
-    @param n		dimension of data vectors (columns)
+    @param self   kd-tree structure
+    @param nblocks  number of data matrices to index
+    @param data   pointer to an array(\p nblocks) of pointers to \p m * \p n real values of data to be searched
+    @param index  if not NULL, must point to space for \p m int values with row indices to use (1..mdata), otherwise the library will auto-allocate
+    @param m    pointer to an array(\p nblocks) of the numbers of data vectors (rows) in each data matrix
+    @param n    dimension of data vectors (columns)
 
     @return the number of nodes the tree will build
 
     \p data and \p index must point to arrays in memory that will stay
     valid throughout the existence of the tree!
 */
-int kdtree_set_data (kdtree_t *self, int nblocks, rta_real_t **data, kdtree_object_t *index, int *m, int n);
+int rta_kdtree_set_data (rta_kdtree_t *self, int nblocks, rta_real_t **data, rta_kdtree_object_t *index, int *m, int n);
 
 /** build tree only on m lines of data listed in ind */
 // int kdtree_set_data_ind (kdtree_t *self, rta_real_t *data, int *index, int m, int n, int *ind);
@@ -307,14 +309,14 @@ Dimensions can be weighted while building the tree, and while
 searching. The weight is 1 / sigma, just as in mnm.mahalanobis. Sigma
 = 0 means: ignore this dimension.
 */
-void kdtree_set_sigma (kdtree_t *self, rta_real_t *sigma);
+void rta_kdtree_set_sigma (rta_kdtree_t *self, rta_real_t *sigma);
 
 /** check for changes in weights
 
     This functions searches the non-zero elements in kdtree_t#sigma.
     Only these dimensions will be taken into account for searching.
 */
-int  kdtree_update_sigmanz (kdtree_t *self);
+int rta_kdtree_update_sigmanz (rta_kdtree_t *self);
 
 
 /** initialise tree nodes
@@ -323,37 +325,35 @@ int  kdtree_update_sigmanz (kdtree_t *self);
     kdtree_build().  It initialises the tree nodes and the vectors
     decomposing the search space.
 
-    @param self		kd-tree structure
-    @param nodes	space for tree nodes or NULL for automatic allocation
-    @param means	space for mean vectors or NULL for automatic allocation
-    @param planes	space for hyperplanes or NULL for automatic allocation
+    @param self   kd-tree structure
+    @param nodes  space for tree nodes or NULL for automatic allocation
+    @param means  space for mean vectors or NULL for automatic allocation
+    @param planes space for hyperplanes or NULL for automatic allocation
 
     \em Prerequisites:
-    - tree data(m, n) must have been set with kdtree_set_data(), this returned nnodes
+    - tree data(m, n) must have been set with rta_kdtree_set_data(), this returned nnodes
     - if \p nodes is not NULL, it must point to space for the tree nodes of size nnodes * sizeof(kdtree_node_t), which must have been allocated outside of the library
     - if \p means is not NULL, it must point to space for the mean vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library
     - if \p planes is not NULL and decomposition mode is not dmode_orthogonal, it must point to space for split hyperplane base vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library
 */
-void kdtree_init_nodes (kdtree_t *self, kdtree_node_t *nodes, rta_real_t *means, rta_real_t *planes);
-
+void rta_kdtree_init_nodes (rta_kdtree_t *self, kdtree_node_t *nodes, rta_real_t *means, rta_real_t *planes);
 
 /** build tree
 
-    @param self		kd-tree structure
-    @param use_sigma	use weights for distance calculations while building tre
+    @param self   kd-tree structure
+    @param use_sigma  use weights for distance calculations while building tre
     \em Prerequisites:
     - tree data(m, n) must have been set with kdtree_set_data(), this returned nnodes
     - nodes must have been initialised with kdtree_init_nodes()
     - if \p use_sigma is on, sigma must have been set with kdtree_set_sigma().
 */
-void kdtree_build (kdtree_t *self, int use_sigma);
-
+void rta_kdtree_build (rta_kdtree_t *self, int use_sigma);
 
 /** TBI: rebuild search tree from changed data or weights
  *
- * @param t		kd-tree structure
- * @param use_sigma	use weights for distance calculations while rebuilding tree*/
-void kdtree_rebuild (kdtree_t* t, int use_sigma);
+ * @param t   kd-tree structure
+ * @param use_sigma use weights for distance calculations while rebuilding tree*/
+void rta_kdtree_rebuild (rta_kdtree_t* t, int use_sigma);
 
 /** TBI: (re-)insert data vectors into tree.
  *
@@ -361,22 +361,21 @@ void kdtree_rebuild (kdtree_t* t, int use_sigma);
  * kdtree_t::data.  If index < ndata, move to correct node, otherwise
  * insert and increment ndata.
  *
- * @param t	kd-tree structure
- * @param index	start index of vectors to insert
- * @param num	number of vectors to insert
+ * @param t kd-tree structure
+ * @param index start index of vectors to insert
+ * @param num number of vectors to insert
  */
-void kdtree_insert (kdtree_t* t, int index, int num);
+void rta_kdtree_insert (rta_kdtree_t* t, int index, int num);
 
 /** TBI: remove data vectors from tree.
  *
  * Signal removal of rows in kdtree_t::data from search tree.
  *
- * @param t	kd-tree structure
- * @param index	start index of vectors to remove
- * @param num	number of vectors to remove
+ * @param t kd-tree structure
+ * @param index start index of vectors to remove
+ * @param num number of vectors to remove
  */
-void kdtree_delete (kdtree_t* t, int index, int num);
-
+void rta_kdtree_delete (rta_kdtree_t* t, int index, int num);
 
 /** Perform search in kd-tree structure \p t.
  *
@@ -388,32 +387,34 @@ void kdtree_delete (kdtree_t* t, int index, int num);
      d_j = \sum_{j=0}^{ndim} \left( \frac{data_j - x_j}{\sigma} \right)^2
  \f]
  *
- * @param t	kd-tree structure
- * @param x	vector of kdtree_t#ndim elements to search nearest neighbours of
+ * @param t kd-tree structure
+ * @param x vector of kdtree_t#ndim elements to search nearest neighbours of
  * @param stride stride in vector \p x
- * @param k	max number of neighbours to find (actual number can be lower)
- * @param r	max squared distance of neighbours to find (\p r = 0 means no limit)
- * @param use_sigma	use weights
- * @param y	output vector (size == \p r <= \p k) of (base, element) indices into original data kdtree_t#data
- * @param d	output vector (size == \p r <= \p k) of squared distances to data vectors
+ * @param k max number of neighbours to find (actual number can be lower)
+ * @param r max squared distance of neighbours to find (\p r = 0 means no limit)
+ * @param use_sigma use weights
+ * @param y output vector (size == \p r <= \p k) of (base, element) indices into original data kdtree_t#data
+ * @param d output vector (size == \p r <= \p k) of squared distances to data vectors
  * @return \p r = the number of actual neighbours found, 0 <= \p r <= \p k
  */
-int kdtree_search_knn (kdtree_t *t, rta_real_t* x, int stride, int k, const rta_real_t r, int use_sigma,
-		       /*out*/ kdtree_object_t *y, rta_real_t *d);
+int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* x, int stride, int k, const rta_real_t r, int use_sigma,
+               /*out*/ rta_kdtree_object_t *y, rta_real_t *d);
 
+/**
+ * Weighted squared vector distance (v1 - v2)^2
+ */
+rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
+                                   rta_real_t* v2, int dim,
+                                   rta_bpf_t  *distfunc[]);
 
-/** Weighted squared vector distance (v1 - v2)^2
-*/
-rta_real_t rta_euclidean_distance 		  (rta_real_t* v1, int stride1,
-						   rta_real_t* v2, int dim,
-						   rta_bpf_t  *distfunc[]);
-rta_real_t rta_weighted_euclidean_distance 	  (rta_real_t* v1, rta_real_t* v2,
-					   	   rta_real_t *sigma, int ndim,
-						   rta_bpf_t  *distfunc[]);
+rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
+                                            rta_real_t *sigma, int ndim,
+                                            rta_bpf_t  *distfunc[]);
+
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
-						   rta_real_t* v2,
-						   rta_real_t *sigma, int ndim,
-						   rta_bpf_t  *distfunc[]);
+                                                   rta_real_t* v2,
+                                                   rta_real_t *sigma, int ndim,
+                                                   rta_bpf_t  *distfunc[]);
 
 
 #ifdef __cplusplus

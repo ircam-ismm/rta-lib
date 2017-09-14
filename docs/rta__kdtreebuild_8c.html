@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/recognition/rta_kdtreebuild.c File Reference</title>
+<title>rta: recognition/rta_kdtreebuild.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,22 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+    &#160;<span id="projectnumber">1.0.0</span>
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -105,22 +115,22 @@ $(document).ready(function(){initNavTree('rta__kdtreebuild_8c.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a0363b2ad28b41278e3bb835edb121fab"><td class="memItemLeft" align="right" valign="top"><a id="a0363b2ad28b41278e3bb835edb121fab"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_KDTREEBUILD</b>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a0363b2ad28b41278e3bb835edb121fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8c04fb418f6666df5f33018caa83625"><td class="memItemLeft" align="right" valign="top"><a id="af8c04fb418f6666df5f33018caa83625"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_DEBUG_KDTREEBUILD</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:af8c04fb418f6666df5f33018caa83625"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a01f721aea469e32a7f6815ad8112bc79"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a01f721aea469e32a7f6815ad8112bc79">distV2N</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, const rta_real_t *x, const int node)</td></tr>
-<tr class="separator:a01f721aea469e32a7f6815ad8112bc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d70b595ebbe6c985d0141154f23aaaa"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a6d70b595ebbe6c985d0141154f23aaaa">distV2N_stride</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, const rta_real_t *x, int stride, const int node)</td></tr>
-<tr class="separator:a6d70b595ebbe6c985d0141154f23aaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e3ce8709f27c7a530f7c678eca27439"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a9e3ce8709f27c7a530f7c678eca27439">distV2N_weighted</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, const rta_real_t *x, int stride, const rta_real_t *sigma, const int node)</td></tr>
-<tr class="separator:a9e3ce8709f27c7a530f7c678eca27439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a260ec0da741be03dbb5069535d6078a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a260ec0da741be03dbb5069535d6078a8">kdtree_insert</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, int index, int num)</td></tr>
-<tr class="separator:a260ec0da741be03dbb5069535d6078a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab49b539f2d3e241993c27791d535bd24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#ab49b539f2d3e241993c27791d535bd24">kdtree_build</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, int use_sigma)</td></tr>
-<tr class="separator:ab49b539f2d3e241993c27791d535bd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb71e5d6121c60642e71a04c2dc010f4"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#afb71e5d6121c60642e71a04c2dc010f4">distV2N</a> (<a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *t, const rta_real_t *x, const int node)</td></tr>
+<tr class="separator:afb71e5d6121c60642e71a04c2dc010f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a354b428d4501c9fbdb9adabe89f7f31e"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a354b428d4501c9fbdb9adabe89f7f31e">distV2N_stride</a> (<a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *t, const rta_real_t *x, int stride, const int node)</td></tr>
+<tr class="separator:a354b428d4501c9fbdb9adabe89f7f31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ac5725eeb5d9560eb5aaeefcb84277"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a86ac5725eeb5d9560eb5aaeefcb84277">distV2N_weighted</a> (<a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *t, const rta_real_t *x, int stride, const rta_real_t *sigma, const int node)</td></tr>
+<tr class="separator:a86ac5725eeb5d9560eb5aaeefcb84277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae22f02a799a2353b3fb4b5a4664c24fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#ae22f02a799a2353b3fb4b5a4664c24fb">rta_kdtree_insert</a> (<a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *t, int index, int num)</td></tr>
+<tr class="separator:ae22f02a799a2353b3fb4b5a4664c24fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a77c9e884ca2ec1a1b57ff99af6dba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreebuild_8c.html#a34a77c9e884ca2ec1a1b57ff99af6dba">rta_kdtree_build</a> (<a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *t, int use_sigma)</td></tr>
+<tr class="separator:a34a77c9e884ca2ec1a1b57ff99af6dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Riccardo Borghesi</dd></dl>
@@ -136,8 +146,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a01f721aea469e32a7f6815ad8112bc79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01f721aea469e32a7f6815ad8112bc79">&#9670;&nbsp;</a></span>distV2N()</h2>
+<a id="afb71e5d6121c60642e71a04c2dc010f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb71e5d6121c60642e71a04c2dc010f4">&#9670;&nbsp;</a></span>distV2N()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,7 +155,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">rta_real_t distV2N </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
@@ -169,12 +179,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>vector to node distance </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00360">360</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00359">359</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
 
 </div>
 </div>
-<a id="a6d70b595ebbe6c985d0141154f23aaaa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d70b595ebbe6c985d0141154f23aaaa">&#9670;&nbsp;</a></span>distV2N_stride()</h2>
+<a id="a354b428d4501c9fbdb9adabe89f7f31e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a354b428d4501c9fbdb9adabe89f7f31e">&#9670;&nbsp;</a></span>distV2N_stride()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,7 +192,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">rta_real_t distV2N_stride </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
@@ -212,12 +222,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>vector to node distance with stride </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00381">381</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00380">380</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
 
 </div>
 </div>
-<a id="a9e3ce8709f27c7a530f7c678eca27439"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e3ce8709f27c7a530f7c678eca27439">&#9670;&nbsp;</a></span>distV2N_weighted()</h2>
+<a id="a86ac5725eeb5d9560eb5aaeefcb84277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86ac5725eeb5d9560eb5aaeefcb84277">&#9670;&nbsp;</a></span>distV2N_weighted()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +235,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">rta_real_t distV2N_weighted </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
@@ -261,20 +271,20 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>vector to node distance with stride and weights 1/sigma </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00402">402</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00401">401</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
 
 </div>
 </div>
-<a id="ab49b539f2d3e241993c27791d535bd24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab49b539f2d3e241993c27791d535bd24">&#9670;&nbsp;</a></span>kdtree_build()</h2>
+<a id="a34a77c9e884ca2ec1a1b57ff99af6dba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34a77c9e884ca2ec1a1b57ff99af6dba">&#9670;&nbsp;</a></span>rta_kdtree_build()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_build </td>
+          <td class="memname">void rta_kdtree_build </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>self</em>, </td>
         </tr>
         <tr>
@@ -304,20 +314,20 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00483">483</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00482">482</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
 
 </div>
 </div>
-<a id="a260ec0da741be03dbb5069535d6078a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a260ec0da741be03dbb5069535d6078a8">&#9670;&nbsp;</a></span>kdtree_insert()</h2>
+<a id="ae22f02a799a2353b3fb4b5a4664c24fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22f02a799a2353b3fb4b5a4664c24fb">&#9670;&nbsp;</a></span>rta_kdtree_insert()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_insert </td>
+          <td class="memname">void rta_kdtree_insert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
@@ -350,7 +360,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00438">438</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtreebuild_8c_source.html#l00437">437</a> of file <a class="el" href="rta__kdtreebuild_8c_source.html">rta_kdtreebuild.c</a>.</p>
 
 </div>
 </div>
@@ -359,7 +369,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:11 for rta by
+Generated on Thu Sep 14 2017 17:18:25 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

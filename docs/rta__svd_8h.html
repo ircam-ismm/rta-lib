@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/statistics/rta_svd.h File Reference</title>
+<title>rta: statistics/rta_svd.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,23 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+      &#160;
+      <!-- <span id="projectnumber">1.0.0</span> -->
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%" style="padding: auto;">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -88,7 +99,6 @@ $(document).ready(function(){initNavTree('rta__svd_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -102,12 +112,6 @@ $(document).ready(function(){initNavTree('rta__svd_8h.html','');});
 </div>
 <p><a href="rta__svd_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a05952fbe665f09411b58b4791863763f"><td class="memItemLeft" align="right" valign="top"><a id="a05952fbe665f09411b58b4791863763f"></a>
-typedef struct <a class="el" href="structrta__svd__setup.html">rta_svd_setup</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rta_svd_setup_t</b></td></tr>
-<tr class="separator:a05952fbe665f09411b58b4791863763f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a79c6feea4c0a58e5160115117fa5c5d6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6">rta_svd_t</a> { <a class="el" href="rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6a35bcae5206449052e570e9277ab632ec">rta_svd_out_of_place</a> = 1, 
@@ -117,13 +121,13 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0f9802e1d3cbe4ef0b74c264eccfe6bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a0f9802e1d3cbe4ef0b74c264eccfe6bd">rta_svd_setup_new</a> (<a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> **svd_setup, const <a class="el" href="rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6">rta_svd_t</a> svd_type, rta_real_t *U, rta_real_t *S, rta_real_t *V, rta_real_t *A, const unsigned int m, const unsigned int n)</td></tr>
+<tr class="memitem:a0f9802e1d3cbe4ef0b74c264eccfe6bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a0f9802e1d3cbe4ef0b74c264eccfe6bd">rta_svd_setup_new</a> (rta_svd_setup_t **svd_setup, const <a class="el" href="rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6">rta_svd_t</a> svd_type, rta_real_t *U, rta_real_t *S, rta_real_t *V, rta_real_t *A, const unsigned int m, const unsigned int n)</td></tr>
 <tr class="separator:a0f9802e1d3cbe4ef0b74c264eccfe6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bf08f20de82ce7f20921192c365a3d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a2bf08f20de82ce7f20921192c365a3d9">rta_svd_setup_delete</a> (<a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> *svd_setup)</td></tr>
+<tr class="memitem:a2bf08f20de82ce7f20921192c365a3d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a2bf08f20de82ce7f20921192c365a3d9">rta_svd_setup_delete</a> (rta_svd_setup_t *svd_setup)</td></tr>
 <tr class="separator:a2bf08f20de82ce7f20921192c365a3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6634d74212fb34dbfcc312cab8237a42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a6634d74212fb34dbfcc312cab8237a42">rta_svd</a> (rta_real_t *U, rta_real_t *S, rta_real_t *V, rta_real_t *A, const <a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> *svd_setup)</td></tr>
+<tr class="memitem:a6634d74212fb34dbfcc312cab8237a42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a6634d74212fb34dbfcc312cab8237a42">rta_svd</a> (rta_real_t *U, rta_real_t *S, rta_real_t *V, rta_real_t *A, const rta_svd_setup_t *svd_setup)</td></tr>
 <tr class="separator:a6634d74212fb34dbfcc312cab8237a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c2edfcdd1f7d07299b39cbdf6f5cb3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a7c2edfcdd1f7d07299b39cbdf6f5cb3a">rta_svd_stride</a> (rta_real_t *U, const int u_stride, rta_real_t *S, const int s_stride, rta_real_t *V, const int v_stride, rta_real_t *A, const int a_stride, const <a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> *svd_setup)</td></tr>
+<tr class="memitem:a7c2edfcdd1f7d07299b39cbdf6f5cb3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__svd_8h.html#a7c2edfcdd1f7d07299b39cbdf6f5cb3a">rta_svd_stride</a> (rta_real_t *U, const int u_stride, rta_real_t *S, const int s_stride, rta_real_t *V, const int v_stride, rta_real_t *A, const int a_stride, const rta_svd_setup_t *svd_setup)</td></tr>
 <tr class="separator:a7c2edfcdd1f7d07299b39cbdf6f5cb3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -198,7 +202,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> *&#160;</td>
+          <td class="paramtype">const rta_svd_setup_t *&#160;</td>
           <td class="paramname"><em>svd_setup</em>&#160;</td>
         </tr>
         <tr>
@@ -237,7 +241,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void rta_svd_setup_delete </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> *&#160;</td>
+          <td class="paramtype">rta_svd_setup_t *&#160;</td>
           <td class="paramname"><em>svd_setup</em></td><td>)</td>
           <td></td>
         </tr>
@@ -265,7 +269,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int rta_svd_setup_new </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> **&#160;</td>
+          <td class="paramtype">rta_svd_setup_t **&#160;</td>
           <td class="paramname"><em>svd_setup</em>, </td>
         </tr>
         <tr>
@@ -398,7 +402,7 @@ rta_svd</dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structrta__svd__setup.html">rta_svd_setup_t</a> *&#160;</td>
+          <td class="paramtype">const rta_svd_setup_t *&#160;</td>
           <td class="paramname"><em>svd_setup</em>&#160;</td>
         </tr>
         <tr>
@@ -437,7 +441,7 @@ rta_svd</dd></dl>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:12 for rta by
+Generated on Thu Sep 14 2017 17:39:02 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

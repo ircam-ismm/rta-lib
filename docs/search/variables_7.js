@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['height',['height',['../struct__kdtree__struct.html#ac7945bcb868660aebed52c5227ea00de',1,'_kdtree_struct']]],
-  ['hyperp',['hyperp',['../struct__kdtree__profile__struct.html#a6213125ba2d1d8163b91079fc2e8f3b9',1,'_kdtree_profile_struct']]]
+  ['height',['height',['../structrta__kdtree__t.html#acd64104dc96224a867e6d85e9eb43da8',1,'rta_kdtree_t']]],
+  ['hyperp',['hyperp',['../structrta__kdtree__profile__t.html#a0c6ccd3a4bbf169db1f1dc3e6a66f7d3',1,'rta_kdtree_profile_t']]]
 ];

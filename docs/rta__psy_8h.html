@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/signal/rta_psy.h File Reference</title>
+<title>rta: signal/rta_psy.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,23 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+      &#160;
+      <!-- <span id="projectnumber">1.0.0</span> -->
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%" style="padding: auto;">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -90,7 +101,6 @@ $(document).ready(function(){initNavTree('rta__psy_8h.html','');});
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">rta_psy.h File Reference<div class="ingroups"><a class="el" href="group__rta__signal.html">Signal</a></div></div>  </div>
@@ -104,11 +114,11 @@ $(document).ready(function(){initNavTree('rta__psy_8h.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_candidate_st.html">CandidateSt</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__psy__candidate.html">rta_psy_candidate</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tracking_state_st.html">TrackingStateSt</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__psy__tracking__state.html">rta_psy_tracking_state</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_psy_ana_st.html">PsyAnaSt</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__psy__ana.html">rta_psy_ana</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -135,40 +145,28 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_TRACKING_STATES</b>&#160;&#160;&#160;3</td></tr>
 <tr class="separator:a82a9fed6b920c050f580b78b299ed3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a3d94f1ec1f26bc67c7c9d4c39b48bba3"><td class="memItemLeft" align="right" valign="top"><a id="a3d94f1ec1f26bc67c7c9d4c39b48bba3"></a>
-typedef struct <a class="el" href="struct_candidate_st.html">CandidateSt</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_candidate</b></td></tr>
-<tr class="separator:a3d94f1ec1f26bc67c7c9d4c39b48bba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd833ff0c4d5091c2868cbdbd54af316"><td class="memItemLeft" align="right" valign="top"><a id="abd833ff0c4d5091c2868cbdbd54af316"></a>
-typedef struct <a class="el" href="struct_tracking_state_st.html">TrackingStateSt</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_tracking_state</b></td></tr>
-<tr class="separator:abd833ff0c4d5091c2868cbdbd54af316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d947e8d60d02f07254cd189360ca59c"><td class="memItemLeft" align="right" valign="top"><a id="a4d947e8d60d02f07254cd189360ca59c"></a>
-typedef struct <a class="el" href="struct_psy_ana_st.html">PsyAnaSt</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_ana</b></td></tr>
-<tr class="separator:a4d947e8d60d02f07254cd189360ca59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae151460f9b92fe69c6076723273cb833"><td class="memItemLeft" align="right" valign="top"><a id="ae151460f9b92fe69c6076723273cb833"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_init</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_init</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self)</td></tr>
 <tr class="separator:ae151460f9b92fe69c6076723273cb833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae167807daf657fcc8e79e1e5ad661e3b"><td class="memItemLeft" align="right" valign="top"><a id="ae167807daf657fcc8e79e1e5ad661e3b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_deinit</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_deinit</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self)</td></tr>
 <tr class="separator:ae167807daf657fcc8e79e1e5ad661e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a568abfaa1165dbcddbbdc20a1f3ebe97"><td class="memItemLeft" align="right" valign="top"><a id="a568abfaa1165dbcddbbdc20a1f3ebe97"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_reset</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_reset</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self, double minFreq, double maxFreq, double sampleRate, int maxInputVectorSize, int downSamplingExp)</td></tr>
 <tr class="separator:a568abfaa1165dbcddbbdc20a1f3ebe97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f0829f9071a493a19e963353599f004"><td class="memItemLeft" align="right" valign="top"><a id="a4f0829f9071a493a19e963353599f004"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_set_callback</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self, void *receiver, int(*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced))</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_set_callback</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self, void *receiver, int(*callback)(void *receiver, double time, double freq, double energy, double ac1, double voiced))</td></tr>
 <tr class="separator:a4f0829f9071a493a19e963353599f004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ca6fc914723e635a2a35399cb4750d8"><td class="memItemLeft" align="right" valign="top"><a id="a0ca6fc914723e635a2a35399cb4750d8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_set_thresholds</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self, double yinThreshold, double noiseThreshold)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_set_thresholds</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self, double yinThreshold, double noiseThreshold)</td></tr>
 <tr class="separator:a0ca6fc914723e635a2a35399cb4750d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1626dedc25954a9580df479436f757a"><td class="memItemLeft" align="right" valign="top"><a id="ac1626dedc25954a9580df479436f757a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_calculate_input_vector</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self, float *in, int vectorSize, int vectorStride)</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_calculate_input_vector</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self, float *in, int vectorSize, int vectorStride)</td></tr>
 <tr class="separator:ac1626dedc25954a9580df479436f757a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8697b1194fa2ee58491f8fa6e7ecf0ab"><td class="memItemLeft" align="right" valign="top"><a id="a8697b1194fa2ee58491f8fa6e7ecf0ab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_finalize</b> (<a class="el" href="struct_psy_ana_st.html">rta_psy_ana</a> *self)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_finalize</b> (<a class="el" href="structrta__psy__ana.html">rta_psy_ana</a> *self)</td></tr>
 <tr class="separator:a8697b1194fa2ee58491f8fa6e7ecf0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -190,7 +188,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_psy_finalize</b> 
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:12 for rta by
+Generated on Thu Sep 14 2017 17:39:02 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

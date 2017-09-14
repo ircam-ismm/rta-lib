@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/recognition/rta_mahalanobis.c File Reference</title>
+<title>rta: recognition/rta_mahalanobis.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,23 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+      &#160;
+      <!-- <span id="projectnumber">1.0.0</span> -->
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%" style="padding: auto;">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -109,7 +120,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_find_nz</b> (int n
 <tr class="separator:aeba8e4d41d921bdf98a0f058017134a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77b2fedf97cd0b7efd304d550c05e435"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a77b2fedf97cd0b7efd304d550c05e435">rta_mahalanobis</a> (int M, int N, int C, rta_real_t *inptr, int instride, int inskip, rta_real_t *muptr, int mustride, int muskip, rta_real_t *sigmaptr, int sigmastride, int sigmaskip, rta_real_t *outptr, int outstride, int outskip)</td></tr>
 <tr class="separator:a77b2fedf97cd0b7efd304d550c05e435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53b58109b6191b4938748a77f661ccdd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a53b58109b6191b4938748a77f661ccdd">rta_mahalanobis_nz</a> (int M, int N, int C, rta_real_t *inptr, int instride, int inskip, rta_real_t *muptr, int mustride, int muskip, rta_real_t *sigmaptr, int sigmastride, int sigmaskip, rta_real_t *outptr, int outstride, int outskip, int nnz, int *sigma_indnz, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfuncs[])</td></tr>
+<tr class="memitem:a53b58109b6191b4938748a77f661ccdd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__mahalanobis_8c.html#a53b58109b6191b4938748a77f661ccdd">rta_mahalanobis_nz</a> (int M, int N, int C, rta_real_t *inptr, int instride, int inskip, rta_real_t *muptr, int mustride, int muskip, rta_real_t *sigmaptr, int sigmastride, int sigmaskip, rta_real_t *outptr, int outstride, int outskip, int nnz, int *sigma_indnz, <a class="el" href="structrta__bpf__t.html">rta_bpf_t</a> *distfuncs[])</td></tr>
 <tr class="separator:a53b58109b6191b4938748a77f661ccdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -359,7 +370,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_find_nz</b> (int n
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__bpf__t.html">rta_bpf_t</a> *&#160;</td>
           <td class="paramname"><em>distfuncs</em>[]&#160;</td>
         </tr>
         <tr>
@@ -384,7 +395,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_find_nz</b> (int n
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>success </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rta__mahalanobis_8c_source.html#l00146">146</a> of file <a class="el" href="rta__mahalanobis_8c_source.html">rta_mahalanobis.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__mahalanobis_8c_source.html#l00149">149</a> of file <a class="el" href="rta__mahalanobis_8c_source.html">rta_mahalanobis.c</a>.</p>
 
 </div>
 </div>
@@ -393,7 +404,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rta_find_nz</b> (int n
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:11 for rta by
+Generated on Thu Sep 14 2017 17:39:01 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

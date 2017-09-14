@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/signal/rta_fft.h File Reference</title>
+<title>rta: signal/rta_fft.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,23 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+      &#160;
+      <!-- <span id="projectnumber">1.0.0</span> -->
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%" style="padding: auto;">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -88,7 +99,6 @@ $(document).ready(function(){initNavTree('rta__fft_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -103,12 +113,6 @@ $(document).ready(function(){initNavTree('rta__fft_8h.html','');});
 </div>
 <p><a href="rta__fft_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a55ec4ca3f273cc5dd8c779f069df16ae"><td class="memItemLeft" align="right" valign="top"><a id="a55ec4ca3f273cc5dd8c779f069df16ae"></a>
-typedef struct <a class="el" href="structrta__fft__setup.html">rta_fft_setup</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rta_fft_setup_t</b></td></tr>
-<tr class="separator:a55ec4ca3f273cc5dd8c779f069df16ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ace8385aa565cf70722c23d27c9bbfa59"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> { <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59a54bd195db46b59e18cd0b65fc48bf524">rta_fft_real_to_complex_1d</a> = 1, 
@@ -120,19 +124,19 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1a09b136da91299e6ab4e21483159182"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a1a09b136da91299e6ab4e21483159182">rta_fft_real_setup_new</a> (<a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, void *input, const unsigned int input_size, void *output, const unsigned int fft_size, rta_real_t *nyquist)</td></tr>
+<tr class="memitem:a1a09b136da91299e6ab4e21483159182"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a1a09b136da91299e6ab4e21483159182">rta_fft_real_setup_new</a> (rta_fft_setup_t **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, void *input, const unsigned int input_size, void *output, const unsigned int fft_size, rta_real_t *nyquist)</td></tr>
 <tr class="separator:a1a09b136da91299e6ab4e21483159182"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a575131c1e2fff4f447704fc427e4c390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a575131c1e2fff4f447704fc427e4c390">rta_fft_real_setup_new_stride</a> (<a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, void *input, const int i_stride, const unsigned int input_size, void *output, const int o_stride, const unsigned int fft_size, rta_real_t *nyquist)</td></tr>
+<tr class="memitem:a575131c1e2fff4f447704fc427e4c390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a575131c1e2fff4f447704fc427e4c390">rta_fft_real_setup_new_stride</a> (rta_fft_setup_t **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, void *input, const int i_stride, const unsigned int input_size, void *output, const int o_stride, const unsigned int fft_size, rta_real_t *nyquist)</td></tr>
 <tr class="separator:a575131c1e2fff4f447704fc427e4c390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57cbd8ec017005e1f76467a1b97dcfda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a57cbd8ec017005e1f76467a1b97dcfda">rta_fft_setup_new</a> (<a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, rta_complex_t *input, const unsigned int input_size, rta_complex_t *output, const unsigned int fft_size)</td></tr>
+<tr class="memitem:a57cbd8ec017005e1f76467a1b97dcfda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a57cbd8ec017005e1f76467a1b97dcfda">rta_fft_setup_new</a> (rta_fft_setup_t **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, rta_complex_t *input, const unsigned int input_size, rta_complex_t *output, const unsigned int fft_size)</td></tr>
 <tr class="separator:a57cbd8ec017005e1f76467a1b97dcfda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34800226620fabf6e27708cdda36f1fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a34800226620fabf6e27708cdda36f1fa">rta_fft_setup_new_stride</a> (<a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, rta_complex_t *input, const int i_stride, const unsigned int input_size, rta_complex_t *output, const int o_stride, const unsigned int fft_size)</td></tr>
+<tr class="memitem:a34800226620fabf6e27708cdda36f1fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a34800226620fabf6e27708cdda36f1fa">rta_fft_setup_new_stride</a> (rta_fft_setup_t **fft_setup, <a class="el" href="rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59">rta_fft_t</a> fft_type, rta_real_t *scale, rta_complex_t *input, const int i_stride, const unsigned int input_size, rta_complex_t *output, const int o_stride, const unsigned int fft_size)</td></tr>
 <tr class="separator:a34800226620fabf6e27708cdda36f1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a798d92f346001035d13ea964d61d86da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a798d92f346001035d13ea964d61d86da">rta_fft_setup_delete</a> (<a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> *fft_setup)</td></tr>
+<tr class="memitem:a798d92f346001035d13ea964d61d86da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a798d92f346001035d13ea964d61d86da">rta_fft_setup_delete</a> (rta_fft_setup_t *fft_setup)</td></tr>
 <tr class="separator:a798d92f346001035d13ea964d61d86da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acddc318fe93b063be347a00d2be80806"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#acddc318fe93b063be347a00d2be80806">rta_fft_execute</a> (void *output, void *input, const unsigned int input_size, <a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> *fft_setup)</td></tr>
+<tr class="memitem:acddc318fe93b063be347a00d2be80806"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#acddc318fe93b063be347a00d2be80806">rta_fft_execute</a> (void *output, void *input, const unsigned int input_size, rta_fft_setup_t *fft_setup)</td></tr>
 <tr class="separator:acddc318fe93b063be347a00d2be80806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6419e839813499fe0e36629c0026c092"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a6419e839813499fe0e36629c0026c092">rta_fft_real_execute</a> (void *output, void *input, const unsigned int input_size, <a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> *fft_setup, rta_real_t *nyquist)</td></tr>
+<tr class="memitem:a6419e839813499fe0e36629c0026c092"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__fft_8h.html#a6419e839813499fe0e36629c0026c092">rta_fft_real_execute</a> (void *output, void *input, const unsigned int input_size, rta_fft_setup_t *fft_setup, rta_real_t *nyquist)</td></tr>
 <tr class="separator:a6419e839813499fe0e36629c0026c092"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -206,7 +210,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> *&#160;</td>
+          <td class="paramtype">rta_fft_setup_t *&#160;</td>
           <td class="paramname"><em>fft_setup</em>&#160;</td>
         </tr>
         <tr>
@@ -268,7 +272,7 @@ rta_fft_real_setup_new_stride</dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> *&#160;</td>
+          <td class="paramtype">rta_fft_setup_t *&#160;</td>
           <td class="paramname"><em>fft_setup</em>, </td>
         </tr>
         <tr>
@@ -321,7 +325,7 @@ rta_fft_real_setup_new_stride</dd></dl>
         <tr>
           <td class="memname">int rta_fft_real_setup_new </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **&#160;</td>
+          <td class="paramtype">rta_fft_setup_t **&#160;</td>
           <td class="paramname"><em>fft_setup</em>, </td>
         </tr>
         <tr>
@@ -406,7 +410,7 @@ rta_fft_real_setup_new_stride</dd></dl>
         <tr>
           <td class="memname">int rta_fft_real_setup_new_stride </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **&#160;</td>
+          <td class="paramtype">rta_fft_setup_t **&#160;</td>
           <td class="paramname"><em>fft_setup</em>, </td>
         </tr>
         <tr>
@@ -505,7 +509,7 @@ rta_fft_real_setup_new_stride</dd></dl>
         <tr>
           <td class="memname">void rta_fft_setup_delete </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> *&#160;</td>
+          <td class="paramtype">rta_fft_setup_t *&#160;</td>
           <td class="paramname"><em>fft_setup</em></td><td>)</td>
           <td></td>
         </tr>
@@ -533,7 +537,7 @@ rta_fft_real_setup_new_stride</dd></dl>
         <tr>
           <td class="memname">int rta_fft_setup_new </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **&#160;</td>
+          <td class="paramtype">rta_fft_setup_t **&#160;</td>
           <td class="paramname"><em>fft_setup</em>, </td>
         </tr>
         <tr>
@@ -611,7 +615,7 @@ rta_fft_real_setup_new_stride</dd></dl>
         <tr>
           <td class="memname">int rta_fft_setup_new_stride </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structrta__fft__setup.html">rta_fft_setup_t</a> **&#160;</td>
+          <td class="paramtype">rta_fft_setup_t **&#160;</td>
           <td class="paramname"><em>fft_setup</em>, </td>
         </tr>
         <tr>
@@ -699,7 +703,7 @@ rta_fft_real_setup_new_stride</dd></dl>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:12 for rta by
+Generated on Thu Sep 14 2017 17:39:01 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

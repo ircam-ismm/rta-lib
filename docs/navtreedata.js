@@ -17,18 +17,20 @@ var NAVTREE =
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
-      ] ]
+      ] ],
+      [ "Classes and Structs", "annotated.html", "annotated" ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"dir_1d72ffbc5162bc672934200098d42af3.html",
-"rta__correlation_8c.html#a036bb72ca33294652070aa5fbbfe6388",
-"rta__kdtree_8h.html#ae2f6faa8e798a97ceb09604b8a0ebc79",
-"rta__moments_8h.html#ad570820fc094a31502169efddb4c8704",
-"rta__util_8h.html#a6e25e41cffbd976da5f312fd698d7886"
+".html",
+"rta__complex_8h.html#a19119e0f42807e5b6bc5c87a7885a816",
+"rta__int_8h.html",
+"rta__moments_8c.html#a965bdd6156d6898a3b398af29b034ac6",
+"rta__util_8c.html",
+"structrta__svd__setup.html#abb539bf9317d4e20665e89bf82109d65"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

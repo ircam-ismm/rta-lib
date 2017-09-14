@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['givenheight',['givenheight',['../struct__kdtree__struct.html#ad7678c32be475acc1186ada795e68116',1,'_kdtree_struct']]]
+  ['givenheight',['givenheight',['../structrta__kdtree__t.html#a4cc0351044c92f4c531cdbaad624fe07',1,'rta_kdtree_t']]]
 ];

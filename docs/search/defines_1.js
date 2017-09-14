@@ -1,20 +1,15 @@
 var searchData=
 [
-  ['m_5f1_5fpi',['M_1_PI',['../rta__math_8h.html#a08dfac3cca9601a02fc88356cc078e1d',1,'rta_math.h']]],
-  ['m_5f2_5fpi',['M_2_PI',['../rta__math_8h.html#a97f6d6514d3d3dd50c3a2a6d622673db',1,'rta_math.h']]],
-  ['m_5f2_5fsqrtpi',['M_2_SQRTPI',['../rta__math_8h.html#a631ff334c4a1a6db2e8a7ff4acbe48a5',1,'rta_math.h']]],
-  ['m_5fe',['M_E',['../rta__math_8h.html#a9bf5d952c5c93c70f9e66c9794d406c9',1,'rta_math.h']]],
-  ['m_5feuler',['M_EULER',['../rta__math_8h.html#a620539bb392918432be69023bb266dfb',1,'rta_math.h']]],
-  ['m_5fln10',['M_LN10',['../rta__math_8h.html#a0a53871497a155afe91424c28a8ec3c4',1,'rta_math.h']]],
-  ['m_5fln2',['M_LN2',['../rta__math_8h.html#a92428112a5d24721208748774a4f23e6',1,'rta_math.h']]],
-  ['m_5flnpi',['M_LNPI',['../rta__math_8h.html#ab4c858b623b55b6b381c26c21f777cdf',1,'rta_math.h']]],
-  ['m_5flog10e',['M_LOG10E',['../rta__math_8h.html#a9ed2b5582226f3896424ff6d2a3ebb14',1,'rta_math.h']]],
-  ['m_5flog2e',['M_LOG2E',['../rta__math_8h.html#ac5c747ee5bcbe892875672a0b9d8171c',1,'rta_math.h']]],
-  ['m_5fpi',['M_PI',['../rta__math_8h.html#ae71449b1cc6e6250b91f539153a7a0d3',1,'rta_math.h']]],
-  ['m_5fpi_5f2',['M_PI_2',['../rta__math_8h.html#a958e4508ed28ee5cc04249144312c15f',1,'rta_math.h']]],
-  ['m_5fpi_5f4',['M_PI_4',['../rta__math_8h.html#aeb24420b096a677f3a2dc5a72b36bf22',1,'rta_math.h']]],
-  ['m_5fsqrt1_5f2',['M_SQRT1_2',['../rta__math_8h.html#acdbb2c2f9429f08916f03c8786d2d2d7',1,'rta_math.h']]],
-  ['m_5fsqrt2',['M_SQRT2',['../rta__math_8h.html#a66b3ab30f1332874326ed93969e496e0',1,'rta_math.h']]],
-  ['m_5fsqrt3',['M_SQRT3',['../rta__math_8h.html#a104a20eff010ec8c4f3af770e698860b',1,'rta_math.h']]],
-  ['m_5fsqrtpi',['M_SQRTPI',['../rta__math_8h.html#a038b1a0fa919904840281cdab8e09211',1,'rta_math.h']]]
+  ['rta_5fcomplex_5ftype',['RTA_COMPLEX_TYPE',['../rta__complex_8h.html#a808dcbcafe6b58b6d446a4c6f2fefe5c',1,'rta_complex.h']]],
+  ['rta_5ffree',['rta_free',['../rta__stdlib_8h.html#ae29b4a3e171df256eb38fb0078857f57',1,'rta_stdlib.h']]],
+  ['rta_5fkdtree_5fget_5felement',['rta_kdtree_get_element',['../rta__kdtree_8h.html#a412755c2593af5f964ca79d8082e7490',1,'rta_kdtree.h']]],
+  ['rta_5fkdtree_5fget_5fvector',['rta_kdtree_get_vector',['../rta__kdtree_8h.html#a775ae8d35a2c87df414947bbd78db0b4',1,'rta_kdtree.h']]],
+  ['rta_5fmalloc',['rta_malloc',['../rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495',1,'rta_stdlib.h']]],
+  ['rta_5fmds_5fndim',['RTA_MDS_NDIM',['../rta__mds__hybrid_8h.html#a2214a0c5c9df7038f1bfaae744033cb8',1,'rta_mds_hybrid.h']]],
+  ['rta_5fmsdr_5fmaxcat',['RTA_MSDR_MAXCAT',['../rta__msdr_8h.html#a8062714a39df2c9b9c138e8cd92fa41f',1,'rta_msdr.h']]],
+  ['rta_5fmsdr_5fndim',['RTA_MSDR_NDIM',['../rta__msdr_8h.html#a91dc871b69c5792877411439e879fca8',1,'rta_msdr.h']]],
+  ['rta_5fpost',['rta_post',['../rta__stdio_8h.html#aeda546dd183d2dbd0116c017c1dbf45e',1,'rta_stdio.h']]],
+  ['rta_5freal_5ftype',['RTA_REAL_TYPE',['../rta__types_8h.html#a3f87f73036e9b93035b3a09508807e9e',1,'rta_types.h']]],
+  ['rta_5frealloc',['rta_realloc',['../rta__stdlib_8h.html#a67d201d9b540a70f30d4669e60eb6d77',1,'rta_stdlib.h']]],
+  ['rta_5fzalloc',['rta_zalloc',['../rta__stdlib_8h.html#a085890f9ce55df75b85288dc669e1116',1,'rta_stdlib.h']]]
 ];

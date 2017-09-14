@@ -1,6 +1,6 @@
 var rta__util_8h =
 [
-    [ "rta_idefix", "structrta__idefix.html", "structrta__idefix" ],
+    [ "rta_idefix_t", "structrta__idefix__t.html", "structrta__idefix__t" ],
     [ "rta_idefix_add", "rta__util_8h.html#a961ae09771efdc0988ab59aaf29682b1", null ],
     [ "rta_idefix_eq", "rta__util_8h.html#a9f5f676a4a4623e85cab2c85f5083e68", null ],
     [ "RTA_IDEFIX_FRAC_BITS", "rta__util_8h.html#ae4d2c69b0538ba94ed5a0e709dcec4d1", null ],
@@ -22,7 +22,6 @@ var rta__util_8h =
     [ "rta_idefix_set_max", "rta__util_8h.html#aefd1621c5eb08e1787ee8074c8f3b0b0", null ],
     [ "rta_idefix_set_zero", "rta__util_8h.html#aa916aeaf890a82df63ff04f31f6d7424", null ],
     [ "rta_idefix_sub", "rta__util_8h.html#a972cd48132489ffcac2eb5ed3e597c4a", null ],
-    [ "rta_idefix_t", "rta__util_8h.html#ae3e271043afd4dc57d8d1b23acd4f29f", null ],
     [ "rta_choose_k_from_n", "rta__util_8h.html#a8d7e8dfd60b8888bdce182d5b0ad8afd", null ],
     [ "rta_find_int", "rta__util_8h.html#a1f8bb7e54ad50325bd76cfd89cbba0b9", null ]
 ];

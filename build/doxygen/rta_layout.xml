@@ -33,8 +33,8 @@
     <!-- <tab type="user" visible="yes" url="@ref rta_signal" title="Reference" intro=""> -->
     <tab type="files" visible="yes" title="Reference" intro="">
       <tab type="filelist" visible="yes" title="Files" intro=""/>
-      <tab type="globals" visible="yes" title="Index" intro=""/>
-      <tab type="index" visible="yes" title="Index" intro=""/>
+      <tab type="globals" visible="$ALPHABETICAL_INDEX" title="Index" intro=""/>
+      <tab type="classlist" visible="$ALPHABETICAL_INDEX" title="Classes and Structs"/>
     </tab>
 
     <!-- <tab type="examples" visible="no" title="" intro=""/> -->

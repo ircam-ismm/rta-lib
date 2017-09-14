@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/recognition/rta_kdtreesearch.c File Reference</title>
+<title>rta: recognition/rta_kdtreesearch.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,22 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+    &#160;<span id="projectnumber">1.0.0</span>
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -103,9 +113,9 @@ $(document).ready(function(){initNavTree('rta__kdtreesearch_8c.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a01f163fd9bf993082005097edd9fb7a7"><td class="memItemLeft" align="right" valign="top"><a id="a01f163fd9bf993082005097edd9fb7a7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_KDTREESEARCH</b>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a01f163fd9bf993082005097edd9fb7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a892f05646a0a4f71b337ca0312d7f38d"><td class="memItemLeft" align="right" valign="top"><a id="a892f05646a0a4f71b337ca0312d7f38d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_DEBUG_KDTREESEARCH</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a892f05646a0a4f71b337ca0312d7f38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06be39258f20364f5b8d1c69dc8dac41"><td class="memItemLeft" align="right" valign="top"><a id="a06be39258f20364f5b8d1c69dc8dac41"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>stack_clear</b>(s)&#160;&#160;&#160;((s)-&gt;size = 0)</td></tr>
 <tr class="separator:a06be39258f20364f5b8d1c69dc8dac41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,15 +136,15 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a50a553cb22bf60b8c3a976bdb558be36"><td class="memItemLeft" align="right" valign="top"><a id="a50a553cb22bf60b8c3a976bdb558be36"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_stack_init</b> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *s, int size)</td></tr>
-<tr class="separator:a50a553cb22bf60b8c3a976bdb558be36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf082c37cbacccc9a1ed8f4ae726a797"><td class="memItemLeft" align="right" valign="top"><a id="adf082c37cbacccc9a1ed8f4ae726a797"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_stack_free</b> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *s)</td></tr>
-<tr class="separator:adf082c37cbacccc9a1ed8f4ae726a797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3ec2c2cc49ddd9b8d959e17a6d056b8"><td class="memItemLeft" align="right" valign="top"><a id="ae3ec2c2cc49ddd9b8d959e17a6d056b8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_stack_grow</b> (<a class="el" href="rta__kdtree_8h.html#a39eefa54ff9fa656ff38941350bfedce">kdtree_stack_t</a> *stack, int alloc)</td></tr>
-<tr class="separator:ae3ec2c2cc49ddd9b8d959e17a6d056b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95247b86726b1e2e491ade8d35d597fa"><td class="memItemLeft" align="right" valign="top"><a id="a95247b86726b1e2e491ade8d35d597fa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_stack_init</b> (<a class="el" href="rta__kdtree_8h.html#aa7b4f188056427d88514220377270dbd">rta_kdtree_stack_t</a> *s, int size)</td></tr>
+<tr class="separator:a95247b86726b1e2e491ade8d35d597fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef4a169bc12865f6202ce4bd61c4b2dc"><td class="memItemLeft" align="right" valign="top"><a id="aef4a169bc12865f6202ce4bd61c4b2dc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_stack_free</b> (<a class="el" href="rta__kdtree_8h.html#aa7b4f188056427d88514220377270dbd">rta_kdtree_stack_t</a> *s)</td></tr>
+<tr class="separator:aef4a169bc12865f6202ce4bd61c4b2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ea72afadafb07db6d7abd2b9a05303"><td class="memItemLeft" align="right" valign="top"><a id="a27ea72afadafb07db6d7abd2b9a05303"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_stack_grow</b> (<a class="el" href="rta__kdtree_8h.html#aa7b4f188056427d88514220377270dbd">rta_kdtree_stack_t</a> *stack, int alloc)</td></tr>
+<tr class="separator:a27ea72afadafb07db6d7abd2b9a05303"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10caf548a3c0135504a51e82e76779af"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a10caf548a3c0135504a51e82e76779af">rta_euclidean_distance</a> (rta_real_t *v1, int stride1, rta_real_t *v2, int dim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
 <tr class="separator:a10caf548a3c0135504a51e82e76779af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77238f706fbad395ce60fc8aa888d1c8"><td class="memItemLeft" align="right" valign="top"><a id="a77238f706fbad395ce60fc8aa888d1c8"></a>
@@ -143,8 +153,8 @@ rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_eu
 <tr class="memitem:a26e1b38505641efb8001f081162a6653"><td class="memItemLeft" align="right" valign="top"><a id="a26e1b38505641efb8001f081162a6653"></a>
 rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_euclidean_distance_stride</b> (rta_real_t *v1, int stride1, rta_real_t *v2, rta_real_t *sigma, int ndim, <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *distfunc[])</td></tr>
 <tr class="separator:a26e1b38505641efb8001f081162a6653"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a698129cb350c5342d753fcabb1612dcd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a698129cb350c5342d753fcabb1612dcd">kdtree_search_knn</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, rta_real_t *vector, int stride, int k, const rta_real_t r, int use_sigma, <a class="el" href="rta__kdtree_8h.html#ab3c322922ba418bd1384f72e01e71c86">kdtree_object_t</a> *indx, rta_real_t *dist)</td></tr>
-<tr class="separator:a698129cb350c5342d753fcabb1612dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8df433d6d582229d532751d5ab10f45d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtreesearch_8c.html#a8df433d6d582229d532751d5ab10f45d">rta_kdtree_search_knn</a> (<a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *t, rta_real_t *vector, int stride, int k, const rta_real_t r, int use_sigma, <a class="el" href="rta__kdtree_8h.html#aa7953f76fe5cea92ee6c4736db68ba9d">rta_kdtree_object_t</a> *indx, rta_real_t *dist)</td></tr>
+<tr class="separator:a8df433d6d582229d532751d5ab10f45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Norbert Schnell</dd></dl>
@@ -191,96 +201,12 @@ rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_eu
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">((((s)-&gt;size &gt;= (s)-&gt;alloc) ? stack_realloc((s), 2 * (s)-&gt;alloc) : 0), \</div><div class="line">                   ((s)-&gt;buffer)[(s)-&gt;size].node = (n), \</div><div class="line">                   ((s)-&gt;buffer)[(s)-&gt;size++].dist = (d))</div></div><!-- fragment -->
+<b>Value:</b><div class="fragment"><div class="line">((((s)-&gt;size &gt;= (s)-&gt;alloc) ? stack_realloc((s), 2 * (s)-&gt;alloc) : 0), \</div><div class="line">                            ((s)-&gt;buffer)[(s)-&gt;size].node = (n), \</div><div class="line">                            ((s)-&gt;buffer)[(s)-&gt;size++].dist = (d))</div></div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00082">82</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a698129cb350c5342d753fcabb1612dcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a698129cb350c5342d753fcabb1612dcd">&#9670;&nbsp;</a></span>kdtree_search_knn()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kdtree_search_knn </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">rta_real_t *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>stride</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>k</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const rta_real_t&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>use_sigma</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#ab3c322922ba418bd1384f72e01e71c86">kdtree_object_t</a> *&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">rta_real_t *&#160;</td>
-          <td class="paramname"><em>d</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Perform search in kd-tree structure <code>t</code>.</p>
-<p>Return the <code>k</code> nearest neighbours in multi-dimensional data using the search tree <code>t</code>. The output vector <code>d</code> contains the squared distances to the <code>r</code> closest data vectors in kdtree_t::data according to the formula </p><p class="formulaDsp">
-\[ d_j = \sum_{j=0}^{ndim} \left( \frac{data_j - x_j}{\sigma} \right)^2 \]
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">t</td><td>kd-tree structure </td></tr>
-    <tr><td class="paramname">x</td><td>vector of kdtree_t::ndim elements to search nearest neighbours of </td></tr>
-    <tr><td class="paramname">stride</td><td>stride in vector <code>x</code> </td></tr>
-    <tr><td class="paramname">k</td><td>max number of neighbours to find (actual number can be lower) </td></tr>
-    <tr><td class="paramname">r</td><td>max squared distance of neighbours to find (<code>r</code> = 0 means no limit) </td></tr>
-    <tr><td class="paramname">use_sigma</td><td>use weights </td></tr>
-    <tr><td class="paramname">y</td><td>output vector (size == <code>r</code> &lt;= <code>k</code>) of (base, element) indices into original data kdtree_t::data </td></tr>
-    <tr><td class="paramname">d</td><td>output vector (size == <code>r</code> &lt;= <code>k</code>) of squared distances to data vectors </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>r</code> = the number of actual neighbours found, 0 &lt;= <code>r</code> &lt;= <code>k</code> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00215">215</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
-
-</div>
-</div>
 <a id="a10caf548a3c0135504a51e82e76779af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10caf548a3c0135504a51e82e76779af">&#9670;&nbsp;</a></span>rta_euclidean_distance()</h2>
 
@@ -326,7 +252,91 @@ rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_eu
 </div><div class="memdoc">
 <p>Weighted squared vector distance (v1 - v2)^2 </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00132">132</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00130">130</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
+
+</div>
+</div>
+<a id="a8df433d6d582229d532751d5ab10f45d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8df433d6d582229d532751d5ab10f45d">&#9670;&nbsp;</a></span>rta_kdtree_search_knn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int rta_kdtree_search_knn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a1cc78560b6f101126511e287fba2cd33">rta_kdtree_t</a> *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">rta_real_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>stride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const rta_real_t&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>use_sigma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#aa7953f76fe5cea92ee6c4736db68ba9d">rta_kdtree_object_t</a> *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">rta_real_t *&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Perform search in kd-tree structure <code>t</code>.</p>
+<p>Return the <code>k</code> nearest neighbours in multi-dimensional data using the search tree <code>t</code>. The output vector <code>d</code> contains the squared distances to the <code>r</code> closest data vectors in kdtree_t::data according to the formula </p><p class="formulaDsp">
+\[ d_j = \sum_{j=0}^{ndim} \left( \frac{data_j - x_j}{\sigma} \right)^2 \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>kd-tree structure </td></tr>
+    <tr><td class="paramname">x</td><td>vector of kdtree_t::ndim elements to search nearest neighbours of </td></tr>
+    <tr><td class="paramname">stride</td><td>stride in vector <code>x</code> </td></tr>
+    <tr><td class="paramname">k</td><td>max number of neighbours to find (actual number can be lower) </td></tr>
+    <tr><td class="paramname">r</td><td>max squared distance of neighbours to find (<code>r</code> = 0 means no limit) </td></tr>
+    <tr><td class="paramname">use_sigma</td><td>use weights </td></tr>
+    <tr><td class="paramname">y</td><td>output vector (size == <code>r</code> &lt;= <code>k</code>) of (base, element) indices into original data kdtree_t::data </td></tr>
+    <tr><td class="paramname">d</td><td>output vector (size == <code>r</code> &lt;= <code>k</code>) of squared distances to data vectors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>r</code> = the number of actual neighbours found, 0 &lt;= <code>r</code> &lt;= <code>k</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rta__kdtreesearch_8c_source.html#l00218">218</a> of file <a class="el" href="rta__kdtreesearch_8c_source.html">rta_kdtreesearch.c</a>.</p>
 
 </div>
 </div>
@@ -335,7 +345,7 @@ rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_eu
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:11 for rta by
+Generated on Thu Sep 14 2017 17:18:25 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

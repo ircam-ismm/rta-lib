@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/util/rta_bpf.h File Reference</title>
+<title>rta: util/rta_bpf.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,23 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+      &#160;
+      <!-- <span id="projectnumber">1.0.0</span> -->
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%" style="padding: auto;">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -90,7 +101,6 @@ $(document).ready(function(){initNavTree('rta__bpf_8h.html','');});
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">rta_bpf.h File Reference<div class="ingroups"><a class="el" href="group__rta__util.html">Utils</a></div></div>  </div>
@@ -105,9 +115,9 @@ $(document).ready(function(){initNavTree('rta__bpf_8h.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__bpf__point.html">rta_bpf_point</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__bpf__point__t.html">rta_bpf_point_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__rta__bpf.html">_rta_bpf</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__bpf__t.html">rta_bpf_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -128,17 +138,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_bpf_get_duration</b>(b)&#160;&#160;&#160;((b)-&gt;points[(b)-&gt;size - 1].time)</td></tr>
 <tr class="separator:a8a8f05cf93be6d2eaaeab6b37f48bef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ab59f33df360ecb565ff0748f6a44029b"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structrta__bpf__point.html">rta_bpf_point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bpf_8h.html#ab59f33df360ecb565ff0748f6a44029b">rta_bpf_point_t</a></td></tr>
-<tr class="separator:ab59f33df360ecb565ff0748f6a44029b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a256bf61a4325d5a356844379f64c2bbf"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct__rta__bpf.html">_rta_bpf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a></td></tr>
-<tr class="separator:a256bf61a4325d5a356844379f64c2bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a1323a33346360edabea28dea65382be7"><td class="memItemLeft" align="right" valign="top"><a id="a1323a33346360edabea28dea65382be7"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>rta_bpf_get_interpolated</b> (<a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a> *bpf, double time)</td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>rta_bpf_get_interpolated</b> (<a class="el" href="structrta__bpf__t.html">rta_bpf_t</a> *bpf, double time)</td></tr>
 <tr class="separator:a1323a33346360edabea28dea65382be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -155,45 +158,12 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>rta_bpf_get_interpo
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
 
 <p class="definition">Definition in file <a class="el" href="rta__bpf_8h_source.html">rta_bpf.h</a>.</p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
-<a id="ab59f33df360ecb565ff0748f6a44029b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab59f33df360ecb565ff0748f6a44029b">&#9670;&nbsp;</a></span>rta_bpf_point_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structrta__bpf__point.html">rta_bpf_point</a>  <a class="el" href="rta__bpf_8h.html#ab59f33df360ecb565ff0748f6a44029b">rta_bpf_point_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Break-point function (or time-tagged values).</p>
-<p>For the moment read only, since construction is done by binary-compatible bpf_t from FTM </p>
-
-</div>
-</div>
-<a id="a256bf61a4325d5a356844379f64c2bbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a256bf61a4325d5a356844379f64c2bbf">&#9670;&nbsp;</a></span>rta_bpf_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct__rta__bpf.html">_rta_bpf</a>  <a class="el" href="rta__bpf_8h.html#a256bf61a4325d5a356844379f64c2bbf">rta_bpf_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>the break-point function itself</p>
-<p>ATTENTION: must be binary-compatible with FTM struct bpfunc in ftmlib/classes/bpf.c!!! </p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:12 for rta by
+Generated on Thu Sep 14 2017 17:39:02 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

@@ -1,6 +1,5 @@
 var rta__svd_8h =
 [
-    [ "rta_svd_setup_t", "rta__svd_8h.html#a05952fbe665f09411b58b4791863763f", null ],
     [ "rta_svd_t", "rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6", [
       [ "rta_svd_out_of_place", "rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6a35bcae5206449052e570e9277ab632ec", null ],
       [ "rta_svd_in_place", "rta__svd_8h.html#a79c6feea4c0a58e5160115117fa5c5d6afde3f0fd013c900a55cc99575b827a25", null ]

@@ -1,9 +1,9 @@
 var rta__kdtreebuild_8c =
 [
-    [ "DEBUG_KDTREEBUILD", "rta__kdtreebuild_8c.html#a0363b2ad28b41278e3bb835edb121fab", null ],
-    [ "distV2N", "rta__kdtreebuild_8c.html#a01f721aea469e32a7f6815ad8112bc79", null ],
-    [ "distV2N_stride", "rta__kdtreebuild_8c.html#a6d70b595ebbe6c985d0141154f23aaaa", null ],
-    [ "distV2N_weighted", "rta__kdtreebuild_8c.html#a9e3ce8709f27c7a530f7c678eca27439", null ],
-    [ "kdtree_build", "rta__kdtreebuild_8c.html#ab49b539f2d3e241993c27791d535bd24", null ],
-    [ "kdtree_insert", "rta__kdtreebuild_8c.html#a260ec0da741be03dbb5069535d6078a8", null ]
+    [ "RTA_DEBUG_KDTREEBUILD", "rta__kdtreebuild_8c.html#af8c04fb418f6666df5f33018caa83625", null ],
+    [ "distV2N", "rta__kdtreebuild_8c.html#afb71e5d6121c60642e71a04c2dc010f4", null ],
+    [ "distV2N_stride", "rta__kdtreebuild_8c.html#a354b428d4501c9fbdb9adabe89f7f31e", null ],
+    [ "distV2N_weighted", "rta__kdtreebuild_8c.html#a86ac5725eeb5d9560eb5aaeefcb84277", null ],
+    [ "rta_kdtree_build", "rta__kdtreebuild_8c.html#a34a77c9e884ca2ec1a1b57ff99af6dba", null ],
+    [ "rta_kdtree_insert", "rta__kdtreebuild_8c.html#ae22f02a799a2353b3fb4b5a4664c24fb", null ]
 ];

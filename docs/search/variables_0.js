@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['alloc',['alloc',['../struct__rta__bpf.html#a453cedf4dc8e08300523f3c68feb73f0',1,'_rta_bpf']]]
+  ['alloc',['alloc',['../structrta__bpf__t.html#ae34192bc09d859195b20ce03c3634775',1,'rta_bpf_t']]]
 ];

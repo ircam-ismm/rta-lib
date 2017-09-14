@@ -1,15 +1,15 @@
 var searchData=
 [
-  ['nactive',['nactive',['../struct__rta__msdr.html#ac357d5de239da76275522ec8a5806c4e',1,'_rta_msdr']]],
-  ['nblocks',['nblocks',['../struct__kdtree__struct.html#a159ec64f01f8b6a8893fa1389bd9f1e4',1,'_kdtree_struct']]],
-  ['ndata',['ndata',['../struct__kdtree__struct.html#a3646734728ea3a13d83aae67bf642819',1,'_kdtree_struct']]],
-  ['ndatatot',['ndatatot',['../struct__kdtree__struct.html#a71d7c2dba7d4b6b21416bfdbe37f9b64',1,'_kdtree_struct']]],
-  ['ndim',['ndim',['../struct__kdtree__struct.html#aa8482336f9666273f6647734519da979',1,'_kdtree_struct']]],
-  ['neighbours',['neighbours',['../struct__kdtree__profile__struct.html#ac92f7c5a2bdd8ce8cb7fc699aef25c57',1,'_kdtree_profile_struct']]],
-  ['ninner',['ninner',['../struct__kdtree__struct.html#a9be49cebeb4eae03c9d08bcbadfefb41',1,'_kdtree_struct']]],
-  ['nlinks',['nlinks',['../struct__rta__msdr.html#a344c067c1495f5ccbad97028712f8224',1,'_rta_msdr']]],
-  ['nmasses',['nmasses',['../struct__rta__msdr.html#af0f1b7f5a4c5b670f71e8b30bcec1caa',1,'_rta_msdr']]],
-  ['nnodes',['nnodes',['../struct__kdtree__struct.html#a3df307a4ddf48b91a67abe3cbbc13608',1,'_kdtree_struct']]],
-  ['nodes',['nodes',['../struct__kdtree__struct.html#ad19da25a065955a5b4ac7a69da54994c',1,'_kdtree_struct']]],
-  ['nyquist',['nyquist',['../structrta__fft__setup.html#a30e94f00e780e02c0aedc0d86eddfbbe',1,'rta_fft_setup']]]
+  ['nactive',['nactive',['../structrta__msdr__t.html#aac71c7921aad6599f46345506bac00a5',1,'rta_msdr_t']]],
+  ['nblocks',['nblocks',['../structrta__kdtree__t.html#ac1b0f90f9aac83b23eec2336fae53b13',1,'rta_kdtree_t']]],
+  ['ndata',['ndata',['../structrta__kdtree__t.html#a3cf8f08c66502a22e1d2433258f4683c',1,'rta_kdtree_t']]],
+  ['ndatatot',['ndatatot',['../structrta__kdtree__t.html#abe2d147d8f50b3861dd4b8a8c05b8729',1,'rta_kdtree_t']]],
+  ['ndim',['ndim',['../structrta__kdtree__t.html#a5625b645111f10b255813a5dd1c6013c',1,'rta_kdtree_t']]],
+  ['neighbours',['neighbours',['../structrta__kdtree__profile__t.html#a87c9fd89b512179a67875d7c3b1a60d5',1,'rta_kdtree_profile_t']]],
+  ['ninner',['ninner',['../structrta__kdtree__t.html#a77baa8c6d4064452d88fd8b9897a439c',1,'rta_kdtree_t']]],
+  ['nlinks',['nlinks',['../structrta__msdr__t.html#a5b042f3c592d598c6ff83a7957a19bac',1,'rta_msdr_t']]],
+  ['nmasses',['nmasses',['../structrta__msdr__t.html#aac0526944ea77e130683f2977f9b09cc',1,'rta_msdr_t']]],
+  ['nnodes',['nnodes',['../structrta__kdtree__t.html#a282fd14d2a999f537798d6956d9e000c',1,'rta_kdtree_t']]],
+  ['nodes',['nodes',['../structrta__kdtree__t.html#a3bf0b5ffe62bc960bb990082e0b5ea02',1,'rta_kdtree_t']]],
+  ['nyquist',['nyquist',['../structrta__fft__setup.html#acbb8ffc92e6f4fa187a2c0188038e475',1,'rta_fft_setup']]]
 ];

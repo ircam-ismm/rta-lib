@@ -1,6 +1,5 @@
 var rta__fft_8h =
 [
-    [ "rta_fft_setup_t", "rta__fft_8h.html#a55ec4ca3f273cc5dd8c779f069df16ae", null ],
     [ "rta_fft_t", "rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59", [
       [ "rta_fft_real_to_complex_1d", "rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59a54bd195db46b59e18cd0b65fc48bf524", null ],
       [ "rta_fft_complex_to_real_1d", "rta__fft_8h.html#ace8385aa565cf70722c23d27c9bbfa59a42244f769ec87c77567d5b99e226076c", null ],

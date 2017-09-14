@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['base',['base',['../struct__kdtree__object__struct.html#a47990867cc1921027b914e18d0ebfb27',1,'_kdtree_object_struct']]]
+  ['base',['base',['../structrta__kdtree__object__t.html#a87602817dd4c4ae8d57c37442db6a794',1,'rta_kdtree_object_t']]]
 ];

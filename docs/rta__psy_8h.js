@@ -1,8 +1,8 @@
 var rta__psy_8h =
 [
-    [ "CandidateSt", "struct_candidate_st.html", "struct_candidate_st" ],
-    [ "TrackingStateSt", "struct_tracking_state_st.html", "struct_tracking_state_st" ],
-    [ "PsyAnaSt", "struct_psy_ana_st.html", "struct_psy_ana_st" ],
+    [ "rta_psy_candidate", "structrta__psy__candidate.html", "structrta__psy__candidate" ],
+    [ "rta_psy_tracking_state", "structrta__psy__tracking__state.html", "structrta__psy__tracking__state" ],
+    [ "rta_psy_ana", "structrta__psy__ana.html", "structrta__psy__ana" ],
     [ "MAX_CANDIDATES", "rta__psy_8h.html#a4f558446da5bfc11540c3b9892043564", null ],
     [ "MAX_DOWN_SAMPLING", "rta__psy_8h.html#a22310184b010db8b898b5af8fb5b84f0", null ],
     [ "MAX_DOWN_SAMPLING_EXP", "rta__psy_8h.html#a716bfa31f553cc03275cd9f1eff1b67f", null ],
@@ -10,9 +10,6 @@ var rta__psy_8h =
     [ "rta_psy_free", "rta__psy_8h.html#a45a08e70d62961061ba7c1a424fb17ac", null ],
     [ "rta_psy_malloc", "rta__psy_8h.html#a5d3de0d807cf0dd7190d3151ae00bddb", null ],
     [ "rta_psy_realloc", "rta__psy_8h.html#a343634eeda108e533bf4b134d78140bb", null ],
-    [ "rta_psy_ana", "rta__psy_8h.html#a4d947e8d60d02f07254cd189360ca59c", null ],
-    [ "rta_psy_candidate", "rta__psy_8h.html#a3d94f1ec1f26bc67c7c9d4c39b48bba3", null ],
-    [ "rta_psy_tracking_state", "rta__psy_8h.html#abd833ff0c4d5091c2868cbdbd54af316", null ],
     [ "rta_psy_calculate_input_vector", "rta__psy_8h.html#ac1626dedc25954a9580df479436f757a", null ],
     [ "rta_psy_deinit", "rta__psy_8h.html#ae167807daf657fcc8e79e1e5ad661e3b", null ],
     [ "rta_psy_finalize", "rta__psy_8h.html#a8697b1194fa2ee58491f8fa6e7ecf0ab", null ],

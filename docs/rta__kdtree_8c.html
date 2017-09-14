@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rta: /Users/larralde/Projects/git-repositories/Ircam-RnD/rta-lib/src/recognition/rta_kdtree.c File Reference</title>
+<title>rta: recognition/rta_kdtree.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,12 +32,23 @@
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellspacing="0" cellpadding="0" width="100%">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">rta
-   </div>
+    <div id="projectname">rta
+      &#160;
+      <!-- <span id="projectnumber">1.0.0</span> -->
+    </div>
+    <div id="projectbrief">a library of algorithms for real-time applications                          in audio and gesture processing</div>
+  </td>
+  <td style="padding-right: 0.5em;" align="right">
+    <div id="github" aligh="rigth" width="100%" style="padding: auto;">
+      1.0.0
+      <a id="github-url" href="https://github.com/Ircam-RnD/rta-lib">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+      </a>
+    </div>
   </td>
  </tr>
  </tbody>
@@ -104,59 +115,55 @@ $(document).ready(function(){initNavTree('rta__kdtree_8c.html','');});
 <code>#include &lt;alloca.h&gt;</code><br />
 <code>#include &lt;strings.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="rta__kdtree_8h_source.html">rta_kdtree.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="rta__kdtreeintern_8h_source.html">rta_kdtreeintern.h</a>&quot;</code><br />
+<code>#include &quot;rta_kdtreeintern.h&quot;</code><br />
 </div>
 <p><a href="rta__kdtree_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a73ee59f14b6724873d75d3a624b2116b"><td class="memItemLeft" align="right" valign="top"><a id="a73ee59f14b6724873d75d3a624b2116b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_VEC_STR</b>&#160;&#160;&#160;2048</td></tr>
-<tr class="separator:a73ee59f14b6724873d75d3a624b2116b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a444cbcc754b01c435e4461314a4a0221"><td class="memItemLeft" align="right" valign="top"><a id="a444cbcc754b01c435e4461314a4a0221"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>MB</b>(b)&#160;&#160;&#160;((float) (b) / (float) (1024 * 1024))</td></tr>
 <tr class="separator:a444cbcc754b01c435e4461314a4a0221"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c9ec76906fc9a32f7bec7f5c7eee267"><td class="memItemLeft" align="right" valign="top"><a id="a1c9ec76906fc9a32f7bec7f5c7eee267"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FLT</b>(b)&#160;&#160;&#160;((b) * sizeof(rta_real_t))</td></tr>
 <tr class="separator:a1c9ec76906fc9a32f7bec7f5c7eee267"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26f388e6a6c5b59cb44f481b77d1918e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>auto_alloc</b>(field,  in,  size)</td></tr>
-<tr class="separator:a26f388e6a6c5b59cb44f481b77d1918e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b870891f871d70adb96530221128331"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_auto_alloc</b>(field,  in,  size)</td></tr>
+<tr class="separator:a0b870891f871d70adb96530221128331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3d56f67eb53e973a4777e9b064c7843f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a3d56f67eb53e973a4777e9b064c7843f">kdtree_profile_clear</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t)</td></tr>
-<tr class="separator:a3d56f67eb53e973a4777e9b064c7843f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc1af8d347982de36999fade81cdb6a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#abc1af8d347982de36999fade81cdb6a6">vec_post</a> (rta_real_t *v, int stride, int n, const char *suffix)</td></tr>
-<tr class="separator:abc1af8d347982de36999fade81cdb6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a387b43e9b2e0a5d48f2c102d694faa0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a387b43e9b2e0a5d48f2c102d694faa0a">row_post</a> (rta_real_t *v, int row, int n, const char *suffix)</td></tr>
-<tr class="separator:a387b43e9b2e0a5d48f2c102d694faa0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee9aa6a7cb9d5d7d39c3c414497246ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#aee9aa6a7cb9d5d7d39c3c414497246ac">kdtree_info_display</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t)</td></tr>
-<tr class="separator:aee9aa6a7cb9d5d7d39c3c414497246ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bf3374085ca187c0cd4df682226045c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a6bf3374085ca187c0cd4df682226045c">kdtree_raw_display</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t)</td></tr>
-<tr class="separator:a6bf3374085ca187c0cd4df682226045c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2f6faa8e798a97ceb09604b8a0ebc79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#ae2f6faa8e798a97ceb09604b8a0ebc79">kdtree_data_display</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *t, int print_data)</td></tr>
-<tr class="separator:ae2f6faa8e798a97ceb09604b8a0ebc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d3cf88e7361ec2f7159baac737f02f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a9d3cf88e7361ec2f7159baac737f02f2">kdtree_set_data</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *self, int nblocks, rta_real_t **data, <a class="el" href="rta__kdtree_8h.html#ab3c322922ba418bd1384f72e01e71c86">kdtree_object_t</a> *index, int *m, int n)</td></tr>
-<tr class="separator:a9d3cf88e7361ec2f7159baac737f02f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87fdb9a2b4ea84f11fa0bf06c80ef387"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a87fdb9a2b4ea84f11fa0bf06c80ef387">kdtree_init_nodes</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *self, <a class="el" href="rta__kdtree_8h.html#a6a5e70651f2ec7c2107beb9e2bd1c59e">kdtree_node_t</a> *nodes, rta_real_t *planes, rta_real_t *means)</td></tr>
-<tr class="separator:a87fdb9a2b4ea84f11fa0bf06c80ef387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec53520cbb78114fdf9d359e77b5b73b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#aec53520cbb78114fdf9d359e77b5b73b">kdtree_update_sigmanz</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *self)</td></tr>
-<tr class="separator:aec53520cbb78114fdf9d359e77b5b73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89e9c6fe3dd067123a8416f5850d1aea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a89e9c6fe3dd067123a8416f5850d1aea">kdtree_set_sigma</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *self, rta_real_t *sigma)</td></tr>
-<tr class="separator:a89e9c6fe3dd067123a8416f5850d1aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d8cf71830f869e7aa9b8434077662d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a7d8cf71830f869e7aa9b8434077662d5">kdtree_init</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *self)</td></tr>
-<tr class="separator:a7d8cf71830f869e7aa9b8434077662d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b3595d1e42ca801a02e9c9d465626e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a1b3595d1e42ca801a02e9c9d465626e1">kdtree_free</a> (<a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *self)</td></tr>
-<tr class="separator:a1b3595d1e42ca801a02e9c9d465626e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd7e885e653885e1d5b0fa274990048e"><td class="memItemLeft" align="right" valign="top"><a id="afd7e885e653885e1d5b0fa274990048e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_profile_clear</b> (kdtree_t *t)</td></tr>
+<tr class="separator:afd7e885e653885e1d5b0fa274990048e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fdb36b773771a05048d1ceafb08b093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a5fdb36b773771a05048d1ceafb08b093">rta_kdtree_info_display</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t)</td></tr>
+<tr class="separator:a5fdb36b773771a05048d1ceafb08b093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30553a05fdc4ab641b79c19443fb374d"><td class="memItemLeft" align="right" valign="top"><a id="a30553a05fdc4ab641b79c19443fb374d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_raw_display</b> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t)</td></tr>
+<tr class="separator:a30553a05fdc4ab641b79c19443fb374d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1a91d3d0e5ef883fcd16259916b5e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a3d1a91d3d0e5ef883fcd16259916b5e7">rta_kdtree_data_display</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int print_data)</td></tr>
+<tr class="separator:a3d1a91d3d0e5ef883fcd16259916b5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7963fbc98c07fc2734023cf078cd686e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a7963fbc98c07fc2734023cf078cd686e">rta_kdtree_set_data</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, int nblocks, rta_real_t **data, <a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a> *index, int *m, int n)</td></tr>
+<tr class="separator:a7963fbc98c07fc2734023cf078cd686e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a243f70494d1f87420566e1dbdff00380"><td class="memItemLeft" align="right" valign="top"><a id="a243f70494d1f87420566e1dbdff00380"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_init_nodes</b> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, <a class="el" href="structrta__kdtree__node__t.html">rta_kdtree_node_t</a> *nodes, rta_real_t *planes, rta_real_t *means)</td></tr>
+<tr class="separator:a243f70494d1f87420566e1dbdff00380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b33066df5aa122701e6ce954707ccf4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a5b33066df5aa122701e6ce954707ccf4">rta_kdtree_update_sigmanz</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
+<tr class="separator:a5b33066df5aa122701e6ce954707ccf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0da108ffe674773654a6f729f2a37d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#aa0da108ffe674773654a6f729f2a37d2">rta_kdtree_set_sigma</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, rta_real_t *sigma)</td></tr>
+<tr class="separator:aa0da108ffe674773654a6f729f2a37d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2be809d317f851dcaa74830cc54f5ba8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a2be809d317f851dcaa74830cc54f5ba8">rta_kdtree_init</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
+<tr class="separator:a2be809d317f851dcaa74830cc54f5ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66fcd19fc40583903534155d6bdb7dbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8c.html#a66fcd19fc40583903534155d6bdb7dbf">rta_kdtree_free</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
+<tr class="separator:a66fcd19fc40583903534155d6bdb7dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a144683e8d678afdac691d3c8a657da4b"><td class="memItemLeft" align="right" valign="top"><a id="a144683e8d678afdac691d3c8a657da4b"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_dmodestr</b> [] = { &quot;orthogonal&quot;, &quot;hyperplane&quot;, &quot;pca&quot; }</td></tr>
-<tr class="separator:a144683e8d678afdac691d3c8a657da4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a071ad3aa8ee32a9b392d784f7e654199"><td class="memItemLeft" align="right" valign="top"><a id="a071ad3aa8ee32a9b392d784f7e654199"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodestr</b> [] = { &quot;mean&quot;, &quot;middle&quot;, &quot;median&quot; }</td></tr>
-<tr class="separator:a071ad3aa8ee32a9b392d784f7e654199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afde43fa40a342cc5877506bbe07ebfc3"><td class="memItemLeft" align="right" valign="top"><a id="afde43fa40a342cc5877506bbe07ebfc3"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_dmodestr</b> [] = { &quot;orthogonal&quot;, &quot;hyperplane&quot;, &quot;pca&quot; }</td></tr>
+<tr class="separator:afde43fa40a342cc5877506bbe07ebfc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ababbfa433fbb4d128eb6f8fd4e71fe34"><td class="memItemLeft" align="right" valign="top"><a id="ababbfa433fbb4d128eb6f8fd4e71fe34"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_mmodestr</b> [] = { &quot;mean&quot;, &quot;middle&quot;, &quot;median&quot; }</td></tr>
+<tr class="separator:ababbfa433fbb4d128eb6f8fd4e71fe34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>k-dimensional search tree </p>
@@ -185,14 +192,14 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 
 <p class="definition">Definition in file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a26f388e6a6c5b59cb44f481b77d1918e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26f388e6a6c5b59cb44f481b77d1918e">&#9670;&nbsp;</a></span>auto_alloc</h2>
+<a id="a0b870891f871d70adb96530221128331"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b870891f871d70adb96530221128331">&#9670;&nbsp;</a></span>rta_auto_alloc</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define auto_alloc</td>
+          <td class="memname">#define rta_auto_alloc</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">field, </td>
@@ -216,24 +223,24 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span> {                \</div><div class="line">    if (in == NULL) <span class="comment">/* auto alloc */</span>                    \</div><div class="line">      if (field) field = <a class="code" href="rta__stdlib_8h.html#a67d201d9b540a70f30d4669e60eb6d77">rta_realloc</a>(field, size * <span class="keyword">sizeof</span>(*field)); \</div><div class="line">      else       field = <a class="code" href="rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495">rta_malloc</a>(size * <span class="keyword">sizeof</span>(*field));     \</div><div class="line">    else field = in; <span class="comment">/* external alloc */</span> } <span class="keywordflow">while</span> (0)</div><div class="ttc" id="rta__stdlib_8h_html_a67d201d9b540a70f30d4669e60eb6d77"><div class="ttname"><a href="rta__stdlib_8h.html#a67d201d9b540a70f30d4669e60eb6d77">rta_realloc</a></div><div class="ttdeci">#define rta_realloc</div><div class="ttdef"><b>Definition:</b> <a href="rta__stdlib_8h_source.html#l00054">rta_stdlib.h:54</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span> { \</div><div class="line">  if (in == NULL) <span class="comment">/* auto alloc */</span> \</div><div class="line">    if (field) field = <a class="code" href="rta__stdlib_8h.html#a67d201d9b540a70f30d4669e60eb6d77">rta_realloc</a>(field, size * <span class="keyword">sizeof</span>(*field)); \</div><div class="line">    else       field = <a class="code" href="rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495">rta_malloc</a>(size * <span class="keyword">sizeof</span>(*field)); \</div><div class="line">  else field = in; <span class="comment">/* external alloc */</span> } <span class="keywordflow">while</span> (0)</div><div class="ttc" id="rta__stdlib_8h_html_a67d201d9b540a70f30d4669e60eb6d77"><div class="ttname"><a href="rta__stdlib_8h.html#a67d201d9b540a70f30d4669e60eb6d77">rta_realloc</a></div><div class="ttdeci">#define rta_realloc</div><div class="ttdef"><b>Definition:</b> <a href="rta__stdlib_8h_source.html#l00054">rta_stdlib.h:54</a></div></div>
 <div class="ttc" id="rta__stdlib_8h_html_abba046e1e18dc3e3a4096c9c0d8c2495"><div class="ttname"><a href="rta__stdlib_8h.html#abba046e1e18dc3e3a4096c9c0d8c2495">rta_malloc</a></div><div class="ttdeci">#define rta_malloc</div><div class="ttdef"><b>Definition:</b> <a href="rta__stdlib_8h_source.html#l00048">rta_stdlib.h:48</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00239">239</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00242">242</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ae2f6faa8e798a97ceb09604b8a0ebc79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2f6faa8e798a97ceb09604b8a0ebc79">&#9670;&nbsp;</a></span>kdtree_data_display()</h2>
+<a id="a3d1a91d3d0e5ef883fcd16259916b5e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d1a91d3d0e5ef883fcd16259916b5e7">&#9670;&nbsp;</a></span>rta_kdtree_data_display()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_data_display </td>
+          <td class="memname">void rta_kdtree_data_display </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
@@ -251,20 +258,20 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 </div><div class="memdoc">
 <p>print tree data to console <code>print_data</code> = 1 or 2 controls verbosity </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00166">166</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00167">167</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
-<a id="a1b3595d1e42ca801a02e9c9d465626e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b3595d1e42ca801a02e9c9d465626e1">&#9670;&nbsp;</a></span>kdtree_free()</h2>
+<a id="a66fcd19fc40583903534155d6bdb7dbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66fcd19fc40583903534155d6bdb7dbf">&#9670;&nbsp;</a></span>rta_kdtree_free()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_free </td>
+          <td class="memname">void rta_kdtree_free </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
           <td></td>
         </tr>
@@ -273,20 +280,20 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 <p>free auto-allocated tree memory</p>
 <p>Call this ONLY when you gave the required node memory pointers as NULL. </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00379">379</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00387">387</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
-<a id="aee9aa6a7cb9d5d7d39c3c414497246ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee9aa6a7cb9d5d7d39c3c414497246ac">&#9670;&nbsp;</a></span>kdtree_info_display()</h2>
+<a id="a5fdb36b773771a05048d1ceafb08b093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdb36b773771a05048d1ceafb08b093">&#9670;&nbsp;</a></span>rta_kdtree_info_display()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_info_display </td>
+          <td class="memname">void rta_kdtree_info_display </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>t</em></td><td>)</td>
           <td></td>
         </tr>
@@ -298,16 +305,16 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 
 </div>
 </div>
-<a id="a7d8cf71830f869e7aa9b8434077662d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d8cf71830f869e7aa9b8434077662d5">&#9670;&nbsp;</a></span>kdtree_init()</h2>
+<a id="a2be809d317f851dcaa74830cc54f5ba8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2be809d317f851dcaa74830cc54f5ba8">&#9670;&nbsp;</a></span>rta_kdtree_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_init </td>
+          <td class="memname">void rta_kdtree_init </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
           <td></td>
         </tr>
@@ -315,121 +322,20 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 </div><div class="memdoc">
 <p>initialise tree structure </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00348">348</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00356">356</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
-<a id="a87fdb9a2b4ea84f11fa0bf06c80ef387"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87fdb9a2b4ea84f11fa0bf06c80ef387">&#9670;&nbsp;</a></span>kdtree_init_nodes()</h2>
+<a id="a7963fbc98c07fc2734023cf078cd686e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7963fbc98c07fc2734023cf078cd686e">&#9670;&nbsp;</a></span>rta_kdtree_set_data()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_init_nodes </td>
+          <td class="memname">int rta_kdtree_set_data </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a6a5e70651f2ec7c2107beb9e2bd1c59e">kdtree_node_t</a> *&#160;</td>
-          <td class="paramname"><em>nodes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">rta_real_t *&#160;</td>
-          <td class="paramname"><em>means</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">rta_real_t *&#160;</td>
-          <td class="paramname"><em>planes</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>initialise tree nodes</p>
-<p>This function must be called after kdtree_set_data() and before kdtree_build(). It initialises the tree nodes and the vectors decomposing the search space.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">self</td><td>kd-tree structure </td></tr>
-    <tr><td class="paramname">nodes</td><td>space for tree nodes or NULL for automatic allocation </td></tr>
-    <tr><td class="paramname">means</td><td>space for mean vectors or NULL for automatic allocation </td></tr>
-    <tr><td class="paramname">planes</td><td>space for hyperplanes or NULL for automatic allocation</td></tr>
-  </table>
-  </dd>
-</dl>
-<p><em>Prerequisites:</em> </p><ul>
-<li>tree data(m, n) must have been set with kdtree_set_data(), this returned nnodes</li>
-<li>if <code>nodes</code> is not NULL, it must point to space for the tree nodes of size nnodes * sizeof(kdtree_node_t), which must have been allocated outside of the library</li>
-<li>if <code>means</code> is not NULL, it must point to space for the mean vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library</li>
-<li>if <code>planes</code> is not NULL and decomposition mode is not dmode_orthogonal, it must point to space for split hyperplane base vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library </li>
-</ul>
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00296">296</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
-
-</div>
-</div>
-<a id="a3d56f67eb53e973a4777e9b064c7843f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d56f67eb53e973a4777e9b064c7843f">&#9670;&nbsp;</a></span>kdtree_profile_clear()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kdtree_profile_clear </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
-          <td class="paramname"><em>t</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>set all counters in kdtree_t::profile to zero </p>
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00087">87</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
-
-</div>
-</div>
-<a id="a6bf3374085ca187c0cd4df682226045c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bf3374085ca187c0cd4df682226045c">&#9670;&nbsp;</a></span>kdtree_raw_display()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kdtree_raw_display </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
-          <td class="paramname"><em>t</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>print tree raw unsorted data to console </p>
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00152">152</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
-
-</div>
-</div>
-<a id="a9d3cf88e7361ec2f7159baac737f02f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d3cf88e7361ec2f7159baac737f02f2">&#9670;&nbsp;</a></span>kdtree_set_data()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kdtree_set_data </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>self</em>, </td>
         </tr>
         <tr>
@@ -447,7 +353,7 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#ab3c322922ba418bd1384f72e01e71c86">kdtree_object_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a> *&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -484,20 +390,20 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 <dl class="section return"><dt>Returns</dt><dd>the number of nodes the tree will build</dd></dl>
 <p><code>data</code> and <code>index</code> must point to arrays in memory that will stay valid throughout the existence of the tree! </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00246">246</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00249">249</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
-<a id="a89e9c6fe3dd067123a8416f5850d1aea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89e9c6fe3dd067123a8416f5850d1aea">&#9670;&nbsp;</a></span>kdtree_set_sigma()</h2>
+<a id="aa0da108ffe674773654a6f729f2a37d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0da108ffe674773654a6f729f2a37d2">&#9670;&nbsp;</a></span>rta_kdtree_set_sigma()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kdtree_set_sigma </td>
+          <td class="memname">void rta_kdtree_set_sigma </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>self</em>, </td>
         </tr>
         <tr>
@@ -516,20 +422,20 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 <p>build tree only on m lines of data listed in ind set new pointer to weight vector sigma of length kdtree_t::ndim</p>
 <p>Dimensions can be weighted while building the tree, and while searching. The weight is 1 / sigma, just as in mnm.mahalanobis. Sigma = 0 means: ignore this dimension. </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00331">331</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00340">340</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
-<a id="aec53520cbb78114fdf9d359e77b5b73b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec53520cbb78114fdf9d359e77b5b73b">&#9670;&nbsp;</a></span>kdtree_update_sigmanz()</h2>
+<a id="a5b33066df5aa122701e6ce954707ccf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b33066df5aa122701e6ce954707ccf4">&#9670;&nbsp;</a></span>rta_kdtree_update_sigmanz()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int kdtree_update_sigmanz </td>
+          <td class="memname">int rta_kdtree_update_sigmanz </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="rta__kdtree_8h.html#a8aae1d722db38964969499f6b9919d39">kdtree_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
           <td></td>
         </tr>
@@ -538,93 +444,7 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 <p>check for changes in weights</p>
 <p>This functions searches the non-zero elements in kdtree_t::sigma. Only these dimensions will be taken into account for searching. </p>
 
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00319">319</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
-
-</div>
-</div>
-<a id="a387b43e9b2e0a5d48f2c102d694faa0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a387b43e9b2e0a5d48f2c102d694faa0a">&#9670;&nbsp;</a></span>row_post()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void row_post </td>
-          <td>(</td>
-          <td class="paramtype">rta_real_t *&#160;</td>
-          <td class="paramname"><em>m</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>suffix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>helper function to print row <code>i</code> of matrix <code>m</code> of length <code>n</code> to the console </p>
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00116">116</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
-
-</div>
-</div>
-<a id="abc1af8d347982de36999fade81cdb6a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc1af8d347982de36999fade81cdb6a6">&#9670;&nbsp;</a></span>vec_post()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vec_post </td>
-          <td>(</td>
-          <td class="paramtype">rta_real_t *&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>stride</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>suffix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>helper function to print a vector <code>v</code> of length <code>n</code> with stride <code>stride</code> to the console </p>
-
-<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00100">100</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00326">326</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
@@ -633,7 +453,7 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>kdtree_mmodes
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 13 2017 23:28:11 for rta by
+Generated on Thu Sep 14 2017 17:39:01 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

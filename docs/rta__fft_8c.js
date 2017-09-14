@@ -1,6 +1,6 @@
 var rta__fft_8c =
 [
-    [ "rta_fft_setup", "structrta__fft__setup.html", "structrta__fft__setup" ],
+    [ "rta_fft_setup_t", "structrta__fft__setup.html", "structrta__fft__setup" ],
     [ "rta_fft_execute", "rta__fft_8c.html#acddc318fe93b063be347a00d2be80806", null ],
     [ "rta_fft_real_execute", "rta__fft_8c.html#a6419e839813499fe0e36629c0026c092", null ],
     [ "rta_fft_real_setup_new", "rta__fft_8c.html#a414127d19d0474ac5dcd047932455d3b", null ],

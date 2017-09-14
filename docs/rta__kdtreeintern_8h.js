@@ -2,12 +2,12 @@ var rta__kdtreeintern_8h =
 [
     [ "MAX_FLOAT", "rta__kdtreeintern_8h.html#afb31aa2d196755fb259d43a03c18c9d7", null ],
     [ "pow2", "rta__kdtreeintern_8h.html#a9a1a80dcaf876a3295a7653159a0e90a", null ],
-    [ "distV2N", "rta__kdtreeintern_8h.html#a01f721aea469e32a7f6815ad8112bc79", null ],
-    [ "distV2N_stride", "rta__kdtreeintern_8h.html#a6d70b595ebbe6c985d0141154f23aaaa", null ],
-    [ "distV2N_weighted", "rta__kdtreeintern_8h.html#a9e3ce8709f27c7a530f7c678eca27439", null ],
-    [ "kdtree_stack_free", "rta__kdtreeintern_8h.html#adf082c37cbacccc9a1ed8f4ae726a797", null ],
-    [ "kdtree_stack_grow", "rta__kdtreeintern_8h.html#ae3ec2c2cc49ddd9b8d959e17a6d056b8", null ],
-    [ "kdtree_stack_init", "rta__kdtreeintern_8h.html#a50a553cb22bf60b8c3a976bdb558be36", null ],
-    [ "row_post", "rta__kdtreeintern_8h.html#a95dd43798190426dd86aaf34ae8f0906", null ],
-    [ "vec_post", "rta__kdtreeintern_8h.html#abc1af8d347982de36999fade81cdb6a6", null ]
+    [ "distV2N", "rta__kdtreeintern_8h.html#afb71e5d6121c60642e71a04c2dc010f4", null ],
+    [ "distV2N_stride", "rta__kdtreeintern_8h.html#a354b428d4501c9fbdb9adabe89f7f31e", null ],
+    [ "distV2N_weighted", "rta__kdtreeintern_8h.html#a86ac5725eeb5d9560eb5aaeefcb84277", null ],
+    [ "rta_kdtree_stack_free", "rta__kdtreeintern_8h.html#aef4a169bc12865f6202ce4bd61c4b2dc", null ],
+    [ "rta_kdtree_stack_grow", "rta__kdtreeintern_8h.html#a27ea72afadafb07db6d7abd2b9a05303", null ],
+    [ "rta_kdtree_stack_init", "rta__kdtreeintern_8h.html#a95247b86726b1e2e491ade8d35d597fa", null ],
+    [ "rta_row_post", "rta__kdtreeintern_8h.html#a5a80abb996985033b58f23f6021c0485", null ],
+    [ "rta_vec_post", "rta__kdtreeintern_8h.html#aa066d4fe36effdef65567d22369bbe1c", null ]
 ];

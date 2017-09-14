@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['endind',['endind',['../struct__kdtree__node__struct.html#a5f4db376e6f0b85142bdea17a9ee21d1',1,'_kdtree_node_struct']]]
+  ['endind',['endind',['../structrta__kdtree__node__t.html#ac2dd59c1bce5ad0e73dbfcf243d9837c',1,'rta_kdtree_node_t']]]
 ];
