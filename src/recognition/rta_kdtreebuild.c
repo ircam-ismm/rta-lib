@@ -423,7 +423,7 @@ rta_real_t distV2N_weighted (rta_kdtree_t* t, const rta_real_t *x, int stride,
 /* swap positions of vectors i and j: only in indirection array */
 static void swap (rta_kdtree_t* t, int i, int j)
 {
-  kdtree_object_t tmp;
+  rta_kdtree_object_t tmp;
 
   tmp = t->dataindex[i];
   t->dataindex[i] = t->dataindex[j];

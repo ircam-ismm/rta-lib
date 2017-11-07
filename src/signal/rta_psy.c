@@ -388,10 +388,10 @@ void
 rta_psy_deinit(rta_psy_ana_t *self)
 {
   if(self->inputBuffer != NULL)
-    psyAna_free(self->inputBuffer);
+    rta_psy_free(self->inputBuffer);
 
   if(self->corrBuffer != NULL)
-    psyAna_free(self->corrBuffer);
+    rta_psy_free(self->corrBuffer);
 }
 
 void
@@ -429,7 +429,7 @@ rta_psy_reset(rta_psy_ana_t *self, double minFreq, double maxFreq, double sample
 
   if(self->corrBufferSize > self->maxCorrBufferSize)
   {
-    self->corrBuffer = (float *)psyAna_realloc(self->corrBuffer, sizeof(float) * self->corrBufferSize);
+    self->corrBuffer = (float *)rta_psy_realloc(self->corrBuffer, sizeof(float) * self->corrBufferSize);
     self->maxCorrBufferSize = self->corrBufferSize;
   }
 
@@ -437,7 +437,7 @@ rta_psy_reset(rta_psy_ana_t *self, double minFreq, double maxFreq, double sample
 
   if(self->inputBufferSize > self->maxInputBufferSize)
   {
-    self->inputBuffer = (float *)psyAna_realloc(self->inputBuffer, sizeof(float) * self->inputBufferSize);
+    self->inputBuffer = (float *)rta_psy_realloc(self->inputBuffer, sizeof(float) * self->inputBufferSize);
     self->maxInputBufferSize = self->inputBufferSize;
   }
 

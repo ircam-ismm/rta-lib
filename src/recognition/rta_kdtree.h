@@ -336,7 +336,7 @@ int rta_kdtree_update_sigmanz (rta_kdtree_t *self);
     - if \p means is not NULL, it must point to space for the mean vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library
     - if \p planes is not NULL and decomposition mode is not dmode_orthogonal, it must point to space for split hyperplane base vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library
 */
-void rta_kdtree_init_nodes (rta_kdtree_t *self, kdtree_node_t *nodes, rta_real_t *means, rta_real_t *planes);
+void rta_kdtree_init_nodes (rta_kdtree_t *self, rta_kdtree_node_t *nodes, rta_real_t *means, rta_real_t *planes);
 
 /** build tree
 
