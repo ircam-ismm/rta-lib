@@ -1,8 +1,8 @@
 var rta__msdr_8h =
 [
     [ "rta_msdr_limits_t", "structrta__msdr__limits__t.html", "structrta__msdr__limits__t" ],
-    [ "rta_msdr_link_t", "structrta__msdr__link__t.html", "structrta__msdr__link__t" ],
     [ "rta_msdr_mass_t", "structrta__msdr__mass__t.html", "structrta__msdr__mass__t" ],
+    [ "rta_msdr_link_t", "structrta__msdr__link__t.html", "structrta__msdr__link__t" ],
     [ "rta_msdr_t", "structrta__msdr__t.html", "structrta__msdr__t" ],
     [ "RTA_MSDR_MAXCAT", "rta__msdr_8h.html#a8062714a39df2c9b9c138e8cd92fa41f", null ],
     [ "RTA_MSDR_NDIM", "rta__msdr_8h.html#a91dc871b69c5792877411439e879fca8", null ],

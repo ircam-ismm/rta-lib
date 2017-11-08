@@ -38,7 +38,6 @@
 #ifndef _RTA_CONFIGURATIONx_H_
 #define _RTA_CONFIGURATIONx_H_ 1
 
-//#define rta_post post
 #define rta_post printf
 
 /** fts memory allocation */

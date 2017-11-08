@@ -80,6 +80,7 @@
 		31438D7F1F6A888C00EEF89D /* rta_unispring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31438D771F6A888C00EEF89D /* rta_unispring.cpp */; };
 		31438D801F6A888C00EEF89D /* rta_unispring.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D781F6A888C00EEF89D /* rta_unispring.h */; };
 		31438D821F6A889900EEF89D /* rta.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D811F6A889900EEF89D /* rta.h */; };
+		315B902C1FB3606C0005150B /* rta_configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 315B902B1FB3606C0005150B /* rta_configuration.h */; };
 		31A7E7431F6949B700398D56 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A7E7421F6949B700398D56 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
@@ -157,6 +158,7 @@
 		31438D771F6A888C00EEF89D /* rta_unispring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rta_unispring.cpp; path = "../../src/physical-models/rta_unispring.cpp"; sourceTree = "<group>"; };
 		31438D781F6A888C00EEF89D /* rta_unispring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta_unispring.h; path = "../../src/physical-models/rta_unispring.h"; sourceTree = "<group>"; };
 		31438D811F6A889900EEF89D /* rta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta.h; path = ../../include/rta.h; sourceTree = "<group>"; };
+		315B902B1FB3606C0005150B /* rta_configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta_configuration.h; path = ../../include/configuration_basic/rta_configuration.h; sourceTree = "<group>"; };
 		31A7E6A41F69480600398D56 /* librta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librta.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		31A7E7421F6949B700398D56 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -321,6 +323,7 @@
 		31A7E7441F6949D500398D56 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				315B902B1FB3606C0005150B /* rta_configuration.h */,
 				31438D811F6A889900EEF89D /* rta.h */,
 			);
 			name = include;
@@ -356,6 +359,7 @@
 				31438D5A1F6A887200EEF89D /* rta_resample.h in Headers */,
 				31438D4B1F6A887200EEF89D /* rta_fft.h in Headers */,
 				31438D561F6A887200EEF89D /* rta_preemphasis.h in Headers */,
+				315B902C1FB3606C0005150B /* rta_configuration.h in Headers */,
 				31438D021F6A885200EEF89D /* rta_int.h in Headers */,
 				31438D581F6A887200EEF89D /* rta_psy.h in Headers */,
 				31438D411F6A887200EEF89D /* rta_biquad.h in Headers */,

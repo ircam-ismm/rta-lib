@@ -120,24 +120,72 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:aed43a72c256084194759376da428535e"><td class="memItemLeft" align="right" valign="top"><a id="aed43a72c256084194759376da428535e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TABLE_SIZE</b>&#160;&#160;&#160;256</td></tr>
+<tr class="separator:aed43a72c256084194759376da428535e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c6215132bdc3380c4182c5e66ffa0d0"><td class="memItemLeft" align="right" valign="top"><a id="a8c6215132bdc3380c4182c5e66ffa0d0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_HEAD</b>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a8c6215132bdc3380c4182c5e66ffa0d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56d3513704036968b3e0c02ec1d307c9"><td class="memItemLeft" align="right" valign="top"><a id="a56d3513704036968b3e0c02ec1d307c9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TAIL</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a56d3513704036968b3e0c02ec1d307c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8ee847407b3aa10b58073bea72088e"><td class="memItemLeft" align="right" valign="top"><a id="a5d8ee847407b3aa10b58073bea72088e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TABLE_BITS</b>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a5d8ee847407b3aa10b58073bea72088e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed43a72c256084194759376da428535e"><td class="memItemLeft" align="right" valign="top"><a id="aed43a72c256084194759376da428535e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TABLE_SIZE</b>&#160;&#160;&#160;256</td></tr>
+<tr class="separator:aed43a72c256084194759376da428535e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a784b48a1f72870ebe30ff5affc6c88fa"><td class="memItemLeft" align="right" valign="top"><a id="a784b48a1f72870ebe30ff5affc6c88fa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_INTPHASE_LOST_BITS</b>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a784b48a1f72870ebe30ff5affc6c88fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8594ff3f4f2fe682cd52ce97768b80e1"><td class="memItemLeft" align="right" valign="top"><a id="a8594ff3f4f2fe682cd52ce97768b80e1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_INTPHASE_FRAC_BITS</b>&#160;&#160;&#160;(RTA_CUBIC_TABLE_BITS + RTA_CUBIC_INTPHASE_LOST_BITS)</td></tr>
+<tr class="separator:a8594ff3f4f2fe682cd52ce97768b80e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90ee3558f48a39bd7f14a59121da0d48"><td class="memItemLeft" align="right" valign="top"><a id="a90ee3558f48a39bd7f14a59121da0d48"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_INTPHASE_FRAC_SIZE</b>&#160;&#160;&#160;(1 &lt;&lt; RTA_CUBIC_INTPHASE_FRAC_BITS)</td></tr>
+<tr class="separator:a90ee3558f48a39bd7f14a59121da0d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a855bf83b78fb8d43a277cf7de22ac3a8"><td class="memItemLeft" align="right" valign="top"><a id="a855bf83b78fb8d43a277cf7de22ac3a8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_get_table_index_from_idefix</b>(i)&#160;&#160;&#160;((int)(((i).frac &amp; RTA_CUBIC_IDEFIX_BIT_MASK) &gt;&gt; RTA_CUBIC_IDEFIX_SHIFT_BITS))</td></tr>
+<tr class="separator:a855bf83b78fb8d43a277cf7de22ac3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12bceea6cb778313d3f5e079282bea10"><td class="memItemLeft" align="right" valign="top"><a id="a12bceea6cb778313d3f5e079282bea10"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_get_table_index_from_frac</b>(f)&#160;&#160;&#160;((unsigned int)((f) * (double)RTA_CUBIC_TABLE_SIZE) &amp; (RTA_CUBIC_TABLE_SIZE - 1))</td></tr>
+<tr class="separator:a12bceea6cb778313d3f5e079282bea10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d21a1ef8b52d96311f503e25197acaa"><td class="memItemLeft" align="right" valign="top"><a id="a2d21a1ef8b52d96311f503e25197acaa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_IDEFIX_SHIFT_BITS</b>&#160;&#160;&#160;24</td></tr>
+<tr class="separator:a2d21a1ef8b52d96311f503e25197acaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1161db3843879d0742afeffda84205f"><td class="memItemLeft" align="right" valign="top"><a id="ad1161db3843879d0742afeffda84205f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_IDEFIX_BIT_MASK</b>&#160;&#160;&#160;0xff000000</td></tr>
+<tr class="separator:ad1161db3843879d0742afeffda84205f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6de2c651b206581215bd07da022b99a"><td class="memItemLeft" align="right" valign="top"><a id="af6de2c651b206581215bd07da022b99a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_scale</b>(f)&#160;&#160;&#160;((f) * RTA_CUBIC_INTPHASE_FRAC_SIZE)</td></tr>
+<tr class="separator:af6de2c651b206581215bd07da022b99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affa6a4ac414b1d69377affdc287f3c75"><td class="memItemLeft" align="right" valign="top"><a id="affa6a4ac414b1d69377affdc287f3c75"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_get_int</b>(i)&#160;&#160;&#160;((i) &gt;&gt; RTA_CUBIC_INTPHASE_FRAC_BITS)</td></tr>
+<tr class="separator:affa6a4ac414b1d69377affdc287f3c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b1c28dc0c8569197b2aef6ccbaebe47"><td class="memItemLeft" align="right" valign="top"><a id="a1b1c28dc0c8569197b2aef6ccbaebe47"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_get_frac</b>(i)&#160;&#160;&#160;((i) &amp; (RTA_CUBIC_INTPHASE_FRAC_SIZE - 1))</td></tr>
+<tr class="separator:a1b1c28dc0c8569197b2aef6ccbaebe47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cab364e5afae15cd5d648366f92fba3"><td class="memItemLeft" align="right" valign="top"><a id="a5cab364e5afae15cd5d648366f92fba3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_get_coefs</b>(f)&#160;&#160;&#160;(rta_cubic_table + rta_cubic_get_table_index_from_frac(f))</td></tr>
+<tr class="separator:a5cab364e5afae15cd5d648366f92fba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67002f6bc04a0e1ad72b0506559301b2"><td class="memItemLeft" align="right" valign="top"><a id="a67002f6bc04a0e1ad72b0506559301b2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc</b>(x,  p)&#160;&#160;&#160;((x)[-1] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1 + (x)[2] * (p)-&gt;p2)</td></tr>
 <tr class="separator:a67002f6bc04a0e1ad72b0506559301b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5f3c94534296bc69f69bc690d9df533"><td class="memItemLeft" align="right" valign="top"><a id="ae5f3c94534296bc69f69bc690d9df533"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_head</b>(x,  p)&#160;&#160;&#160;((x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1 + (x)[2] * (p)-&gt;p2)</td></tr>
-<tr class="separator:ae5f3c94534296bc69f69bc690d9df533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ec9f5e7a02e07c749ab74cb007f63cb"><td class="memItemLeft" align="right" valign="top"><a id="a5ec9f5e7a02e07c749ab74cb007f63cb"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride</b>(x,  p,  s)&#160;&#160;&#160;((x)[-(s)] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[s] * (p)-&gt;p1 + (x)[2 * (s)] * (p)-&gt;p2)</td></tr>
 <tr class="separator:a5ec9f5e7a02e07c749ab74cb007f63cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5f3c94534296bc69f69bc690d9df533"><td class="memItemLeft" align="right" valign="top"><a id="ae5f3c94534296bc69f69bc690d9df533"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_head</b>(x,  p)&#160;&#160;&#160;((x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1 + (x)[2] * (p)-&gt;p2)</td></tr>
+<tr class="separator:ae5f3c94534296bc69f69bc690d9df533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b7f6d3d11f66b789b6a7ba73718e51"><td class="memItemLeft" align="right" valign="top"><a id="a80b7f6d3d11f66b789b6a7ba73718e51"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride_head</b>(x,  p,  s)&#160;&#160;&#160;((x)[0] * (p)-&gt;p0 + (x)[s] * (p)-&gt;p1 + (x)[2 * (s)] * (p)-&gt;p2)</td></tr>
 <tr class="separator:a80b7f6d3d11f66b789b6a7ba73718e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7a1851b198ef14f5308806004c70b37"><td class="memItemLeft" align="right" valign="top"><a id="ad7a1851b198ef14f5308806004c70b37"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride_tailm1</b>(x,  p,  s)&#160;&#160;&#160;((x)[-(s)] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0)</td></tr>
-<tr class="separator:ad7a1851b198ef14f5308806004c70b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdd3e3bf85c581d0f189e0cba8b7ac00"><td class="memItemLeft" align="right" valign="top"><a id="abdd3e3bf85c581d0f189e0cba8b7ac00"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride_tailm1_xm2_xm1</b>(x,  p,  s,  xm2,  xm1)&#160;&#160;&#160;((x)[-(s)] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (xm2) * (p)-&gt;p1 + (xm1) * (p)-&gt;p2)</td></tr>
-<tr class="separator:abdd3e3bf85c581d0f189e0cba8b7ac00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c50603b702ccb5cd6ebd099990ee922"><td class="memItemLeft" align="right" valign="top"><a id="a6c50603b702ccb5cd6ebd099990ee922"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_tailm2</b>(x,  p)&#160;&#160;&#160;((x)[-1] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1)</td></tr>
+<tr class="separator:a6c50603b702ccb5cd6ebd099990ee922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dccec9d6dab6ac5d2c6d31910dae1fa"><td class="memItemLeft" align="right" valign="top"><a id="a6dccec9d6dab6ac5d2c6d31910dae1fa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_tailm2_xm1</b>(x,  p,  xm1)&#160;&#160;&#160;((x)[-1] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1 + (xm1) * (p)-&gt;p2)</td></tr>
+<tr class="separator:a6dccec9d6dab6ac5d2c6d31910dae1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b190b95896c43680c1e90e2f355eb33"><td class="memItemLeft" align="right" valign="top"><a id="a5b190b95896c43680c1e90e2f355eb33"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride_tailm2</b>(x,  p,  s)&#160;&#160;&#160;((x)[-(s)] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[s] * (p)-&gt;p1)</td></tr>
 <tr class="separator:a5b190b95896c43680c1e90e2f355eb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,68 +198,20 @@ Macros</h2></td></tr>
 <tr class="memitem:a7ca5680e1557a50d4bd95043d4e7cf56"><td class="memItemLeft" align="right" valign="top"><a id="a7ca5680e1557a50d4bd95043d4e7cf56"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_tailm1_xm2_xm1</b>(x,  p,  xm2,  xm1)&#160;&#160;&#160;((x)[-1] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (xm2) * (p)-&gt;p1 + (xm1) * (p)-&gt;p2)</td></tr>
 <tr class="separator:a7ca5680e1557a50d4bd95043d4e7cf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c50603b702ccb5cd6ebd099990ee922"><td class="memItemLeft" align="right" valign="top"><a id="a6c50603b702ccb5cd6ebd099990ee922"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_tailm2</b>(x,  p)&#160;&#160;&#160;((x)[-1] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1)</td></tr>
-<tr class="separator:a6c50603b702ccb5cd6ebd099990ee922"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dccec9d6dab6ac5d2c6d31910dae1fa"><td class="memItemLeft" align="right" valign="top"><a id="a6dccec9d6dab6ac5d2c6d31910dae1fa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_tailm2_xm1</b>(x,  p,  xm1)&#160;&#160;&#160;((x)[-1] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (x)[1] * (p)-&gt;p1 + (xm1) * (p)-&gt;p2)</td></tr>
-<tr class="separator:a6dccec9d6dab6ac5d2c6d31910dae1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cab364e5afae15cd5d648366f92fba3"><td class="memItemLeft" align="right" valign="top"><a id="a5cab364e5afae15cd5d648366f92fba3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_get_coefs</b>(f)&#160;&#160;&#160;(rta_cubic_table + rta_cubic_get_table_index_from_frac(f))</td></tr>
-<tr class="separator:a5cab364e5afae15cd5d648366f92fba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12bceea6cb778313d3f5e079282bea10"><td class="memItemLeft" align="right" valign="top"><a id="a12bceea6cb778313d3f5e079282bea10"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_get_table_index_from_frac</b>(f)&#160;&#160;&#160;((unsigned int)((f) * (double)RTA_CUBIC_TABLE_SIZE) &amp; (RTA_CUBIC_TABLE_SIZE - 1))</td></tr>
-<tr class="separator:a12bceea6cb778313d3f5e079282bea10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a855bf83b78fb8d43a277cf7de22ac3a8"><td class="memItemLeft" align="right" valign="top"><a id="a855bf83b78fb8d43a277cf7de22ac3a8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_get_table_index_from_idefix</b>(i)&#160;&#160;&#160;((int)(((i).frac &amp; RTA_CUBIC_IDEFIX_BIT_MASK) &gt;&gt; RTA_CUBIC_IDEFIX_SHIFT_BITS))</td></tr>
-<tr class="separator:a855bf83b78fb8d43a277cf7de22ac3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c6215132bdc3380c4182c5e66ffa0d0"><td class="memItemLeft" align="right" valign="top"><a id="a8c6215132bdc3380c4182c5e66ffa0d0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_HEAD</b>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a8c6215132bdc3380c4182c5e66ffa0d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1161db3843879d0742afeffda84205f"><td class="memItemLeft" align="right" valign="top"><a id="ad1161db3843879d0742afeffda84205f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_IDEFIX_BIT_MASK</b>&#160;&#160;&#160;0xff000000</td></tr>
-<tr class="separator:ad1161db3843879d0742afeffda84205f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7a1851b198ef14f5308806004c70b37"><td class="memItemLeft" align="right" valign="top"><a id="ad7a1851b198ef14f5308806004c70b37"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride_tailm1</b>(x,  p,  s)&#160;&#160;&#160;((x)[-(s)] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0)</td></tr>
+<tr class="separator:ad7a1851b198ef14f5308806004c70b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd3e3bf85c581d0f189e0cba8b7ac00"><td class="memItemLeft" align="right" valign="top"><a id="abdd3e3bf85c581d0f189e0cba8b7ac00"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_calc_stride_tailm1_xm2_xm1</b>(x,  p,  s,  xm2,  xm1)&#160;&#160;&#160;((x)[-(s)] * (p)-&gt;pm1 + (x)[0] * (p)-&gt;p0 + (xm2) * (p)-&gt;p1 + (xm1) * (p)-&gt;p2)</td></tr>
+<tr class="separator:abdd3e3bf85c581d0f189e0cba8b7ac00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e29647bf006d9ac5aba9254c7969137"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_idefix_interpolate</b>(p,  i,  y)</td></tr>
 <tr class="separator:a3e29647bf006d9ac5aba9254c7969137"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1640346ef9bdf17cb90af43c2da8273"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_idefix_interpolate_stride</b>(p,  i,  s,  y)</td></tr>
 <tr class="separator:ae1640346ef9bdf17cb90af43c2da8273"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d21a1ef8b52d96311f503e25197acaa"><td class="memItemLeft" align="right" valign="top"><a id="a2d21a1ef8b52d96311f503e25197acaa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_IDEFIX_SHIFT_BITS</b>&#160;&#160;&#160;24</td></tr>
-<tr class="separator:a2d21a1ef8b52d96311f503e25197acaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d7a9401d6de714d2cb86d2d0a96be5a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_interpolate</b>(p,  i,  f,  y)</td></tr>
-<tr class="separator:a9d7a9401d6de714d2cb86d2d0a96be5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8594ff3f4f2fe682cd52ce97768b80e1"><td class="memItemLeft" align="right" valign="top"><a id="a8594ff3f4f2fe682cd52ce97768b80e1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_INTPHASE_FRAC_BITS</b>&#160;&#160;&#160;(RTA_CUBIC_TABLE_BITS + RTA_CUBIC_INTPHASE_LOST_BITS)</td></tr>
-<tr class="separator:a8594ff3f4f2fe682cd52ce97768b80e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90ee3558f48a39bd7f14a59121da0d48"><td class="memItemLeft" align="right" valign="top"><a id="a90ee3558f48a39bd7f14a59121da0d48"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_INTPHASE_FRAC_SIZE</b>&#160;&#160;&#160;(1 &lt;&lt; RTA_CUBIC_INTPHASE_FRAC_BITS)</td></tr>
-<tr class="separator:a90ee3558f48a39bd7f14a59121da0d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b1c28dc0c8569197b2aef6ccbaebe47"><td class="memItemLeft" align="right" valign="top"><a id="a1b1c28dc0c8569197b2aef6ccbaebe47"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_get_frac</b>(i)&#160;&#160;&#160;((i) &amp; (RTA_CUBIC_INTPHASE_FRAC_SIZE - 1))</td></tr>
-<tr class="separator:a1b1c28dc0c8569197b2aef6ccbaebe47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa6a4ac414b1d69377affdc287f3c75"><td class="memItemLeft" align="right" valign="top"><a id="affa6a4ac414b1d69377affdc287f3c75"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_get_int</b>(i)&#160;&#160;&#160;((i) &gt;&gt; RTA_CUBIC_INTPHASE_FRAC_BITS)</td></tr>
-<tr class="separator:affa6a4ac414b1d69377affdc287f3c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade8e4c027a089787734da468e388a764"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_interpolate</b>(p,  i,  y)</td></tr>
 <tr class="separator:ade8e4c027a089787734da468e388a764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a784b48a1f72870ebe30ff5affc6c88fa"><td class="memItemLeft" align="right" valign="top"><a id="a784b48a1f72870ebe30ff5affc6c88fa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_INTPHASE_LOST_BITS</b>&#160;&#160;&#160;8</td></tr>
-<tr class="separator:a784b48a1f72870ebe30ff5affc6c88fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6de2c651b206581215bd07da022b99a"><td class="memItemLeft" align="right" valign="top"><a id="af6de2c651b206581215bd07da022b99a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_intphase_scale</b>(f)&#160;&#160;&#160;((f) * RTA_CUBIC_INTPHASE_FRAC_SIZE)</td></tr>
-<tr class="separator:af6de2c651b206581215bd07da022b99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d8ee847407b3aa10b58073bea72088e"><td class="memItemLeft" align="right" valign="top"><a id="a5d8ee847407b3aa10b58073bea72088e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TABLE_BITS</b>&#160;&#160;&#160;8</td></tr>
-<tr class="separator:a5d8ee847407b3aa10b58073bea72088e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed43a72c256084194759376da428535e"><td class="memItemLeft" align="right" valign="top"><a id="aed43a72c256084194759376da428535e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TABLE_SIZE</b>&#160;&#160;&#160;256</td></tr>
-<tr class="separator:aed43a72c256084194759376da428535e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed43a72c256084194759376da428535e"><td class="memItemLeft" align="right" valign="top"><a id="aed43a72c256084194759376da428535e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TABLE_SIZE</b>&#160;&#160;&#160;256</td></tr>
-<tr class="separator:aed43a72c256084194759376da428535e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56d3513704036968b3e0c02ec1d307c9"><td class="memItemLeft" align="right" valign="top"><a id="a56d3513704036968b3e0c02ec1d307c9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_CUBIC_TAIL</b>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:a56d3513704036968b3e0c02ec1d307c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d7a9401d6de714d2cb86d2d0a96be5a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_cubic_interpolate</b>(p,  i,  f,  y)</td></tr>
+<tr class="separator:a9d7a9401d6de714d2cb86d2d0a96be5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -401,7 +401,7 @@ Variables</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 15 2017 13:02:29 for rta by
+Generated on Wed Nov 8 2017 16:57:23 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

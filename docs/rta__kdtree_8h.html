@@ -118,49 +118,49 @@ $(document).ready(function(){initNavTree('rta__kdtree_8h.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__node__t.html">rta_kdtree_node_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__profile__t.html">rta_kdtree_profile_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__stack__elem__t.html">rta_kdtree_stack_elem_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__stack__t.html">rta_kdtree_stack_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__node__t.html">rta_kdtree_node_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__profile__t.html">rta_kdtree_profile_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a403e585a6a59f26ef65227f629d76205"><td class="memItemLeft" align="right" valign="top"><a id="a403e585a6a59f26ef65227f629d76205"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_DMAP</b>(x,  y,  dfun)&#160;&#160;&#160;((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) : ((x) - (y)))</td></tr>
-<tr class="separator:a403e585a6a59f26ef65227f629d76205"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70637976d9b51a49ea8741b4ecef0416"><td class="memItemLeft" align="right" valign="top"><a id="a70637976d9b51a49ea8741b4ecef0416"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_DMAPW</b>(x,  y,  s,  dfun)&#160;&#160;&#160;((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) / (s) : ((x) - (y)) / (s))</td></tr>
-<tr class="separator:a70637976d9b51a49ea8741b4ecef0416"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a412755c2593af5f964ca79d8082e7490"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a412755c2593af5f964ca79d8082e7490">rta_kdtree_get_element</a>(t,  i,  j)&#160;&#160;&#160;((t)-&gt;data[(t)-&gt;dataindex[i].base][(t)-&gt;dataindex[i].index * (t)-&gt;ndim + (j)])</td></tr>
-<tr class="separator:a412755c2593af5f964ca79d8082e7490"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cab2e93fd1c542904a812c4dbb92fa1"><td class="memItemLeft" align="right" valign="top"><a id="a0cab2e93fd1c542904a812c4dbb92fa1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_get_row_ptr</b>(t,  k,  i)&#160;&#160;&#160;((t)-&gt;data[k] + (i) * (t)-&gt;ndim)</td></tr>
-<tr class="separator:a0cab2e93fd1c542904a812c4dbb92fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a775ae8d35a2c87df414947bbd78db0b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a775ae8d35a2c87df414947bbd78db0b4">rta_kdtree_get_vector</a>(t,  i)&#160;&#160;&#160;((t)-&gt;data[(t)-&gt;dataindex[i].base] + (t)-&gt;dataindex[i].index * (t)-&gt;ndim)</td></tr>
-<tr class="separator:a775ae8d35a2c87df414947bbd78db0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0f99fe904af2a13c1066f1136d04bee"><td class="memItemLeft" align="right" valign="top"><a id="aa0f99fe904af2a13c1066f1136d04bee"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_KDTREE_MAX_DISTFUNC</b>&#160;&#160;&#160;256</td></tr>
-<tr class="separator:aa0f99fe904af2a13c1066f1136d04bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fe47375f24db196a44310bb0c6d6109"><td class="memItemLeft" align="right" valign="top"><a id="a2fe47375f24db196a44310bb0c6d6109"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_KDTREE_PROFILE</b>&#160;&#160;&#160;(RTA_KDTREE_PROFILE_BUILD || RTA_KDTREE_PROFILE_SEARCH)</td></tr>
-<tr class="separator:a2fe47375f24db196a44310bb0c6d6109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76fa5bb0aca05770fb3850c2e00b2616"><td class="memItemLeft" align="right" valign="top"><a id="a76fa5bb0aca05770fb3850c2e00b2616"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_KDTREE_PROFILE_BUILD</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a76fa5bb0aca05770fb3850c2e00b2616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cab928eac371cf714645de554c1742a"><td class="memItemLeft" align="right" valign="top"><a id="a1cab928eac371cf714645de554c1742a"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_KDTREE_PROFILE_SEARCH</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a1cab928eac371cf714645de554c1742a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fe47375f24db196a44310bb0c6d6109"><td class="memItemLeft" align="right" valign="top"><a id="a2fe47375f24db196a44310bb0c6d6109"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_KDTREE_PROFILE</b>&#160;&#160;&#160;(RTA_KDTREE_PROFILE_BUILD || RTA_KDTREE_PROFILE_SEARCH)</td></tr>
+<tr class="separator:a2fe47375f24db196a44310bb0c6d6109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90049b84a5db2c8440133578c2a05baa"><td class="memItemLeft" align="right" valign="top"><a id="a90049b84a5db2c8440133578c2a05baa"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_USE_DISTFUNC</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a90049b84a5db2c8440133578c2a05baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0f99fe904af2a13c1066f1136d04bee"><td class="memItemLeft" align="right" valign="top"><a id="aa0f99fe904af2a13c1066f1136d04bee"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_KDTREE_MAX_DISTFUNC</b>&#160;&#160;&#160;256</td></tr>
+<tr class="separator:aa0f99fe904af2a13c1066f1136d04bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70637976d9b51a49ea8741b4ecef0416"><td class="memItemLeft" align="right" valign="top"><a id="a70637976d9b51a49ea8741b4ecef0416"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_DMAPW</b>(x,  y,  s,  dfun)&#160;&#160;&#160;((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) / (s) : ((x) - (y)) / (s))</td></tr>
+<tr class="separator:a70637976d9b51a49ea8741b4ecef0416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a403e585a6a59f26ef65227f629d76205"><td class="memItemLeft" align="right" valign="top"><a id="a403e585a6a59f26ef65227f629d76205"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_DMAP</b>(x,  y,  dfun)&#160;&#160;&#160;((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) : ((x) - (y)))</td></tr>
+<tr class="separator:a403e585a6a59f26ef65227f629d76205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a412755c2593af5f964ca79d8082e7490"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a412755c2593af5f964ca79d8082e7490">rta_kdtree_get_element</a>(t,  i,  j)&#160;&#160;&#160;((t)-&gt;data[(t)-&gt;dataindex[i].base][(t)-&gt;dataindex[i].index * (t)-&gt;ndim + (j)])</td></tr>
+<tr class="separator:a412755c2593af5f964ca79d8082e7490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a775ae8d35a2c87df414947bbd78db0b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a775ae8d35a2c87df414947bbd78db0b4">rta_kdtree_get_vector</a>(t,  i)&#160;&#160;&#160;((t)-&gt;data[(t)-&gt;dataindex[i].base] + (t)-&gt;dataindex[i].index * (t)-&gt;ndim)</td></tr>
+<tr class="separator:a775ae8d35a2c87df414947bbd78db0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cab2e93fd1c542904a812c4dbb92fa1"><td class="memItemLeft" align="right" valign="top"><a id="a0cab2e93fd1c542904a812c4dbb92fa1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_get_row_ptr</b>(t,  k,  i)&#160;&#160;&#160;((t)-&gt;data[k] + (i) * (t)-&gt;ndim)</td></tr>
+<tr class="separator:a0cab2e93fd1c542904a812c4dbb92fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -177,42 +177,42 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a10caf548a3c0135504a51e82e76779af"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a10caf548a3c0135504a51e82e76779af">rta_euclidean_distance</a> (rta_real_t *v1, int stride1, rta_real_t *v2, int dim, <a class="el" href="structrta__bpf__t.html">rta_bpf_t</a> *distfunc[])</td></tr>
-<tr class="separator:a10caf548a3c0135504a51e82e76779af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a980c824d03262a50efbc019247b42306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a980c824d03262a50efbc019247b42306">rta_kdtree_build</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, int use_sigma)</td></tr>
-<tr class="separator:a980c824d03262a50efbc019247b42306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d1a91d3d0e5ef883fcd16259916b5e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a3d1a91d3d0e5ef883fcd16259916b5e7">rta_kdtree_data_display</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int print_data)</td></tr>
-<tr class="separator:a3d1a91d3d0e5ef883fcd16259916b5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee9eab6eec6aec16872af6dd86d1164f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#aee9eab6eec6aec16872af6dd86d1164f">rta_kdtree_delete</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int index, int num)</td></tr>
-<tr class="separator:aee9eab6eec6aec16872af6dd86d1164f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66fcd19fc40583903534155d6bdb7dbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a66fcd19fc40583903534155d6bdb7dbf">rta_kdtree_free</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
-<tr class="separator:a66fcd19fc40583903534155d6bdb7dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fdb36b773771a05048d1ceafb08b093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a5fdb36b773771a05048d1ceafb08b093">rta_kdtree_info_display</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t)</td></tr>
 <tr class="separator:a5fdb36b773771a05048d1ceafb08b093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2be809d317f851dcaa74830cc54f5ba8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a2be809d317f851dcaa74830cc54f5ba8">rta_kdtree_init</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
-<tr class="separator:a2be809d317f851dcaa74830cc54f5ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a392490bee21f9d7ed8d17112c6350468"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a392490bee21f9d7ed8d17112c6350468">rta_kdtree_init_nodes</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, kdtree_node_t *nodes, rta_real_t *means, rta_real_t *planes)</td></tr>
-<tr class="separator:a392490bee21f9d7ed8d17112c6350468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae22f02a799a2353b3fb4b5a4664c24fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#ae22f02a799a2353b3fb4b5a4664c24fb">rta_kdtree_insert</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int index, int num)</td></tr>
-<tr class="separator:ae22f02a799a2353b3fb4b5a4664c24fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a158a41ea12ebee4ef531845e7e99e7b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a158a41ea12ebee4ef531845e7e99e7b8">rta_kdtree_profile_clear</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t)</td></tr>
-<tr class="separator:a158a41ea12ebee4ef531845e7e99e7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a233d73c1b131d547487535d8ffa52047"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a233d73c1b131d547487535d8ffa52047">rta_kdtree_raw_display</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t)</td></tr>
 <tr class="separator:a233d73c1b131d547487535d8ffa52047"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f164581cfd107a386b758b1cc74a65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a6f164581cfd107a386b758b1cc74a65c">rta_kdtree_rebuild</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int use_sigma)</td></tr>
-<tr class="separator:a6f164581cfd107a386b758b1cc74a65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e7619a6ab56f6b30404b9f9681c386"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a29e7619a6ab56f6b30404b9f9681c386">rta_kdtree_search_knn</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, rta_real_t *x, int stride, int k, const rta_real_t r, int use_sigma, <a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a> *y, rta_real_t *d)</td></tr>
-<tr class="separator:a29e7619a6ab56f6b30404b9f9681c386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7963fbc98c07fc2734023cf078cd686e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a7963fbc98c07fc2734023cf078cd686e">rta_kdtree_set_data</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, int nblocks, rta_real_t **data, <a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a> *index, int *m, int n)</td></tr>
-<tr class="separator:a7963fbc98c07fc2734023cf078cd686e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1a91d3d0e5ef883fcd16259916b5e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a3d1a91d3d0e5ef883fcd16259916b5e7">rta_kdtree_data_display</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int print_data)</td></tr>
+<tr class="separator:a3d1a91d3d0e5ef883fcd16259916b5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a158a41ea12ebee4ef531845e7e99e7b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a158a41ea12ebee4ef531845e7e99e7b8">rta_kdtree_profile_clear</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t)</td></tr>
+<tr class="separator:a158a41ea12ebee4ef531845e7e99e7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26d6085e8c40b23e8e8395f74fb20ff4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a26d6085e8c40b23e8e8395f74fb20ff4">rta_kdtree_set_decomposition</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, <a class="el" href="rta__kdtree_8h.html#a21276cc665f03be3a2326416cc05b39c">rta_kdtree_dmode_t</a> mode, void *param)</td></tr>
 <tr class="separator:a26d6085e8c40b23e8e8395f74fb20ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62285a483bb54734da3a9db87e7b441d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a62285a483bb54734da3a9db87e7b441d">rta_kdtree_set_pivot</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, <a class="el" href="rta__kdtree_8h.html#a2d062ca6074d28f715384ff1b37d8ae5">rta_kdtree_mmode_t</a> mode)</td></tr>
 <tr class="separator:a62285a483bb54734da3a9db87e7b441d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2be809d317f851dcaa74830cc54f5ba8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a2be809d317f851dcaa74830cc54f5ba8">rta_kdtree_init</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
+<tr class="separator:a2be809d317f851dcaa74830cc54f5ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66fcd19fc40583903534155d6bdb7dbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a66fcd19fc40583903534155d6bdb7dbf">rta_kdtree_free</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
+<tr class="separator:a66fcd19fc40583903534155d6bdb7dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7963fbc98c07fc2734023cf078cd686e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a7963fbc98c07fc2734023cf078cd686e">rta_kdtree_set_data</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, int nblocks, rta_real_t **data, <a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a> *index, int *m, int n)</td></tr>
+<tr class="separator:a7963fbc98c07fc2734023cf078cd686e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0da108ffe674773654a6f729f2a37d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#aa0da108ffe674773654a6f729f2a37d2">rta_kdtree_set_sigma</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, rta_real_t *sigma)</td></tr>
 <tr class="separator:aa0da108ffe674773654a6f729f2a37d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b33066df5aa122701e6ce954707ccf4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a5b33066df5aa122701e6ce954707ccf4">rta_kdtree_update_sigmanz</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self)</td></tr>
 <tr class="separator:a5b33066df5aa122701e6ce954707ccf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee7a18ad956b7f7933c4bfe6bbbfd9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a2ee7a18ad956b7f7933c4bfe6bbbfd9d">rta_kdtree_init_nodes</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, <a class="el" href="structrta__kdtree__node__t.html">rta_kdtree_node_t</a> *nodes, rta_real_t *means, rta_real_t *planes)</td></tr>
+<tr class="separator:a2ee7a18ad956b7f7933c4bfe6bbbfd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a980c824d03262a50efbc019247b42306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a980c824d03262a50efbc019247b42306">rta_kdtree_build</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *self, int use_sigma)</td></tr>
+<tr class="separator:a980c824d03262a50efbc019247b42306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f164581cfd107a386b758b1cc74a65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a6f164581cfd107a386b758b1cc74a65c">rta_kdtree_rebuild</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int use_sigma)</td></tr>
+<tr class="separator:a6f164581cfd107a386b758b1cc74a65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae22f02a799a2353b3fb4b5a4664c24fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#ae22f02a799a2353b3fb4b5a4664c24fb">rta_kdtree_insert</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int index, int num)</td></tr>
+<tr class="separator:ae22f02a799a2353b3fb4b5a4664c24fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee9eab6eec6aec16872af6dd86d1164f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#aee9eab6eec6aec16872af6dd86d1164f">rta_kdtree_delete</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, int index, int num)</td></tr>
+<tr class="separator:aee9eab6eec6aec16872af6dd86d1164f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e7619a6ab56f6b30404b9f9681c386"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a29e7619a6ab56f6b30404b9f9681c386">rta_kdtree_search_knn</a> (<a class="el" href="structrta__kdtree__t.html">rta_kdtree_t</a> *t, rta_real_t *x, int stride, int k, const rta_real_t r, int use_sigma, <a class="el" href="structrta__kdtree__object__t.html">rta_kdtree_object_t</a> *y, rta_real_t *d)</td></tr>
+<tr class="separator:a29e7619a6ab56f6b30404b9f9681c386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10caf548a3c0135504a51e82e76779af"><td class="memItemLeft" align="right" valign="top">rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rta__kdtree_8h.html#a10caf548a3c0135504a51e82e76779af">rta_euclidean_distance</a> (rta_real_t *v1, int stride1, rta_real_t *v2, int dim, <a class="el" href="structrta__bpf__t.html">rta_bpf_t</a> *distfunc[])</td></tr>
+<tr class="separator:a10caf548a3c0135504a51e82e76779af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77238f706fbad395ce60fc8aa888d1c8"><td class="memItemLeft" align="right" valign="top"><a id="a77238f706fbad395ce60fc8aa888d1c8"></a>
 rta_real_t&#160;</td><td class="memItemRight" valign="bottom"><b>rta_weighted_euclidean_distance</b> (rta_real_t *v1, rta_real_t *v2, rta_real_t *sigma, int ndim, <a class="el" href="structrta__bpf__t.html">rta_bpf_t</a> *distfunc[])</td></tr>
 <tr class="separator:a77238f706fbad395ce60fc8aa888d1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -630,8 +630,8 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_mm
 
 </div>
 </div>
-<a id="a392490bee21f9d7ed8d17112c6350468"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a392490bee21f9d7ed8d17112c6350468">&#9670;&nbsp;</a></span>rta_kdtree_init_nodes()</h2>
+<a id="a2ee7a18ad956b7f7933c4bfe6bbbfd9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee7a18ad956b7f7933c4bfe6bbbfd9d">&#9670;&nbsp;</a></span>rta_kdtree_init_nodes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -645,7 +645,7 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_mm
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">kdtree_node_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="structrta__kdtree__node__t.html">rta_kdtree_node_t</a> *&#160;</td>
           <td class="paramname"><em>nodes</em>, </td>
         </tr>
         <tr>
@@ -684,6 +684,8 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_mm
 <li>if <code>means</code> is not NULL, it must point to space for the mean vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library</li>
 <li>if <code>planes</code> is not NULL and decomposition mode is not dmode_orthogonal, it must point to space for split hyperplane base vectors of size nnodes / 2 * ndim, which must have been allocated outside of the library </li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00302">302</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
@@ -747,6 +749,8 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_mm
       </table>
 </div><div class="memdoc">
 <p>set all counters in kdtree_t::profile to zero </p>
+
+<p class="definition">Definition at line <a class="el" href="rta__kdtree_8c_source.html#l00086">86</a> of file <a class="el" href="rta__kdtree_8c_source.html">rta_kdtree.c</a>.</p>
 
 </div>
 </div>
@@ -1078,7 +1082,7 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>rta_kdtree_mm
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 15 2017 13:02:29 for rta by
+Generated on Wed Nov 8 2017 16:57:23 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

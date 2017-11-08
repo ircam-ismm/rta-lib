@@ -1,31 +1,3 @@
-#ifndef _RTA_CONFIGURATION_H_
-#define _RTA_CONFIGURATION_H_ 1
-
-//#define rta_post post
-#define rta_post printf
-
-/** fts memory allocation */
-#undef rta_malloc
-#define rta_malloc malloc
-
-/** fts memory reallocation */
-#undef rta_realloc
-#define rta_realloc realloc
-
-/** fts memory deallocation */
-#undef rta_free
-#define rta_free free
-
-/** simple floating point precision */
-#undef RTA_REAL_TYPE
-#define RTA_REAL_TYPE RTA_FLOAT_TYPE
-
-/* Apple VecLib for float and double */
-#if defined(__APPLE__) && defined(__MACH__) && \
-(RTA_REAL_TYPE == RTA_FLOAT_TYPE || RTA_REAL_TYPE == RTA_DOUBLE_TYPE)
-#define RTA_USE_VECLIB 1
-#endif
-
 // rta_complex.h is entirely determined by a #ifdef WIN32 directive
 // ----------------------------------------------------------------
 

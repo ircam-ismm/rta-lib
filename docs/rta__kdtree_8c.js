@@ -9,7 +9,7 @@ var rta__kdtree_8c =
     [ "rta_kdtree_info_display", "rta__kdtree_8c.html#a5fdb36b773771a05048d1ceafb08b093", null ],
     [ "rta_kdtree_init", "rta__kdtree_8c.html#a2be809d317f851dcaa74830cc54f5ba8", null ],
     [ "rta_kdtree_init_nodes", "rta__kdtree_8c.html#a243f70494d1f87420566e1dbdff00380", null ],
-    [ "rta_kdtree_profile_clear", "rta__kdtree_8c.html#afd7e885e653885e1d5b0fa274990048e", null ],
+    [ "rta_kdtree_profile_clear", "rta__kdtree_8c.html#a158a41ea12ebee4ef531845e7e99e7b8", null ],
     [ "rta_kdtree_set_data", "rta__kdtree_8c.html#a7963fbc98c07fc2734023cf078cd686e", null ],
     [ "rta_kdtree_set_sigma", "rta__kdtree_8c.html#aa0da108ffe674773654a6f729f2a37d2", null ],
     [ "rta_kdtree_update_sigmanz", "rta__kdtree_8c.html#a5b33066df5aa122701e6ce954707ccf4", null ],
