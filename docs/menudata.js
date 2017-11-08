@@ -43,5 +43,5 @@ var menudata={children:[
 {text:"Enumerations",url:"globals_enum.html"},
 {text:"Enumerator",url:"globals_eval.html"},
 {text:"Macros",url:"globals_defs.html"}]},
-{text:"Classes and Structs",url:"annotated.html"}]},
+{text:"Classes and Structs",url:"classes.html"}]},
 {text:"Files",url:"files.html"}]}

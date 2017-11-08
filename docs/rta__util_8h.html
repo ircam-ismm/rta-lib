@@ -120,12 +120,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a8710dd0052597b81ca3ffcdb90edda87"><td class="memItemLeft" align="right" valign="top"><a id="a8710dd0052597b81ca3ffcdb90edda87"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_IDEFIX_INDEX_BITS</b>&#160;&#160;&#160;31</td></tr>
-<tr class="separator:a8710dd0052597b81ca3ffcdb90edda87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ec69cb033e65a0a9adab0869ea4b5b"><td class="memItemLeft" align="right" valign="top"><a id="a06ec69cb033e65a0a9adab0869ea4b5b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_IDEFIX_INDEX_MAX</b>&#160;&#160;&#160;2147483647 /* index is signed */</td></tr>
-<tr class="separator:a06ec69cb033e65a0a9adab0869ea4b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a961ae09771efdc0988ab59aaf29682b1"><td class="memItemLeft" align="right" valign="top"><a id="a961ae09771efdc0988ab59aaf29682b1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_add</b>(x,  a,  b)&#160;&#160;&#160;((x)-&gt;frac = (a).frac + (b).frac, (x)-&gt;index = (a).index + ((b).index + ((x)-&gt;frac &lt; (a).frac)))</td></tr>
+<tr class="separator:a961ae09771efdc0988ab59aaf29682b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f5f676a4a4623e85cab2c85f5083e68"><td class="memItemLeft" align="right" valign="top"><a id="a9f5f676a4a4623e85cab2c85f5083e68"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_eq</b>(x,  c)&#160;&#160;&#160;(((x).index == (c).index) &amp;&amp; ((x).frac == (c).frac))</td></tr>
+<tr class="separator:a9f5f676a4a4623e85cab2c85f5083e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d2c69b0538ba94ed5a0e709dcec4d1"><td class="memItemLeft" align="right" valign="top"><a id="ae4d2c69b0538ba94ed5a0e709dcec4d1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_IDEFIX_FRAC_BITS</b>&#160;&#160;&#160;32</td></tr>
 <tr class="separator:ae4d2c69b0538ba94ed5a0e709dcec4d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,54 +135,54 @@ Macros</h2></td></tr>
 <tr class="memitem:a6e25e41cffbd976da5f312fd698d7886"><td class="memItemLeft" align="right" valign="top"><a id="a6e25e41cffbd976da5f312fd698d7886"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_IDEFIX_FRAC_RANGE</b>&#160;&#160;&#160;((double) 4294967296.0L)</td></tr>
 <tr class="separator:a6e25e41cffbd976da5f312fd698d7886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a805f6880ee1aed90ff9102d63d4394df"><td class="memItemLeft" align="right" valign="top"><a id="a805f6880ee1aed90ff9102d63d4394df"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_get_index</b>(x)&#160;&#160;&#160;((int)(x).index)</td></tr>
-<tr class="separator:a805f6880ee1aed90ff9102d63d4394df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afeb5624f075a0ef8b47f09df748db1c3"><td class="memItemLeft" align="right" valign="top"><a id="afeb5624f075a0ef8b47f09df748db1c3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_get_frac</b>(x)&#160;&#160;&#160;((double)((x).frac) / RTA_IDEFIX_FRAC_RANGE)</td></tr>
-<tr class="separator:afeb5624f075a0ef8b47f09df748db1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca384446c74a2f03c39dd08d19c8e077"><td class="memItemLeft" align="right" valign="top"><a id="aca384446c74a2f03c39dd08d19c8e077"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_get_float</b>(x)&#160;&#160;&#160;((x).index + ((double)((x).frac) / RTA_IDEFIX_FRAC_RANGE))</td></tr>
 <tr class="separator:aca384446c74a2f03c39dd08d19c8e077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f8976eefbfde540d94a01fc587481da"><td class="memItemLeft" align="right" valign="top"><a id="a5f8976eefbfde540d94a01fc587481da"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_int</b>(x,  i)&#160;&#160;&#160;((x)-&gt;index = (i), (x)-&gt;frac = 0)</td></tr>
-<tr class="separator:a5f8976eefbfde540d94a01fc587481da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50f0510efe30e3658bc9ee59e1b4e7b8"><td class="memItemLeft" align="right" valign="top"><a id="a50f0510efe30e3658bc9ee59e1b4e7b8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_float</b>(x,  f)&#160;&#160;&#160;((x)-&gt;index = floor(f), (x)-&gt;frac = ((double)(f) - (x)-&gt;index) * RTA_IDEFIX_FRAC_RANGE)</td></tr>
-<tr class="separator:a50f0510efe30e3658bc9ee59e1b4e7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa916aeaf890a82df63ff04f31f6d7424"><td class="memItemLeft" align="right" valign="top"><a id="aa916aeaf890a82df63ff04f31f6d7424"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_zero</b>(x)&#160;&#160;&#160;((x)-&gt;index = 0, (x)-&gt;frac = 0)</td></tr>
-<tr class="separator:aa916aeaf890a82df63ff04f31f6d7424"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefd1621c5eb08e1787ee8074c8f3b0b0"><td class="memItemLeft" align="right" valign="top"><a id="aefd1621c5eb08e1787ee8074c8f3b0b0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_max</b>(x)&#160;&#160;&#160;((x)-&gt;index = RTA_IDEFIX_INDEX_MAX, (x)-&gt;frac = RTA_IDEFIX_FRAC_MAX)</td></tr>
-<tr class="separator:aefd1621c5eb08e1787ee8074c8f3b0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a761979a37a36c7dbe966538181142711"><td class="memItemLeft" align="right" valign="top"><a id="a761979a37a36c7dbe966538181142711"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_negate</b>(x)&#160;&#160;&#160;((x)-&gt;index = -(x)-&gt;index - ((x)-&gt;frac &gt; 0), (x)-&gt;frac = (RTA_IDEFIX_FRAC_MAX - (x)-&gt;frac) + 1)</td></tr>
-<tr class="separator:a761979a37a36c7dbe966538181142711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeb5624f075a0ef8b47f09df748db1c3"><td class="memItemLeft" align="right" valign="top"><a id="afeb5624f075a0ef8b47f09df748db1c3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_get_frac</b>(x)&#160;&#160;&#160;((double)((x).frac) / RTA_IDEFIX_FRAC_RANGE)</td></tr>
+<tr class="separator:afeb5624f075a0ef8b47f09df748db1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805f6880ee1aed90ff9102d63d4394df"><td class="memItemLeft" align="right" valign="top"><a id="a805f6880ee1aed90ff9102d63d4394df"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_get_index</b>(x)&#160;&#160;&#160;((int)(x).index)</td></tr>
+<tr class="separator:a805f6880ee1aed90ff9102d63d4394df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27bb7772f0b94ae347d1870d497b10f7"><td class="memItemLeft" align="right" valign="top"><a id="a27bb7772f0b94ae347d1870d497b10f7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_gt</b>(x,  c)&#160;&#160;&#160;(((x).index &gt; (c).index) || (((x).index == (c).index) &amp;&amp; ((x).frac &gt; (c).frac)))</td></tr>
+<tr class="separator:a27bb7772f0b94ae347d1870d497b10f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dbc56a1cad944d741a4664f6191ef5b"><td class="memItemLeft" align="right" valign="top"><a id="a0dbc56a1cad944d741a4664f6191ef5b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_incr</b>(x,  c)&#160;&#160;&#160;((x)-&gt;frac += (c).frac, (x)-&gt;index += ((c).index + ((x)-&gt;frac &lt; (c).frac)))</td></tr>
 <tr class="separator:a0dbc56a1cad944d741a4664f6191ef5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a961ae09771efdc0988ab59aaf29682b1"><td class="memItemLeft" align="right" valign="top"><a id="a961ae09771efdc0988ab59aaf29682b1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_add</b>(x,  a,  b)&#160;&#160;&#160;((x)-&gt;frac = (a).frac + (b).frac, (x)-&gt;index = (a).index + ((b).index + ((x)-&gt;frac &lt; (a).frac)))</td></tr>
-<tr class="separator:a961ae09771efdc0988ab59aaf29682b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a972cd48132489ffcac2eb5ed3e597c4a"><td class="memItemLeft" align="right" valign="top"><a id="a972cd48132489ffcac2eb5ed3e597c4a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_sub</b>(x,  a,  b)&#160;&#160;&#160;((x)-&gt;index = (a).index - ((b).index + ((a).frac &lt; (b).frac)), (x)-&gt;frac = (a).frac - (b).frac)</td></tr>
-<tr class="separator:a972cd48132489ffcac2eb5ed3e597c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8710dd0052597b81ca3ffcdb90edda87"><td class="memItemLeft" align="right" valign="top"><a id="a8710dd0052597b81ca3ffcdb90edda87"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_IDEFIX_INDEX_BITS</b>&#160;&#160;&#160;31</td></tr>
+<tr class="separator:a8710dd0052597b81ca3ffcdb90edda87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06ec69cb033e65a0a9adab0869ea4b5b"><td class="memItemLeft" align="right" valign="top"><a id="a06ec69cb033e65a0a9adab0869ea4b5b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RTA_IDEFIX_INDEX_MAX</b>&#160;&#160;&#160;2147483647 /* index is signed */</td></tr>
+<tr class="separator:a06ec69cb033e65a0a9adab0869ea4b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae41af103d8dc4a7a92e39b23914c9bef"><td class="memItemLeft" align="right" valign="top"><a id="ae41af103d8dc4a7a92e39b23914c9bef"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_is_zero</b>(x)&#160;&#160;&#160;(((x).index == 0) &amp;&amp; ((x).frac == 0))</td></tr>
+<tr class="separator:ae41af103d8dc4a7a92e39b23914c9bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac53716bbbc56660b69be921f9465ab5"><td class="memItemLeft" align="right" valign="top"><a id="aac53716bbbc56660b69be921f9465ab5"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_lshift</b>(x,  c,  i)&#160;&#160;&#160;((x)-&gt;index = ((c).index &lt;&lt; (i)) + ((c).frac &gt;&gt; (RTA_IDEFIX_FRAC_BITS - (i))), (x)-&gt;frac = (c).frac &lt;&lt; (i))</td></tr>
 <tr class="separator:aac53716bbbc56660b69be921f9465ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4313766a091d9bb5ffe974f09972c120"><td class="memItemLeft" align="right" valign="top"><a id="a4313766a091d9bb5ffe974f09972c120"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_lt</b>(x,  c)&#160;&#160;&#160;(((x).index &lt; (c).index) || (((x).index == (c).index) &amp;&amp; ((x).frac &lt; (c).frac)))</td></tr>
 <tr class="separator:a4313766a091d9bb5ffe974f09972c120"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27bb7772f0b94ae347d1870d497b10f7"><td class="memItemLeft" align="right" valign="top"><a id="a27bb7772f0b94ae347d1870d497b10f7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_gt</b>(x,  c)&#160;&#160;&#160;(((x).index &gt; (c).index) || (((x).index == (c).index) &amp;&amp; ((x).frac &gt; (c).frac)))</td></tr>
-<tr class="separator:a27bb7772f0b94ae347d1870d497b10f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f5f676a4a4623e85cab2c85f5083e68"><td class="memItemLeft" align="right" valign="top"><a id="a9f5f676a4a4623e85cab2c85f5083e68"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_eq</b>(x,  c)&#160;&#160;&#160;(((x).index == (c).index) &amp;&amp; ((x).frac == (c).frac))</td></tr>
-<tr class="separator:a9f5f676a4a4623e85cab2c85f5083e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae41af103d8dc4a7a92e39b23914c9bef"><td class="memItemLeft" align="right" valign="top"><a id="ae41af103d8dc4a7a92e39b23914c9bef"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_is_zero</b>(x)&#160;&#160;&#160;(((x).index == 0) &amp;&amp; ((x).frac == 0))</td></tr>
-<tr class="separator:ae41af103d8dc4a7a92e39b23914c9bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a761979a37a36c7dbe966538181142711"><td class="memItemLeft" align="right" valign="top"><a id="a761979a37a36c7dbe966538181142711"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_negate</b>(x)&#160;&#160;&#160;((x)-&gt;index = -(x)-&gt;index - ((x)-&gt;frac &gt; 0), (x)-&gt;frac = (RTA_IDEFIX_FRAC_MAX - (x)-&gt;frac) + 1)</td></tr>
+<tr class="separator:a761979a37a36c7dbe966538181142711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50f0510efe30e3658bc9ee59e1b4e7b8"><td class="memItemLeft" align="right" valign="top"><a id="a50f0510efe30e3658bc9ee59e1b4e7b8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_float</b>(x,  f)&#160;&#160;&#160;((x)-&gt;index = floor(f), (x)-&gt;frac = ((double)(f) - (x)-&gt;index) * RTA_IDEFIX_FRAC_RANGE)</td></tr>
+<tr class="separator:a50f0510efe30e3658bc9ee59e1b4e7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8976eefbfde540d94a01fc587481da"><td class="memItemLeft" align="right" valign="top"><a id="a5f8976eefbfde540d94a01fc587481da"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_int</b>(x,  i)&#160;&#160;&#160;((x)-&gt;index = (i), (x)-&gt;frac = 0)</td></tr>
+<tr class="separator:a5f8976eefbfde540d94a01fc587481da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefd1621c5eb08e1787ee8074c8f3b0b0"><td class="memItemLeft" align="right" valign="top"><a id="aefd1621c5eb08e1787ee8074c8f3b0b0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_max</b>(x)&#160;&#160;&#160;((x)-&gt;index = RTA_IDEFIX_INDEX_MAX, (x)-&gt;frac = RTA_IDEFIX_FRAC_MAX)</td></tr>
+<tr class="separator:aefd1621c5eb08e1787ee8074c8f3b0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa916aeaf890a82df63ff04f31f6d7424"><td class="memItemLeft" align="right" valign="top"><a id="aa916aeaf890a82df63ff04f31f6d7424"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_set_zero</b>(x)&#160;&#160;&#160;((x)-&gt;index = 0, (x)-&gt;frac = 0)</td></tr>
+<tr class="separator:aa916aeaf890a82df63ff04f31f6d7424"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a972cd48132489ffcac2eb5ed3e597c4a"><td class="memItemLeft" align="right" valign="top"><a id="a972cd48132489ffcac2eb5ed3e597c4a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>rta_idefix_sub</b>(x,  a,  b)&#160;&#160;&#160;((x)-&gt;index = (a).index - ((b).index + ((a).frac &lt; (b).frac)), (x)-&gt;frac = (a).frac - (b).frac)</td></tr>
+<tr class="separator:a972cd48132489ffcac2eb5ed3e597c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -286,7 +286,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 14 2017 18:11:58 for rta by
+Generated on Fri Sep 15 2017 13:02:29 for rta by
 <!-- &#160; -->
 <a href="http://www.doxygen.org/index.html">
 <!-- <img class="footer" src="doxygen.png" alt="doxygen"/> -->

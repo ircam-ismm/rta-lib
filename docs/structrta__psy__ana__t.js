@@ -30,6 +30,6 @@ var structrta__psy__ana__t =
     [ "samplePeriod", "structrta__psy__ana__t.html#aa6da7e88e4d9a88cc199bffb37f079f2", null ],
     [ "sampleRate", "structrta__psy__ana__t.html#ab01a15f8106b78cad4ad261ce26a7180", null ],
     [ "trackingIndex", "structrta__psy__ana__t.html#ab0c7a106648be1163f51e82fcb6ef5e4", null ],
-    [ "trackingStates", "structrta__psy__ana__t.html#aca4598168e4975d733dffd7118eba964", null ],
+    [ "trackingStates", "structrta__psy__ana__t.html#a9510758d2bec5cdc905d1aec0e0bfd87", null ],
     [ "yinThreshold", "structrta__psy__ana__t.html#abb0622370011f2fac277b53c334e00aa", null ]
 ];

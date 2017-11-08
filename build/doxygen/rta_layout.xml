@@ -35,7 +35,7 @@
     <tab type="user" visible="yes" url="#" title="Reference" intro="">
     <!-- <tab type="files" visible="yes" title="Reference" intro=""> -->
       <tab type="globals" visible="$ALPHABETICAL_INDEX" title="Index" intro=""/>
-      <tab type="classlist" visible="$ALPHABETICAL_INDEX" title="Classes and Structs"/>
+      <tab type="classindex" visible="$ALPHABETICAL_INDEX" title="Classes and Structs"/>
     </tab>
 
     <tab type="filelist" visible="yes" title="Files" intro="">
