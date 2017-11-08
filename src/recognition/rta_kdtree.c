@@ -83,7 +83,7 @@ const char *rta_kdtree_mmodestr[] = { "mean", "middle", "median" };
 
 
 #if RTA_KDTREE_PROFILE
-void rta_kdtree_profile_clear (kdtree_t *t)
+void rta_kdtree_profile_clear (rta_kdtree_t *t)
 {
   t->profile.v2v      = 0;
   t->profile.v2n      = 0;
@@ -143,7 +143,7 @@ void rta_kdtree_info_display (rta_kdtree_t* t)
   rta_post("inner nodes = %d  (%.3f MB node vectors)\n", t->ninner, mbinner);
   rta_post("stack       = %d  (%.3f MB)\n", t->stack.alloc, mbstack);
   rta_post("total size  = %.3f MB\n",
-     MB(sizeof(kdtree_t)) + mbnodes + mbinner + mbindex + mbstack);
+     MB(sizeof(rta_kdtree_t)) + mbnodes + mbinner + mbindex + mbstack);
   rta_post("sort mode     = %d\n", t->sort);
   rta_post("decomposition = %s\n", rta_kdtree_dmodestr[t->dmode]);
   rta_post("mean vector   = %s\n", rta_kdtree_mmodestr[t->mmode]);
