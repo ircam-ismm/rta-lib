@@ -19,8 +19,6 @@
 		31438D061F6A885200EEF89D /* rta_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438CFA1F6A885200EEF89D /* rta_types.h */; };
 		31438D071F6A885200EEF89D /* rta_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438CFB1F6A885200EEF89D /* rta_util.c */; };
 		31438D081F6A885200EEF89D /* rta_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438CFC1F6A885200EEF89D /* rta_util.h */; };
-		31438D131F6A885F00EEF89D /* rta_cca.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D091F6A885F00EEF89D /* rta_cca.c */; };
-		31438D141F6A885F00EEF89D /* rta_cca.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D0A1F6A885F00EEF89D /* rta_cca.h */; };
 		31438D151F6A885F00EEF89D /* rta_mean_variance.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D0B1F6A885F00EEF89D /* rta_mean_variance.c */; };
 		31438D161F6A885F00EEF89D /* rta_mean_variance.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D0C1F6A885F00EEF89D /* rta_mean_variance.h */; };
 		31438D171F6A885F00EEF89D /* rta_moments.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D0D1F6A885F00EEF89D /* rta_moments.c */; };
@@ -62,8 +60,6 @@
 		31438D5C1F6A887200EEF89D /* rta_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D3B1F6A887200EEF89D /* rta_window.h */; };
 		31438D5D1F6A887200EEF89D /* rta_yin.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D3C1F6A887200EEF89D /* rta_yin.c */; };
 		31438D5E1F6A887200EEF89D /* rta_yin.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D3D1F6A887200EEF89D /* rta_yin.h */; };
-		31438D681F6A887F00EEF89D /* rta_dtw.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D5F1F6A887F00EEF89D /* rta_dtw.c */; };
-		31438D691F6A887F00EEF89D /* rta_dtw.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D601F6A887F00EEF89D /* rta_dtw.h */; };
 		31438D6A1F6A887F00EEF89D /* rta_kdtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D611F6A887F00EEF89D /* rta_kdtree.c */; };
 		31438D6B1F6A887F00EEF89D /* rta_kdtree.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D621F6A887F00EEF89D /* rta_kdtree.h */; };
 		31438D6C1F6A887F00EEF89D /* rta_kdtreebuild.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D631F6A887F00EEF89D /* rta_kdtreebuild.c */; };
@@ -73,14 +69,9 @@
 		31438D701F6A887F00EEF89D /* rta_mahalanobis.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D671F6A887F00EEF89D /* rta_mahalanobis.h */; };
 		31438D791F6A888C00EEF89D /* rta_mds_hybrid.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D711F6A888C00EEF89D /* rta_mds_hybrid.c */; };
 		31438D7A1F6A888C00EEF89D /* rta_mds_hybrid.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D721F6A888C00EEF89D /* rta_mds_hybrid.h */; };
-		31438D7B1F6A888C00EEF89D /* rta_msdr.c in Sources */ = {isa = PBXBuildFile; fileRef = 31438D731F6A888C00EEF89D /* rta_msdr.c */; };
 		31438D7C1F6A888C00EEF89D /* rta_msdr.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D741F6A888C00EEF89D /* rta_msdr.h */; };
-		31438D7D1F6A888C00EEF89D /* rta_unispring_physical_model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31438D751F6A888C00EEF89D /* rta_unispring_physical_model.cpp */; };
-		31438D7E1F6A888C00EEF89D /* rta_unispring_triangulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31438D761F6A888C00EEF89D /* rta_unispring_triangulation.cpp */; };
-		31438D7F1F6A888C00EEF89D /* rta_unispring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31438D771F6A888C00EEF89D /* rta_unispring.cpp */; };
-		31438D801F6A888C00EEF89D /* rta_unispring.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D781F6A888C00EEF89D /* rta_unispring.h */; };
-		31438D821F6A889900EEF89D /* rta.h in Headers */ = {isa = PBXBuildFile; fileRef = 31438D811F6A889900EEF89D /* rta.h */; };
-		315B902C1FB3606C0005150B /* rta_configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 315B902B1FB3606C0005150B /* rta_configuration.h */; };
+		315B90301FB49DCE0005150B /* rta.h in Headers */ = {isa = PBXBuildFile; fileRef = 315B902F1FB49DCE0005150B /* rta.h */; };
+		315B90321FB49DD80005150B /* rta_configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 315B90311FB49DD80005150B /* rta_configuration.h */; };
 		31A7E7431F6949B700398D56 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A7E7421F6949B700398D56 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
@@ -157,8 +148,8 @@
 		31438D761F6A888C00EEF89D /* rta_unispring_triangulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rta_unispring_triangulation.cpp; path = "../../src/physical-models/rta_unispring_triangulation.cpp"; sourceTree = "<group>"; };
 		31438D771F6A888C00EEF89D /* rta_unispring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rta_unispring.cpp; path = "../../src/physical-models/rta_unispring.cpp"; sourceTree = "<group>"; };
 		31438D781F6A888C00EEF89D /* rta_unispring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta_unispring.h; path = "../../src/physical-models/rta_unispring.h"; sourceTree = "<group>"; };
-		31438D811F6A889900EEF89D /* rta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta.h; path = ../../include/rta.h; sourceTree = "<group>"; };
-		315B902B1FB3606C0005150B /* rta_configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta_configuration.h; path = ../../include/configuration_basic/rta_configuration.h; sourceTree = "<group>"; };
+		315B902F1FB49DCE0005150B /* rta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta.h; path = ../../src/rta.h; sourceTree = "<group>"; };
+		315B90311FB49DD80005150B /* rta_configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rta_configuration.h; path = ../../bindings/lib/rta_configuration.h; sourceTree = "<group>"; };
 		31A7E6A41F69480600398D56 /* librta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librta.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		31A7E7421F6949B700398D56 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -178,7 +169,6 @@
 		31A7E69B1F69480500398D56 = {
 			isa = PBXGroup;
 			children = (
-				31A7E7441F6949D500398D56 /* include */,
 				31A7E6AB1F69480D00398D56 /* src */,
 				31A7E6A51F69480600398D56 /* Products */,
 				31A7E7411F6949B700398D56 /* Frameworks */,
@@ -196,6 +186,8 @@
 		31A7E6AB1F69480D00398D56 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				315B90311FB49DD80005150B /* rta_configuration.h */,
+				315B902F1FB49DCE0005150B /* rta.h */,
 				31A7E6B01F69483D00398D56 /* util */,
 				31A7E6AF1F69483500398D56 /* statistics */,
 				31A7E6AE1F69483000398D56 /* signal */,
@@ -320,15 +312,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		31A7E7441F6949D500398D56 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				315B902B1FB3606C0005150B /* rta_configuration.h */,
-				31438D811F6A889900EEF89D /* rta.h */,
-			);
-			name = include;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -345,21 +328,17 @@
 				31438D6B1F6A887F00EEF89D /* rta_kdtree.h in Headers */,
 				31438D7A1F6A888C00EEF89D /* rta_mds_hybrid.h in Headers */,
 				31438D181F6A885F00EEF89D /* rta_moments.h in Headers */,
+				315B90321FB49DD80005150B /* rta_configuration.h in Headers */,
 				31438D541F6A887200EEF89D /* rta_onepole.h in Headers */,
 				31438D5E1F6A887200EEF89D /* rta_yin.h in Headers */,
 				31438D1A1F6A885F00EEF89D /* rta_selection.h in Headers */,
-				31438D821F6A889900EEF89D /* rta.h in Headers */,
 				31438D521F6A887200EEF89D /* rta_mel.h in Headers */,
-				31438D141F6A885F00EEF89D /* rta_cca.h in Headers */,
-				31438D691F6A887F00EEF89D /* rta_dtw.h in Headers */,
 				31438D491F6A887200EEF89D /* rta_delta.h in Headers */,
 				31438D701F6A887F00EEF89D /* rta_mahalanobis.h in Headers */,
-				31438D801F6A888C00EEF89D /* rta_unispring.h in Headers */,
 				31438D031F6A885200EEF89D /* rta_math.h in Headers */,
 				31438D5A1F6A887200EEF89D /* rta_resample.h in Headers */,
 				31438D4B1F6A887200EEF89D /* rta_fft.h in Headers */,
 				31438D561F6A887200EEF89D /* rta_preemphasis.h in Headers */,
-				315B902C1FB3606C0005150B /* rta_configuration.h in Headers */,
 				31438D021F6A885200EEF89D /* rta_int.h in Headers */,
 				31438D581F6A887200EEF89D /* rta_psy.h in Headers */,
 				31438D411F6A887200EEF89D /* rta_biquad.h in Headers */,
@@ -375,6 +354,7 @@
 				31438D161F6A885F00EEF89D /* rta_mean_variance.h in Headers */,
 				31438D451F6A887200EEF89D /* rta_cubic.h in Headers */,
 				31438D061F6A885200EEF89D /* rta_types.h in Headers */,
+				315B90301FB49DCE0005150B /* rta.h in Headers */,
 				31438D041F6A885200EEF89D /* rta_stdio.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,12 +418,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				31438D3E1F6A887200EEF89D /* rta_bands.c in Sources */,
-				31438D7E1F6A888C00EEF89D /* rta_unispring_triangulation.cpp in Sources */,
 				31438D011F6A885200EEF89D /* rta_int.c in Sources */,
 				31438D191F6A885F00EEF89D /* rta_selection.c in Sources */,
 				31438D4F1F6A887200EEF89D /* rta_lpc.c in Sources */,
-				31438D7D1F6A888C00EEF89D /* rta_unispring_physical_model.cpp in Sources */,
-				31438D7B1F6A888C00EEF89D /* rta_msdr.c in Sources */,
 				31438D6A1F6A887F00EEF89D /* rta_kdtree.c in Sources */,
 				31438D4A1F6A887200EEF89D /* rta_fft.c in Sources */,
 				31438D481F6A887200EEF89D /* rta_delta.c in Sources */,
@@ -453,13 +430,11 @@
 				31438D421F6A887200EEF89D /* rta_correlation.c in Sources */,
 				31438D151F6A885F00EEF89D /* rta_mean_variance.c in Sources */,
 				31438D171F6A885F00EEF89D /* rta_moments.c in Sources */,
-				31438D681F6A887F00EEF89D /* rta_dtw.c in Sources */,
 				31438D441F6A887200EEF89D /* rta_cubic.c in Sources */,
 				31438D401F6A887200EEF89D /* rta_biquad.c in Sources */,
 				31438D791F6A888C00EEF89D /* rta_mds_hybrid.c in Sources */,
 				31438D1B1F6A885F00EEF89D /* rta_svd.c in Sources */,
 				31438D5D1F6A887200EEF89D /* rta_yin.c in Sources */,
-				31438D131F6A885F00EEF89D /* rta_cca.c in Sources */,
 				31438D6C1F6A887F00EEF89D /* rta_kdtreebuild.c in Sources */,
 				31438D6E1F6A887F00EEF89D /* rta_kdtreesearch.c in Sources */,
 				31438D4D1F6A887200EEF89D /* rta_lifter.c in Sources */,
@@ -468,7 +443,6 @@
 				31438D571F6A887200EEF89D /* rta_psy.c in Sources */,
 				31438D6F1F6A887F00EEF89D /* rta_mahalanobis.c in Sources */,
 				31438D511F6A887200EEF89D /* rta_mel.c in Sources */,
-				31438D7F1F6A888C00EEF89D /* rta_unispring.cpp in Sources */,
 				31438D591F6A887200EEF89D /* rta_resample.c in Sources */,
 				31438D551F6A887200EEF89D /* rta_preemphasis.c in Sources */,
 			);
@@ -503,6 +477,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(VECLIB_FRAMEWORK_DIR)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -517,10 +492,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(VECLIB_FRAMEWORK_DIR)/vecLib.framework/Headers",
+					"$(VECLIB_DIR)/Headers",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				VECLIB_DIR = /System/Library/Frameworks/Accelerate.framework;
+				VECLIB_FRAMEWORK_DIR = /System/Library/Frameworks/Accelerate.framework/Frameworks;
 			};
 			name = Debug;
 		};
@@ -550,6 +531,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(VECLIB_FRAMEWORK_DIR)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -558,9 +540,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(VECLIB_FRAMEWORK_DIR)/vecLib.framework/Headers",
+					"$(VECLIB_DIR)/Headers",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				VECLIB_DIR = /System/Library/Frameworks/Accelerate.framework;
+				VECLIB_FRAMEWORK_DIR = /System/Library/Frameworks/Accelerate.framework/Frameworks;
 			};
 			name = Release;
 		};
