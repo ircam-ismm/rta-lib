@@ -247,7 +247,7 @@ rta_real_t rta_kdtree_get_element(rta_kdtree_t *t, int i, int j);
  * @return  pointer to data row \p i
  */
 #if DOXYGEN_FUNCTIONS
-rta_real_t *rta_kdtree_get_vector(rta_kdtree_t *t, int i);
+rta_real_t *rta_rta_kdtree_get_vector(rta_kdtree_t *t, int i);
 #else
 #define rta_kdtree_get_vector(t, i) ((t)->data[(t)->dataindex[i].base] + (t)->dataindex[i].index * (t)->ndim)
 #endif
