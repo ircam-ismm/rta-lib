@@ -2,13 +2,13 @@
  * @file   rta_correlation.c
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Mon Aug 27 12:25:16 2007
- * 
+ *
  * @brief  Correlation (cross or auto)
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@
 
 /* specific implementations */
 #if defined(RTA_USE_VECLIB)
-#include <vDSP.h>
+#include <Accelerate/Accelerate.h>
 #endif
 
 /* Fast, unbiased by nature, recommended if (c_size / filter_size > 20) */
@@ -67,7 +67,7 @@ void rta_correlation_fast(
 #endif
   }
   else
-  { 
+  {
 #endif /* RTA_USE_VECLIB */
 
 /* Base algorithm */
@@ -110,7 +110,7 @@ void rta_correlation_fast_stride(
 #endif
   }
   else
-  { 
+  {
 #endif /* RTA_USE_VECLIB */
 
 /* Base algorithm */
@@ -219,7 +219,7 @@ void rta_correlation_unbiased_stride(
 rta_real_t rta_correlation_fast_normalization_factor(const unsigned int filter_size)
 {
   rta_real_t normalization = 1.;
-  
+
   if(filter_size>0)
   {
     normalization = 1. / (rta_real_t)filter_size;
@@ -230,7 +230,7 @@ rta_real_t rta_correlation_fast_normalization_factor(const unsigned int filter_s
 rta_real_t rta_correlation_raw_normalization_factor(const unsigned int max_filter_size)
 {
   rta_real_t normalization = 1.;
-  
+
   if(max_filter_size>0)
   {
     normalization = 1. / (rta_real_t)(max_filter_size + 1);
@@ -254,7 +254,7 @@ void rta_correlation_fast_scaled(
     {
       correlation[c] += input_vector_a[f+c] * input_vector_b[f];
     }
-    correlation[c] *= scale;    
+    correlation[c] *= scale;
   }
   return;
 }
