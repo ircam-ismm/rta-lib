@@ -232,7 +232,7 @@ extern const char *rta_kdtree_mmodestr[];
 #if DOXYGEN_FUNCTIONS
 rta_real_t rta_kdtree_get_element(rta_kdtree_t *t, int i, int j);
 #else
-#define    rta_kdtree_get_element(t, i, j) ((t)->data[(t)->dataindex[i].base][(t)->dataindex[i].index * (t)->ndim + (j)])
+#define rta_kdtree_get_element(t, i, j) ((t)->data[(t)->dataindex[i].base][(t)->dataindex[i].index * (t)->ndim + (j)])
 #endif
 
 /** get data vector via indirection order array

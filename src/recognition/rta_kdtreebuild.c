@@ -39,7 +39,6 @@
 #include <math.h>
 #include <assert.h>
 
-
 #ifndef WIN32
 #include <strings.h>
 #endif
@@ -494,7 +493,7 @@ void rta_kdtree_build (rta_kdtree_t* t, int use_sigma)
       rta_post("tree has 0 dimensions!  Can't build!\n");
     else
       rta_post("error: can't build this tree, try with a smaller height: %d > %d\n",
-               cpow2(t->height-1), t->ndatatot);
+               powf(t->height-1, 2), t->ndatatot);
 
     return;
   }
@@ -523,10 +522,10 @@ void rta_kdtree_build (rta_kdtree_t* t, int use_sigma)
 
         while (i < j)
         { /* sort node vectors by distance to splitplane */
-          while (i < j  &&  distV2N(t, kdtree_get_vector(t, i), n) <= 0)
+          while (i < j  &&  distV2N(t, rta_kdtree_get_vector(t, i), n) <= 0)
             i++;  // if (i >= t->ndata) rta_post("n %d: i=%d\n", n, i);
 
-          while (i < j  &&  distV2N(t, kdtree_get_vector(t, j), n) > 0)
+          while (i < j  &&  distV2N(t, rta_kdtree_get_vector(t, j), n) > 0)
             j--;  // if (j < 0) rta_post("n %d: j=%d\n", n, j);
 
           if (i < j)

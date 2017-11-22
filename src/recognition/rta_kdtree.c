@@ -221,7 +221,7 @@ void rta_kdtree_data_display (rta_kdtree_t* t, int print_data)
         {
           rta_post("%svec (%d, %d) = ", (print_data >= 2  ?  "\n    " : ""),
             t->dataindex[i].base, t->dataindex[i].index);
-          rta_vec_post(kdtree_get_vector(t, i), 1, t->ndim,
+          rta_vec_post(rta_kdtree_get_vector(t, i), 1, t->ndim,
             i < node->endind ? ", " : "");
         }
         rta_post(")");
@@ -281,7 +281,7 @@ int rta_kdtree_set_data (rta_kdtree_t *self, int nblocks, rta_real_t **data,
   self->ninner = pow2(height - 1) - 1;
 
   /* init original index list */
-  auto_alloc(self->dataindex, index, self->ndatatot);
+  rta_auto_alloc(self->dataindex, index, self->ndatatot);
 
   if (index == NULL) /* no indices given, create them ourselves; else: use indices from outside */
     for (k = 0; k < nblocks; k++)
@@ -308,7 +308,7 @@ void rta_kdtree_init_nodes (rta_kdtree_t* self, rta_kdtree_node_t *nodes,
 #else
   memset(self->nodes, 0.0, self->nnodes * sizeof(rta_kdtree_node_t));
 #endif
-  auto_alloc(self->mean, means, self->nnodes * self->ndim);
+  rta_auto_alloc(self->mean, means, self->nnodes * self->ndim);
 
   if (self->dmode != dmode_orthogonal)
     rta_auto_alloc(self->split, planes, self->nnodes * self->ndim);
