@@ -52,9 +52,10 @@
 #endif
 
 #ifdef WIN32
+/*------------------------------ windows ------------------------------*/
 
-#if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
-#undef rta_complex_t
+# if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
+# undef rta_complex_t
 
 typedef struct floatcomplex_
 {
@@ -62,18 +63,18 @@ typedef struct floatcomplex_
   float imag;
 } floatcomplex;
 
-#define rta_complex_t floatcomplex
-#define inline
+# define rta_complex_t floatcomplex
+# define inline
 
 static inline rta_complex_t rta_make_complex(float real, float imag)
 {
 	rta_complex_t z = {real, imag};
 	return z;
 }
-#endif
+# endif
 
-#if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
-#undef rta_complex_t
+# if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
+# undef rta_complex_t
 
 typedef struct complex_
 {
@@ -81,16 +82,16 @@ typedef struct complex_
   double imag;
 } complex;
 
-#define rta_complex_t complex
+# define rta_complex_t complex
 static inline rta_complex_t rta_make_complex(double real, double imag)
 {
 	rta_complex_t z = {real, imag};
 	return z;
 }
-#endif
+# endif
 
-#if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
-#undef rta_complex_t
+# if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
+# undef rta_complex_t
 
 typedef struct complex_
 {
@@ -98,16 +99,16 @@ typedef struct complex_
   long double imag;
 } complex;
 
-#define rta_complex_t complex
+# define rta_complex_t complex
 static inline rta_complex_t rta_make_complex(long double real, long double imag)
 {
 	rta_complex_t z = {real, imag};
 	return z;
 }
-#endif
+# endif
 
-#define creal(z) ((z).real)
-#define cimag(z) ((z).imag)
+# define creal(z) ((z).real)
+# define cimag(z) ((z).imag)
 
 static inline rta_complex_t rta_add_complex(rta_complex_t a, rta_complex_t b)
 {
@@ -151,148 +152,152 @@ static inline void rta_set_complex_real(rta_complex_t a, float b)
 	a.imag = 0.0;
 }
 
-#define rta_cabs cabs
-#define rta_cacos cacos
-#define rta_cacosh cacosh
-#define rta_carg carg
-#define rta_casin casin
-#define rta_casinh casinh
-#define rta_catan catan
-#define rta_catanh catanh
-#define rta_ccos ccos
-#define rta_ccosh ccosh
-#define rta_cexp cexp
-#define rta_cimag cimag
-#define rta_clog clog
-#define rta_cpow cpow
-#define rta_cproj cproj
-#define rta_creal creal
-#define rta_csin csin
-#define rta_csinh csinh
-#define rta_csqrt csqrt
-#define rta_ctan ctan
-#define rta_ctanh ctanh
+# define rta_cabs cabs
+# define rta_cacos cacos
+# define rta_cacosh cacosh
+# define rta_carg carg
+# define rta_casin casin
+# define rta_casinh casinh
+# define rta_catan catan
+# define rta_catanh catanh
+# define rta_ccos ccos
+# define rta_ccosh ccosh
+# define rta_cexp cexp
+# define rta_cimag cimag
+# define rta_clog clog
+# define rta_cpow cpow
+# define rta_cproj cproj
+# define rta_creal creal
+# define rta_csin csin
+# define rta_csinh csinh
+# define rta_csqrt csqrt
+# define rta_ctan ctan
+# define rta_ctanh ctanh
+
+/* END windows */
 
 #else
 
-#ifndef __cplusplus
-#include <complex.h>
-#else
-#include "/usr/include/complex.h"
-#endif
+/*------------------------------ not windows ------------------------------*/
 
-#if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
-#undef rta_complex_t
-#define rta_complex_t float complex
+# ifndef __cplusplus
+#   include <complex.h>
+# else
+#   include "/usr/include/complex.h"
+# endif
+
+# if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
+#   undef rta_complex_t
+#   define rta_complex_t float complex
 
 static inline rta_complex_t rta_make_complex(float real, float imag)
 {
-#if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL) \
+#   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL) \
      && defined __clang__
   return CMPLX(real, imag);
-#else // old gcc way of creating a complex number
+#   else // old gcc way of creating a complex number
   return (real + imag * I);
-#endif
+#   endif
 }
 
-#define rta_cabs cabsf
-#define rta_cacos cacosf
-#define rta_cacosh cacoshf
-#define rta_carg cargf
-#define rta_casin casinf
-#define rta_casinh casinhf
-#define rta_catan catanf
-#define rta_catanh catanhf
-#define rta_ccos ccosf
-#define rta_ccosh ccoshf
-#define rta_cexp cexpf
-#define rta_cimag cimagf
-#define rta_clog clogf
-#define rta_conj conjf
-#define rta_cpow cpowf
-#define rta_cproj cprojf
-#define rta_creal crealf
-#define rta_csin csinf
-#define rta_csinh csinhf
-#define rta_csqrt csqrtf
-#define rta_ctan ctanf
-#define rta_ctanh ctanhf
+#   define rta_cabs cabsf
+#   define rta_cacos cacosf
+#   define rta_cacosh cacoshf
+#   define rta_carg cargf
+#   define rta_casin casinf
+#   define rta_casinh casinhf
+#   define rta_catan catanf
+#   define rta_catanh catanhf
+#   define rta_ccos ccosf
+#   define rta_ccosh ccoshf
+#   define rta_cexp cexpf
+#   define rta_cimag cimagf
+#   define rta_clog clogf
+#   define rta_conj conjf
+#   define rta_cpow cpowf
+#   define rta_cproj cprojf
+#   define rta_creal crealf
+#   define rta_csin csinf
+#   define rta_csinh csinhf
+#   define rta_csqrt csqrtf
+#   define rta_ctan ctanf
+#   define rta_ctanh ctanhf
 
-#endif
+# endif
 
-#if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
-#undef rta_complex_t
-#define rta_complex_t double complex
+# if (RTA_COMPLEX_TYPE == RTA_DOUBLE_TYPE)
+#   undef rta_complex_t
+#   define rta_complex_t double complex
 static inline rta_complex_t rta_make_complex(double real, double imag)
 {
 	return real + imag * I;
 }
 
-#define rta_cabs cabs
-#define rta_cacos cacos
-#define rta_cacosh cacosh
-#define rta_carg carg
-#define rta_casin casin
-#define rta_casinh casinh
-#define rta_catan catan
-#define rta_catanh catanh
-#define rta_ccos ccos
-#define rta_ccosh ccosh
-#define rta_cexp cexp
-#define rta_cimag cimag
-#define rta_clog clog
-#define rta_conj conj
-#define rta_cpow cpow
-#define rta_cproj cproj
-#define rta_creal creal
-#define rta_csin csin
-#define rta_csinh csinh
-#define rta_csqrt csqrt
-#define rta_ctan ctan
-#define rta_ctanh ctanh
+#   define rta_cabs cabs
+#   define rta_cacos cacos
+#   define rta_cacosh cacosh
+#   define rta_carg carg
+#   define rta_casin casin
+#   define rta_casinh casinh
+#   define rta_catan catan
+#   define rta_catanh catanh
+#   define rta_ccos ccos
+#   define rta_ccosh ccosh
+#   define rta_cexp cexp
+#   define rta_cimag cimag
+#   define rta_clog clog
+#   define rta_conj conj
+#   define rta_cpow cpow
+#   define rta_cproj cproj
+#   define rta_creal creal
+#   define rta_csin csin
+#   define rta_csinh csinh
+#   define rta_csqrt csqrt
+#   define rta_ctan ctan
+#   define rta_ctanh ctanh
 
-#endif
+# endif
 
-#if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
-#undef rta_complex_t
-#define rta_complex_t long double complex
+# if (RTA_COMPLEX_TYPE == RTA_LONG_DOUBLE_TYPE)
+#   undef rta_complex_t
+#   define rta_complex_t long double complex
 static inline rta_complex_t rta_make_complex(long double real, long double imag)
 {
 	return real + imag * I;
 }
 
-#define rta_cabs cabsl
-#define rta_cacos cacosl
-#define rta_cacosh cacoshl
-#define rta_carg cargl
-#define rta_casin casinl
-#define rta_casinh casinhl
-#define rta_catan catanl
-#define rta_catanh catanhl
-#define rta_ccos ccosl
-#define rta_ccosh ccoshl
-#define rta_cexp cexpl
-#define rta_cimag cimagl
-#define rta_clog clogl
-#define rta_conj conjl
-#define rta_cpow cpowl
-#define rta_cproj cprojl
-#define rta_creal creall
-#define rta_csin csinl
-#define rta_csinh csinhl
-#define rta_csqrt csqrtl
-#define rta_ctan ctanl
-#define rta_ctanh ctanhl
+#   define rta_cabs cabsl
+#   define rta_cacos cacosl
+#   define rta_cacosh cacoshl
+#   define rta_carg cargl
+#   define rta_casin casinl
+#   define rta_casinh casinhl
+#   define rta_catan catanl
+#   define rta_catanh catanhl
+#   define rta_ccos ccosl
+#   define rta_ccosh ccoshl
+#   define rta_cexp cexpl
+#   define rta_cimag cimagl
+#   define rta_clog clogl
+#   define rta_conj conjl
+#   define rta_cpow cpowl
+#   define rta_cproj cprojl
+#   define rta_creal creall
+#   define rta_csin csinl
+#   define rta_csinh csinhl
+#   define rta_csqrt csqrtl
+#   define rta_ctan ctanl
+#   define rta_ctanh ctanhl
 
-#endif
+# endif
 
-#define rta_add_complex(a, b) ((a)+(b))
-#define rta_sub_complex(a, b) ((a)-(b))
-#define rta_mul_complex(a, b) ((a)*(b))
-#define rta_div_complex(a, b) ((a)/(b))
-#define rta_mul_complex_real(a, b) ((a)*(b))
-#define rta_set_complex_real(a, b) ((a) = (b))
+# define rta_add_complex(a, b) ((a)+(b))
+# define rta_sub_complex(a, b) ((a)-(b))
+# define rta_mul_complex(a, b) ((a)*(b))
+# define rta_div_complex(a, b) ((a)/(b))
+# define rta_mul_complex_real(a, b) ((a)*(b))
+# define rta_set_complex_real(a, b) ((a) = (b))
 
-#endif /* WIN32 */
+#endif /* NOT windows */
 
 #endif /* _RTA_COMPLEX_H_ */
