@@ -1,9 +1,0 @@
-var searchData=
-[
-  ['scale',['scale',['../class_uni_spring_space_1_1_shape.html#a63f086d60b2b59a5d0a9c3a30a777b21',1,'UniSpringSpace::Shape::scale()'],['../class_uni_spring_space_1_1_disk.html#a1a257c171d6eaba90aa86bfe01428ed2',1,'UniSpringSpace::Disk::scale()'],['../class_uni_spring_space_1_1_square.html#a08642170a753fe7142c2c8d4eb7fa79c',1,'UniSpringSpace::Square::scale()'],['../class_uni_spring_space_1_1_rectangle.html#a52a7625f5b9a5baf133932a2c00283e5',1,'UniSpringSpace::Rectangle::scale()'],['../class_uni_spring_space_1_1_polygon.html#a6721ac97eecf3200682f4e82697d283c',1,'UniSpringSpace::Polygon::scale()'],['../class_uni_spring_space_1_1_shape__3_d.html#a2cbc7541272d262f3d4eabd102be67c4',1,'UniSpringSpace::Shape_3D::scale()'],['../class_uni_spring_space_1_1_sphere.html#a945b5f1836f79359cb82ac1bc353d4da',1,'UniSpringSpace::Sphere::scale()'],['../class_uni_spring_space_1_1_cube.html#a0e8cfd6a5cc1755357bc5a6a7330e9a9',1,'UniSpringSpace::Cube::scale()'],['../class_uni_spring_space_1_1_r_parallel.html#a9bf5528ac9c3b7147bd347bc32738be7',1,'UniSpringSpace::RParallel::scale()']]],
-  ['set_5fpoints',['set_points',['../class_uni_spring_space_1_1_uni_spring.html#acfa855f44cb182f4feadf4dae79b1413',1,'UniSpringSpace::UniSpring']]],
-  ['set_5fpoints_5f3d',['set_points_3D',['../class_uni_spring_space_1_1_uni_spring.html#ab757506aa63bf516453f9a317e05cec5',1,'UniSpringSpace::UniSpring']]],
-  ['set_5ftolerance',['set_tolerance',['../class_uni_spring_space_1_1_uni_spring.html#a7994bdc9b8a63d987d9e0a0b71a57639',1,'UniSpringSpace::UniSpring']]],
-  ['sphere',['Sphere',['../class_uni_spring_space_1_1_sphere.html#a160167f1bbf5d77d10dbf1e629a9297d',1,'UniSpringSpace::Sphere']]],
-  ['square',['Square',['../class_uni_spring_space_1_1_square.html#a99b0cee0ccb4fac7721c0cbddbfd3035',1,'UniSpringSpace::Square']]]
-];

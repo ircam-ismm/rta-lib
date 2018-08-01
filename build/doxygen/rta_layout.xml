@@ -38,7 +38,7 @@
       <tab type="classindex" visible="$ALPHABETICAL_INDEX" title="Classes and Structs"/>
     </tab>
 
-    <tab type="filelist" visible="yes" title="Files" intro="">
+    <tab type="filelist" visible="yes" title="Files" intro=""/>
 
     <!-- <tab type="examples" visible="no" title="" intro=""/> -->
 
