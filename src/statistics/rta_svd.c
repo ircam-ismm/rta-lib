@@ -84,7 +84,7 @@ rta_svd_setup_new(rta_svd_setup_t ** svd_setup, const rta_svd_t svd_type,
   {
     if(svd_type == rta_svd_out_of_place || n > m)
     {
-      (*svd_setup)->A = (float *)rta_malloc(m * n * sizeof(rta_real_t));
+      (*svd_setup)->A = (rta_real_t *)rta_malloc(m * n * sizeof(rta_real_t));
       if((*svd_setup)->A == NULL)
       {
         ret = 0;
