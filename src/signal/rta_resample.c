@@ -2,13 +2,13 @@
  * @file   rta_resample.c
  * @author Jean-Philippe.Lambert@ircam.fr
  * @date   Mon Nov 12 18:21:06 2007
- * 
+ *
  * @brief  Resample utilities
- * 
+ *
  * @copyright
  * Copyright (C) 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
  * All rights reserved.
- * 
+ *
  * License (BSD 3-clause)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,46 +72,46 @@ void rta_downsample_int_mean(rta_real_t * output,
         output[i] = factor_inv * (input[j] + input[j+1] + input[j+2]);
       }
       break;
-
+      
     case 4:
       for(i=0, j=0; i<i_max; i++, j+=factor)
       {
         output[i] = factor_inv * (input[j] + input[j+1] + input[j+2] + input[j+3]);
       }
       break;
-
+      
     case 5:
       for(i=0, j=0; i<i_max; i++, j+=factor)
       {
         output[i] = factor_inv * (input[j] + input[j+1] + input[j+2] + input[j+3] +
-          input[j+4]);
+                                  input[j+4]);
       }
       break;
-
+      
     case 6:
       for(i=0, j=0; i<i_max; i++, j+=factor)
       {
         output[i] = factor_inv * (input[j] + input[j+1] + input[j+2] + input[j+3] +
-          input[j+4] + input[j+5]);
+                                  input[j+4] + input[j+5]);
       }
       break;
-
+      
     case 7:
       for(i=0, j=0; i<i_max; i++, j+=factor)
       {
         output[i] = factor_inv * (input[j] + input[j+1] + input[j+2] + input[j+3] +
-          input[j+4] + input[j+5] + input[j+6]);
+                                  input[j+4] + input[j+5] + input[j+6]);
       }
       break;
-
+      
     case 8:
       for(i=0, j=0; i<i_max; i++, j+=factor)
       {
         output[i] = factor_inv * (input[j] + input[j+1] + input[j+2] + input[j+3] +
-          input[j+4] + input[j+5] + input[j+6] + input[j+7]);
+                                  input[j+4] + input[j+5] + input[j+6] + input[j+7]);
       }
       break;
-
+      
     default:
       for(i=0, j=0; i<i_max; i++, j+=factor)
       {
@@ -124,96 +124,96 @@ void rta_downsample_int_mean(rta_real_t * output,
         output[i] *= factor_inv;
       }
   }
-
+  
   return;
 }
 
 /* contract: factor > 0; */
 /*           o_size >= i_size / factor */
 void rta_downsample_int_mean_stride(
-  rta_real_t * output, const int o_stride,
-  const rta_real_t * input, const int i_stride,
-  const unsigned int i_size,
-  const unsigned int factor)
+                                    rta_real_t * output, const int o_stride,
+                                    const rta_real_t * input, const int i_stride,
+                                    const unsigned int i_size,
+                                    const unsigned int factor)
 {
   const rta_real_t factor_inv = 1. / factor;
   int o,i;
   const int o_max = (i_size / factor) * o_stride;
   const int i_incr = factor * i_stride;
-
+  
   
   switch(factor)
   {
-
-   case 1:
+      
+    case 1:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = input[i];
       }
       break;
-
-   case 2:
+      
+    case 2:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv * (input[i] + input[i+i_stride]);
       }
       break;
-
-   case 3:
+      
+    case 3:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv *
-          (input[i] + input[i+i_stride] + input[i+2*i_stride]);
+        (input[i] + input[i+i_stride] + input[i+2*i_stride]);
       }
       break;
-
-   case 4:
+      
+    case 4:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv *
-          (input[i] + input[i+i_stride] + input[i+2*i_stride] + 
-           input[i+3*i_stride]);
+        (input[i] + input[i+i_stride] + input[i+2*i_stride] +
+         input[i+3*i_stride]);
       }
       break;
-
-   case 5:
+      
+    case 5:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv *
-          (input[i] + input[i+i_stride] + input[i+2*i_stride] + 
-           input[i+3*i_stride] + input[i+4*i_stride]);
+        (input[i] + input[i+i_stride] + input[i+2*i_stride] +
+         input[i+3*i_stride] + input[i+4*i_stride]);
       }
       break;
-
-   case 6:
+      
+    case 6:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv *
-          (input[i] + input[i+i_stride] + input[i+2*i_stride] + 
-           input[i+3*i_stride] + input[i+4*i_stride] + input[i+5*i_stride]);
+        (input[i] + input[i+i_stride] + input[i+2*i_stride] +
+         input[i+3*i_stride] + input[i+4*i_stride] + input[i+5*i_stride]);
       }
       break;
-
-   case 7:
+      
+    case 7:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv *
-          (input[i] + input[i+i_stride] + input[i+2*i_stride] + 
-           input[i+3*i_stride] + input[i+4*i_stride] + input[i+5*i_stride] +
-           input[i+6*i_stride]);
+        (input[i] + input[i+i_stride] + input[i+2*i_stride] +
+         input[i+3*i_stride] + input[i+4*i_stride] + input[i+5*i_stride] +
+         input[i+6*i_stride]);
       }
       break;
-
-   case 8:
+      
+    case 8:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
         output[o] = factor_inv *
-          (input[i] + input[i+i_stride] + input[i+2*i_stride] + 
-           input[i+3*i_stride] + input[i+4*i_stride] + input[i+5*i_stride] +
-           input[i+6*i_stride] + input[i+7*i_stride]);
+        (input[i] + input[i+i_stride] + input[i+2*i_stride] +
+         input[i+3*i_stride] + input[i+4*i_stride] + input[i+5*i_stride] +
+         input[i+6*i_stride] + input[i+7*i_stride]);
       }
       break;
-
+      
     default:
       for(o=0, i=0; o<o_max; o+=o_stride, i+=i_incr)
       {
@@ -226,7 +226,7 @@ void rta_downsample_int_mean_stride(
         output[o] *= factor_inv;
       }
   }
-
+  
   return;
 }
 
@@ -244,17 +244,17 @@ void rta_downsample_int_remove(rta_real_t * output,
   {
     output[i] = input[j];
   }
-
+  
   return;
 }
 
 /* contract: factor > 0; */
 /*           o_size >= i_size / factor */
 void rta_downsample_int_remove_stride(
-  rta_real_t * output, const int o_stride,
-  const rta_real_t * input, const int i_stride,
-  const unsigned int i_size,
-  const unsigned int factor)
+                                      rta_real_t * output, const int o_stride,
+                                      const rta_real_t * input, const int i_stride,
+                                      const unsigned int i_size,
+                                      const unsigned int factor)
 {
   int o,i;
   const int o_max = (i_size / factor) * o_stride;
@@ -264,17 +264,17 @@ void rta_downsample_int_remove_stride(
   {
     output[o] = input[i];
   }
-
+  
   return;
 }
 
 
 
 int rta_resample_cubic (rta_real_t * out_values,
-			const rta_real_t * in_values,
-			const unsigned int i_size,
-			const unsigned int i_channels,
-			const double factor)
+                        const rta_real_t * in_values,
+                        const unsigned int i_size,
+                        const unsigned int i_channels,
+                        const double factor)
 {
   if (factor == 1.0)
   { /* copy through */
@@ -284,7 +284,7 @@ int rta_resample_cubic (rta_real_t * out_values,
   {
     int m = i_size;
     int n = i_channels;
-	
+    
     /* limit resampling range here? */
     if (m > 3)
     {
@@ -295,54 +295,44 @@ int rta_resample_cubic (rta_real_t * out_values,
       rta_idefix_t idefix;
       rta_idefix_t incr;
       int i, j;
-	  
+      
       rta_idefix_set_float(&incr, factor);
-	  
+
       for (j = 0; j < n; j++)
       {
-	rta_idefix_set_zero(&idefix);
-		
-	/* copy first points without interpolation */
-	for (i = j; i < out_head_m * n; i += n)
-	{
-	  int   onset = rta_idefix_get_index(idefix);
-	  float frac  = rta_idefix_get_frac(idefix);
-	  float left  = in_values[j + onset * n];
-	  float right = in_values[j + onset * n + n];
-
-	  //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
-	  out_values[i] = left + (right - left) * frac;
-	  rta_idefix_incr(&idefix, incr);
-	}
-		
-	for (; i < out_tailm2_m * n; i += n)
-	{
-	  rta_cubic_idefix_interpolate_stride(in_values + j, idefix, n, out_values + i);
-	  rta_idefix_incr(&idefix, incr);
-	}
-		
-	/*
-	  for(; i<out_tailm1_m*n; i+=n)
-	  {
-	  rta_cubic_coefs_t *ft = rta_cubic_table + rta_cubic_get_table_index_from_idefix(idefix);
-	  int onset = rta_idefix_get_index(idefix);
-
-	  out_values[i] = rta_cubic_calc_stride_tailm2(in_values + j + onset * n, ft, n);
-	  rta_idefix_incr(&idefix, incr);
-	  }
-	*/
-	
-	for (; i < out_m * n; i += n)
-	{
-	  int   onset = rta_idefix_get_index(idefix);
-	  float frac  = rta_idefix_get_frac(idefix);
-	  float left  = in_values[j + onset * n];
-	  float right = in_values[j + onset * n + n];
-	  
-	  //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
-	  out_values[i] = left + (right - left) * frac;
-	  rta_idefix_incr(&idefix, incr);
-	}
+        rta_idefix_set_zero(&idefix);
+        
+        /* copy first points without interpolation */
+        for (i = j; i < out_head_m * n; i += n)
+        {
+          int   onset = rta_idefix_get_index(idefix);
+          float frac  = rta_idefix_get_frac(idefix);
+          float left  = in_values[j + onset * n];
+          float right = in_values[j + onset * n + n];
+          
+          //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
+          out_values[i] = left + (right - left) * frac;
+          
+          rta_idefix_incr(&idefix, incr);
+        }
+        
+        for (; i < out_tailm2_m * n; i += n)
+        {
+          rta_cubic_idefix_interpolate_stride(in_values + j, idefix, n, out_values + i);
+          rta_idefix_incr(&idefix, incr);
+        }
+        
+        for (; i < out_m * n; i += n)
+        {
+          int   onset = rta_idefix_get_index(idefix);
+          float frac  = rta_idefix_get_frac(idefix);
+          float left  = in_values[j + onset * n];
+          float right = in_values[j + onset * n + n];
+          
+          //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
+          out_values[i] = left + (right - left) * frac;
+          rta_idefix_incr(&idefix, incr);
+        }
       }
     }
     else
@@ -350,11 +340,11 @@ int rta_resample_cubic (rta_real_t * out_values,
   }
   else
     return 0;	// can't run in-place
-
+  
   return 1;
 }
 
-  
+
 /** EMACS **
  * Local variables:
  * mode: c

@@ -40,7 +40,8 @@
 #include "rta_cubic.h"
 
 static rta_cubic_coefs_t _rta_cubic_table[RTA_CUBIC_TABLE_SIZE];
-rta_cubic_coefs_t *rta_cubic_table = _rta_cubic_table;
+static rta_cubic_coefs_t *rta_cubic_table = _rta_cubic_table;
+static int rta_cubic_table_inited = 0;
 
 void rta_cubic_table_init ()
 {
@@ -57,4 +58,14 @@ void rta_cubic_table_init ()
       p->p2 = -0.1666667 * (1 + f) * f * (1 - f);
       p++;
   }
+}
+
+rta_cubic_coefs_t * rta_cubic_get_table()
+{
+  if(rta_cubic_table_inited == 0)
+  {
+    rta_cubic_table_init();
+    rta_cubic_table_inited = 1;
+  }
+  return rta_cubic_table;
 }
