@@ -149,7 +149,7 @@ void rta_kdtree_info_display (rta_kdtree_t* t)
   rta_post("mean vector   = %s\n", rta_kdtree_mmodestr[t->mmode]);
 }
 
-void kdtree_raw_display (rta_kdtree_t* t)
+void rta_kdtree_raw_display (rta_kdtree_t* t)
 {
   int i, k;
 

@@ -261,7 +261,7 @@ void rta_kdtree_info_display (rta_kdtree_t* t);
 
 /** print tree raw unsorted data to console */
 void rta_kdtree_raw_display  (rta_kdtree_t* t);
-
+  
 /** print tree data to console
     \p print_data = 1 or 2 controls verbosity */
 void rta_kdtree_data_display (rta_kdtree_t* t, int print_data);
