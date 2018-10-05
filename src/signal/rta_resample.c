@@ -312,7 +312,6 @@ int rta_resample_cubic (rta_real_t * out_values,
           
           //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
           out_values[i] = left + (right - left) * frac;
-          
           rta_idefix_incr(&idefix, incr);
         }
         
