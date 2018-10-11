@@ -273,17 +273,22 @@ void rta_downsample_int_remove_stride(
 int rta_resample_cubic (rta_real_t * out_values,
                         const rta_real_t * in_values,
                         const unsigned int i_size,
+                        const unsigned int out_max_size,
                         const unsigned int i_channels,
                         const double factor)
 {
+  int retValue = 0;
+  
   if (factor == 1.0)
   { /* copy through */
     memcpy(out_values, in_values, i_size * i_channels * sizeof(rta_real_t));
+    retValue = i_size;
   }
   else if (in_values != out_values)
   {
     int m = i_size;
     int n = i_channels;
+    int maxOut = out_max_size;
     
     /* limit resampling range here? */
     if (m > 3)
@@ -295,6 +300,8 @@ int rta_resample_cubic (rta_real_t * out_values,
       rta_idefix_t idefix;
       rta_idefix_t incr;
       int i, j;
+      
+      if(out_m > maxOut) out_m = maxOut;
       
       rta_idefix_set_float(&incr, factor);
 
@@ -333,14 +340,11 @@ int rta_resample_cubic (rta_real_t * out_values,
           rta_idefix_incr(&idefix, incr);
         }
       }
+      retValue = out_m;
     }
-    else
-      return 0;
   }
-  else
-    return 0;	// can't run in-place
   
-  return 1;
+  return retValue;
 }
 
 
