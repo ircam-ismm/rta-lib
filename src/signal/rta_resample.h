@@ -131,12 +131,13 @@ rta_downsample_int_remove_stride(
  * @param i_size is 'input' number of sample frames
  * @param i_channels is 'input' number of interleaved channels
  * @param factor must be > 0
- * @return 1 if successful, 0 otherwise (in-place or input too short)
+ * @return number of resampled frames if successful, 0 otherwise (in-place or input too short)
  */
 int
 rta_resample_cubic (rta_real_t	      *output,
 		    const rta_real_t  *input,
 		    const unsigned int i_size,
+        const unsigned int out_max_size,
 		    const unsigned int i_channels,
 		    const double       factor);
 
