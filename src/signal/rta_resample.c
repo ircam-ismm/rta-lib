@@ -301,7 +301,8 @@ int rta_resample_cubic (rta_real_t * out_values,
       rta_idefix_t incr;
       int i, j;
       
-      if(out_m > maxOut) out_m = maxOut;
+      if(out_m > maxOut)
+        out_m = maxOut;
       
       rta_idefix_set_float(&incr, factor);
 

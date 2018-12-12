@@ -81,8 +81,9 @@ typedef struct
   float p2;
 } rta_cubic_coefs_t;
 
-void rta_cubic_table_init();
-rta_cubic_coefs_t * rta_cubic_get_table();
+void rta_cubic_table_init(void);
+
+rta_cubic_coefs_t * rta_cubic_get_table(void);
 
 #define rta_cubic_get_coefs(f) \
   (rta_cubic_table + rta_cubic_get_table_index_from_frac(f))
