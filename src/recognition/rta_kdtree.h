@@ -128,7 +128,7 @@ typedef struct _kdtree_stack_struct
  */
 typedef enum
 {
-  dmode_orthogonal,   /**< optimised othogonal to axes */
+  dmode_orthogonal,   /**< optimised orthogonal to axes */
   dmode_hyperplane,   /**< hyperplane orthogonal to axes */
   dmode_pca         /**< hyperplane along principal components */
 } rta_kdtree_dmode_t;
@@ -152,7 +152,7 @@ typedef struct _kdtree_node_struct
   int startind; /**< index of first vector in node in dataindex array */
   int endind;   /**< index of last vector in node in dataindex array */
   int size;   /**< number of vectors in node */
-  int splitdim; /**< for dmode othogonal, dimension along which node is split*/
+  int splitdim; /**< for dmode orthogonal, dimension along which node is split*/
 
   rta_real_t  splitnorm;  /**< spatial length of split vector */
 } rta_kdtree_node_t;
