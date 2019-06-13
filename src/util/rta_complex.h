@@ -46,13 +46,13 @@
 
 #include "rta.h"
 
-/** default complex precision is the same as real precision */
+/* default complex precision is the same as real precision */
 #ifndef RTA_COMPLEX_TYPE
 # define RTA_COMPLEX_TYPE RTA_REAL_TYPE
 #endif
 
 #ifdef WIN32
-/* Windows */
+/* Windows ***************************************************/
 
 # if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 #   undef rta_complex_t
@@ -176,13 +176,13 @@ static inline void rta_set_complex_real(rta_complex_t a, float b)
 
 /* end WIN32 */
 #else 
-/* Apple or Linux */
+/* Apple or Linux ***************************************************/
 
 # ifndef __cplusplus
-/* compiling under C */
+/*  compiling under C */
 #   include <complex.h>
 # else
-/* compiling under C++ */
+/*  compiling under C++ */
 #   if defined(__APPLE__) || defined(__GNUC__)
 #     include <sys/cdefs.h>
 #     undef complex
@@ -280,19 +280,28 @@ extern float crealf(float complex);
 extern double creal(double complex);
 extern long double creall(long double complex);
 
-#   endif /* __APPLE__ */
+#   else /* __APPLE__ or __GNUC__ */
+#     error "unknown C++ compiler"
+#   endif /* __APPLE__ or __GNUC__ */
 # endif /* __cplusplus */
+
+/* complex rta_real_t RTA_MAKE_COMPLEX (rta_real_t real, rta_real_t imag)
+   macro to produce a literal complex number from real and imaginary numbers 
+   (will be used with float, double, long double arguments) 
+*/
+# if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
+#   define RTA_MAKE_COMPLEX(real, imag) ((rta_complex_t) {real, imag})
+# else // old gcc way of creating a complex number
+#   define RTA_MAKE_COMPLEX(real, imag) (real + imag * I)
+# endif
+
 
 # if (RTA_COMPLEX_TYPE == RTA_FLOAT_TYPE)
 #   undef rta_complex_t
 #   define rta_complex_t float complex
 static inline rta_complex_t rta_make_complex(float real, float imag)
 {
-#   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
-  return (rta_complex_t) {real, imag};
-#   else // old gcc way of creating a complex number
-  return (real + imag * I);
-#   endif
+  return RTA_MAKE_COMPLEX(real, imag);
 }
 
 #   define rta_cabs cabsf
@@ -325,11 +334,7 @@ static inline rta_complex_t rta_make_complex(float real, float imag)
 #   define rta_complex_t double complex
 static inline rta_complex_t rta_make_complex(double real, double imag)
 {
-#   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
-    return (rta_complex_t) {real, imag};
-#   else // old gcc way of creating a complex number
-  return real + imag * I;
-#   endif
+  return RTA_MAKE_COMPLEX(real, imag);
 }
 
 #   define rta_cabs cabs
@@ -362,11 +367,7 @@ static inline rta_complex_t rta_make_complex(double real, double imag)
 #   define rta_complex_t long double complex
 static inline rta_complex_t rta_make_complex(long double real, long double imag)
 {
-#   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
-    return (rta_complex_t) {real, imag};
-#   else // old gcc way of creating a complex number
-  return real + imag * I;
-#   endif
+  return RTA_MAKE_COMPLEX(real, imag);
 }
 
 #   define rta_cabs cabsl
