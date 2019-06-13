@@ -183,7 +183,7 @@ static inline void rta_set_complex_real(rta_complex_t a, float b)
 #   include <complex.h>
 # else
 /* compiling under C++ */
-#   ifdef __APPLE__
+#   if defined(__APPLE__) || defined(__GNUC__)
 #     include <sys/cdefs.h>
 #     undef complex
 #     define complex _Complex
@@ -290,8 +290,6 @@ static inline rta_complex_t rta_make_complex(float real, float imag)
 {
 #   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
   return (rta_complex_t) {real, imag};
-#   elif (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))  &&  !defined(__INTEL_COMPILER)
-  return __builtin_complex(real, imag)
 #   else // old gcc way of creating a complex number
   return (real + imag * I);
 #   endif
@@ -329,8 +327,6 @@ static inline rta_complex_t rta_make_complex(double real, double imag)
 {
 #   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
     return (rta_complex_t) {real, imag};
-#   elif (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))  &&  !defined(__INTEL_COMPILER)
-  return __builtin_complex(real, imag)
 #   else // old gcc way of creating a complex number
   return real + imag * I;
 #   endif
@@ -368,8 +364,6 @@ static inline rta_complex_t rta_make_complex(long double real, long double imag)
 {
 #   if (__STDC_VERSION__ > 199901L || __DARWIN_C_LEVEL >= __DARWIN_C_FULL)  &&  defined(__clang__)
     return (rta_complex_t) {real, imag};
-#   elif (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))  &&  !defined(__INTEL_COMPILER)
-  return __builtin_complex(real, imag)
 #   else // old gcc way of creating a complex number
   return real + imag * I;
 #   endif
