@@ -392,13 +392,13 @@ void rta_kdtree_delete (rta_kdtree_t* t, int index, int num);
  * @param stride stride in vector \p x
  * @param k max number of neighbours to find (actual number can be lower)
  * @param r max squared distance of neighbours to find (\p r = 0 means no limit)
- * @param use_sigma use weights
+ * @param use_sigma use weights set by #rta_kdtree_set_sigma
  * @param y output vector (size == \p r <= \p k) of (base, element) indices into original data kdtree_t#data
  * @param d output vector (size == \p r <= \p k) of squared distances to data vectors
- * @return \p r = the number of actual neighbours found, 0 <= \p r <= \p k
+ * @return \p n = the number of actual neighbours found, 0 <= \p n <= \p k
  */
 int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* x, int stride, int k, const rta_real_t r, int use_sigma,
-               /*out*/ rta_kdtree_object_t *y, rta_real_t *d);
+                           /*out*/ rta_kdtree_object_t *y, rta_real_t *d);
 
 /**
  * Weighted squared vector distance (v1 - v2)^2

@@ -1,6 +1,6 @@
 /**
  * @file rta_kdtreebuild.c
- * @author Riccardo Borghesi
+ * @author Diemo Schwarz
  *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
@@ -566,4 +566,3 @@ void rta_kdtree_build (rta_kdtree_t* t, int use_sigma)
     }   /* end for nodes n */
   }
 }
-

@@ -1,6 +1,6 @@
 /**
  * @file rta_kdtree.c
- * @author Riccardo Borghesi
+ * @author Diemo Schwarz
 
  * @brief  k-dimensional search tree
  *

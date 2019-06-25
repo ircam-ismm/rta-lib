@@ -1,6 +1,6 @@
 /**
  * @file rta_kdtreesearch.c
- * @author Norbert Schnell
+ * @author Diemo Schwarz
  *
  * @copyright
  * Copyright (C) 2008 - 2009 by IRCAM-Centre Georges Pompidou, Paris, France.
@@ -212,9 +212,18 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
 }
 
 
-/* out:    indx[K] = index of the Kth nearest neighbour
-     dist[K] = distance of the Kth nearest neighbour
-   return: actual number of found neighbours */
+/* Perform search in kd-tree structure t
+   params:
+     vector of ndim elements to search nearest neighbours of
+     stride in input vector
+     k max number of neighbours to find (actual number can be lower)
+     r max squared distance of neighbours to find (r = 0 means no limit)
+     use_sigma flag to use weights
+   out:
+     indx[K] = (base, element) index of the Kth nearest neighbour
+     dist[K] = squared distance of the Kth nearest neighbour
+     return: actual number of found neighbours 
+*/
 int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* vector, int stride,
                            int k, const rta_real_t r, int use_sigma,
                  /* out */ rta_kdtree_object_t *indx, rta_real_t *dist)
