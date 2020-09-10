@@ -154,6 +154,8 @@ static int check_node (rta_kdtree_t *t, int node, int dim)
   {
     rta_real_t x = rta_kdtree_get_element(t, i, dim);
 
+    if (!isfinite(x))
+	return 0;	// element is NaN
     if (x < min)
       min = x;
     if (x > max)
