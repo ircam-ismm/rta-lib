@@ -38,6 +38,9 @@
 #ifndef _RTA_CONFIGURATIONx_H_
 #define _RTA_CONFIGURATIONx_H_ 1
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define rta_post printf
 
 /** fts memory allocation */
