@@ -256,7 +256,6 @@ int rta_kdtree_set_data (rta_kdtree_t *self, int nblocks, rta_real_t **data,
   self->nblocks   = nblocks;
   self->ndata     = m;
   self->ndim      = n;
-
   self->ndatatot  = 0;
 
   for (i = 0; i < nblocks; i++)

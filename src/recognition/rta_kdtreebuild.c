@@ -137,7 +137,7 @@ static void compute_middle (rta_kdtree_t *t, int node, int dim)
 #endif
 }
 
-/* return 1 if node is well-behaved, 0 if node is degenerate */
+/* return 1 if node is well-behaved for given dimension (range > 0, no inf/nan), 0 if node is degenerate */
 static int check_node (rta_kdtree_t *t, int node, int dim)
 {
   int        nstart   = t->nodes[node].startind;
@@ -155,7 +155,7 @@ static int check_node (rta_kdtree_t *t, int node, int dim)
     rta_real_t x = rta_kdtree_get_element(t, i, dim);
 
     if (!isfinite(x))
-	return 0;	// element is NaN
+	return 0;	// element is NaN or Inf
     if (x < min)
       min = x;
     if (x > max)
@@ -281,14 +281,14 @@ static rta_real_t distV2orthoH (const rta_real_t* vect,
                                 rta_real_t* mean, int dim,
                                 rta_bpf_t  *distfunc[])
 {
-  return RTA_DMAP(vect[dim], mean[dim], distfunc[dim]);
+  return RTA_DMAP(vect[dim], mean[dim], distfunc[dim]); // distfunc(x - y)
 }
 
 static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride,
                                        rta_real_t* mean, int dim,
                                        rta_bpf_t  *distfunc[])
 {
-  return RTA_DMAP(vect[dim * stride], mean[dim], distfunc[dim]);
+  return RTA_DMAP(vect[dim * stride], mean[dim], distfunc[dim]); // distfunc(x - y)
 }
 
 static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, rta_real_t* mean,
@@ -300,7 +300,7 @@ static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, rta
     sigma[dim] > 0  ?  (vect[dim * stride] - mean[dim]) / sigma[dim]  :  0);
 #endif
   return sigma[dim] > 0
-       ? RTA_DMAPW(vect[dim * stride], mean[dim], sigma[dim], distfunc[dim])
+       ? RTA_DMAPW(vect[dim * stride], mean[dim], sigma[dim], distfunc[dim]) // distfunc((x - y) / sigma)
        : 0;
 }
 
