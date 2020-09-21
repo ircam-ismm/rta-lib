@@ -4,6 +4,14 @@
  * @ingroup rta_signal
  *
  * @brief Cubic interpolation
+ * 
+ * N.B.1: Data to be interpolated is assumed to be preceded by
+ * RTA_CUBIC_HEAD and followed by RTA_CUBIC_TAIL frames of
+ * read-accessible data.
+ *
+ * N.B.2: Before any cubic interpolation function can be used, the
+ * table of cubic interpolation coefficients must have been
+ * initialized by calling rta_cubic_table_init().
  *
  * @copyright
  * Copyright (C) 1994, 1995, 1998, 1999, 2007 by IRCAM-Centre Georges Pompidou, Paris, France.
@@ -81,9 +89,9 @@ typedef struct
   float p2;
 } rta_cubic_coefs_t;
 
+// static table, must be initialized by rta_cubic_table_init() before any calculation
+extern rta_cubic_coefs_t *rta_cubic_table;
 void rta_cubic_table_init(void);
-
-rta_cubic_coefs_t * rta_cubic_get_table(void);
 
 #define rta_cubic_get_coefs(f) \
   (rta_cubic_table + rta_cubic_get_table_index_from_frac(f))
@@ -125,22 +133,16 @@ rta_cubic_coefs_t * rta_cubic_get_table(void);
   ((x)[-(s)] * (p)->pm1 + (x)[0] * (p)->p0 + (xm2) * (p)->p1 + (xm1) * (p)->p2)
 
 #define rta_cubic_idefix_interpolate(p, i, y) \
-do { \
+  do { \
     rta_cubic_coefs_t *ft = rta_cubic_table + rta_cubic_get_table_index_from_idefix(i); \
       *(y) = rta_cubic_calc((p) + (i).index, ft); \
   } while(0)
 
-/*#define rta_cubic_idefix_interpolate_stride(p, i, s, y) \
+#define rta_cubic_idefix_interpolate_stride(p, i, s, y) \
   do { \
     rta_cubic_coefs_t *ft = rta_cubic_table + rta_cubic_get_table_index_from_idefix(i); \
       *(y) = rta_cubic_calc_stride((p) + (s) * (i).index, ft, (s)); \
   } while(0)
-*/
-#define rta_cubic_idefix_interpolate_stride(p, i, s, y) \
-do { \
-   rta_cubic_coefs_t *ft = rta_cubic_get_table() + rta_cubic_get_table_index_from_idefix(i); \
-   *(y) = rta_cubic_calc_stride((p) + (s) * (i).index, ft, (s)); \
-} while(0)
 
 #define rta_cubic_intphase_interpolate(p, i, y) \
   do { \

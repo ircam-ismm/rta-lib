@@ -126,6 +126,13 @@ rta_downsample_int_remove_stride(
  * Cubic resampling of interleaved 'input' to 'output' by a factor, out of
  * place.
  *
+ * @pre PRECONDITION: Data to be resampled is preceded by
+ * RTA_CUBIC_HEAD and followed by RTA_CUBIC_TAIL sample frames of
+ * read-accessible data, i.e. before the data pointed to by input,
+ * there must be RTA_CUBIC_HEAD * i_channels rta_real_t values, and
+ * after input + i_size * i_channels there must be RTA_CUBIC_TAIL *
+ * i_channels readable values.
+ *
  * @param output size must be >= i_size / 'factor'
  * @param input	 size 'i_size' * 'i_channels'
  * @param i_size is 'input' number of sample frames
@@ -137,7 +144,7 @@ int
 rta_resample_cubic (rta_real_t *output,
 		    const rta_real_t  *input,
 		    const unsigned int i_size,
-        const unsigned int out_max_size,
+		    const unsigned int out_max_size,
 		    const unsigned int i_channels,
 		    const double       factor);
 

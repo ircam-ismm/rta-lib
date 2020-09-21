@@ -269,7 +269,6 @@ void rta_downsample_int_remove_stride(
 }
 
 
-
 int rta_resample_cubic (rta_real_t * out_values,
                         const rta_real_t * in_values,
                         const unsigned int i_size,
@@ -278,6 +277,8 @@ int rta_resample_cubic (rta_real_t * out_values,
                         const double factor)
 {
   int retValue = 0;
+
+  rta_cubic_table_init(); // conditional initialization
   
   if (factor == 1.0)
   { /* copy through */
