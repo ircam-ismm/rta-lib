@@ -36,6 +36,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
+#include <string.h> // for memcpy
+#include <math.h> // for floor
+
 #include "rta_resample.h"
 #include "rta_util.h"	// for idefix
 
@@ -290,28 +294,30 @@ int rta_resample_cubic (rta_real_t * out_values,
     int m = i_size;
     int n = i_channels;
     int maxOut = out_max_size;
+    double inv = 1.0 / factor;
+    int out_m = (int) floor((double) (m - 1) * inv); // 
     
     /* limit resampling range here? */
-    if (m > 3)
+    if (m > 3  &&  out_m > 0)
     {
-      double inv = 1.0 / factor;
-      int out_m = (int) floor((double) (m - 1) * inv) + 1;
-      int out_head_m  = (int) ceil(inv);
+      int out_head_m  = (int) ceil(inv); 
       int out_tailm2_m = (int) floor((double) (m - 2) * inv);
       rta_idefix_t idefix;
       rta_idefix_t incr;
       int i, j;
+      assert(out_head_m >= RTA_CUBIC_HEAD);
       
       if(out_m > maxOut)
         out_m = maxOut;
-      
+      //TODO: out_tailm2_m should be clipped, too
+
       rta_idefix_set_float(&incr, factor);
 
       for (j = 0; j < n; j++)
-      {
+      { // for all columns/channels j
         rta_idefix_set_zero(&idefix);
         
-        /* copy first points without interpolation */
+        /* copy first points with linear interpolation */
         for (i = j; i < out_head_m * n; i += n)
         {
           int   onset = rta_idefix_get_index(idefix);
@@ -320,9 +326,10 @@ int rta_resample_cubic (rta_real_t * out_values,
           float right = in_values[j + onset * n + n];
           
           //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
-          out_values[i] = left + (right - left) * frac;
+          out_values[i] = left + (right - left) * frac; // linear interpolation
           rta_idefix_incr(&idefix, incr);
         }
+	assert(rta_idefix_get_index(idefix) >= RTA_CUBIC_HEAD); // cubic interpolation accesses input sample frame at onset - RTA_CUBIC_HEAD
         
         for (; i < out_tailm2_m * n; i += n)
         {
@@ -336,14 +343,16 @@ int rta_resample_cubic (rta_real_t * out_values,
           float frac  = rta_idefix_get_frac(idefix);
           float left  = in_values[j + onset * n];
           float right = in_values[j + onset * n + n];
-          
+          assert(onset < m - 1); // right value accesses input sample frame at onset + 1
+
           //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
           out_values[i] = left + (right - left) * frac;
           rta_idefix_incr(&idefix, incr);
         }
+	assert(i == out_m * n + j); // we have reached the end
       }
-      retValue = out_m;
     }
+    retValue = out_m;
   }
   
   return retValue;
