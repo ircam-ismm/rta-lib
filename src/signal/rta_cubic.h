@@ -7,7 +7,8 @@
  * 
  * N.B.1: Data to be interpolated is assumed to be preceded by
  * RTA_CUBIC_HEAD and followed by RTA_CUBIC_TAIL frames of
- * read-accessible data.
+ * read-accessible data, because each output sample is a weighted sum
+ * of the 4 input samples at i-1...i+2.
  *
  * N.B.2: Before any cubic interpolation function can be used, the
  * table of cubic interpolation coefficients must have been

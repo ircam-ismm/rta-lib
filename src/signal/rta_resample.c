@@ -293,23 +293,22 @@ int rta_resample_cubic (rta_real_t * out_values,
   {
     int m = i_size;
     int n = i_channels;
-    int maxOut = out_max_size;
     double inv = 1.0 / factor;
-    int out_m = (int) floor((double) (m - 1) * inv); // 
+    int maxOut       = out_max_size;
+    int out_m        = (int) floor((double) (m - 1) * inv) + 1;
+    int out_tailm2_m = (int) floor((double) (m - 2) * inv) + 1; //WAS: floor((double) (m - 2) * inv)
     
     /* limit resampling range here? */
     if (m > 3  &&  out_m > 0)
     {
-      int out_head_m  = (int) ceil(inv); 
-      int out_tailm2_m = (int) floor((double) (m - 2) * inv);
-      rta_idefix_t idefix;
-      rta_idefix_t incr;
-      int i, j;
-      assert(out_head_m >= RTA_CUBIC_HEAD);
+      rta_idefix_t idefix; // fractional input frame position
+      rta_idefix_t incr;   // fractional input frame increment
+      int i, j, onset;
       
       if(out_m > maxOut)
         out_m = maxOut;
-      //TODO: out_tailm2_m should be clipped, too
+      if(out_tailm2_m > maxOut)
+        out_tailm2_m = maxOut;
 
       rta_idefix_set_float(&incr, factor);
 
@@ -318,41 +317,44 @@ int rta_resample_cubic (rta_real_t * out_values,
         rta_idefix_set_zero(&idefix);
         
         /* copy first points with linear interpolation */
-        for (i = j; i < out_head_m * n; i += n)
+        for (i = j; (onset = rta_idefix_get_index(idefix)) < RTA_CUBIC_HEAD  &&  i < out_m * n; i += n)
         {
-          int   onset = rta_idefix_get_index(idefix);
           float frac  = rta_idefix_get_frac(idefix);
           float left  = in_values[j + onset * n];
           float right = in_values[j + onset * n + n];
           
-          //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
+          //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n); // cubic interpolation without accessing element at -n
           out_values[i] = left + (right - left) * frac; // linear interpolation
           rta_idefix_incr(&idefix, incr);
         }
-	assert(rta_idefix_get_index(idefix) >= RTA_CUBIC_HEAD); // cubic interpolation accesses input sample frame at onset - RTA_CUBIC_HEAD
-        
+	assert(onset >= RTA_CUBIC_HEAD  &&  (onset <= m - RTA_CUBIC_TAIL  ||  i >= out_tailm2_m * n)); // verify that input index has advanced, since cubic interpolation accesses input sample frame at idefix.index - RTA_CUBIC_HEAD
+		
         for (; i < out_tailm2_m * n; i += n)
         {
           rta_cubic_idefix_interpolate_stride(in_values + j, idefix, n, out_values + i);
           rta_idefix_incr(&idefix, incr);
         }
         
-        for (; i < out_m * n; i += n)
+        for (; (onset = rta_idefix_get_index(idefix)) < m - 1  &&  i < out_m * n; i += n)
         {
-          int   onset = rta_idefix_get_index(idefix);
           float frac  = rta_idefix_get_frac(idefix);
           float left  = in_values[j + onset * n];
           float right = in_values[j + onset * n + n];
-          assert(onset < m - 1); // right value accesses input sample frame at onset + 1
 
           //out_values[i] = rta_cubic_calc_stride_head(in_values[j + onset] * n, ft, n);
           out_values[i] = left + (right - left) * frac;
           rta_idefix_incr(&idefix, incr);
         }
-	assert(i == out_m * n + j); // we have reached the end
+	assert(((onset == m - 2  &&  rta_idefix_get_frac(idefix) > 0)  ||
+		(onset >= m - 1))  ||  factor > 2.); // we have considered all input samples (for sane factors only)
+
+        for (; i < out_m * n; i += n) // in case fractional input position idefix had a slight overshoot
+	  out_values[i] = in_values[j + onset * n]; // fill with last input sample
+	
+	assert(i == out_m * n + j); // we have reached the end of output (all samples filled)
       }
+      retValue = out_m;
     }
-    retValue = out_m;
   }
   
   return retValue;

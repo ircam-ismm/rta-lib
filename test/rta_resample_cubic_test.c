@@ -24,12 +24,12 @@ valgrind --error-limit=no ./rta_resample_cubic_test
 
 int main (int argc, char *argv[])
 {
-    for (int nsamples = 1; nsamples < 10000; nsamples *= 2)
+    for (int nsamples = -2; nsamples < 10000; nsamples += 1 + (nsamples * (nsamples > 4)))
     for (int nchannels = 1; nchannels < 8; nchannels ++)
     for (double factor = 0.05; factor <= 5; factor += 0.05)
     {
 	int inframes   = nsamples;
-	int outframes  = floor((double) (inframes - 1) * (1 / factor)); // shit! (inframes - 1) / factor can be rounded differently
+	int outframes  = floor((double) (inframes - 1) * (1 / factor)) + 1; // shit! (inframes - 1) / factor can be rounded differently
 	int insize     = inframes * nchannels;
 	int outsize    = outframes * nchannels;
 	float *indata  = malloc(insize  * sizeof(float));
@@ -39,14 +39,14 @@ int main (int argc, char *argv[])
 	for (int i = 0; i < insize; i++)
 	    indata[i] = random();
 	
-	printf("--- channels %d: factor %4g  inframes %d  outframes %d...", nchannels, factor, inframes, outframes);
-	int resize = rta_resample_cubic(outdata, indata, inframes, outframes + 1, nchannels, factor);
-	printf("real %d\n", resize);
+	printf("--- channels %d: factor %-4g  inframes %4d  outframes %4d... ", nchannels, factor, inframes, outframes);
+	int resize = rta_resample_cubic(outdata, indata, inframes, outframes + 10, nchannels, factor);
+	printf("real %4d\n", resize);
 
 	free(indata);
 	free(outdata);
 	
-	if (inframes > 3)
+	if (resize > 0)
 	    assert(resize == outframes);
     }
 }
