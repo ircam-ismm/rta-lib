@@ -82,7 +82,7 @@ typedef struct rta_idefix
 #define rta_idefix_get_float(x) ((x).index + ((double)((x).frac) / RTA_IDEFIX_FRAC_RANGE))
 
 #define rta_idefix_set_int(x, i) ((x)->index = (i), (x)->frac = 0)
-#define rta_idefix_set_float(x, f) ((x)->index = floor(f), (x)->frac = ((double)(f) - (x)->index) * RTA_IDEFIX_FRAC_RANGE)
+#define rta_idefix_set_float(x, f) ((x)->index = floor(f), (x)->frac = round(((double)(f) - (x)->index) * RTA_IDEFIX_FRAC_RANGE))
 
 #define rta_idefix_set_zero(x) ((x)->index = 0, (x)->frac = 0)
 #define rta_idefix_set_max(x) ((x)->index = RTA_IDEFIX_INDEX_MAX, (x)->frac = RTA_IDEFIX_FRAC_MAX)
