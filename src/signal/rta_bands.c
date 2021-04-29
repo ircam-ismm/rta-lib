@@ -302,6 +302,50 @@ int rta_spectrum_to_mel_bands_weights_stride(
 }
 
 
+int rta_spectrum_to_bands_weights (
+  /*out*/ rta_real_t *weights_matrix, unsigned int *weights_bounds,
+  /*in*/ float *band_limits, /* filters_number + 1 limits in Hz*/
+  const unsigned int spectrum_size,
+  const rta_real_t sample_rate, const unsigned int filters_number)
+{
+  unsigned int i,j;	 /* counters */
+  unsigned int min_weight_index_defined;
+  int ret = 0;
+
+  for (i = 0; i < filters_number; i++)
+  { /* for each band */
+    /* calculate band limits in bins */
+    weights_bounds[i*2]   = band_limits[i*2]   / sample_rate * spectrum_size;
+    weights_bounds[i*2+1] = band_limits[i*2+1] / sample_rate * spectrum_size;
+
+    printf("rta_spectrum_to_bands_weights %d: %f - %f Hz -> bin %d - %d\n", i, band_limits[i*2], band_limits[i*2+1], weights_bounds[i*2], weights_bounds[i*2+1]);
+    
+    /* Do not process the last spectrum component as it will be zeroed */
+    /* later to avoid aliasing */
+    for (j = 0; j < weights_bounds[i*2]; j++)
+      weights_matrix[i*spectrum_size+j] = 0;
+    
+    /* fill within band limits todo: normalize? split limit bin between bands? */
+    for (; j < weights_bounds[i*2 + 1]; j++)
+      weights_matrix[i*spectrum_size+j] = 1;
+
+    for (; j < spectrum_size-1; j++)
+	weights_matrix[i*spectrum_size+j] = 0;
+  }
+
+  /* Make sure that 2nd half of FFT is zero */
+  /* (We process only the middle, not the upper part) */
+  /* Seems like a good idea to avoid aliasing */
+  j = spectrum_size-1;
+  for(i=0; i<filters_number; i++)
+  {
+    weights_matrix[i*spectrum_size+j] = 0.;
+  }
+
+  return 1;
+}
+
+
 /* Integrate FFT bins into bands, in abs domain */
 void rta_spectrum_to_bands_abs(
   rta_real_t * bands, const rta_real_t * spectrum,
