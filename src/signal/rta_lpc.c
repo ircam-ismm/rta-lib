@@ -87,7 +87,7 @@ void rta_levinson(
   rta_real_t * levinson, const unsigned int l_size, rta_real_t * error,
   const rta_real_t * autocorrelation)
 {
-  int i,j,k;
+  unsigned int i,j,k;
   
   levinson[0] = 1.;
   if(rta_abs(autocorrelation[0]) <= RTA_REAL_MIN)
@@ -155,7 +155,7 @@ void rta_levinson_stride(rta_real_t * levinson, const int l_stride,
   levinson[0] = 1.;
   if(rta_abs(autocorrelation[0]) <= RTA_REAL_MIN)
   {
-    for(i=l_stride; i<l_size*l_stride; i+=l_stride)
+    for(i=l_stride; i<(int)l_size*l_stride; i+=l_stride)
     {
       levinson[i] = 0.;
     }
@@ -171,7 +171,7 @@ void rta_levinson_stride(rta_real_t * levinson, const int l_stride,
     lev1[0] = -autocorrelation[a_stride] / autocorrelation[0];
     *error = autocorrelation[0] + lev1[0] * autocorrelation[a_stride];
 
-    for(i=1; i<l_size-1; i++)
+    for(unsigned int i=1; i<l_size-1; i++)
     {
       /* No more error (constant signal?), just fill with zeroes */
       if(rta_abs(*error) <= RTA_REAL_MIN)
@@ -184,7 +184,7 @@ void rta_levinson_stride(rta_real_t * levinson, const int l_stride,
       }
 
       tmp_sum = autocorrelation[(i+1)*a_stride];
-      for(j=0; j<i; j++)
+      for(unsigned int j=0; j<i; j++)
       {
         tmp_sum += lev1[j*l_stride] * autocorrelation[(i-j)*a_stride];		
       }

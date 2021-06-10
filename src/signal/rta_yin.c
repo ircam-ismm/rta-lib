@@ -232,7 +232,8 @@ rta_real_t rta_yin_stride(
   rta_real_t xm;              /* (current + ac_size) sample */
   rta_real_t energy;
   rta_real_t diff_left, diff, diff_right, sum;
-  int i,is;          /* input sample index, and with stride */
+  unsigned int i;          /* input sample index */
+  int is;                  /* input sample index with stride */
   int ac;            /* autocorrelation index */
   const unsigned int window_size = input_size - ac_size;
   const unsigned int window_size_stride = window_size * i_stride;
@@ -263,9 +264,9 @@ rta_real_t rta_yin_stride(
   sum = diff;
 
   /* minimum difference search */
-  for(i = 2, is = 2*i_stride, ac = 3*ac_stride;
-      i < ac_size - 1 && n_mins < max_mins;
-      i++, is += i_stride, ac += ac_stride)
+  for (i = 2, is = 2 * i_stride, ac = 3 * ac_stride;
+       i < ac_size - 1  &&  n_mins < max_mins;
+       i++, is += i_stride, ac += ac_stride)
   {
     x = input[is];
     xm = input[is + window_size_stride];

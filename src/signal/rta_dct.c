@@ -47,7 +47,7 @@ int rta_dct_weights(rta_real_t * weights_matrix,
                     const unsigned int dct_order,
                     const rta_dct_t dct_t)
 {
-  int i,j;
+  unsigned int i,j;
   int ret = 1; /* return value */
   
   /* This is the orthogonal one, the one you want */
@@ -143,7 +143,7 @@ int rta_dct_weights_stride(rta_real_t * weights_matrix, const int w_stride,
                            const unsigned int dct_order,
                            const rta_dct_t dct_t)
 {
-  int i,j;
+  unsigned int i,j;
   int ret = 1; /* return value */
   
   /* This is the orthogonal one, the one you want */

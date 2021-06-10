@@ -737,7 +737,7 @@ void rta_biquad_df1_vector_stride(
   int ix, iy;
   
   for(ix = 0, iy = 0;
-      ix < x_size*x_stride;
+      ix < (int) x_size*x_stride;
       ix += x_stride, iy += y_stride)
   {
     y[iy] = rta_biquad_df1_stride(
@@ -757,7 +757,7 @@ void rta_biquad_df2t_vector_stride(
   int ix, iy;
   
   for(ix = 0, iy = 0;
-      ix < x_size*x_stride;
+      ix < (int) x_size*x_stride;
       ix += x_stride, iy += y_stride)
   {
     y[iy] = rta_biquad_df2t_stride(
