@@ -318,7 +318,7 @@ int rta_spectrum_to_bands_weights (
     weights_bounds[i*2]   = band_limits[i*2]   / sample_rate * spectrum_size;
     weights_bounds[i*2+1] = band_limits[i*2+1] / sample_rate * spectrum_size;
 
-    printf("rta_spectrum_to_bands_weights %d: %f - %f Hz -> bin %d - %d\n", i, band_limits[i*2], band_limits[i*2+1], weights_bounds[i*2], weights_bounds[i*2+1]);
+    //printf("rta_spectrum_to_bands_weights %d: %f - %f Hz -> bin %d - %d\n", i, band_limits[i*2], band_limits[i*2+1], weights_bounds[i*2], weights_bounds[i*2+1]);
     
     /* Do not process the last spectrum component as it will be zeroed */
     /* later to avoid aliasing */
