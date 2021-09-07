@@ -8,6 +8,7 @@
 #ifndef _RTA_CONFIGURATIONx_H_
 #define _RTA_CONFIGURATIONx_H_ 1
 
+#include "ext.h"
 #define rta_post post
 
 /** fts memory allocation */
