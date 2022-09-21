@@ -61,11 +61,17 @@ TEST_CASE("rta_histogram")
 
     rta_histogram_stride(&hist, data, 1, 0, output, 1, binout, 1);
 
-    // check that lo/hi is not writte, output and bins are cleared
+    // check that lo/hi is not written, output and bins are cleared
     CHECK(hist.lo == 0);
     CHECK(hist.hi == 0);
+
     CHECK(output[0] == 0);
+    CHECK(output[1] == 0);
+    CHECK(output[2] == 0);
+
     CHECK(binout[0] == 0);
+    CHECK(binout[1] == 0);
+    CHECK(binout[2] == 0);
   }
 }
 
