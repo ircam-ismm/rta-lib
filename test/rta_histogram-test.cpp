@@ -51,6 +51,22 @@ TEST_CASE("rta_histogram")
     CHECK(hist.lo == 2);
     CHECK(hist.hi == 4);
   }
+
+  SECTION("No data")
+  {
+    // guard values to check nothing has been written
+    rta_real_t data[1]  = {97};
+    rta_real_t output[] = {98, 99, 100};
+    rta_real_t binout[] = {99, 100, 101};
+
+    rta_histogram_stride(&hist, data, 1, 0, output, 1, binout, 1);
+
+    // check that lo/hi is not writte, output and bins are cleared
+    CHECK(hist.lo == 0);
+    CHECK(hist.hi == 0);
+    CHECK(output[0] == 0);
+    CHECK(binout[0] == 0);
+  }
 }
 
 /** EMACS **
