@@ -140,7 +140,7 @@ void rta_histogram_weighted_stride (rta_histogram_params_t *self,
   }
 
   /* calculate histogram */
-  for (i = 0; i < i_size * i_stride; i += i_stride, weightptr += weightstride)
+  for (i = 0; i < i_size * i_stride; i += i_stride, weights += w_stride)
   {
     /* find bin index */
     int ind = (input[i] - self->lo) * xfact;
@@ -151,7 +151,7 @@ void rta_histogram_weighted_stride (rta_histogram_params_t *self,
     if (ind >= self->nhist)
       ind = self->nhist - 1;
 
-    output[ind * out_stride] += *weightptr;           
+    output[ind * out_stride] += *weights;           
   }
 
   // normalise histogram  

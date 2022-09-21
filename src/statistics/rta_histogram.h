@@ -41,6 +41,7 @@
 #define _RTA_HISTOGRAM_H_ 1
 
 #include "rta.h"
+#include <stdbool.h>	/* to get bool type in C99 */
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,7 +71,7 @@ void rta_histogram_init (rta_histogram_params_t *self);
  * @param i_size	number of input elements
  * @param output	pointer to output data (at least params->nhist * out_stride elements)
  * @param out_stride	stride for output data
- * @param binout	NULL or pointer to bin index output data (at least params->nhist * bpf_stride elements)
+ * @param binout	NULL or pointer to bin index output data (at least params->nhist * bin_stride elements)
  * @param bin_stride	stride for bin index data
  */
 void rta_histogram_stride (rta_histogram_params_t *params,
@@ -90,7 +91,7 @@ void rta_histogram_stride (rta_histogram_params_t *params,
  * @param w_stride	stride for weights data
  * @param output	pointer to output data (at least params->nhist * out_stride elements)
  * @param out_stride	stride for output data
- * @param binout	NULL or pointer to bin index output data (at least params->nhist * bpf_stride elements)
+ * @param binout	NULL or pointer to bin index output data (at least params->nhist * bin_stride elements)
  * @param bin_stride	stride for bin index data
  */
 void rta_histogram_weighted_stride (rta_histogram_params_t *params,
