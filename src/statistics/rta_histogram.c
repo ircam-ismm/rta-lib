@@ -71,11 +71,12 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
 				 rta_real_t *output,   const unsigned int out_stride,
 				 rta_real_t *bpfout,   const unsigned int bpf_stride)
 {
-  rta_real_t ones[num_input];
+  rta_real_t one = 1;
+  rta_real_t *ones[num_input]; // array of pointers to weights data
 
   for (int i = 0; i < num_input; i++)
-    ones[i] = 1.0;
-    
+    ones[i] = &one; // make then all point to 1, zero stride assures we stay there
+
   rta_histogram_weighted_stride_multi(params, num_input,
 				      input, i_stride, i_size,
 				      ones, 0, // unweighted: all weights == 1
