@@ -53,9 +53,9 @@ void rta_histogram_init (rta_histogram_params_t *params)
 
 /* Calculate histogram */
 void rta_histogram_stride (rta_histogram_params_t *params,
-			   rta_real_t *input, const unsigned int i_stride, const unsigned int i_size,
-			   rta_real_t *output, const unsigned int out_stride,
-			   rta_real_t *bpfout, const unsigned int bpf_stride)
+			   rta_real_t *input, const int i_stride, const unsigned int i_size,
+			   rta_real_t *output, const int out_stride,
+			   rta_real_t *bpfout, const int bpf_stride)
 {
   rta_real_t one = 1;
     
@@ -67,9 +67,9 @@ void rta_histogram_stride (rta_histogram_params_t *params,
 }
 
 void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
-				 rta_real_t *input[],  const unsigned int i_stride, const unsigned int i_size[],
-				 rta_real_t *output,   const unsigned int out_stride,
-				 rta_real_t *bpfout,   const unsigned int bpf_stride)
+				 rta_real_t *input[],  const int i_offset, const int i_stride, const unsigned int i_size[],
+				 rta_real_t *output,   const int out_stride,
+				 rta_real_t *bpfout,   const int bpf_stride)
 {
   rta_real_t one = 1;
   rta_real_t *ones[num_input]; // array of pointers to weights data
@@ -78,7 +78,7 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
     ones[i] = &one; // make then all point to 1, zero stride assures we stay there
 
   rta_histogram_weighted_stride_multi(params, num_input,
-				      input, i_stride, i_size,
+				      input, i_offset, i_stride, i_size,
 				      ones, 0, // unweighted: all weights == 1
 				      output, out_stride,
 				      bpfout, bpf_stride); 
@@ -86,23 +86,23 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
 
 /* Calculate weighted histogram */
 void rta_histogram_weighted_stride (rta_histogram_params_t *params,
-				    rta_real_t *input, const unsigned int i_stride, const unsigned int i_size,
-				    rta_real_t *weights, const unsigned int w_stride,
-				    rta_real_t *output, const unsigned int out_stride,
-				    rta_real_t *bpfout, const unsigned int bpf_stride)
+				    rta_real_t *input,   const int i_stride, const unsigned int i_size,
+				    rta_real_t *weights, const int w_stride,
+				    rta_real_t *output,  const int out_stride,
+				    rta_real_t *bpfout,  const int bpf_stride)
 {
   rta_histogram_weighted_stride_multi(params, 1,
-				      &input, i_stride, &i_size,
+				      &input, 0, i_stride, &i_size,
 				      &weights, w_stride, // unweighted: all weights == 1
 				      output, out_stride,
 				      bpfout, bpf_stride); 
 }
 
 void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int num_input,
-					  rta_real_t *input[],   const unsigned int i_stride, const unsigned int i_size[],
-					  rta_real_t *weights[], const unsigned int w_stride,
-					  rta_real_t *output,    const unsigned int out_stride,
-					  rta_real_t *bpfout,    const unsigned int bpf_stride)
+					  rta_real_t *input[],   const int i_offset, const int i_stride, const unsigned int i_size[],
+					  rta_real_t *weights[], const int w_stride,
+					  rta_real_t *output,    const int out_stride,
+					  rta_real_t *bpfout,    const int bpf_stride)
 {
   rta_real_t *ptr;
   int i, j, k;
@@ -131,7 +131,10 @@ void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int nu
     params->hi = -FLT_MAX;                /* upper histogram limit */
 
     for (k = 0; k < num_input; k++)
-      for (i = 0; i < i_size[k] * i_stride; i += i_stride)
+    {
+      const int n = i_size[k] * i_stride + i_offset;
+      
+      for (i = i_offset; i < n; i += i_stride)
       {
 	float x = input[k][i];
 	if (x < params->lo)
@@ -139,6 +142,7 @@ void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int nu
 	if (x > params->hi)
 	  params->hi = x;
       }
+    }
   }
   else
   {
@@ -147,12 +151,16 @@ void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int nu
       params->lo = FLT_MAX;                /* lower histogram limit */
       
       for (k = 0; k < num_input; k++)
-	for (i = 0; i < i_size[k] * i_stride; i += i_stride)
+      {
+	const int n = i_size[k] * i_stride + i_offset;
+      
+	for (i = i_offset; i < n; i += i_stride)
 	{
 	  float x = input[k][i];
 	  if (x < params->lo)
 	    params->lo = x;
 	}
+      }
     }
     
     if (!params->hi_given)
@@ -160,12 +168,16 @@ void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int nu
       params->hi = -FLT_MAX;                /* upper histogram limit */
       
       for (k = 0; k < num_input; k++)
-	for (i = 0; i < i_size[k] * i_stride; i += i_stride)
+      {
+	const int n = i_size[k] * i_stride + i_offset;
+      
+	for (i = i_offset; i < n; i += i_stride)
 	{
 	  float x = input[k][i];
 	  if (x > params->hi)
 	    params->hi = x;
 	}
+      }
     }
   }
 
@@ -184,7 +196,10 @@ void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int nu
 
   /* calculate histogram */
   for (k = 0; k < num_input; k++)
-    for (i = 0, j = 0; i < i_size[k] * i_stride; i += i_stride, j += w_stride)
+  {
+    const int n = i_size[k] * i_stride + i_offset;
+      
+    for (i = i_offset, j = 0; i < n; i += i_stride, j += w_stride)
     {
       /* find bin index */
       int ind = (input[k][i] - params->lo) * xfact;
@@ -197,7 +212,8 @@ void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int nu
 
       output[ind * out_stride] += weights[k][j];
     }
-
+  }
+  
   // normalise histogram  
   if (params->norm > 0)
   { 

@@ -75,27 +75,28 @@ void rta_histogram_init (rta_histogram_params_t *self);
  * @param bin_stride	stride for bin index data
  */
 void rta_histogram_stride (rta_histogram_params_t *params,
-			   rta_real_t *input,  const unsigned int i_stride, const unsigned int i_size,
-			   rta_real_t *output, const unsigned int out_stride,
-			   rta_real_t *binout, const unsigned int bin_stride);
+			   rta_real_t *input,  const int i_stride, const unsigned int i_size,
+			   rta_real_t *output, const int out_stride,
+			   rta_real_t *binout, const int bin_stride);
        
 /**
  * Calculate histogram over multiple blocks of data
  *
  * @param params	pointer to histogram parameter struct
  * @param num_input	number of blocks of input data
- * @param input		array[num_input] of pointers to input data (at least i_size * i_stride elements)
+ * @param input		array[num_input] of pointers to blocks of input data (at least i_size[i] * i_stride elements)
+ * @param i_offset	offset into each block of input data
  * @param i_stride	stride for input data
- * @param i_size	array[num_input] of number of elements per block of input data
+ * @param i_size	array[num_input] of number of elements for each block of input data
  * @param output	pointer to output data (at least params->nhist * out_stride elements)
  * @param out_stride	stride for output data
  * @param binout	NULL or pointer to bin index output data (at least params->nhist * bpf_stride elements)
  * @param bin_stride	stride for bin index data
  */
 void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
-				 rta_real_t *input[],  const unsigned int i_stride, const unsigned int i_size[],
-				 rta_real_t *output,   const unsigned int out_stride,
-				 rta_real_t *binout,   const unsigned int bin_stride);
+				 rta_real_t *input[],  const int i_offset, const int i_stride, const unsigned int i_size[],
+				 rta_real_t *output,   const int out_stride,
+				 rta_real_t *binout,   const int bin_stride);
 
 /**
  * Calculate weighted histogram
@@ -113,10 +114,10 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
  * @param bin_stride	stride for bin index data
  */
 void rta_histogram_weighted_stride (rta_histogram_params_t *params,
-				    rta_real_t *input, const unsigned int i_stride, const unsigned int i_size,
-				    rta_real_t *weights, const unsigned int w_stride,
-				    rta_real_t *output, const unsigned int out_stride,
-				    rta_real_t *binout, const unsigned int bin_stride);
+				    rta_real_t *input,   const int i_stride, const unsigned int i_size,
+				    rta_real_t *weights, const int w_stride,
+				    rta_real_t *output,  const int out_stride,
+				    rta_real_t *binout,  const int bin_stride);
 
   
 /**
@@ -125,9 +126,10 @@ void rta_histogram_weighted_stride (rta_histogram_params_t *params,
  *
  * @param params	pointer to histogram parameter struct
  * @param num_input	number of blocks of input data
- * @param input		array[num_input] of pointers to input data (at least i_size * i_stride elements)
+ * @param input		array[num_input] of pointers to blocks of input data (at least i_size[i] * i_stride elements)
+ * @param i_offset	offset into each block of input data
  * @param i_stride	stride for input data
- * @param i_size	array[num_input] of number of input elements
+ * @param i_size	array[num_input] of number of input elements for each block
  * @param weights	array[num_input] of pointers to weights data (at least i_size * w_stride elements)
  * @param w_stride	stride for weights data
  * @param output	pointer to output data (at least params->nhist * out_stride elements)
@@ -136,10 +138,10 @@ void rta_histogram_weighted_stride (rta_histogram_params_t *params,
  * @param bin_stride	stride for bin index data
  */
 void rta_histogram_weighted_stride_multi (rta_histogram_params_t *params, int num_input,
-					  rta_real_t *input[],   const unsigned int i_stride, const unsigned int i_size[],
-					  rta_real_t *weights[], const unsigned int w_stride,
-					  rta_real_t *output,    const unsigned int out_stride,
-					  rta_real_t *binout,    const unsigned int bin_stride);
+					  rta_real_t *input[],   const int i_offset, const int i_stride, const unsigned int i_size[],
+					  rta_real_t *weights[], const int w_stride,
+					  rta_real_t *output,    const int out_stride,
+					  rta_real_t *binout,    const int bin_stride);
     
 #ifdef __cplusplus
 }
