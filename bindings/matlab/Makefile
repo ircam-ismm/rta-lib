@@ -34,9 +34,7 @@ all: rta_bands_weights \
 	rta_spectrum_to_bands \
 	rta_svd \
 	rta_var \
-	rta_window_apply rta_window_weights \
-	rta_yin \
-	rta_yin_setup_delete rta_yin_setup_new
+	rta_window_apply rta_window_weights
 
 
 rta_%_mex.o: rta_%_mex.c
@@ -127,16 +125,6 @@ rta_window_apply: rta_window.o rta_window_apply_mex.o
 
 rta_window_weights: rta_window.o rta_window_weights_mex.o
 	$(CC) $(CFLAGS) -cxx $^ -o $@
-
-rta_yin: rta_yin.o rta_correlation.o rta_yin_mex.o
-	$(CC) $(CFLAGS) -cxx $^ -o $@
-
-rta_yin_setup_delete: rta_yin.o rta_correlation.o rta_yin_setup_delete_mex.o
-	$(CC) $(CFLAGS) -cxx $^ -o $@
-
-rta_yin_setup_new: rta_yin.o rta_correlation.o rta_yin_setup_new_mex.o
-	$(CC) $(CFLAGS) -cxx $^ -o $@
-
 
 clean:
 	rm -rf *.o
