@@ -64,7 +64,7 @@ extern "C" {
  *
  * @param input is a vector of size 'i_size'
  * @param i_size is the size of 'input'
- * @param selection must be bewteen 0 and i_size (note that a simple
+ * @param selection must be bewteen 0 and i_size - 1 (note that a simple
  * search is faster at finding the minimal or maximal element of a list).
  *
  * @return the value of:
@@ -87,13 +87,13 @@ rta_real_t rta_selection(rta_real_t * input, const unsigned int i_size,
  *
  * The algorithm is similar to quick sort but not every element is
  * sorted. After this function's call:
- *   'input'[index] <= 'input'['selection'] for each (index < 'selection')
- *   'input'[index] >= 'input'['selection'] for each (index > 'selection')
+ *   'input'[index * i_stride] <= 'input'['selection' * i_stride] for each (index < 'selection')
+ *   'input'[index * i_stride] >= 'input'['selection' * i_stride] for each (index > 'selection')
  *
- * @param input is a vector of size 'i_size'
+ * @param input is a sparse vector of size 'i_size'
  * @param i_stride is 'input' stride
- * @param i_size is the size of 'input'
- * @param selection must be bewteen 0 and i_size (note that a simple
+ * @param i_size is the number of elements of 'input' to consider (i_size * i_stride ~ total size of input)
+ * @param selection must be bewteen 0 and i_size - 1 (note that a simple
  * search is faster at finding the minimal or maximal element of a list).
  *
  * @return the value of:

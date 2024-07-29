@@ -71,7 +71,7 @@ void rta_correlation_fast(
 #endif /* RTA_USE_VECLIB */
 
 /* Base algorithm */
-    int c,f;
+    unsigned int c,f;
     for(c=0; c<c_size; c++)
     {
       correlation[c] = 0.0;
@@ -115,10 +115,10 @@ void rta_correlation_fast_stride(
 
 /* Base algorithm */
     int c, ca, fa, fb;
-    for(c=0, ca=0; c<c_size*c_stride; c+=c_stride, ca+=a_stride)
+    for (c = 0, ca = 0; c < (int) c_size * c_stride; c += c_stride, ca += a_stride)
     {
       correlation[c] = 0.0;
-      for(fa=0, fb=0; fa<filter_size*a_stride; fa+=a_stride, fb+=b_stride)
+      for (fa = 0, fb = 0; fa < (int) filter_size * a_stride; fa += a_stride, fb += b_stride)
       {
         correlation[c] +=
           input_vector_a[fa+ca] * input_vector_b[fb];
@@ -138,7 +138,7 @@ void rta_correlation_raw(
   const rta_real_t * input_vector_b,
   const unsigned int max_filter_size)
 {
-  int c,f;
+  unsigned int c,f;
   for(c=0; c<c_size; c++)
   {
     correlation[c] = 0.0;
@@ -158,12 +158,12 @@ void rta_correlation_raw_stride(
   const unsigned int max_filter_size)
 {
   int c, ca, fa, fb;
-  for(c=0, ca=0; c<c_size*c_stride; c+=c_stride, ca+=a_stride)
+  for (c = 0, ca = 0; c < (int) c_size * c_stride; c += c_stride, ca += a_stride)
   {
     correlation[c] = 0.0;
-    for(fa=0, fb=0;
-        fa<max_filter_size*a_stride-ca;
-        fa+=a_stride, fb+=b_stride)
+    for (fa = 0, fb = 0;
+	 fa < (int) max_filter_size * a_stride - ca;
+	 fa += a_stride, fb += b_stride)
     {
       correlation[c] += input_vector_a[fa+ca] * input_vector_b[fb];
     }
@@ -179,7 +179,7 @@ void rta_correlation_unbiased(
   const rta_real_t * input_vector_b,
   const unsigned int max_filter_size)
 {
-  int c,f;
+  unsigned int c,f;
   for(c=0; c<c_size; c++)
   {
     correlation[c] = 0.0;
@@ -200,11 +200,11 @@ void rta_correlation_unbiased_stride(
   const unsigned int max_filter_size)
 {
   int c, ca, f, fa, fb;
-  for(c=0, ca=0; c<c_size*c_stride; c+=c_stride, ca+=a_stride)
+  for (c = 0, ca = 0; c < (int) c_size * c_stride; c += c_stride, ca += a_stride)
   {
     correlation[c] = 0.0;
     for(f=0, fa=0, fb=0;
-        fa<max_filter_size*a_stride-ca;
+        fa<(int)max_filter_size*a_stride-ca;
         f++, fa+=a_stride, fb+=b_stride)
     {
       correlation[c] += input_vector_a[fa+ca] * input_vector_b[fb];
@@ -246,7 +246,7 @@ void rta_correlation_fast_scaled(
   const rta_real_t * input_vector_b,
   const unsigned int filter_size, const rta_real_t scale)
 {
-  int c,f;
+  unsigned int c,f;
   for(c=0; c<c_size; c++)
   {
     correlation[c] = 0.0;
@@ -268,10 +268,10 @@ void rta_correlation_fast_scaled_stride(
   const unsigned int filter_size, const rta_real_t scale)
 {
   int c,ca,fa,fb;
-  for(c=0, ca=0; c<c_size*c_stride; c+=c_stride, ca+=a_stride)
+  for (c = 0, ca = 0; c < (int) c_size * c_stride; c += c_stride, ca += a_stride)
   {
     correlation[c] = 0.0;
-    for(fa=0, fb=0; fa<filter_size*a_stride; fa+=a_stride, fb+=b_stride)
+    for (fa = 0, fb = 0; fa < (int) filter_size * a_stride; fa += a_stride, fb += b_stride)
     {
       correlation[c] +=
         input_vector_a[fa+ca] * input_vector_b[fb];
@@ -288,7 +288,7 @@ void rta_correlation_raw_scaled(
   const rta_real_t * input_vector_b,
   const unsigned int max_filter_size, const rta_real_t scale)
 {
-  int c,f;
+  unsigned int c,f;
   for(c=0; c<c_size; c++)
   {
     correlation[c] = 0.0;
@@ -309,12 +309,12 @@ void rta_correlation_raw_scaled_stride(
   const unsigned int max_filter_size, const rta_real_t scale)
 {
   int c, ca, fa, fb;
-  for(c=0, ca=0; c<c_size*c_stride; c+=c_stride, ca+=a_stride)
+  for (c = 0, ca = 0; c < (int) c_size * c_stride; c += c_stride, ca += a_stride)
   {
     correlation[c] = 0.0;
-    for(fa=0, fb=0;
-        fa<max_filter_size*a_stride-ca;
-        fa+=a_stride, fb+=b_stride)
+    for (fa = 0, fb = 0;
+	 fa < (int) max_filter_size * a_stride - ca;
+	 fa += a_stride, fb += b_stride)
     {
       correlation[c] += input_vector_a[fa+ca] * input_vector_b[fb];
     }

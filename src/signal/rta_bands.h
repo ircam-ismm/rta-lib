@@ -269,6 +269,13 @@ void rta_spectrum_to_bands_square_abs_stride(
   const unsigned int spectrum_size, const unsigned int filters_number);
 
 
+int rta_spectrum_to_bands_weights (
+  /*out*/ rta_real_t *weights_matrix, unsigned int *weights_bounds,
+  /*in*/ float *band_limits, /* filters_number + 1 limits in Hz*/
+  const unsigned int spectrum_size,
+  const rta_real_t sample_rate, const unsigned int filters_number);
+
+
 #ifdef __cplusplus
 }
 #endif

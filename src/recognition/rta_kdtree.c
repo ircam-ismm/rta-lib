@@ -1,6 +1,6 @@
 /**
  * @file rta_kdtree.c
- * @author Riccardo Borghesi
+ * @author Diemo Schwarz
 
  * @brief  k-dimensional search tree
  *
@@ -149,7 +149,7 @@ void rta_kdtree_info_display (rta_kdtree_t* t)
   rta_post("mean vector   = %s\n", rta_kdtree_mmodestr[t->mmode]);
 }
 
-void kdtree_raw_display (rta_kdtree_t* t)
+void rta_kdtree_raw_display (rta_kdtree_t* t)
 {
   int i, k;
 
@@ -256,7 +256,6 @@ int rta_kdtree_set_data (rta_kdtree_t *self, int nblocks, rta_real_t **data,
   self->nblocks   = nblocks;
   self->ndata     = m;
   self->ndim      = n;
-
   self->ndatatot  = 0;
 
   for (i = 0; i < nblocks; i++)

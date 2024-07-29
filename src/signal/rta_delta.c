@@ -45,7 +45,7 @@
 /* <filter_size> should be odd and positive */
 int rta_delta_weights(rta_real_t * weights_vector, const unsigned int filter_size)
 {
-  int i;
+  unsigned int i;
   rta_real_t filter_value;
 
   const rta_real_t half_filter_size = rta_floor(filter_size * 0.5);
@@ -69,9 +69,9 @@ int rta_delta_weights_stride(rta_real_t * weights_vector, const int w_stride,
 
   const rta_real_t half_filter_size = rta_floor(filter_size * 0.5);
 
-  for(i=0, filter_value=-half_filter_size;
-      i<filter_size*w_stride;
-      i+=w_stride, filter_value+=1.)
+  for (i = 0, filter_value = -half_filter_size;
+       i < (int) filter_size * w_stride;
+       i += w_stride, filter_value += 1.)
   {
     weights_vector[i] = filter_value;
   }
@@ -170,18 +170,18 @@ void rta_delta_vector_stride(rta_real_t * delta, const int d_stride,
                        const rta_real_t * weights_vector, const int w_stride,
                        const unsigned int filter_size)
 {
-  int i,j;
+  unsigned int i;
   
-  for(j=0; j<input_size*d_stride; j+=d_stride)
+  for (int j = 0; j < (int) input_size * d_stride; j += d_stride)
   {
     delta[j] = 0.;
   }
 
-  for(i=0; i<filter_size; i++)
+  for (i = 0; i < filter_size; i++)
   {
-    if(weights_vector[i*w_stride] != 0.) /* skip zeros */
+    if (weights_vector[i*w_stride] != 0.) /* skip zeros */
     {    
-      for(j=0; j<input_size; j++)
+      for (unsigned int j = 0; j < input_size; j++)
       {
         delta[j*d_stride] += input_matrix[(i*input_size+j)*i_stride] *
           weights_vector[i*w_stride];
