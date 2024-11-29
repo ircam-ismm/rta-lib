@@ -318,7 +318,7 @@ static rta_real_t distV2H (const rta_real_t* vect,
   for(i = 0; i < ndim; i++)
     dotprod += RTA_DMAP(vect[i], mean[i], distfunc[i]) * plane[i];
 
-  return (dotprod / norm);
+  return (dotprod / norm); // returns square distance
 }
 
 static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
@@ -334,7 +334,7 @@ static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
   for(i = 0, iv = 0; i < ndim; i++, iv += stride)
     dotprod += RTA_DMAP(vect[iv], mean[i], distfunc[i]) * plane[i];
 
-  return (dotprod / norm);
+  return (dotprod / norm); // returns square distance
 }
 
 static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
@@ -352,7 +352,7 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
     if (sigma[i] > 0)
       dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i];
 
-  return (dotprod / norm);
+  return (dotprod / norm); // returns square distance
 }
 
 

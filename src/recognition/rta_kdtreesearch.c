@@ -128,8 +128,8 @@ static int maxArr (rta_real_t* array, int size)
 }
 
 rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
-                                   rta_real_t* v2, int dim,
-                                   rta_bpf_t  *distfunc[])
+				   rta_real_t* v2, int dim,
+				   rta_bpf_t  *distfunc[])
 {
   int i, i1;
   rta_real_t sum = 0;
@@ -148,16 +148,16 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
     sum += diff * diff;
   }
 
-  return sum;
+  return sum; // returns square distance
 }
 
-
+// todo: call stride = 1?
 rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
-                                            rta_real_t *sigma, int ndim,
-                                            rta_bpf_t *distfunc[])
+					    rta_real_t *sigma, int ndim,
+					    rta_bpf_t *distfunc[])
 {
   int i;
-  rta_real_t sum = 0, sqrtsum = 0;
+  rta_real_t sum = 0;
 
   for (i = 0; i < ndim; i++)
     if (sigma[i] > 0)
@@ -179,8 +179,7 @@ rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
                i, v2[i], v1[i], diff, sum, sqrt(sum));
     }
 
-  sqrtsum = sqrt(sum);
-  return sqrtsum;
+  return sum; // returns square distance
 }
 
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
@@ -208,7 +207,7 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
       sum += diff * diff;
     }
 
-  return sum;
+  return sum; // returns square distance
 }
 
 
