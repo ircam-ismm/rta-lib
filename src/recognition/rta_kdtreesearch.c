@@ -1,4 +1,5 @@
-/**
+/* -*-mode:c; c-basic-offset: 2-*- */
+/** 
  * @file rta_kdtreesearch.c
  * @author Diemo Schwarz
  *
@@ -40,7 +41,7 @@
 
 
 #ifdef DEBUG
-#define RTA_DEBUG_KDTREESEARCH 0
+#define RTA_DEBUG_KDTREESEARCH 1
 #else
 #define RTA_DEBUG_KDTREESEARCH 0
 #endif
@@ -128,8 +129,8 @@ static int maxArr (rta_real_t* array, int size)
 }
 
 rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
-				   rta_real_t* v2, int dim,
-				   rta_bpf_t  *distfunc[])
+                                   rta_real_t* v2, int dim,
+                                   rta_bpf_t  *distfunc[])
 {
   int i, i1;
   rta_real_t sum = 0;
@@ -153,8 +154,8 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
 
 // todo: call stride = 1?
 rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
-					    rta_real_t *sigma, int ndim,
-					    rta_bpf_t *distfunc[])
+                                            rta_real_t *sigma, int ndim,
+                                            rta_bpf_t *distfunc[])
 {
   int i;
   rta_real_t sum = 0;
@@ -209,6 +210,25 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
 
   return sum; // returns square distance
 }
+
+
+void rta_kdtree_set_activecolumn (rta_kdtree_t *t, int col)
+{
+  if (col >= t->ndim)
+    col = t->ndim - 1;  // clip to num. columns, < 0 means don't use active column
+  
+  t->activecol = col;
+}
+
+
+#if RTA_KDTREE_USE_ACTIVE         
+static bool get_active (rta_kdtree_t *t, int index)
+{
+  return t->activecol >= 0  ?  (rta_kdtree_get_element(t, index, t->activecol) != 0)  :  true;
+}
+#else
+#  define get_active(t, i)  (true)
+#endif
 
 
 /* Perform search in kd-tree structure t
@@ -275,12 +295,17 @@ int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* vector, int stride,
 #endif
         for (i = istart; i <= iend; i++)
         {
-          if (use_sigma)
-            dxx = rta_weighted_euclidean_distance_stride(vector, stride,
-                    rta_kdtree_get_vector(t, i), sigmaptr, t->ndim, t->dfun);
-          else
-            dxx = rta_euclidean_distance(vector, stride,
-                    rta_kdtree_get_vector(t, i), t->ndim, t->dfun);
+          const bool isactive = get_active(t, i);
+
+          if (isactive)
+          {
+            if (use_sigma)
+              dxx = rta_weighted_euclidean_distance_stride(
+                      vector, stride, rta_kdtree_get_vector(t, i), sigmaptr, t->ndim, t->dfun);
+            else
+              dxx = rta_euclidean_distance(
+                      vector, stride, rta_kdtree_get_vector(t, i), t->ndim, t->dfun);
+          }
 #if RTA_KDTREE_PROFILE_SEARCH
           t->profile.v2v++;
 #endif
@@ -289,7 +314,7 @@ int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* vector, int stride,
           rta_vec_post(rta_kdtree_get_vector(t, i), 1, t->ndim, " and x ");
           rta_vec_post(vector, stride,             t->ndim, "\n");
 #endif
-          if (dxx <= dist[kmax])
+          if (isactive  &&  dxx <= dist[kmax])
           {   /* return original index in data and distance */
             if (k == 1)
             {
@@ -329,7 +354,7 @@ int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* vector, int stride,
       }
       else
       { // branched node
-        rta_real_t d;
+        rta_real_t d; // signed distance of target vector to node
 
         if (use_sigma)
           d = distV2N_weighted(t, vector, stride, sigmaptr, cur.node);
@@ -351,15 +376,15 @@ int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* vector, int stride,
           stack_push(s, 2*cur.node+2, cur.dist);
         }
       }
-    }
+    } // end if (cur.dist <= dist[kmax])  // elimination rule
 #if RTA_DEBUG_KDTREESEARCH
-    else /* node can be eliminated from search */
+    else /* node distance to target > than max distance found: can be eliminated from search */
     {
       rta_post("eliminate node %d (size %d): cur.dist %f > dist[kmax=%d] = %f\n",
                cur.node, t->nodes[cur.node].size, cur.dist, kmax, dist[kmax]);
     }
 #endif
-  }
+  } // end while stack is not empty
 #if RTA_KDTREE_PROFILE_SEARCH
   t->profile.searches++;
   t->profile.neighbours += kmax + 1;

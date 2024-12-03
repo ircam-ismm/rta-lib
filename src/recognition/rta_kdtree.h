@@ -192,15 +192,16 @@ typedef struct _kdtree_struct
   int     ndatatot;   /**< Number of total vectors */
   int     nblocks;    /**< Number of blocks of data */
   int     *ndata;   /**< Number of vectors per block*/
-  rta_real_t **data;    /**< nblocks pointers to data matrices (ndata, ndim) */
+  rta_real_t **data;    /**< nblocks pointers to data matrices (ndata[i], ndim) */
   rta_kdtree_object_t *dataindex;   /**< data vector indirection array (ndata):
            original index of data vector at tree array position  */
 
   rta_real_t *sigma;    /**< 1/weight, 0 == inf */
   int     sigma_nnz;    /**< number of non-zero sigma */
   int    *sigma_indnz;  /**< non-zero sigma lines */
-  rta_bpf_t *dfun[RTA_KDTREE_MAX_DISTFUNC]; /* distance transfer functions */
-
+  int     activecol;	/**< index of column with flag for active vectors, or < 0 when not using it */
+  rta_bpf_t *dfun[RTA_KDTREE_MAX_DISTFUNC]; /**< distance transfer functions */
+    
   int     height;   /**< Height of the kdtree */
   int     maxheight;    /**< Maximal height of the kdtree */
   int     givenheight;  /**< Height given by user, gives tree height
@@ -215,7 +216,7 @@ typedef struct _kdtree_struct
   int     sort;   /**< sort search result by distance */
   rta_kdtree_stack_t stack;
 
-    /** profiling data: count internal operations */
+  /** profiling data: count internal operations */
   rta_kdtree_profile_t profile;
 
 } rta_kdtree_t;
@@ -290,6 +291,9 @@ void rta_kdtree_init (rta_kdtree_t *self);
     Call this ONLY when you gave the required node memory pointers as NULL.
 */
 void rta_kdtree_free (rta_kdtree_t *self);
+
+/**  */
+void rta_kdtree_set_activecolumn (rta_kdtree_t *self, int col);
 
 /** set new data vector and size
 

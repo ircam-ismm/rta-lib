@@ -276,7 +276,7 @@ static int decompose_node (rta_kdtree_t *t, int node, int level, int use_sigma)
 }
 
 
-/* vector to orthogonal plane node distance along split dimension dim */
+/* vector to orthogonal plane node signed(!) distance along split dimension dim */
 static rta_real_t distV2orthoH (const rta_real_t* vect,
                                 rta_real_t* mean, int dim,
                                 rta_bpf_t  *distfunc[])
@@ -304,7 +304,7 @@ static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, rta
        : 0;
 }
 
-/* vector to general plane node distance */
+/* vector to general plane node signed distance */
 static rta_real_t distV2H (const rta_real_t* vect,
          const rta_real_t* plane,
          const rta_real_t* mean,
@@ -316,9 +316,9 @@ static rta_real_t distV2H (const rta_real_t* vect,
   rta_real_t dotprod = 0;
 
   for(i = 0; i < ndim; i++)
-    dotprod += RTA_DMAP(vect[i], mean[i], distfunc[i]) * plane[i];
+    dotprod += RTA_DMAP(vect[i], mean[i], distfunc[i]) * plane[i]; // distfunc(x - y) * plane
 
-  return (dotprod / norm); // returns square distance
+  return (dotprod / norm); // returns signed distance?
 }
 
 static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
@@ -334,7 +334,7 @@ static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
   for(i = 0, iv = 0; i < ndim; i++, iv += stride)
     dotprod += RTA_DMAP(vect[iv], mean[i], distfunc[i]) * plane[i];
 
-  return (dotprod / norm); // returns square distance
+  return (dotprod / norm); // returns signed distance?
 }
 
 static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
@@ -350,9 +350,9 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
 
   for (i = 0, iv = 0; i < ndim; i++, iv += stride)
     if (sigma[i] > 0)
-      dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i];
+      dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i]; // distfunc((x - y) / sigma) * plane
 
-  return (dotprod / norm); // returns square distance
+  return (dotprod / norm); // returns signed distance?
 }
 
 
