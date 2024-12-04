@@ -212,6 +212,7 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
 }
 
 
+/** set column index to use for filtering (in)active units, or -1 to disable filtering */
 void rta_kdtree_set_activecolumn (rta_kdtree_t *t, int col)
 {
   if (col >= t->ndim)

@@ -292,7 +292,7 @@ void rta_kdtree_init (rta_kdtree_t *self);
 */
 void rta_kdtree_free (rta_kdtree_t *self);
 
-/**  */
+/** set column index to use for filtering (in)active units, or -1 to disable filtering */
 void rta_kdtree_set_activecolumn (rta_kdtree_t *self, int col);
 
 /** set new data vector and size
