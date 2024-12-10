@@ -418,14 +418,38 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
                                    rta_real_t* v2, int dim,
                                    rta_bpf_t  *distfunc[]);
 
+/*
 rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
                                             rta_real_t *sigma, int ndim,
                                             rta_bpf_t  *distfunc[]);
+*/
+#define rta_weighted_euclidean_distance(v1, v2, sigma, ndim, distfunc) \\
+    rta_weighted_euclidean_distance_stride(v1, 1, v2, sigma, ndim, distfunc)
 
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
                                                    rta_real_t* v2,
                                                    rta_real_t *sigma, int ndim,
                                                    rta_bpf_t  *distfunc[]);
+
+/**
+ * (Weighted) L-inf norm vector distance (v1 - v2)^∞ = max_i(|v1_i - v1_i|)
+ */
+rta_real_t rta_euclidean_distance_Linf (rta_real_t* v1, int stride1,
+					rta_real_t* v2, int dim,
+					rta_bpf_t  *distfunc[]);
+
+/*
+rta_real_t rta_weighted_euclidean_distance_Linf (rta_real_t* v1, rta_real_t* v2,
+                                            rta_real_t *sigma, int ndim,
+                                            rta_bpf_t  *distfunc[]);
+*/
+#define rta_weighted_euclidean_distance_Linf(v1, v2, sigma, ndim, distfunc) \\
+    rta_weighted_euclidean_distance_stride_Linf(v1, 1, v2, sigma, ndim, distfunc)
+
+rta_real_t rta_weighted_euclidean_distance_stride_Linf (rta_real_t* v1, int stride1,
+							rta_real_t* v2,
+							rta_real_t *sigma, int ndim,
+							rta_bpf_t  *distfunc[]);
 
 
 #ifdef __cplusplus

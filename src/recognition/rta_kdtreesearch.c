@@ -137,48 +137,15 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
 
   for (i = 0, i1 = 0; i < dim; i++, i1 += stride1)
   {
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
     rta_real_t diff = v2[i] - v1[i1];
+#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
     rta_bpf_t *dfun = distfunc[i];
 
     if (dfun)
       diff = rta_bpf_get_interpolated(dfun, diff);
-#else
-    rta_real_t diff = v2[i] - v1[i1];
 #endif /* RTA_USE_DISTFUNC */
     sum += diff * diff;
   }
-
-  return sum; // returns square distance
-}
-
-// todo: call stride = 1?
-rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
-                                            rta_real_t *sigma, int ndim,
-                                            rta_bpf_t *distfunc[])
-{
-  int i;
-  rta_real_t sum = 0;
-
-  for (i = 0; i < ndim; i++)
-    if (sigma[i] > 0)
-    {
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
-      rta_real_t diff = v2[i] - v1[i];
-      rta_bpf_t *dfun = distfunc[i];
-
-      if (dfun)
-        diff = rta_bpf_get_interpolated(dfun, diff);
-
-      diff /= sigma[i];
-#else
-      rta_real_t diff = (v2[i] - v1[i]) / sigma[i];
-#endif /* RTA_USE_DISTFUNC */
-      sum += diff * diff;
-
-      rta_post("rta_weighted_euclidean_distance %d (%f - %f)  ->  %f sum d^2 %f sum %f\n",
-               i, v2[i], v1[i], diff, sum, sqrt(sum));
-    }
 
   return sum; // returns square distance
 }
@@ -209,6 +176,61 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
     }
 
   return sum; // returns square distance
+}
+
+
+rta_real_t rta_euclidean_distance_Linf (rta_real_t* v1, int stride1,
+					rta_real_t* v2, int dim,
+					rta_bpf_t  *distfunc[])
+{
+  int i, i1;
+  rta_real_t max = 0;
+
+  for (i = 0, i1 = 0; i < dim; i++, i1 += stride1)
+  {
+    rta_real_t diff = v2[i] - v1[i1];
+#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+    rta_bpf_t *dfun = distfunc[i];
+
+    if (dfun)
+      diff = rta_bpf_get_interpolated(dfun, diff);
+#endif /* RTA_USE_DISTFUNC */
+    diff = fabs(diff);
+    if (diff > max)
+      max = diff;
+  }
+
+  return max; // returns max distance
+}
+
+rta_real_t rta_weighted_euclidean_distance_stride_Linf (rta_real_t* v1, int stride1,
+							rta_real_t* v2,
+							rta_real_t *sigma, int ndim,
+							rta_bpf_t *distfunc[])
+{
+  int i, i1;
+  rta_real_t max = 0;
+
+  for (i = 0, i1 = 0; i < ndim; i++, i1 += stride1)
+    if (sigma[i] > 0)
+    {
+#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+      rta_real_t diff = v2[i] - v1[i1];
+      rta_bpf_t *dfun = distfunc[i];
+
+      if (dfun)
+        diff = rta_bpf_get_interpolated(dfun, diff);
+
+      diff /= sigma[i];
+#else
+      rta_real_t diff = (v2[i] - v1[i1]) / sigma[i];
+#endif /* RTA_USE_DISTFUNC */
+    diff = fabs(diff);
+    if (diff > max)
+      max = diff;
+    }
+
+  return max; // returns max distance
 }
 
 
@@ -300,59 +322,76 @@ int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* vector, int stride,
 
           if (isactive)
           {
-            if (use_sigma)
+            switch (use_sigma)
+	    {
+	    case 1:
               dxx = rta_weighted_euclidean_distance_stride(
                       vector, stride, rta_kdtree_get_vector(t, i), sigmaptr, t->ndim, t->dfun);
-            else
+	    break;
+	      
+            case 0:
               dxx = rta_euclidean_distance(
                       vector, stride, rta_kdtree_get_vector(t, i), t->ndim, t->dfun);
-          }
+	    break;
+
+	    case 3:
+              dxx = rta_weighted_euclidean_distance_stride_Linf(
+                      vector, stride, rta_kdtree_get_vector(t, i), sigmaptr, t->ndim, t->dfun);
+	    break;
+	      
+            case 2:
+              dxx = rta_euclidean_distance_Linf(
+                      vector, stride, rta_kdtree_get_vector(t, i), t->ndim, t->dfun);
+	    break;
+	    }
+	    
 #if RTA_KDTREE_PROFILE_SEARCH
-          t->profile.v2v++;
+	    t->profile.v2v++;
 #endif
 #if RTA_DEBUG_KDTREESEARCH
-          rta_post("  distance = %f between vector %d (elem %d, %d) ", dxx, i, t->dataindex[i].base, t->dataindex[i].index);
-          rta_vec_post(rta_kdtree_get_vector(t, i), 1, t->ndim, " and x ");
-          rta_vec_post(vector, stride,             t->ndim, "\n");
+	    rta_post("  distance = %f between vector %d (elem %d, %d) ", dxx, i, t->dataindex[i].base, t->dataindex[i].index);
+	    rta_vec_post(rta_kdtree_get_vector(t, i), 1, t->ndim, " and x ");
+	    rta_vec_post(vector, stride,             t->ndim, "\n");
 #endif
-          if (isactive  &&  dxx <= dist[kmax])
-          {   /* return original index in data and distance */
-            if (k == 1)
-            {
-              indx[kmax] = t->dataindex[i];
-              dist[kmax] = dxx;
-            }
-            else if (t->sort)
-            {
-              int pos = kmax; /* where to insert */
-
-              if (kmax < k - 1)
-              {   /* first move or override */
-                dist[kmax + 1] = dist[kmax];
-                indx[kmax + 1] = indx[kmax];
-                kmax++;
-              }
-
-              /* insert into sorted list of distance */
-              while (pos > 0  &&  dxx < dist[pos - 1])
-              {   /* move up */
-                dist[pos] = dist[pos - 1];
-                indx[pos] = indx[pos - 1];
-                pos--;
-              }
-
-              indx[pos] = t->dataindex[i];
-              dist[pos] = dxx;
-            }
-            else
-            {
-              indx[kmax] = t->dataindex[i];
-              dist[kmax] = dxx;
-              kmax = maxArr(dist, k);
-            }
-          }
-        }
-      }
+	    if (dxx <= dist[kmax])
+	    {   /* return original index in data and distance */
+	      if (k == 1)
+	      {
+		indx[kmax] = t->dataindex[i];
+		dist[kmax] = dxx;
+	      }
+	      else if (t->sort)
+	      {
+		int pos = kmax; /* where to insert */
+		
+		if (kmax < k - 1)
+		{   /* first move or override */
+		  dist[kmax + 1] = dist[kmax];
+		  indx[kmax + 1] = indx[kmax];
+		  kmax++;
+		}
+		
+		/* insert into sorted list of distance */
+		while (pos > 0  &&  dxx < dist[pos - 1])
+		{   /* move up */
+		  dist[pos] = dist[pos - 1];
+		  indx[pos] = indx[pos - 1];
+		  pos--;
+		}
+		
+		indx[pos] = t->dataindex[i];
+		dist[pos] = dxx;
+	      }
+	      else
+	      {
+		indx[kmax] = t->dataindex[i];
+		dist[kmax] = dxx;
+		kmax = maxArr(dist, k);
+	      }
+	    } // end if dxx <= dist[kmax]
+	  } // end if vector isactive
+	} // end for all vectors in node
+      } // end if leaf node
       else
       { // branched node
         rta_real_t d; // signed distance of target vector to node
