@@ -130,7 +130,7 @@ static int maxArr (rta_real_t* array, int size)
 
 rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
                                    rta_real_t* v2, int dim,
-                                   rta_bpf_t  *distfunc[])
+                                   rta_bpf_t  *distwarp[])
 {
   int i, i1;
   rta_real_t sum = 0;
@@ -138,12 +138,12 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
   for (i = 0, i1 = 0; i < dim; i++, i1 += stride1)
   {
     rta_real_t diff = v2[i] - v1[i1];
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
-    rta_bpf_t *dfun = distfunc[i];
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+    rta_bpf_t *dfun = distwarp[i];
 
     if (dfun)
       diff = rta_bpf_get_interpolated(dfun, diff);
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
     sum += diff * diff;
   }
 
@@ -153,7 +153,7 @@ rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
                                                    rta_real_t* v2,
                                                    rta_real_t *sigma, int ndim,
-                                                   rta_bpf_t *distfunc[])
+                                                   rta_bpf_t *distwarp[])
 {
   int i, i1;
   rta_real_t sum = 0;
@@ -161,9 +161,9 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
   for (i = 0, i1 = 0; i < ndim; i++, i1 += stride1)
     if (sigma[i] > 0)
     {
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
       rta_real_t diff = v2[i] - v1[i1];
-      rta_bpf_t *dfun = distfunc[i];
+      rta_bpf_t *dfun = distwarp[i];
 
       if (dfun)
         diff = rta_bpf_get_interpolated(dfun, diff);
@@ -171,7 +171,7 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
       diff /= sigma[i];
 #else
       rta_real_t diff = (v2[i] - v1[i1]) / sigma[i];
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
       sum += diff * diff;
     }
 
@@ -181,7 +181,7 @@ rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
 
 rta_real_t rta_euclidean_distance_Linf (rta_real_t* v1, int stride1,
 					rta_real_t* v2, int dim,
-					rta_bpf_t  *distfunc[])
+					rta_bpf_t  *distwarp[])
 {
   int i, i1;
   rta_real_t max = 0;
@@ -189,12 +189,12 @@ rta_real_t rta_euclidean_distance_Linf (rta_real_t* v1, int stride1,
   for (i = 0, i1 = 0; i < dim; i++, i1 += stride1)
   {
     rta_real_t diff = v2[i] - v1[i1];
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
-    rta_bpf_t *dfun = distfunc[i];
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+    rta_bpf_t *dfun = distwarp[i];
 
     if (dfun)
       diff = rta_bpf_get_interpolated(dfun, diff);
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
     diff = fabs(diff);
     if (diff > max)
       max = diff;
@@ -206,7 +206,7 @@ rta_real_t rta_euclidean_distance_Linf (rta_real_t* v1, int stride1,
 rta_real_t rta_weighted_euclidean_distance_stride_Linf (rta_real_t* v1, int stride1,
 							rta_real_t* v2,
 							rta_real_t *sigma, int ndim,
-							rta_bpf_t *distfunc[])
+							rta_bpf_t *distwarp[])
 {
   int i, i1;
   rta_real_t max = 0;
@@ -214,9 +214,9 @@ rta_real_t rta_weighted_euclidean_distance_stride_Linf (rta_real_t* v1, int stri
   for (i = 0, i1 = 0; i < ndim; i++, i1 += stride1)
     if (sigma[i] > 0)
     {
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
       rta_real_t diff = v2[i] - v1[i1];
-      rta_bpf_t *dfun = distfunc[i];
+      rta_bpf_t *dfun = distwarp[i];
 
       if (dfun)
         diff = rta_bpf_get_interpolated(dfun, diff);
@@ -224,7 +224,7 @@ rta_real_t rta_weighted_euclidean_distance_stride_Linf (rta_real_t* v1, int stri
       diff /= sigma[i];
 #else
       rta_real_t diff = (v2[i] - v1[i1]) / sigma[i];
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
     diff = fabs(diff);
     if (diff > max)
       max = diff;

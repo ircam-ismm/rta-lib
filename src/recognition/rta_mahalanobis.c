@@ -175,7 +175,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
       for (j = 0; j < nnz; j++)
       {
         int jj = sigma_indnz[j];
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
         rta_real_t  d    = inrow[jj * instride] - murow[jj * mustride];
         rta_bpf_t  *dfun = distfuncs[jj];
 
@@ -185,7 +185,7 @@ int rta_mahalanobis_nz(int M, int N, int C,
 #else
         rta_real_t d  = (inrow[jj * instride] - murow[jj * mustride]) /
                         sigmarow[jj * sigmastride];
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
         v += d * d;
       }
 
