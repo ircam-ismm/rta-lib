@@ -90,23 +90,23 @@ extern "C" {
 #define RTA_KDTREE_PROFILE (RTA_KDTREE_PROFILE_BUILD || RTA_KDTREE_PROFILE_SEARCH)
 
 
-#ifndef RTA_USE_DISTFUNC
-#define RTA_USE_DISTFUNC 1
+#ifndef RTA_USE_DISTWARP
+#define RTA_USE_DISTWARP 1
 #endif
-#define RTA_KDTREE_MAX_DISTFUNC 256
+#define RTA_KDTREE_MAX_DISTWARP 256
 
 
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
 #  define RTA_DMAPW(x, y, s, dfun) ((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) / (s) : ((x) - (y)) / (s))
 #else
 #  define RTA_DMAPW(x, y, s, dfun) ((x) - (y)) / (s)
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
 
-#if RTA_USE_DISTFUNC // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
+#if RTA_USE_DISTWARP // uses rta_bpf_t, (data-compatible to FTM bpfunc_t)
 #  define RTA_DMAP(x, y, dfun) ((dfun) ? rta_bpf_get_interpolated(dfun, ((x) - (y))) : ((x) - (y)))
 #else
 #  define RTA_DMAP(x, y, dfun) ((x) - (y))
-#endif /* RTA_USE_DISTFUNC */
+#endif /* RTA_USE_DISTWARP */
 
 
 
@@ -192,15 +192,16 @@ typedef struct _kdtree_struct
   int     ndatatot;   /**< Number of total vectors */
   int     nblocks;    /**< Number of blocks of data */
   int     *ndata;   /**< Number of vectors per block*/
-  rta_real_t **data;    /**< nblocks pointers to data matrices (ndata, ndim) */
+  rta_real_t **data;    /**< nblocks pointers to data matrices (ndata[i], ndim) */
   rta_kdtree_object_t *dataindex;   /**< data vector indirection array (ndata):
            original index of data vector at tree array position  */
 
   rta_real_t *sigma;    /**< 1/weight, 0 == inf */
   int     sigma_nnz;    /**< number of non-zero sigma */
   int    *sigma_indnz;  /**< non-zero sigma lines */
-  rta_bpf_t *dfun[RTA_KDTREE_MAX_DISTFUNC]; /* distance transfer functions */
-
+  int     activecol;	/**< index of column with flag for active vectors, or < 0 when not using it */
+  rta_bpf_t *dfun[RTA_KDTREE_MAX_DISTWARP]; /**< distance transfer functions */
+    
   int     height;   /**< Height of the kdtree */
   int     maxheight;    /**< Maximal height of the kdtree */
   int     givenheight;  /**< Height given by user, gives tree height
@@ -215,7 +216,7 @@ typedef struct _kdtree_struct
   int     sort;   /**< sort search result by distance */
   rta_kdtree_stack_t stack;
 
-    /** profiling data: count internal operations */
+  /** profiling data: count internal operations */
   rta_kdtree_profile_t profile;
 
 } rta_kdtree_t;
@@ -290,6 +291,9 @@ void rta_kdtree_init (rta_kdtree_t *self);
     Call this ONLY when you gave the required node memory pointers as NULL.
 */
 void rta_kdtree_free (rta_kdtree_t *self);
+
+/** set column index to use for filtering (in)active units, or -1 to disable filtering */
+void rta_kdtree_set_activecolumn (rta_kdtree_t *self, int col);
 
 /** set new data vector and size
 
@@ -412,16 +416,40 @@ int rta_kdtree_search_knn (rta_kdtree_t *t, rta_real_t* x, int stride, int k, co
  */
 rta_real_t rta_euclidean_distance (rta_real_t* v1, int stride1,
                                    rta_real_t* v2, int dim,
-                                   rta_bpf_t  *distfunc[]);
+                                   rta_bpf_t  *distwarp[]);
 
+/*
 rta_real_t rta_weighted_euclidean_distance (rta_real_t* v1, rta_real_t* v2,
                                             rta_real_t *sigma, int ndim,
-                                            rta_bpf_t  *distfunc[]);
+                                            rta_bpf_t  *distwarp[]);
+*/
+#define rta_weighted_euclidean_distance(v1, v2, sigma, ndim, distwarp) \\
+    rta_weighted_euclidean_distance_stride(v1, 1, v2, sigma, ndim, distwarp)
 
 rta_real_t rta_weighted_euclidean_distance_stride (rta_real_t* v1, int stride1,
                                                    rta_real_t* v2,
                                                    rta_real_t *sigma, int ndim,
-                                                   rta_bpf_t  *distfunc[]);
+                                                   rta_bpf_t  *distwarp[]);
+
+/**
+ * (Weighted) L-inf norm vector distance (v1 - v2)^∞ = max_i(|v1_i - v1_i|)
+ */
+rta_real_t rta_euclidean_distance_Linf (rta_real_t* v1, int stride1,
+					rta_real_t* v2, int dim,
+					rta_bpf_t  *distwarp[]);
+
+/*
+rta_real_t rta_weighted_euclidean_distance_Linf (rta_real_t* v1, rta_real_t* v2,
+                                            rta_real_t *sigma, int ndim,
+                                            rta_bpf_t  *distwarp[]);
+*/
+#define rta_weighted_euclidean_distance_Linf(v1, v2, sigma, ndim, distwarp) \\
+    rta_weighted_euclidean_distance_stride_Linf(v1, 1, v2, sigma, ndim, distwarp)
+
+rta_real_t rta_weighted_euclidean_distance_stride_Linf (rta_real_t* v1, int stride1,
+							rta_real_t* v2,
+							rta_real_t *sigma, int ndim,
+							rta_bpf_t  *distwarp[]);
 
 
 #ifdef __cplusplus

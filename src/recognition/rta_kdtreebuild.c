@@ -52,7 +52,7 @@
 static void compute_mean (rta_kdtree_t *t, int node, int dim)
 {
   rta_kdtree_node_t *n    = &t->nodes[node];
-  rta_real_t    *mean_ptr = t->mean + node * t->ndim;
+  rta_real_t  *mean_ptr   = t->mean + node * t->ndim;
   int          nstart     = n->startind;
   int          nend       = n->endind;
   int          nvector    = nend - nstart + 1; // number of vectors of processed node
@@ -60,12 +60,12 @@ static void compute_mean (rta_kdtree_t *t, int node, int dim)
   int          i, j;
 
   if (dim < 0)
-  {   /* all dimensions */
+  { /* all dimensions */
     dstart = 0;
     dend   = t->ndim;
   }
   else
-  {   /* calculate mean only over given dimension */
+  { /* calculate mean only over given dimension */
     dstart = dim;
     dend   = dim + 1;
 #if RTA_DEBUG_KDTREEBUILD
@@ -93,7 +93,7 @@ static void compute_mean (rta_kdtree_t *t, int node, int dim)
 static void compute_middle (rta_kdtree_t *t, int node, int dim)
 {
   rta_kdtree_node_t *n    = &t->nodes[node];
-  rta_real_t    *mean_ptr = t->mean + node * t->ndim;
+  rta_real_t  *mean_ptr   = t->mean + node * t->ndim;
   int          nstart     = n->startind;
   int          nend       = n->endind;
   int          dstart, dend;
@@ -155,7 +155,7 @@ static int check_node (rta_kdtree_t *t, int node, int dim)
     rta_real_t x = rta_kdtree_get_element(t, i, dim);
 
     if (!isfinite(x))
-	return 0;	// element is NaN or Inf
+        return 0;       // element is NaN or Inf
     if (x < min)
       min = x;
     if (x > max)
@@ -258,7 +258,7 @@ static int decompose_node (rta_kdtree_t *t, int node, int level, int use_sigma)
       break;
 /*
       case mmode_median:
-  compute_median(t, node);
+        compute_median(t, node);
       break;
 */
     case mmode_middle:
@@ -276,19 +276,19 @@ static int decompose_node (rta_kdtree_t *t, int node, int level, int use_sigma)
 }
 
 
-/* vector to orthogonal plane node distance along split dimension dim */
-// static rta_real_t distV2orthoH (const rta_real_t* vect, rta_real_t* mean, int dim, rta_bpf_t  *distfunc[])
-#define distV2orthoH(vect, mean, dim, distfunc)  distV2orthoH_stride(vect, 1, mean, dim, distfunc)
+/* vector to orthogonal plane node signed(!) distance along split dimension dim */
+// static rta_real_t distV2orthoH (const rta_real_t* vect, rta_real_t* mean, int dim, rta_bpf_t  *distwarp[])
+#define distV2orthoH(vect, mean, dim, distwarp)  distV2orthoH_stride(vect, 1, mean, dim, distwarp)
 
 static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride,
                                        rta_real_t* mean, int dim,
-                                       rta_bpf_t  *distfunc[])
+                                       rta_bpf_t  *distwarp[])
 {
-  return RTA_DMAP(vect[dim * stride], mean[dim], distfunc[dim]); // distfunc(x - y)
+  return RTA_DMAP(vect[dim * stride], mean[dim], distwarp[dim]); // distwarp(x - y)
 }
 
 static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, rta_real_t* mean,
-                                         const rta_real_t *sigma, int dim, rta_bpf_t *distfunc[])
+                                         const rta_real_t *sigma, int dim, rta_bpf_t *distwarp[])
 {
 #if RTA_DEBUG_KDTREEBUILD > 1
   rta_post("distV2orthoH_weighted on dim %d: (%f - %f) / %f = %f\n",
@@ -296,39 +296,39 @@ static rta_real_t distV2orthoH_weighted (const rta_real_t* vect, int stride, rta
     sigma[dim] > 0  ?  (vect[dim * stride] - mean[dim]) / sigma[dim]  :  0);
 #endif
   return sigma[dim] > 0
-       ? RTA_DMAPW(vect[dim * stride], mean[dim], sigma[dim], distfunc[dim]) // distfunc((x - y) / sigma)
+       ? RTA_DMAPW(vect[dim * stride], mean[dim], sigma[dim], distwarp[dim]) // distwarp((x - y) / sigma)
        : 0;
 }
 
-/* vector to general plane node distance */
+/* vector to general plane node signed distance */
 static rta_real_t distV2H (const rta_real_t* vect,
-         const rta_real_t* plane,
-         const rta_real_t* mean,
-         int ndim, rta_real_t norm,
-         rta_bpf_t *distfunc[])
+                           const rta_real_t* plane,
+                           const rta_real_t* mean,
+                           int ndim, rta_real_t norm,
+                           rta_bpf_t *distwarp[])
 { // standard algebra computing
   int i;
   rta_real_t dotprod = 0;
 
   for(i = 0; i < ndim; i++)
-    dotprod += RTA_DMAP(vect[i], mean[i], distfunc[i]) * plane[i]; // distfunc(x - y)
+    dotprod += RTA_DMAP(vect[i], mean[i], distwarp[i]) * plane[i]; // distwarp(x - y) * plane
 
-  return (dotprod / norm); // returns square distance
+  return (dotprod / norm); // returns signed distance?
 }
 
 static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
                                   const rta_real_t* plane,
                                   const rta_real_t* mean,
                                   int ndim, rta_real_t norm,
-                                  rta_bpf_t *distfunc[])
+                                  rta_bpf_t *distwarp[])
 { // standard algebra computing
   int i, iv;
   rta_real_t dotprod = 0;
 
   for(i = 0, iv = 0; i < ndim; i++, iv += stride)
-    dotprod += RTA_DMAP(vect[iv], mean[i], distfunc[i]) * plane[i]; // distfunc(x - y)
+    dotprod += RTA_DMAP(vect[iv], mean[i], distwarp[i]) * plane[i]; // distwarp(x - y)
 
-  return (dotprod / norm); // returns square distance
+  return (dotprod / norm); // returns signed distance?
 }
 
 static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
@@ -336,16 +336,16 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
                                     const rta_real_t* mean,
                                     const rta_real_t *sigma,
                                     int ndim, rta_real_t norm,
-                                    rta_bpf_t *distfunc[])
+                                    rta_bpf_t *distwarp[])
 { // standard algebra computing
   int i, iv;
   rta_real_t dotprod = 0;
 
   for (i = 0, iv = 0; i < ndim; i++, iv += stride)
     if (sigma[i] > 0)
-      dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i]; // distfunc((x - y) / sigma)
+      dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distwarp[i]) * plane[i]; // distwarp((x - y) / sigma) * plane
 
-  return (dotprod / norm); // returns square distance
+  return (dotprod / norm); // returns signed distance?
 }
 
 
