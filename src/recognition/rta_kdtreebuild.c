@@ -277,12 +277,8 @@ static int decompose_node (rta_kdtree_t *t, int node, int level, int use_sigma)
 
 
 /* vector to orthogonal plane node distance along split dimension dim */
-static rta_real_t distV2orthoH (const rta_real_t* vect,
-                                rta_real_t* mean, int dim,
-                                rta_bpf_t  *distfunc[])
-{
-  return RTA_DMAP(vect[dim], mean[dim], distfunc[dim]); // distfunc(x - y)
-}
+// static rta_real_t distV2orthoH (const rta_real_t* vect, rta_real_t* mean, int dim, rta_bpf_t  *distfunc[])
+#define distV2orthoH(vect, mean, dim, distfunc)  distV2orthoH_stride(vect, 1, mean, dim, distfunc)
 
 static rta_real_t distV2orthoH_stride (const rta_real_t* vect, int stride,
                                        rta_real_t* mean, int dim,
@@ -310,13 +306,12 @@ static rta_real_t distV2H (const rta_real_t* vect,
          const rta_real_t* mean,
          int ndim, rta_real_t norm,
          rta_bpf_t *distfunc[])
-{
-  // standard algebra computing
+{ // standard algebra computing
   int i;
   rta_real_t dotprod = 0;
 
   for(i = 0; i < ndim; i++)
-    dotprod += RTA_DMAP(vect[i], mean[i], distfunc[i]) * plane[i];
+    dotprod += RTA_DMAP(vect[i], mean[i], distfunc[i]) * plane[i]; // distfunc(x - y)
 
   return (dotprod / norm); // returns square distance
 }
@@ -326,13 +321,12 @@ static rta_real_t distV2H_stride (const rta_real_t* vect, int stride,
                                   const rta_real_t* mean,
                                   int ndim, rta_real_t norm,
                                   rta_bpf_t *distfunc[])
-{
-  // standard algebra computing
+{ // standard algebra computing
   int i, iv;
   rta_real_t dotprod = 0;
 
   for(i = 0, iv = 0; i < ndim; i++, iv += stride)
-    dotprod += RTA_DMAP(vect[iv], mean[i], distfunc[i]) * plane[i];
+    dotprod += RTA_DMAP(vect[iv], mean[i], distfunc[i]) * plane[i]; // distfunc(x - y)
 
   return (dotprod / norm); // returns square distance
 }
@@ -343,20 +337,20 @@ static rta_real_t distV2H_weighted (const rta_real_t* vect, int stride,
                                     const rta_real_t *sigma,
                                     int ndim, rta_real_t norm,
                                     rta_bpf_t *distfunc[])
-{
-  // standard algebra computing
+{ // standard algebra computing
   int i, iv;
   rta_real_t dotprod = 0;
 
   for (i = 0, iv = 0; i < ndim; i++, iv += stride)
     if (sigma[i] > 0)
-      dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i];
+      dotprod += RTA_DMAPW(vect[iv], mean[i], sigma[i], distfunc[i]) * plane[i]; // distfunc((x - y) / sigma)
 
   return (dotprod / norm); // returns square distance
 }
 
 
 /* vector to node distance */
+//TODO: add distV2HLinf for radiusmode 1 (L-inf norm = square) using max instead of sum
 rta_real_t distV2N (rta_kdtree_t* t, const rta_real_t *x, const int node)
 {
 #if RTA_KDTREE_PROFILE_BUILD
