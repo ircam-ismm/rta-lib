@@ -41,7 +41,7 @@
 
 
 #ifdef DEBUG
-#define RTA_DEBUG_KDTREESEARCH 1
+#define RTA_DEBUG_KDTREESEARCH 0 // 1
 #else
 #define RTA_DEBUG_KDTREESEARCH 0
 #endif
