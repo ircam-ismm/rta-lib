@@ -374,7 +374,7 @@ void rta_kdtree_init (rta_kdtree_t *self)
   self->sigma_nnz   = 0;
   self->sigma_indnz = NULL;
   self->activecol   = -1;
-  memset(self->dfun, 0, sizeof(void *) * RTA_KDTREE_MAX_DISTFUNC);
+  memset(self->dfun, 0, sizeof(void *) * RTA_KDTREE_MAX_DISTWARP);
 
   rta_kdtree_stack_init(&self->stack, 0);
 
