@@ -44,7 +44,7 @@
 #endif
 
 #ifdef DEBUG
-#define RTA_DEBUG_KDTREEBUILD 0
+#define RTA_DEBUG_KDTREEBUILD 0 // 1
 #else
 #define RTA_DEBUG_KDTREEBUILD 0
 #endif
