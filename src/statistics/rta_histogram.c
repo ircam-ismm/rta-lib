@@ -38,7 +38,9 @@
 
 #include <float.h>
 #include "rta_histogram.h"
-
+#ifdef WIN32
+#include <malloc.h>
+#endif
 
 // init parameter struct to default values
 void rta_histogram_init (rta_histogram_params_t *params)
@@ -72,8 +74,13 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
 				 rta_real_t *bpfout,   const int bpf_stride)
 {
   rta_real_t one = 1;
-  rta_real_t *ones[num_input]; // array of pointers to weights data
-
+  //rta_real_t *ones[num_input]; // array of pointers to weights data
+#ifdef WIN32
+  rta_real_t *ones = (rta_real_t *)_malloca(num_input * sizeof(rta_real_t));
+#else
+  rta_real_t *ones = (rta_real_t *) alloca(num_input * sizeof(rta_real_t));
+#endif
+  
   for (int i = 0; i < num_input; i++)
     ones[i] = &one; // make then all point to 1, zero stride assures we stay there
 
@@ -81,7 +88,10 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
 				      input, i_offset, i_stride, i_size,
 				      ones, 0, // unweighted: all weights == 1
 				      output, out_stride,
-				      bpfout, bpf_stride); 
+				      bpfout, bpf_stride);
+#ifdef WIN32
+  _freea( buf );
+#endif
 }
 
 /* Calculate weighted histogram */
