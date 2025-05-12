@@ -90,7 +90,7 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
 				      output, out_stride,
 				      bpfout, bpf_stride);
 #ifdef WIN32
-  _freea( buf );
+  _freea( ones );
 #endif
 }
 
