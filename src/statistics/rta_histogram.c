@@ -76,9 +76,9 @@ void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
   rta_real_t one = 1;
   //rta_real_t *ones[num_input]; // array of pointers to weights data
 #ifdef WIN32
-  rta_real_t *ones = (rta_real_t *)_malloca(num_input * sizeof(rta_real_t));
+  rta_real_t **ones = (rta_real_t **)_malloca(num_input * sizeof(rta_real_t*));
 #else
-  rta_real_t *ones = (rta_real_t *) alloca(num_input * sizeof(rta_real_t));
+  rta_real_t **ones = (rta_real_t **) alloca(num_input * sizeof(rta_real_t*));
 #endif
   
   for (int i = 0; i < num_input; i++)
