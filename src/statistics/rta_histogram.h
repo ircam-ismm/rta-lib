@@ -93,9 +93,10 @@ void rta_histogram_stride (rta_histogram_params_t *params,
  * @param binout	NULL or pointer to bin index output data (at least params->nhist * bpf_stride elements)
  * @param bin_stride	stride for bin index data
  */
-void rta_histogram_stride_multi (rta_histogram_params_t *params, int num_input,
+void rta_histogram_stride_multi (rta_histogram_params_t *params,
+		      /*input*/  int num_input,
 				 rta_real_t *input[],  const int i_offset, const int i_stride, const unsigned int i_size[],
-				 rta_real_t *output,   const int out_stride,
+		      /*output*/ rta_real_t *output,   const int out_stride,
 				 rta_real_t *binout,   const int bin_stride);
 
 /**
